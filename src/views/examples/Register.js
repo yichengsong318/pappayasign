@@ -40,12 +40,7 @@ class Register extends React.Component {
 verifyCallbackRegister(recaptchaToken) {
   // Here you will get the final recaptchaToken!!!  
   console.log('disabled');
-  try {
-    document.getElementById('registerfinishbtn').style.visibility = "visible";
-  document.getElementById('modal2errorspan').innerHTML = "";
-  } catch (error) {
-    
-  }
+ 
   
 
 }
@@ -106,8 +101,8 @@ var random = randomString(7);
 
     var modal = document.querySelectorAll(".modal")
     //modal[1].style.display = "block";
-    document.getElementById('registerfinishbtn').style.visibility = "hidden";
-    document.getElementById('modal2errorspan').innerHTML = "Please wait while we verify captha.";
+    document.getElementById('registerfinishbtn').style.visibility = "visible";
+  document.getElementById('modal2errorspan').innerHTML = "";
 
     window.onclick = function(e){
       if(e.target == modal[0] || e.target == modal[1]){
