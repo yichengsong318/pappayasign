@@ -101,7 +101,6 @@ verifyCallback(recaptchaToken) {
       }
     }
 
-    document.getElementById('loginerrorspan').innerHTML = "Please wait while we verify captha.";
 
     var loginemail = document.getElementById('loginemail')
 		var loginpassword = document.getElementById('loginpassword')
