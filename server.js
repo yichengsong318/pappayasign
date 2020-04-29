@@ -413,7 +413,7 @@ app.post("/updatedocumentstatus", function (req, res) {
 
 app.post("/updaterecieverdata", function (req, res) {
 	console.log(req);
-	var query = { Reciever: req.body.Reciever };
+	var query = { DocumentID: req.body.DocumentID };
 	const uri =
 	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
