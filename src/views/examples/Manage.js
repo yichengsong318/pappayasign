@@ -621,6 +621,8 @@ class Tables extends React.Component {
   $(document).on('click','.rowselect', function() { 
     $('.dropdown-menu2').css({"display": "none"});
       modal[2].style.display = "block";
+      $( "#managerecepientstable li" ).remove();
+      $( "#managerecepientstable" ).innerHTML = '';
       document.getElementById('managebody').style.display= "none";
       document.getElementById('detailbody').style.display= "block";
       console.log($(this).parent().children('#datakey')[0].innerHTML);
@@ -649,21 +651,21 @@ class Tables extends React.Component {
                 reciverlistrow = reciverlistrow + ' ' +reciever.RecepientEmail + ',';
 
                 var li = document.createElement('li');
-            li.innerHTML=`<div class="rcardmanage">
-            <div class="managelabelspan">
-            <strong><span  id="summary-recepient-name">Name: `+reciever.RecepientName+`</span></strong>
-            </div>
-            <div class="managelabelspan">
-            <span  id="summary-recepient-name">`+reciever.RecepientEmail+`</span>
-            </div>
-            <div class="managelabelspan">
-            <span  id="summary-recepient-name">Action: `+reciever.RecepientOption+`</span>
-            </div>
-            <div class="managelabelspan">
-            <span  id="summary-recepient-name">Status: `+reciever.RecepientStatus+`</span>
-            </div>
-            </div>`;
-            $( "#managerecepientstable" ).append(li);
+                li.innerHTML=`<div class="rcardmanage">
+                <div class="managelabelspan">
+                <strong><span  id="summary-recepient-name">Name: `+reciever.RecepientName+`</span></strong>
+                </div>
+                <div class="managelabelspan">
+                <span  id="summary-recepient-name">`+reciever.RecepientEmail+`</span>
+                </div>
+                <div class="managelabelspan">
+                <span  id="summary-recepient-name">Action: `+reciever.RecepientOption+`</span>
+                </div>
+                <div class="managelabelspan">
+                <span  id="summary-recepient-name">Status: `+reciever.RecepientStatus+`</span>
+                </div>
+                </div>`;
+                $( "#managerecepientstable" ).append(li);
               
             });
             document.getElementById('detailsubject').innerHTML = Document.DocumentName;

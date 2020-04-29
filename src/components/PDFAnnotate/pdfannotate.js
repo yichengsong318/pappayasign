@@ -1709,8 +1709,9 @@ try{
 	if (userid) {
 
 	console.log('user logged in');
-	console.log(userid);
 	email = getCookie('useremail');
+	console.log(userid);
+	console.log(email);
 
 	
 		var optiondefault = document.createElement('option');
@@ -1856,6 +1857,7 @@ try{
 				})
 				.then(function (response) {
 				console.log(response);
+				console.log(email);
 				if(response.data.Status === 'got recievers'){
 				  var recievers = response.data.Reciever;
 				  var status = response.data.DocStatus;
@@ -1864,10 +1866,11 @@ try{
 					window.location.hash='#/admin/index';
 				}
 				  recievers.forEach(function(item, index) {
+					  console.log(item);
 					dbpeople.push({name: recievers[index].RecepientName, email: recievers[index].RecepientEmail, option:recievers[index].RecepientOption});
-					if(recievers[index].RecepientEmail === email){
-						grabbedcolor = recievers[index].RecepientColor;
-						remail = recievers[index].RecepientEmail;
+					if(item.RecepientEmail === email){
+						grabbedcolor = item.RecepientColor;
+						remail = item.RecepientEmail;
 						console.log(grabbedcolor);
 						function hexToRgb(hex) {
 						var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

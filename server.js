@@ -25,12 +25,10 @@ let transporter = nodemailer.createTransport({
 
 const uri =
   "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
 
 app.post("/login", function (req, res) {
   console.log(req);
-  const uri =
-    "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
+
   const client = new MongoClient(uri, { useNewUrlParser: true });
 
   client.connect((err) => {
@@ -47,7 +45,8 @@ app.post("/login", function (req, res) {
           result.SignID != ""
         ) {
           var userdata = {
-            UserID: result.UserID,
+			UserID: result.UserID,
+			UserEmail:result.UserEmail,
             Status: "login successful",
           };
           res.send(userdata);
@@ -92,8 +91,6 @@ app.post("/login", function (req, res) {
 
 app.post("/register", function (req, res) {
   console.log(req.body);
-  const uri =
-    "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
   const client = new MongoClient(uri, { useNewUrlParser: true });
 
   client.connect((err) => {
@@ -142,8 +139,6 @@ app.post("/register", function (req, res) {
 
 app.post("/resetpassword", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -165,8 +160,6 @@ app.post("/resetpassword", function (req, res) {
 
 app.post("/activate", function (req, res) {
   console.log(req);
-  const uri =
-    "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
   const client = new MongoClient(uri, { useNewUrlParser: true });
 
   client.connect((err) => {
@@ -185,8 +178,6 @@ app.post("/activate", function (req, res) {
 
 app.post("/signature", function (req, res) {
   console.log(req);
-  const uri =
-    "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
   const client = new MongoClient(uri, { useNewUrlParser: true });
 
   client.connect((err) => {
@@ -206,8 +197,6 @@ app.post("/signature", function (req, res) {
 app.post("/addtemplatedata", function (req, res) {
 	console.log(req);
 	var query = { TemplateID: req.body.TemplateID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -276,8 +265,6 @@ app.post("/addtemplatedata", function (req, res) {
 app.post("/adddocumentdata", function (req, res) {
 	console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -348,8 +335,6 @@ app.post("/adddocumentdata", function (req, res) {
 app.post("/updatedocumentdata", function (req, res) {
 	console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -382,8 +367,6 @@ app.post("/updatedocumentdata", function (req, res) {
 app.post("/updatedocumentstatus", function (req, res) {
 	console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -414,8 +397,6 @@ app.post("/updatedocumentstatus", function (req, res) {
 app.post("/updaterecieverdata", function (req, res) {
 	console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -445,8 +426,6 @@ app.post("/updaterecieverdata", function (req, res) {
 app.post("/updaterequestdata", function (req, res) {
 	console.log(req);
 	var query = { UserID: req.body.UserID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -475,8 +454,6 @@ app.post("/updaterequestdata", function (req, res) {
 
 app.post("/getdocdata", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -511,8 +488,6 @@ app.post("/getdocdata", function (req, res) {
 app.post("/addreciever", function (req, res) {
 	console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -545,8 +520,6 @@ app.post("/addreciever", function (req, res) {
 
 app.post("/getReciever", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -577,8 +550,6 @@ app.post("/getReciever", function (req, res) {
 
   app.post("/getRequests", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -609,8 +580,6 @@ app.post("/getReciever", function (req, res) {
 
 app.post("/getrequestuser", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -644,8 +613,6 @@ app.post("/getrequestuser", function (req, res) {
 	var query = { 
 		UserID: req.body.UserID
 	 };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -703,8 +670,6 @@ app.post("/getrequestuser", function (req, res) {
 app.post("/addtemplatereciever", function (req, res) {
 	console.log(req);
 	var query = { TemplateID: req.body.TemplateID };
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -737,8 +702,6 @@ app.post("/addtemplatereciever", function (req, res) {
 
 app.post("/gettemplatedata", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -770,8 +733,6 @@ app.post("/gettemplatedata", function (req, res) {
 
   app.post("/getuserdata", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -801,8 +762,6 @@ app.post("/gettemplatedata", function (req, res) {
 
   app.post("/getmanagedocdata", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
@@ -833,8 +792,6 @@ app.post("/gettemplatedata", function (req, res) {
 
   app.post("/getmanagetemplatedata", function (req, res) {
 	console.log(req);
-	const uri =
-	  "mongodb+srv://prashanth:cn@users-dppv1.mongodb.net/UsersDB?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true });
   
 	client.connect((err) => {
