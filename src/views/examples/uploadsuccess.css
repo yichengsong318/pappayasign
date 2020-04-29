@@ -1,0 +1,80 @@
+#tsortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+  #tsortable li { margin: 1%; padding: 5px; border-radius: 5px; border: 1px solid #f6f6f6; background-color: #fbfbfb; padding-left: 1.5em; width:98%; }
+  #tsortable li span { position: absolute; margin-left: 1.3em; }
+
+  .rcard{
+	  padding:10px;
+	  background-color: transparent;
+	  border-radius: 5px;
+	  padding-top: 20px;
+	  padding-bottom: 20px;
+	  margin: 5px;
+  }
+
+  #docnamecontainer{
+    padding:10px;
+	  background-color: transparent;
+	  border-radius: 5px;
+	  padding-top: 20px;
+	  padding-left: 20px;
+	  padding-bottom: 20px;
+    margin: 5px;
+    border: 1px dashed #c7c7c7;
+  }
+
+  .rcard:hover{
+	cursor: move;
+  }
+
+  .inputr{
+	  width:30%;
+	  margin-left:0.5%;
+	  margin-right:0.5%;
+	  margin-top: 5px;
+	  margin-bottom: 5px;
+  }
+
+  .recepientoption{
+	  width:20%;
+	border: 1px solid #ebebeb;
+  }
+
+  input:disabled,
+input[disabled]{
+  background-color: #fff;
+}
+
+  .buttonr{
+	  width:4%;
+	  margin-left:0.5%;
+	  margin-right:0.5%;
+	  height:30px;
+	  background-color: rgb(189, 60, 0);
+	  color:#fff;
+	  border-radius: 5px;
+	  border: 0;
+
+  }
+
+  .buttonr:hover{
+	background-color: #626262;
+  }
+
+  #trecepientoptionselect{
+	border: 1px solid #f6f6f6;
+  }
+
+  #tsortable li:nth-child(1) {border-left: 10px solid #E6EE9C;}
+  #tsortable li:nth-child(2) {border-left: 10px solid #B6EDD8;}
+  #tsortable li:nth-child(3) {border-left: 10px solid #FFCDD3;}
+  #tsortable li:nth-child(4) {border-left: 10px solid #90CAF9;}
+  #tsortable li:nth-child(5) {border-left: 10px solid #E1BEE7;}
+  #tsortable li:nth-child(6) {border-left: 10px solid #A5D6A7;}
+  #tsortable li:nth-child(7) {border-left: 10px solid #B3E2E3;}
+  #tsortable li:nth-child(8) {border-left: 10px solid #BCAAA4;}
+  #tsortable li:nth-child(9) {border-left: 10px solid #E0E0E0;}
+  #tsortable li:nth-child(10) {border-left: 10px solid #FFAB00;}
+  #tsortable li:nth-child(11) {border-left: 10px solid #64DD17;}
+  #tsortable li:nth-child(12) {border-left: 10px solid #00B8D4;}
+  #tsortable li:nth-child(13) {border-left: 10px solid #00BFA5;}
+

@@ -1,0 +1,2 @@
+[0418/103821.422:WARNING:minidump_to_upload_parameters.cc(36)] duplicate key guid, discarding value 0a57d594-3fb1-4c94-b510-0f9137de5857
+[0420/130505.776:ERROR:file_io.cc(89)] ReadExactly: expected 152, observed 120
