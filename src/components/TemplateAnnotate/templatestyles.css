@@ -120,7 +120,7 @@ canvas, .canvas-container {
 	justify-content: center;
 }
 
-.editortoolbar .tool {
+.editortoolbar .toolzoom {
 	display: inline-block;
 	color: #626262;
 	border:none !important;
@@ -135,7 +135,7 @@ canvas, .canvas-container {
 	
 }
 
-.editortoolbar .tool i.material-icons {
+.editortoolbar .toolzoom i.material-icons {
 	padding: 0px !important;
 	margin: 0px !important;
 	font-size: 18px !important;
@@ -188,6 +188,22 @@ canvas, .canvas-container {
 	padding-right:10px;
 	overflow: auto;
 	position: relative;
+}
+
+.templatepdfAnNotateContainer #templatedragabbleImageText  {
+	position:absolute;
+	position:fixed;
+	width:100px;
+	height:auto;
+	z-index: 9999999999999999999999999999999;
+}
+
+.templatepdfAnNotateContainer #templatedragabbleImageSign  {
+	position:absolute;
+	position:fixed;
+	width:200px;
+	height:auto;
+	z-index: 9999999999999999999999999999999;
 }
 
 button:focus {
@@ -259,7 +275,9 @@ button:focus {
 	
 }
 
-
+#topenfilebtn{
+	display:none;
+}
 
 #tfileinput{
 	display:none;

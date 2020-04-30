@@ -39,6 +39,7 @@ class Review extends React.Component {
 
     var filename = '';
     var docname = '';
+    var action = '';
 
     var modal = document.querySelectorAll(".modal")
     modal[0].style.display = "block";
@@ -73,6 +74,12 @@ class Review extends React.Component {
        data[tmp[0]] = tmp[1];
         }
      filename = data.id;
+     try {
+      action = data.action;
+     } catch (error) {
+       
+     }
+    
      docname = DataVar.DocName;
      
      console.log(userid);
@@ -130,43 +137,48 @@ class Review extends React.Component {
   people = DataVar.RecepientArray;
   if(DataVar.SignOrder === true){
     var firstRecepientEmail = people[0].email;
-    var url = 'https://pappayasign.surge.sh/#/admin/sign?id='+filename+'&type=db&u='+userid+'&key=0';
+    var url = process.env.BASE_URL+'/#/admin/sign?id='+filename+'&type=db&u='+userid+'&key=0';
     var firstRecepientName = people[0].name;
     
+          if(action === 'correct'){
+            console.log('correct');
+          }
+          else{
+            axios.post('/getrequestuser', {
+              UserEmail: people[0].email
+              })
+              .then(function (response) {
+              console.log(response);
+              if(response.data.Status === 'user found'){
+                axios.post('/postrequest', {
+                  UserID: response.data.UserID,
+                  DocumentName: docname,
+                  DocumentID: filename,
+                  From: userid,
+                  FromEmail: email,
+                  RecepientStatus: 'Need to Sign',
+                  RecepientDateStatus: today
+  
+                  })
+                  .then(function (response) {
+                  console.log(response);
+                  if(response.data === 'user found'){
+                  }
+                  })
+                  .catch(function (error) {
+                  console.log(error);
+                  modal[1].style.display = "none"
+                  alert(error);
+                  
+                  });
+              }
+              })
+              .catch(function (error) {
+              console.log(error);
+              
+              });
+          }
           
-          axios.post('/getrequestuser', {
-            UserEmail: people[0].email
-            })
-            .then(function (response) {
-            console.log(response);
-            if(response.data.Status === 'user found'){
-              axios.post('/postrequest', {
-                UserID: response.data.UserID,
-                DocumentName: docname,
-                DocumentID: filename,
-                From: userid,
-                FromEmail: email,
-                RecepientStatus: 'Need to Sign',
-                RecepientDateStatus: today
-
-                })
-                .then(function (response) {
-                console.log(response);
-                if(response.data === 'user found'){
-                }
-                })
-                .catch(function (error) {
-                console.log(error);
-                modal[1].style.display = "none"
-                alert(error);
-                
-                });
-            }
-            })
-            .catch(function (error) {
-            console.log(error);
-            
-            });
 
 
           axios.post('/sendmail', {
@@ -238,41 +250,46 @@ class Review extends React.Component {
 		var recepientColor = colorArray[index];
 		if(recepientOption == 'Needs to Sign' || recepientOption == 'Needs to View'){
 		console.log(recepientEmail + ',' + recepientName);
-    var url = 'https://pappayasign.surge.sh/#/admin/sign?id='+filename+'&type=db&u='+userid+'&key='+index+'';
+    var url = process.env.BASE_URL+'/#/admin/sign?id='+filename+'&type=db&u='+userid+'&key='+index+'';
     
-    axios.post('/getrequestuser', {
-      UserEmail: recepientEmail
-      })
-      .then(function (response) {
-      console.log(response);
-      if(response.data.Status === 'user found'){
-        axios.post('/postrequest', {
-          UserID: response.data.UserID,
-          DocumentName: docname,
-          DocumentID: filename,
-          From: userid,
-          FromEmail: email,
-          RecepientStatus: 'Need to Sign',
-          RecepientDateStatus: today
+    if(action === 'correct'){
+      console.log('correct');
+    }
+    else{
+      axios.post('/getrequestuser', {
+        UserEmail: recepientEmail
+        })
+        .then(function (response) {
+        console.log(response);
+        if(response.data.Status === 'user found'){
+          axios.post('/postrequest', {
+            UserID: response.data.UserID,
+            DocumentName: docname,
+            DocumentID: filename,
+            From: userid,
+            FromEmail: email,
+            RecepientStatus: 'Need to Sign',
+            RecepientDateStatus: today
 
-          })
-          .then(function (response) {
-          console.log(response);
-          if(response.data === 'user found'){
-          }
-          })
-          .catch(function (error) {
-          console.log(error);
-          modal[1].style.display = "none"
-          alert(error);
-          
-          });
-      }
-      })
-      .catch(function (error) {
-      console.log(error);
-      
-      });
+            })
+            .then(function (response) {
+            console.log(response);
+            if(response.data === 'user found'){
+            }
+            })
+            .catch(function (error) {
+            console.log(error);
+            modal[1].style.display = "none"
+            alert(error);
+            
+            });
+        }
+        })
+        .catch(function (error) {
+        console.log(error);
+        
+        });
+    }
         
         axios.post('/sendmail', {
           to: recepientEmail,
@@ -337,8 +354,8 @@ class Review extends React.Component {
       <>
           <HeaderDefault />
           {/* Page content */}
-        <Container className="mt--9 pb-8">
-        <Card className="shadow border-0 pb-2 mb-3 bg-dark">
+        <div className="mt--9 pb-8">
+        <Card className="shadow border-0 pb-2 mb-3 bg-dark mx-5">
               <CardBody>
                 <Row>
               <Col lg="12" className="form-check form-check-inline">
@@ -389,7 +406,7 @@ class Review extends React.Component {
         
           <Row>
             <div className="col  pb-2">
-              <Card className="shadow border-0">
+              <Card className="shadow border-0 mx-3">
               <CardHeader className=" bg-transparent">
                   <h3>Review and Send!</h3>
                 </CardHeader>
@@ -498,7 +515,7 @@ class Review extends React.Component {
               </Card>
             </div>
           </Row>
-        </Container>
+        </div>
       </>
     );
   }

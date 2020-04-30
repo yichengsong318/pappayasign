@@ -79,7 +79,15 @@ class Index extends React.Component {
           console.log(response);
           if(response.data.Status === 'user found'){
             var Request = response.data.user.Request;
-            requestcount = Request.length();
+            Request.forEach(function(data, index){
+              
+              if(data.RecepientStatus == 'Completed'){
+                completecount = completecount + 1;
+              }
+              else if(data.RecepientStatus == 'Need to Sign'){
+                requestcount = requestcount+ 1;
+              }
+            });
             
           }
           })
@@ -100,13 +108,17 @@ class Index extends React.Component {
               var Documents = response.data.doc;
 
               Documents.forEach(function(data, index){
-                if(data.Status == 'Sent'){
-                  signcount =  signcount + 1;
-                }
-                else if(data.Status == 'Completed'){
-                  completecount = completecount + 1;
-                }
-                doccount = doccount+ 1;
+                data.Reciever.forEach(function(reciever, index){
+                  if(data.Status == 'Waiting for Others'){
+                    signcount =  signcount + 1;
+                  }
+                  else if(data.Status == 'Completed'){
+                    completecount = completecount + 1;
+                  }
+                  doccount = doccount+ 1;
+                
+              });
+                
               });
 
               try {

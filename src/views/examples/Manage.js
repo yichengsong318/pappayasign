@@ -557,7 +557,7 @@ class Tables extends React.Component {
             sentcontent += '<td id="datauid" hidden>' + data.Owner + '</td>';
             sentcontent += '<td >' + data.DateStatus + '</td>';
             sentcontent+=`<td ><div class="btn-group">
-              <button type="button" class="btn btn-primary resend">RESEND</button>
+              <button type="button" class="btn btn-primary move">Move</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
               <div class="dropdown-menu2" id="dropdown">
               <button class="dropdown-item move" type="button">Move</button>
@@ -1484,7 +1484,7 @@ class Tables extends React.Component {
          var Document = response.data.Document;
          var dbpeople = [];
          Document.Reciever.forEach(function(data, index){
-          var url = 'https://pappayasign.herokuapp.com/#/admin/sign?id='+fileid+'&type=db&u='+resenduserid+'&key='+index+''; 
+          var url = process.env.BASE_URL+'/#/admin/sign?id='+fileid+'&type=db&u='+resenduserid+'&key='+index+''; 
           if(data.RecepientStatus === 'Sent'){
             var dbpeople = [];
             dbpeople.push({name: data.RecepientName, email: data.RecepientEmail, option:data.RecepientOption});

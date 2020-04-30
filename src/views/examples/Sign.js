@@ -18,12 +18,25 @@ var firebase = require('firebase');
 
 class Icons extends React.Component {
   componentDidMount(){
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // user exists, do stuff
-        var userid = user.uid;
-      console.log('user logged in');
-      console.log(userid);
+    
+    
+    function getCookie(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+			  var c = ca[i];
+			  while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+			}
+			return null;
+			}		
+
+		var userid = getCookie('uid');
+
+		if (userid) {
+	
+		console.log('user logged in');
+		console.log(userid);
 
       
       
@@ -33,15 +46,14 @@ class Icons extends React.Component {
         //window.location.hash = "#/auth/login";
       
       }
-      });
   }
   render() {
     return (
       <>
         <HeaderDefault />
         {/* Page content */}
-        <Container className="mt--9 pb-3">
-        <Card className="shadow border-0 pb-2 mb-3 bg-dark" id="headerstepwizard">
+        <div className="mt--9 pb-3">
+        <Card className="shadow border-0 pb-2 mx-5 mb-3 bg-dark" id="headerstepwizard">
               <CardBody>
                 <Row>
               <Col lg="12" className="form-check form-check-inline">
@@ -70,14 +82,15 @@ class Icons extends React.Component {
               </CardBody>
               </Card>
         
-        <Card className=" shadow ">
-        
-
+        <Card className=" shadow mx-3">
+                <CardHeader className=" bg-transparent">
+                  <h3>Prepare Document</h3>
+                </CardHeader>
                 <CardBody>
                  <PDFAnnotate/>
                 </CardBody>
               </Card>
-              </Container>
+              </div>
       </>
     );
   }

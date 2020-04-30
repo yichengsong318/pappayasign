@@ -21,7 +21,10 @@ class Icons extends React.Component {
       <>
         <HeaderDefault />
         {/* Page content */}
-        <Card className=" shadow mt--8 mx-6">
+        <Card className=" shadow mt--8 mx-3">
+                <CardHeader className=" bg-transparent">
+                  <h3>Prepare Template</h3>
+                </CardHeader>
                 <CardBody>
                  <TemplateAnnotate/>
                 </CardBody>

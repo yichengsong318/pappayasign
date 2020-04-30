@@ -210,7 +210,7 @@ class SelectTemplateRecepients extends React.Component {
 										var Reciever = [];
 										
 											people.forEach(function(item, index) {
-												var url = 'https://pappayasign.herokuapp.com/#/admin/sign?id='+encodeURIComponent(docid)+'&type=db&u='+userid+'&key='+index+''; 
+												var url = process.env.BASE_URL+'/#/admin/sign?id='+encodeURIComponent(docid)+'&type=db&u='+userid+'&key='+index+''; 
 												var recepientName = people[index].name;
 												var recepientEmail = people[index].email;
 												var recepientOption = people[index].option;
