@@ -1,26 +1,21 @@
 #dragabbleImageText  {
 	
-	position: absolute;
+	position: fixed;
 	width:100px;
     height:auto;
-    z-index: 999999999999999999999999999999999999999;
 }
 
 #dragabbleImageSign  {
 	
-	position: absolute;
+	position: fixed;
 	width:200px;
     height:auto;
-    z-index: 999999999999999999999999999999999999999;
 }
 
-.pdf-canvas{
-    z-index: -1 !important;
-}
+
 
 canvas, .canvas-container {
     margin-bottom: 25px;
-    z-index: -1 !important;
 }
 
 

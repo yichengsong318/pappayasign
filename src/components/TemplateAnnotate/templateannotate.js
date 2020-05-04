@@ -517,6 +517,10 @@ class TemplateAnnotate extends React.Component {
         }
       }
       modal[0].style.display = 'none'
+      $('#tpdf-container').css("z-index", "0");
+      $('#tcontainer').css("z-index", "0");
+      $('.pdf-canvas').css("z-index", "0");
+      $('canvas').css("z-index", "0");
     }
 
     TemplateAnnotate.prototype.enableSelector = function () {
@@ -1474,19 +1478,18 @@ class TemplateAnnotate extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="templatepdfAnNotateContainer">
         <img
           id="templatedragabbleImageSign"
+          style={{zIndex: '99999999999999999999999999999999999999999'}}
           src={require('../../assets/img/icons/common/signatureimg.png')}
         />
 
         <img
           id="templatedragabbleImageText"
+          style={{zIndex: '99999999999999999999999999999999999999999'}}
           src={require('../../assets/img/icons/common/textimg.png')}
         />
-      
-      <div className="templatepdfAnNotateContainer">
-        
         <Row>
           <div id="teditortoolbar" className="editortoolbar">
             <button id="tzoominbtn" color="neutral" className="toolzoom">
@@ -1705,7 +1708,6 @@ class TemplateAnnotate extends React.Component {
             </div>
           </Col>
         </Row>
-      </div>
       </div>
     )
   }
