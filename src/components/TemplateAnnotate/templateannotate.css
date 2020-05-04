@@ -1,6 +1,5 @@
 .templatepdfAnNotateContainer #templatedragabbleImageText  {
 	position:absolute;
-	position:fixed;
 	width:100px;
 	height:auto;
 	z-index: 9999999999999999999999999999999 !important;
@@ -8,21 +7,20 @@
 
 .templatepdfAnNotateContainer #templatedragabbleImageSign  {
 	position:absolute;
-	position:fixed;
 	width:200px;
 	height:auto;
 	z-index: 9999999999999999999999999999999 !important;
 }
 
-.templatepdfAnNotateContainer{
-    z-index: 0 !important;
-}
+
 
 canvas, .canvas-container {
     margin-bottom: 25px;
+    z-index: -2;
 }
 
 .canvas-container {
     margin-left: auto;
     margin-right: auto;
+    z-index: -2;
 }
