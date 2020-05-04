@@ -557,9 +557,9 @@ class PDFAnnotate extends React.Component {
           $('.icon-color').removeClass('icon-color')
         }
       }
-      $('#pdf-container').css("z-index", "-1");
-      $('#container').css("z-index", "-1");
-      $('.canvas').css("z-index", "-1");
+      $('#pdf-container').css("z-index", "0");
+      $('#container').css("z-index", "0");
+      $('.canvas').css("z-index", "0");
     }
 
     PDFAnnotate.prototype.AddObj = function () {
