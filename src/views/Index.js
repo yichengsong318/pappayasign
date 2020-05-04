@@ -20,7 +20,7 @@ const axios = require('axios').default
 
 class Index extends React.Component {
   componentDidMount() {
-    console.log(process.env.REACT_APP_DOMAIN);
+    console.log(process.env.REACT_APP_BASE_URL);
     $.get('https://www.cloudflare.com/cdn-cgi/trace', function (data) {
       //console.log(data)
     })
