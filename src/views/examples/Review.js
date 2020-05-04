@@ -159,7 +159,7 @@ class Review extends React.Component {
       if (DataVar.SignOrder === true) {
         var firstRecepientEmail = people[0].email
         var url =
-          process.env.BASE_URL +
+          process.env.REACT_APP_BASE_URL +
           '/#/admin/sign?id=' +
           filename +
           '&type=db&u=' +
@@ -282,7 +282,7 @@ class Review extends React.Component {
           ) {
             //console.log(recepientEmail + ',' + recepientName);
             var url =
-              process.env.BASE_URL +
+              process.env.REACT_APP_BASE_URL +
               '/#/admin/sign?id=' +
               filename +
               '&type=db&u=' +
