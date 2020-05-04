@@ -1113,6 +1113,7 @@ class TemplateAnnotate extends React.Component {
       try {
         pdf.enableAddText('Text', recepientemail, recepientcolor)
         $('#templatedragabbleImageText').show()
+        $('#templatedragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
         $('#templatedragabbleImageText').hide()
@@ -1138,6 +1139,7 @@ class TemplateAnnotate extends React.Component {
       try {
         pdf.enableAddText('Name', recepientemail, recepientcolor)
         $('#templatedragabbleImageText').show()
+        $('#templatedragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
         $('#templatedragabbleImageText').hide()
@@ -1163,6 +1165,7 @@ class TemplateAnnotate extends React.Component {
       try {
         pdf.enableAddText('Company', recepientemail, recepientcolor)
         $('#templatedragabbleImageText').show()
+        $('#templatedragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
         $('#templatedragabbleImageText').hide()
@@ -1188,6 +1191,7 @@ class TemplateAnnotate extends React.Component {
       try {
         pdf.enableAddText('Title', recepientemail, recepientcolor)
         $('#templatedragabbleImageText').show()
+        $('#templatedragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
         $('#templatedragabbleImageText').hide()
@@ -1236,6 +1240,7 @@ class TemplateAnnotate extends React.Component {
       try {
         pdf.enableAddText(today, recepientemail, recepientcolor)
         $('#templatedragabbleImageText').show()
+        $('#templatedragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
         $('#templatedragabbleImageText').hide()
@@ -1285,6 +1290,7 @@ class TemplateAnnotate extends React.Component {
       try {
         pdf.enableImage(dataUrl, recepientemail, recepientcolor)
         $('#templatedragabbleImageSign').show()
+        $('#templatedragabbleImageSign').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Add a Document')
         $('#templatedragabbleImageSign').hide()
@@ -1448,6 +1454,7 @@ class TemplateAnnotate extends React.Component {
         try {
           pdf.enableAddText(initialval, recepientemail, recepientcolor)
           $('#templatedragabbleImageText').show()
+          $('#templatedragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
           modal[3].style.display = 'none'
         } catch (error) {
           modal[3].style.display = 'none'
