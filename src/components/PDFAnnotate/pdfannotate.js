@@ -314,17 +314,8 @@ class PDFAnnotate extends React.Component {
                     doubleclickobj = fabricObj.findTarget(e)
                     ////console.log(doubleclickobj);
                     modal[6].style.display = 'block'
-                    SignaturePad()
-                    document.getElementById(
-                      'signature-container'
-                    ).style.visibility = 'visible'
-                    document.getElementById(
-                      'signature-container'
-                    ).style.height = '100%'
-                    document.getElementById('tabcontent').style.display =
-                      'block'
-                    document.getElementById('image-container').style.display =
-                      'block'
+                    SignaturePadSign();
+                    
                     obj.set('backgroundColor', 'transparent')
                     obj.set('id', email)
                   } else if (objType === 'i-text') {
@@ -1385,8 +1376,8 @@ class PDFAnnotate extends React.Component {
         top: e.clientY - 70,
       })
       $('#dragabbleImageText').css({
-        left: e.clientX - 40,
-        top: e.clientY - 40,
+        left: e.clientX - 100,
+        top: e.clientY - 30,
       })
     })
 
@@ -1396,8 +1387,8 @@ class PDFAnnotate extends React.Component {
         top: e.clientY - 70,
       })
       $('#dragabbleImageText').css({
-        left: e.clientX - 40,
-        top: e.clientY - 40,
+        left: e.clientX - 100,
+        top: e.clientY - 30,
       })
     })
 
@@ -2547,7 +2538,7 @@ class PDFAnnotate extends React.Component {
       modal[5].style.display = 'block'
     })
 
-    function SignaturePad() {
+    function SignaturePadSign() {
       var Point = (function () {
         function Point(x, y, time) {
           this.x = x
@@ -3247,38 +3238,16 @@ class PDFAnnotate extends React.Component {
           //pdf.enableImage(dataURL);
           doubleclickobj.setSrc(dataURL)
           pdf.Reload()
-          document.getElementById('signature-container').style.visibility =
-            'hidden'
-          document.getElementById('signature-container').style.height = 0
-
-          document.getElementById('image-container').style.display = 'none'
-          document.getElementById('tabcontent').style.display = 'none'
         }
       })
 
       CancelBtn.addEventListener('click', function (event) {
-        document.getElementById('signature-container').style.visibility =
-          'hidden'
-        document.getElementById('signature-container').style.height = '0px'
-
-        document.getElementById('image-container').style.display = 'none'
-        document.getElementById('tabcontent').style.display = 'none'
-        $('.tool-button.active').removeClass('active')
-        $('.icon-color').removeClass('icon-color')
-      })
-
-      var cancelselectbtn = document.getElementById('cancelselectbtn')
-      cancelselectbtn.addEventListener('click', function (event) {
         modal[6].style.display = 'none'
-        document.getElementById('signature-container').style.visibility =
-          'hidden'
-        document.getElementById('signature-container').style.height = '0px'
-
-        document.getElementById('image-container').style.display = 'none'
-        document.getElementById('tabcontent').style.display = 'none'
         $('.tool-button.active').removeClass('active')
         $('.icon-color').removeClass('icon-color')
       })
+
+      
 
       var addtodocselectbtn = document.getElementById('addtodocselectbtn')
       addtodocselectbtn.addEventListener('click', function (event) {
@@ -3297,14 +3266,13 @@ class PDFAnnotate extends React.Component {
         }
         request.send()
         modal[6].style.display = 'none'
-
-        document.getElementById('signature-container').style.visibility =
-          'hidden'
-        document.getElementById('signature-container').style.height = '0px'
-        document.getElementById('image-container').style.display = 'none'
-        document.getElementById('tabcontent').style.display = 'none'
       })
     }
+
+
+
+
+      SignaturePadSign();
   }
 
   render() {

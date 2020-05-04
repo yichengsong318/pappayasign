@@ -889,8 +889,8 @@ class TemplateAnnotate extends React.Component {
         top: e.clientY - 70,
       })
       $('#templatedragabbleImageText').css({
-        left: e.clientX - 40,
-        top: e.clientY - 40,
+        left: e.clientX - 100,
+        top: e.clientY - 30,
       })
     })
 
@@ -900,8 +900,8 @@ class TemplateAnnotate extends React.Component {
         top: e.clientY - 70,
       })
       $('#templatedragabbleImageText').css({
-        left: e.clientX - 40,
-        top: e.clientY - 40,
+        left: e.clientX - 100,
+        top: e.clientY - 30,
       })
     })
 
