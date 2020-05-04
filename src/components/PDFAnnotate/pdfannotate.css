@@ -1,11 +1,11 @@
-#dragabbleImageText  {
+.pdfAnNotateContainer #dragabbleImageText  {
 	
 	position: fixed;
 	width:100px;
     height:auto;
 }
 
-#dragabbleImageSign  {
+.pdfAnNotateContainer #dragabbleImageSign  {
 	
 	position: fixed;
 	width:200px;
