@@ -3,7 +3,7 @@
 	position:fixed;
 	width:100px;
 	height:auto;
-	z-index: 9999999999999999999999999999999;
+	z-index: 9999999999999999999999999999999 !important;
 }
 
 .templatepdfAnNotateContainer #templatedragabbleImageSign  {
@@ -11,7 +11,11 @@
 	position:fixed;
 	width:200px;
 	height:auto;
-	z-index: 9999999999999999999999999999999;
+	z-index: 9999999999999999999999999999999 !important;
+}
+
+.templatepdfAnNotateContainer{
+    z-index: 0 !important;
 }
 
 canvas, .canvas-container {
