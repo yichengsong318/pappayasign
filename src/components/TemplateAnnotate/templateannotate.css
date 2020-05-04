@@ -1,13 +1,19 @@
 .templatepdfAnNotateContainer #templatedragabbleImageText  {
 	position:fixed;
 	width:100px;
-	height:auto;
+    height:auto;
+    z-index: 99999999999999999999999999999999999999999999999;
 }
 
 .templatepdfAnNotateContainer #templatedragabbleImageSign  {
 	position:fixed;
 	width:200px;
-	height:auto;
+    height:auto;
+    z-index: 999999999999999999999999999999999999999999999999;
+}
+
+.templatepdfAnNotateContainer{
+    z-index: -1;
 }
 
 
