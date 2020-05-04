@@ -557,9 +557,7 @@ class PDFAnnotate extends React.Component {
           $('.icon-color').removeClass('icon-color')
         }
       }
-      $('#pdf-container').css("z-index", "-1");
-      $('#container').css("z-index", "-1");
-      $('.canvas').css("z-index", "-1");
+      
     }
 
     PDFAnnotate.prototype.AddObj = function () {
@@ -3309,7 +3307,7 @@ class PDFAnnotate extends React.Component {
 
   render() {
     return (
-      <div className="pdfAnNotateContainer">
+      <div>
         <img
           id="dragabbleImageSign"
           src={require('../../assets/img/icons/common/signatureimg.png')}
@@ -3319,6 +3317,9 @@ class PDFAnnotate extends React.Component {
           id="dragabbleImageText"
           src={require('../../assets/img/icons/common/textimg.png')}
         />
+      
+      <div className="pdfAnNotateContainer">
+        
 
         <Row>
           <Col lg="12" className="py-3">
@@ -3798,6 +3799,7 @@ class PDFAnnotate extends React.Component {
             </div>
           </Col>
         </Row>
+      </div>
       </div>
     )
   }

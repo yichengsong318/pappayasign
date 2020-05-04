@@ -1,4 +1,4 @@
-.pdfAnNotateContainer #dragabbleImageText  {
+#dragabbleImageText  {
 	
 	position: fixed;
 	width:100px;
@@ -6,7 +6,7 @@
     z-index: 999999999999999999999999999999999999999;
 }
 
-.pdfAnNotateContainer #dragabbleImageSign  {
+#dragabbleImageSign  {
 	
 	position: fixed;
 	width:200px;
@@ -14,9 +14,6 @@
     z-index: 999999999999999999999999999999999999999;
 }
 
-.pdfAnNotateContainer{
-    z-index: -1;
-}
 
 
 
@@ -24,12 +21,10 @@
 canvas, .canvas-container {
     margin-bottom: 25px;
    
-    z-index: 0 !important;
 }
 
 .canvas-container {
     margin-left: auto;
     margin-right: auto;
     
-    z-index: 0 !important;
 }

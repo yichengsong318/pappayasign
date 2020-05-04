@@ -1474,7 +1474,7 @@ class TemplateAnnotate extends React.Component {
 
   render() {
     return (
-      <div className="templatepdfAnNotateContainer">
+      <div>
         <img
           id="templatedragabbleImageSign"
           src={require('../../assets/img/icons/common/signatureimg.png')}
@@ -1484,6 +1484,9 @@ class TemplateAnnotate extends React.Component {
           id="templatedragabbleImageText"
           src={require('../../assets/img/icons/common/textimg.png')}
         />
+      
+      <div className="templatepdfAnNotateContainer">
+        
         <Row>
           <div id="teditortoolbar" className="editortoolbar">
             <button id="tzoominbtn" color="neutral" className="toolzoom">
@@ -1702,6 +1705,7 @@ class TemplateAnnotate extends React.Component {
             </div>
           </Col>
         </Row>
+      </div>
       </div>
     )
   }

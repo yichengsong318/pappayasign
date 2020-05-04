@@ -54,7 +54,6 @@ canvas, .canvas-container {
 	justify-content: center;
 	margin: 0px auto;
 	position: relative;
-	z-index: 0 !important;
 	
 	
 	
@@ -174,9 +173,10 @@ canvas, .canvas-container {
 	align-items: center;
 	transform: scale(1);
      transform-origin: 0% 0% 0px;
-	 transform-origin: 0% 0% 0px;
-	 z-index: 0 !important;
+     transform-origin: 0% 0% 0px;
 }
+
+
 
 
 #container {
@@ -191,7 +191,6 @@ canvas, .canvas-container {
 	padding-right:10px;
 	overflow: auto;
 	position: relative;
-	z-index: 0 !important;
 }
 
 button:focus {
