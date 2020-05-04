@@ -1,40 +1,31 @@
-
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React from 'react'
+import { Link } from 'react-router-dom'
 // reactstrap components
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Col, Nav, NavItem, NavLink, Row } from 'reactstrap'
 
 class Footer extends React.Component {
   render() {
     return (
       <footer className="footer">
         <Row className="align-items-center justify-content-xl-between">
-          
-
           <Col xl="6">
             <Nav className="nav-footer justify-content-center justify-content-xl-start">
               <NavItem>
-                <NavLink
-                 to="/admin/index" tag={Link}
-                  rel="noopener noreferrer"
-                >
+                <NavLink to="/admin/index" tag={Link} rel="noopener noreferrer">
                   Home
                 </NavLink>
               </NavItem>
 
               <NavItem>
-                <NavLink
-                  to="/admin/sign" tag={Link}
-                  rel="noopener noreferrer"
-                >
+                <NavLink to="/admin/sign" tag={Link} rel="noopener noreferrer">
                   Sign
                 </NavLink>
               </NavItem>
 
               <NavItem>
                 <NavLink
-                  to="/admin/manage" tag={Link}
+                  to="/admin/manage"
+                  tag={Link}
                   rel="noopener noreferrer"
                 >
                   Manage
@@ -43,7 +34,8 @@ class Footer extends React.Component {
 
               <NavItem>
                 <NavLink
-                  to="/admin/user-profile" tag={Link}
+                  to="/admin/user-profile"
+                  tag={Link}
                   rel="noopener noreferrer"
                 >
                   Settings
@@ -54,7 +46,7 @@ class Footer extends React.Component {
 
           <Col xl="6">
             <div className="copyright text-center text-xl-right text-muted">
-              © 2020{" "}
+              © 2020{' '}
               <a
                 className="font-weight-bold ml-1"
                 href="#"
@@ -62,17 +54,17 @@ class Footer extends React.Component {
                 target="_blank"
               >
                 <img
-                      alt="..."
-                      style={{ maxWidth: "80px" }}
-                      src={require("assets/img/brand/pappaya.png")}
-                    />
+                  alt="..."
+                  style={{ maxWidth: '80px' }}
+                  src={require('assets/img/brand/pappaya.png')}
+                />
               </a>
             </div>
           </Col>
         </Row>
       </footer>
-    );
+    )
   }
 }
 
-export default Footer;
+export default Footer

@@ -1,42 +1,48 @@
-
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import { Button, Container, Row, Col } from "reactstrap";
+import { Button, Container, Row, Col } from 'reactstrap'
 
-
-var firebase = require('firebase');
+const axios = require('axios').default
 
 class UserHeader extends React.Component {
-  componentDidMount(){
-    var userid = "";
-    firebase.auth().onAuthStateChanged(function(user) {
-		  if (user) {
-
-        userid = user.uid;
-
-        
-
-        var leadsRef = firebase.database().ref('Users/'+userid)
-		leadsRef.on('value', function(snapshot) {
-			var Child = snapshot.val();
-        var name = Child.UserFirstName;
-        document.getElementById('headername').innerHTML  = 'Hello ' + name + '!';
-
-        
-        
-  });
-  
-  
-
+  componentDidMount() {
+    function getCookie(name) {
+      var nameEQ = name + '='
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
       }
-      else{
-        
-        //window.location.hash = "#/auth/login";
-        
-      }
-    });
-    
+      return null
+    }
+
+    var userid = getCookie('uid')
+
+    if (userid) {
+      //console.log('user logged in');
+      //console.log(userid);
+      var email = getCookie('useremail')
+
+      axios
+        .post('/getuserdata', {
+          UserID: userid,
+        })
+        .then(function (response) {
+          console.log(response)
+          if (response.data.Status === 'user found') {
+            document.getElementById('headername').innerHTML =
+              'Hello ' + response.data.user.UserFirstName + '!'
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    } else {
+      // no user
+      //window.location.hash = "#/auth/login";
+    }
   }
   render() {
     return (
@@ -44,7 +50,7 @@ class UserHeader extends React.Component {
         <div
           className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
           style={{
-            minHeight: "530px"
+            minHeight: '530px',
           }}
         >
           {/* Mask */}
@@ -53,7 +59,9 @@ class UserHeader extends React.Component {
           <Container className="d-flex align-items-center" fluid>
             <Row>
               <Col lg="7" md="10">
-                <h1 className="display-2 text-white" id="headername">Hello!</h1>
+                <h1 className="display-2 text-white" id="headername">
+                  Hello!
+                </h1>
                 <p className="text-white mt-0 mb-4">
                   This is your profile page. You can see the progress you've
                   made with your work and manage your projects or assigned tasks
@@ -63,8 +71,8 @@ class UserHeader extends React.Component {
           </Container>
         </div>
       </>
-    );
+    )
   }
 }
 
-export default UserHeader;
+export default UserHeader

@@ -1,23 +1,7 @@
-
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 // reactstrap components
-import {
-  UncontrolledCollapse,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import { Col, Container, Navbar, Row, UncontrolledCollapse } from 'reactstrap'
 
 class AdminNavbar extends React.Component {
   render() {
@@ -28,17 +12,18 @@ class AdminNavbar extends React.Component {
           expand="md"
         >
           <Container className="px-4" fluid>
-              <img alt="PappayaSign" style={{ maxWidth: "200px" }} src="./pappayasign_white.png" />
-            
+            <img
+              alt="PappayaSign"
+              style={{ maxWidth: '200px' }}
+              src="./pappayasign_white.png"
+            />
+
             <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
               <div className="navbar-collapse-header d-md-none">
                 <Row>
                   <Col className="collapse-brand" xs="6">
                     <Link to="/">
-                      <img
-                        alt="PappayaSign"
-                        src="./argon-react.png"
-                      />
+                      <img alt="PappayaSign" src="./argon-react.png" />
                     </Link>
                   </Col>
                   <Col className="collapse-close" xs="6">
@@ -52,13 +37,12 @@ class AdminNavbar extends React.Component {
                   </Col>
                 </Row>
               </div>
-              
             </UncontrolledCollapse>
           </Container>
         </Navbar>
       </>
-    );
+    )
   }
 }
 
-export default AdminNavbar;
+export default AdminNavbar

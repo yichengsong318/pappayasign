@@ -1,21 +1,19 @@
-
-import React from "react";
-
+import React from 'react'
 // reactstrap components
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
-  FormGroup,
+  CardHeader,
+  Col,
   Form,
+  FormGroup,
   Input,
+  InputGroup,
   InputGroupAddon,
   InputGroupText,
-  InputGroup,
   Row,
-  Col
-} from "reactstrap";
+} from 'reactstrap'
 
 class Login extends React.Component {
   render() {
@@ -32,12 +30,12 @@ class Login extends React.Component {
                   className="btn-neutral btn-icon"
                   color="default"
                   href="#pablo"
-                  onClick={e => e.preventDefault()}
+                  onClick={(e) => e.preventDefault()}
                 >
                   <span className="btn-inner--icon">
                     <img
                       alt="..."
-                      src={require("assets/img/icons/common/github.svg")}
+                      src={require('assets/img/icons/common/github.svg')}
                     />
                   </span>
                   <span className="btn-inner--text">Github</span>
@@ -46,12 +44,12 @@ class Login extends React.Component {
                   className="btn-neutral btn-icon"
                   color="default"
                   href="#pablo"
-                  onClick={e => e.preventDefault()}
+                  onClick={(e) => e.preventDefault()}
                 >
                   <span className="btn-inner--icon">
                     <img
                       alt="..."
-                      src={require("assets/img/icons/common/google.svg")}
+                      src={require('assets/img/icons/common/google.svg')}
                     />
                   </span>
                   <span className="btn-inner--text">Google</span>
@@ -70,7 +68,11 @@ class Login extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input
+                      placeholder="Email"
+                      type="email"
+                      autoComplete="new-email"
+                    />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup className="mb-2">
@@ -80,7 +82,11 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input
+                      placeholder="Password"
+                      type="password"
+                      autoComplete="new-password"
+                    />
                   </InputGroup>
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
@@ -109,7 +115,7 @@ class Login extends React.Component {
               <a
                 className="text-gray"
                 href="#pablo"
-                onClick={e => e.preventDefault()}
+                onClick={(e) => e.preventDefault()}
               >
                 <span>Forgot password?</span>
               </a>
@@ -118,7 +124,7 @@ class Login extends React.Component {
               <a
                 className="text-gray"
                 href="#pablo"
-                onClick={e => e.preventDefault()}
+                onClick={(e) => e.preventDefault()}
               >
                 <span>Create new account</span>
               </a>
@@ -126,8 +132,8 @@ class Login extends React.Component {
           </Row>
         </Col>
       </>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

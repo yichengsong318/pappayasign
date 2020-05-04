@@ -4,25 +4,19 @@ import Lottie from 'react-lottie'
 import animationData from '../Lotties/9663-invite-members.json'
 
 class UncontrolledLottie extends Component {
-
-
-  render(){
-
+  render() {
     const defaultOptions = {
       loop: false,
       autoplay: true,
       animationData: animationData,
       rendererSettings: {
-        preserveAspectRatio: 'xMidYMid slice'
-      }
-    };
+        preserveAspectRatio: 'xMidYMid slice',
+      },
+    }
 
-    return(
+    return (
       <div>
-        <Lottie options={defaultOptions}
-              height={300}
-              width={300}
-        />
+        <Lottie options={defaultOptions} height={300} width={300} />
       </div>
     )
   }

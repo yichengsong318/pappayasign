@@ -1,216 +1,178 @@
-
-import React from "react";
-
+// core components
+import UserHeader from 'components/Headers/UserHeader.js'
+import React from 'react'
 // reactstrap components
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
-  FormGroup,
-  Form,
-  Input,
+  CardHeader,
+  Col,
   Container,
+  Form,
+  FormGroup,
+  Input,
   Row,
-  Col
-} from "reactstrap";
-// core components
-import UserHeader from "components/Headers/UserHeader.js";
+} from 'reactstrap'
 
-var firebase = require('firebase');
-const axios = require('axios').default;
+var request = require('request')
+
+const axios = require('axios').default
 
 class Profile extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
+    var modal = document.querySelectorAll('.modal')
 
-    var modal = document.querySelectorAll(".modal")
-
-    var userid = "";
-    var URI = "";
-    modal[0].style.display = "block";
+    var userid = ''
+    var URI = ''
+    modal[0].style.display = 'block'
 
     function getCookie(name) {
-			var nameEQ = name + "=";
-			var ca = document.cookie.split(';');
-			for (var i = 0; i < ca.length; i++) {
-			  var c = ca[i];
-			  while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-			  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-			}
-			return null;
-			}		
+      var nameEQ = name + '='
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
+      }
+      return null
+    }
 
-		var userid = getCookie('uid');
+    var userid = getCookie('uid')
 
-		if (userid) {
-	
-		console.log('user logged in');
-		console.log(userid);
-    var email = getCookie('useremail');
+    if (userid) {
+      //console.log('user logged in');
+      //console.log(userid);
+      var email = getCookie('useremail')
 
+      try {
+        modal[0].style.display = 'none'
+      } catch (error) {
+        modal[0].style.display = 'none'
+      }
+
+      axios
+        .post('/getuserdata', {
+          UserID: userid,
+        })
+        .then(function (response) {
+          console.log(response)
+          if (response.data.Status === 'user found') {
+            document.getElementById('input-username').value =
+              response.data.user.UserFirstName
+            document.getElementById('input-number').value =
+              response.data.user.UserNumber
+            document.getElementById('input-email').value =
+              response.data.user.UserEmail
+            document.getElementById('defaultname').innerText =
+              response.data.user.UserFirstName
+            document.getElementById('defaultemail').innerHTML =
+              response.data.user.UserEmail
+
+            if (response.data.user.ProfileImage) {
+              var img = document.getElementById('profilepicmodal')
+              img.setAttribute('crossOrigin', 'anonymous')
+              var img2 = document.getElementById('settingsprofilepic')
+              img2.setAttribute('crossOrigin', 'anonymous')
+
+              img.src = response.data.user.ProfileImage
+              img2.src = response.data.user.ProfileImage
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    } else {
+      window.location.hash = '#/auth/login'
+    }
+
+    var profilepicbtn = document.getElementById('profilepicbtn')
+    profilepicbtn.addEventListener('click', function (event) {
+      modal[1].style.display = 'block'
+    })
+
+    var uploadprofilepicbtn = document.getElementById('uploadprofilepicbtn')
+    uploadprofilepicbtn.addEventListener('click', function (event) {
+      //console.log('pressed');
+      document.getElementById('inputprofilepicbtn').click()
+    })
+
+    document
+      .getElementById('inputprofilepicbtn')
+      .addEventListener('input', function (input) {
         try {
-          var storageRef = firebase.storage().ref();
-          storageRef.child(userid + '/ProfilePic/profilepic.png').getDownloadURL().then(function(url){
-          // `url` is the download URL for 'images/stars.jpg'
-        
-          // This can be downloaded directly:
-          var xhr = new XMLHttpRequest();
-          xhr.responseType = 'blob';
-          xhr.onload = function(event) {
-          var blob = xhr.response;
-          };
-          xhr.open('GET', url);
-          xhr.send();
-        
-            // Or inserted into an <img> element:
-            console.log(url)
-            var img = document.getElementById('profilepicmodal');
-            img.setAttribute('crossOrigin', 'anonymous');
-          img.src = url;
+          //console.log(input.target.value);
+          //console.log(input.srcElement.files[0].name);
 
-          var img2 = document.getElementById('settingsprofilepic');
-            img2.setAttribute('crossOrigin', 'anonymous');
-          img2.src = url;
-          modal[0].style.display = "none";
-          
-          
-            }).catch(function(error) {
-              modal[0].style.display = "none";
-            // Handle any errors
-        });
+          var file = input.srcElement.files[0]
+          //console.log(input.srcElement.files[0].name);
+
+          var reader = new FileReader()
+          reader.readAsDataURL(file)
+
+          reader.onload = function () {
+            URI = reader.result
+            document.getElementById('profilepicmodal').src = reader.result
+            document.getElementById('settingsprofilepic').src = reader.result
+            var url = reader.result
+          }
+
+          reader.onerror = function () {
+            //console.log(reader.error);
+            alert('Error Opening File')
+          }
         } catch (error) {
-          modal[0].style.display = "none";
-          
+          console.log(error)
         }
-        
+      })
 
-        axios.post('/getuserdata', {
-          UserID: userid
-         
-           })
-           .then(function (response) {
-           console.log(response);
-           if(response.data.Status === 'user found'){
+    var closeprofilepicbtn = document.getElementById('closeprofilepicbtn')
+    closeprofilepicbtn.addEventListener('click', function (event) {
+      modal[1].style.display = 'none'
+    })
 
-            document.getElementById('input-username').value = response.data.user.UserFirstName;
-            document.getElementById('input-number').value = response.data.user.UserNumber;
-            document.getElementById('input-email').value = response.data.user.UserEmail;
-            document.getElementById('defaultname').innerText  = response.data.user.UserFirstName;
-            document.getElementById('defaultemail').innerHTML  = response.data.user.UserEmail;
-             
-           }
-           })
-           .catch(function (error) {
-           console.log(error);
-           
-           });
-
-      
-  
-  
-
+    var saveprofilepicbtn = document.getElementById('saveprofilepicbtn')
+    saveprofilepicbtn.addEventListener('click', function (event) {
+      modal[0].style.display = 'block'
+      modal[1].style.display = 'none'
+      if (URI == '') {
+        alert('No Image Selected')
+      } else {
+        axios
+          .post('/profilepic', {
+            UserID: userid,
+            ProfileImage: URI,
+          })
+          .then(function (response) {
+            if (response.data === 'updated') {
+              modal[0].style.display = 'none'
+              window.location.reload(false)
+            }
+          })
+          .catch(function (error) {})
       }
-      else{
-        
-        window.location.hash = "#/auth/login";
-        
-      }
- 
-
-    var profilepicbtn = document.getElementById('profilepicbtn');
-    profilepicbtn.addEventListener('click', function(event) {
-		modal[1].style.display = "block";
-    });
-    
-    var uploadprofilepicbtn = document.getElementById('uploadprofilepicbtn');
-    uploadprofilepicbtn.addEventListener('click', function(event) {
-      console.log('pressed');
-        document.getElementById("inputprofilepicbtn").click();
-    });
-
-    
-document.getElementById('inputprofilepicbtn').addEventListener('input', function(input) {
-	try {
-		console.log(input.target.value);
-	console.log(input.srcElement.files[0].name);
-
-    var file = input.srcElement.files[0];
-	console.log(input.srcElement.files[0].name);
-
-  var reader = new FileReader();
-    reader.readAsDataURL(file);
-
-  reader.onload = function() {
-    URI = file;
-    document.getElementById('profilepicmodal').src = reader.result;
-    document.getElementById('settingsprofilepic').src = reader.result;
-     var url = reader.result;
-	
-  };
-
-  reader.onerror = function() {
-    console.log(reader.error);
-    alert('Error Opening File');
-  };
-	} catch (error) {
-		console.log(error);
-	}
-	
-});
-
-var closeprofilepicbtn = document.getElementById('closeprofilepicbtn');
-closeprofilepicbtn.addEventListener('click', function(event) {
-		modal[1].style.display = "none";
-    });
-
-    var saveprofilepicbtn = document.getElementById('saveprofilepicbtn');
-    saveprofilepicbtn.addEventListener('click', function(event) {
-    modal[0].style.display = "block";
-    modal[1].style.display = "none";
-    if(URI == ''){
-      alert('No Image Selected');
-    }
-    else{
-      var filename = 'profilepic';
-          var storageRef = firebase.storage().ref(userid + '/ProfilePic/'+filename+'.png');
-        var task = storageRef.put(URI);
-        task.on('state_changed', function progress(snapshot) {
-          console.log('started')
-        }, function error(err) {
-        
-          console.log(err)
-        },function complete() {
-          console.log('complete')
-          
-          modal[0].style.display = "none";
-          window.location.reload(false);
-          
-          
-        });
-    }
-    
-    });
-
+    })
 
     function convertURIToImageData(URI) {
-      return new Promise(function(resolve, reject) {
-        if (URI == null) return reject();
+      return new Promise(function (resolve, reject) {
+        if (URI == null) return reject()
         var canvas = document.createElement('canvas'),
-            context = canvas.getContext('2d'),
-            image = new Image();
-        image.addEventListener('load', function() {
-          canvas.width = image.width;
-          canvas.height = image.height;
-          context.drawImage(image, 0, 0, canvas.width, canvas.height);
-          resolve(context.getImageData(0, 0, canvas.width, canvas.height));
-        }, false);
-        image.src = URI;
-      });
+          context = canvas.getContext('2d'),
+          image = new Image()
+        image.addEventListener(
+          'load',
+          function () {
+            canvas.width = image.width
+            canvas.height = image.height
+            context.drawImage(image, 0, 0, canvas.width, canvas.height)
+            resolve(context.getImageData(0, 0, canvas.width, canvas.height))
+          },
+          false
+        )
+        image.src = URI
+      })
     }
-    
-
-
-    
   }
   render() {
     return (
@@ -218,37 +180,71 @@ closeprofilepicbtn.addEventListener('click', function(event) {
         <UserHeader />
         {/* Page content */}
         <Container className="mt--7" fluid>
-        <div className="modal">
-        <div className="modal-content">
-          <div><p>Please wait while we fetch your details.</p><div className="lds-dual-ring"></div></div>
-        
-        </div>
-      </div>
-      <div className="modal">
-        <div className="modal-content">
-        <img crossOrigin="anonymous"  id="profilepicmodal" className="profilepicmodal" ></img>
-        <Row id="profilepicupdatediv">
-        <Col lg="3">
-        <Button id="uploadprofilepicbtn" className=" px-3" color="success" type="button">Upload</Button>
-        <input id="inputprofilepicbtn" type="file" accept="image/*"></input>
-        </Col>
-        <Col lg="3">
-        <Button id="saveprofilepicbtn" className=" px-3" color="primary" type="button">Save</Button>
-        </Col>
-        <Col lg="3">
-        <Button id="closeprofilepicbtn" className=" px-4" color="neutral" type="button">Close</Button>
-        </Col>
-        </Row>
-        
-        </div>
-      </div>
+          <div className="modal">
+            <div className="modal-content">
+              <div>
+                <p>Please wait while we fetch your details.</p>
+                <div className="lds-dual-ring"></div>
+              </div>
+            </div>
+          </div>
+          <div className="modal">
+            <div className="modal-content">
+              <img
+                crossOrigin="anonymous"
+                id="profilepicmodal"
+                className="profilepicmodal"
+              ></img>
+              <Row id="profilepicupdatediv">
+                <Col lg="3">
+                  <Button
+                    id="uploadprofilepicbtn"
+                    className=" px-3"
+                    color="success"
+                    type="button"
+                  >
+                    Upload
+                  </Button>
+                  <input
+                    id="inputprofilepicbtn"
+                    type="file"
+                    accept="image/*"
+                  ></input>
+                </Col>
+                <Col lg="3">
+                  <Button
+                    id="saveprofilepicbtn"
+                    className=" px-3"
+                    color="primary"
+                    type="button"
+                  >
+                    Save
+                  </Button>
+                </Col>
+                <Col lg="3">
+                  <Button
+                    id="closeprofilepicbtn"
+                    className=" px-4"
+                    color="neutral"
+                    type="button"
+                  >
+                    Close
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          </div>
           <Row>
             <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
               <Card className="card-profile shadow">
                 <Row className="justify-content-center">
                   <Col className="order-lg-2" lg="3">
                     <div className="card-profile-image" id="card-profile-image">
-                      <a href="#pablo" id="profilepicbtn" onClick={e => e.preventDefault()}>
+                      <a
+                        href="#pablo"
+                        id="profilepicbtn"
+                        onClick={(e) => e.preventDefault()}
+                      >
                         <img
                           alt="..."
                           className="rounded-circle"
@@ -265,7 +261,7 @@ closeprofilepicbtn.addEventListener('click', function(event) {
                       className="mr-4"
                       color="info"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
                       Upgrade
@@ -275,22 +271,14 @@ closeprofilepicbtn.addEventListener('click', function(event) {
                 <CardBody className="pt-0 pt-md-4">
                   <Row>
                     <div className="col">
-                      <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                        
-                      </div>
+                      <div className="card-profile-stats d-flex justify-content-center mt-md-5"></div>
                     </div>
                   </Row>
                   <div className="text-center">
-                    <h3 id="defaultname">
-                      Name
-                    </h3>
+                    <h3 id="defaultname">Name</h3>
                     <div className="h5 font-weight-300">
-                        <p id="defaultemail">
-                          Email
-                        </p>
+                      <p id="defaultemail">Email</p>
                     </div>
-                    
-                    
                   </div>
                 </CardBody>
               </Card>
@@ -302,9 +290,7 @@ closeprofilepicbtn.addEventListener('click', function(event) {
                     <Col xs="8">
                       <h3 className="mb-0">My account</h3>
                     </Col>
-                    <Col className="text-right" xs="4">
-                      
-                    </Col>
+                    <Col className="text-right" xs="4"></Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
@@ -372,9 +358,7 @@ closeprofilepicbtn.addEventListener('click', function(event) {
                           </FormGroup>
                         </Col>
                       </Row>
-                      
                     </div>
-                    
                   </Form>
                 </CardBody>
               </Card>
@@ -382,8 +366,8 @@ closeprofilepicbtn.addEventListener('click', function(event) {
           </Row>
         </Container>
       </>
-    );
+    )
   }
 }
 
-export default Profile;
+export default Profile

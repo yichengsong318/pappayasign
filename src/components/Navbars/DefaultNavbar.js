@@ -1,23 +1,21 @@
-
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 // reactstrap components
 import {
-  UncontrolledCollapse,
-  DropdownMenu,
+  Col,
+  Container,
   DropdownItem,
-  UncontrolledDropdown,
+  DropdownMenu,
   DropdownToggle,
   Media,
-  NavbarBrand,
+  Nav,
   Navbar,
   NavItem,
   NavLink,
-  Nav,
-  Container,
   Row,
-  Col
-} from "reactstrap";
+  UncontrolledCollapse,
+  UncontrolledDropdown,
+} from 'reactstrap'
 
 class DefaultNavbar extends React.Component {
   render() {
@@ -28,7 +26,11 @@ class DefaultNavbar extends React.Component {
           expand="md"
         >
           <Container className="px-4" fluid>
-              <img alt="..." style={{ maxWidth: "160px" }} src={require("assets/img/brand/pappayasign_white.png")} />
+            <img
+              alt="..."
+              style={{ maxWidth: '160px' }}
+              src={require('assets/img/brand/pappayasign_white.png')}
+            />
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
             </button>
@@ -39,7 +41,7 @@ class DefaultNavbar extends React.Component {
                     <Link to="/">
                       <img
                         alt="..."
-                        src={require("assets/img/brand/argon-react.png")}
+                        src={require('assets/img/brand/argon-react.png')}
                       />
                     </Link>
                   </Col>
@@ -93,53 +95,56 @@ class DefaultNavbar extends React.Component {
                 </NavItem>
               </Nav>
               <Nav className="align-items-center d-none d-md-flex" navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle className="pr-0" nav>
-                  <Media className="align-items-center">
-                    <span className="avatar avatar-sm rounded-circle">
-                      <img
-                        alt="..."
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
-                      />
-                    </span>
-                    <Media className="ml-2 d-none d-lg-block">
-                      <span className="mb-0 text-sm font-weight-bold">
-                        Jessica Jones
+                <UncontrolledDropdown nav>
+                  <DropdownToggle className="pr-0" nav>
+                    <Media className="align-items-center">
+                      <span className="avatar avatar-sm rounded-circle">
+                        <img
+                          alt="..."
+                          src={require('assets/img/theme/team-4-800x800.jpg')}
+                        />
                       </span>
+                      <Media className="ml-2 d-none d-lg-block">
+                        <span className="mb-0 text-sm font-weight-bold">
+                          Jessica Jones
+                        </span>
+                      </Media>
                     </Media>
-                  </Media>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-single-02" />
-                    <span>My profile</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-settings-gear-65" />
-                    <span>Settings</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-calendar-grid-58" />
-                    <span>Activity</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-support-16" />
-                    <span>Support</span>
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                    <i className="ni ni-user-run" />
-                    <span>Logout</span>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu-arrow" right>
+                    <DropdownItem to="/admin/user-profile" tag={Link}>
+                      <i className="ni ni-single-02" />
+                      <span>My profile</span>
+                    </DropdownItem>
+                    <DropdownItem to="/admin/user-profile" tag={Link}>
+                      <i className="ni ni-settings-gear-65" />
+                      <span>Settings</span>
+                    </DropdownItem>
+                    <DropdownItem to="/admin/user-profile" tag={Link}>
+                      <i className="ni ni-calendar-grid-58" />
+                      <span>Activity</span>
+                    </DropdownItem>
+                    <DropdownItem to="/admin/user-profile" tag={Link}>
+                      <i className="ni ni-support-16" />
+                      <span>Support</span>
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="ni ni-user-run" />
+                      <span>Logout</span>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </Nav>
             </UncontrolledCollapse>
           </Container>
         </Navbar>
       </>
-    );
+    )
   }
 }
 
-export default DefaultNavbar;
+export default DefaultNavbar

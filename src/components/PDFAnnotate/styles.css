@@ -262,6 +262,7 @@ button:focus {
 }
 
 #openfilebtn{
+	display:none;
 }
 
 #circlebtn{

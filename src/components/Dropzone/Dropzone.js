@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
+import SimpleCrypto from 'simple-crypto-js'
+import DataVar from 'variables/data'
 import './Dropzone.css'
-import SimpleCrypto from "simple-crypto-js";
-import $ from 'jquery';
-import DataVar from 'variables/data';
-var firebase = require('firebase');
 
 class Dropzone extends Component {
-  
   constructor(props) {
     super(props)
     this.state = { hightlight: false }
@@ -19,7 +16,6 @@ class Dropzone extends Component {
     this.onDrop = this.onDrop.bind(this)
   }
 
-
   openFileDialog() {
     if (this.props.disabled) return
     this.fileInputRef.current.click()
@@ -28,67 +24,36 @@ class Dropzone extends Component {
   onFilesAdded(evt) {
     if (this.props.disabled) return
     const files = evt.target.files
-    var _secretKey = "some-unique-key";
-    var userid = '';
-    var email = '';
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          // user exists, do stuff
-          userid = user.uid;
-        console.log('user logged in');
-        console.log(userid);
+    var _secretKey = 'some-unique-key'
 
-        var leadsRef = firebase.database().ref('Users/'+userid)
-        console.log('found ref');
-          leadsRef.on('value', function(snapshot) {
-            var Child = snapshot.val();
-              email = Child.UserEmail;
-              console.log('Emailset');
-              
-        });
-        
-        } else {
-          // no user
-          //window.location.hash = "#/auth/login";
-        
-        }
-        });
- 
-    var modal = document.querySelectorAll(".modal")
-var closeBtn = document.getElementById("close-btn")
+    var modal = document.querySelectorAll('.modal')
+    var closeBtn = document.getElementById('close-btn')
 
-var simpleCrypto = new SimpleCrypto(_secretKey);
+    var simpleCrypto = new SimpleCrypto(_secretKey)
 
+    //console.log(files[0]);
 
+    var reader = new FileReader()
+    reader.readAsDataURL(files[0])
 
-    console.log(files[0]);
-    
-    
+    reader.onload = function () {
+      DataVar.DataURI = files[0]
+      DataVar.DataPath = reader.result
+      DataVar.DocName = files[0].name
+      //console.log(DataVar);
 
-var reader = new FileReader();
-    reader.readAsDataURL(files[0]);
+      var url = '#/admin/uploadsuccess'
+      window.location.hash = url
+      //$('<a href="'+url+'" target="blank"></a>')[0].click();
+    }
 
-  reader.onload = function() {
-    DataVar.DataURI = files[0];
-    DataVar.DataPath = reader.result;
-    DataVar.DocName = files[0].name;
-     console.log(DataVar);
-
-
-    var url = "#/admin/uploadsuccess";
-    window.location.hash = url;
-    //$('<a href="'+url+'" target="blank"></a>')[0].click();
-	
-  };
-
-  reader.onerror = function() {
-    console.log(reader.error);
-    alert('Error Opening File');
-  };
+    reader.onerror = function () {
+      //console.log(reader.error);
+      alert('Error Opening File')
+    }
     if (this.props.onFilesAdded) {
       const array = this.fileListToArray(files)
       this.props.onFilesAdded(array)
-      
     }
   }
 
@@ -108,62 +73,34 @@ var reader = new FileReader();
     event.preventDefault()
 
     if (this.props.disabled) return
-    var userid = '';
-    var email = '';
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          // user exists, do stuff
-          userid = user.uid;
-        console.log('user logged in');
-        console.log(userid);
 
-        var leadsRef = firebase.database().ref('Users/'+userid)
-        console.log('found ref');
-          leadsRef.on('value', function(snapshot) {
-            var Child = snapshot.val();
-              email = Child.UserEmail;
-              console.log('Emailset');
-              
-        });
-        
-        } else {
-          // no user
-          //window.location.hash = "#/auth/login";
-        
-        }
-        });
     const files = event.dataTransfer.files
-    console.log(files[0]);
-    var modal = document.querySelectorAll(".modal")
-var closeBtn = document.getElementById("close-btn")
+    //console.log(files[0]);
+    var modal = document.querySelectorAll('.modal')
+    var closeBtn = document.getElementById('close-btn')
 
-    
+    var reader = new FileReader()
+    reader.readAsDataURL(files[0])
 
-var reader = new FileReader();
-    reader.readAsDataURL(files[0]);
+    reader.onload = function () {
+      DataVar.DataURI = files[0]
+      DataVar.DataPath = reader.result
+      DataVar.DocName = files[0].name
+      //console.log(DataVar);
+      modal[0].style.display = 'block'
 
-  reader.onload = function() {
-    DataVar.DataURI = files[0];
-     DataVar.DataPath = reader.result;
-     DataVar.DocName = files[0].name;
-     console.log(DataVar);
-     modal[0].style.display = "block";
+      var url = '#/admin/uploadsuccess'
+      window.location.hash = url
+      //$('<a href="'+url+'" target="blank"></a>')[0].click();
+    }
 
-
-    var url = "#/admin/uploadsuccess";
-    window.location.hash = url;
-    //$('<a href="'+url+'" target="blank"></a>')[0].click();
-	
-  };
-
-  reader.onerror = function() {
-    console.log(reader.error);
-    alert('Error Opening File');
-  };
+    reader.onerror = function () {
+      //console.log(reader.error);
+      alert('Error Opening File')
+    }
     if (this.props.onFilesAdded) {
       const array = this.fileListToArray(files)
       this.props.onFilesAdded(array)
-      
     }
     if (this.props.onFilesAdded) {
       const array = this.fileListToArray(files)
@@ -191,12 +128,18 @@ var reader = new FileReader();
         style={{ cursor: this.props.disabled ? 'default' : 'pointer' }}
       >
         <div className="modal">
-  <div className="modal-content">
-    <div><p>please wait while we fetch the document for you.</p><div className="lds-dual-ring"></div></div>
-	
-	<button id="close-btn" className="close-btn" > OK</button>
-  </div>
-</div>
+          <div className="modal-content">
+            <div>
+              <p>please wait while we fetch the document for you.</p>
+              <div className="lds-dual-ring"></div>
+            </div>
+
+            <button id="close-btn" className="close-btn">
+              {' '}
+              OK
+            </button>
+          </div>
+        </div>
         <input
           ref={this.fileInputRef}
           className="FileInput"
@@ -204,12 +147,11 @@ var reader = new FileReader();
           accept="application/pdf"
           onChange={this.onFilesAdded}
         />
-        <img
-	alt="upload"
-	className="Icon"
-	src={require("./note_add.png")}
-	/>
-        <span id="mainspan" className="txt">Drop documents here to get started.</span>
+        <img alt="upload" className="Icon" src={require('./note_add.png')} />
+        <span id="mainspan" className="txt">
+          Drop documents here to get started.
+        </span>
+        <button className="btn my-3 px-4 btn-dark">Start Now</button>
       </div>
     )
   }

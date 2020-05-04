@@ -1,37 +1,33 @@
-
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-// reactstrap components
-import { Container, Row, Col } from "reactstrap";
-
 // core components
-import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import AuthFooter from "components/Footers/AuthFooter.js";
-
-import routes from "routes.js";
+import AuthNavbar from 'components/Navbars/AuthNavbar.js'
+import React from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+// reactstrap components
+import { Col, Container, Row } from 'reactstrap'
+import routes from 'routes.js'
 
 class Auth extends React.Component {
   componentDidMount() {
-    document.body.classList.add("bg-default");
+    document.body.classList.add('bg-default')
   }
   componentWillUnmount() {
-    document.body.classList.remove("bg-default");
+    document.body.classList.remove('bg-default')
   }
-  getRoutes = routes => {
+  getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
+      if (prop.layout === '/auth') {
         return (
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
-        );
+        )
       } else {
-        return null;
+        return null
       }
-    });
-  };
+    })
+  }
   render() {
     return (
       <>
@@ -60,13 +56,11 @@ class Auth extends React.Component {
               </Switch>
             </Row>
           </Container>
-          <Container fluid>
-          </Container>
+          <Container fluid></Container>
         </div>
-        
       </>
-    );
+    )
   }
 }
 
-export default Auth;
+export default Auth
