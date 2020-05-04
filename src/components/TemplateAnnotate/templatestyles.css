@@ -54,6 +54,7 @@ canvas, .canvas-container {
 	justify-content: center;
 	margin: 0px auto;
 	position: relative;
+	z-index: 0 !important;
 	
 	
 	
@@ -174,7 +175,7 @@ canvas, .canvas-container {
 	transform: scale(0.9);
      transform-origin: 0% 0% 0px;
 	 transform-origin: 0% 0% 0px;
-	 z-index: 0;
+	 z-index: 0 !important;
 }
 
 #tcontainer {
@@ -189,7 +190,7 @@ canvas, .canvas-container {
 	padding-right:10px;
 	overflow: auto;
 	position: relative;
-	z-index: 0;
+	z-index: 0 !important;
 }
 
 
