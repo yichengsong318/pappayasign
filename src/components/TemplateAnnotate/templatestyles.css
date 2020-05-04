@@ -190,21 +190,7 @@ canvas, .canvas-container {
 	position: relative;
 }
 
-.templatepdfAnNotateContainer #templatedragabbleImageText  {
-	position:absolute;
-	position:fixed;
-	width:100px;
-	height:auto;
-	z-index: 9999999999999999999999999999999;
-}
 
-.templatepdfAnNotateContainer #templatedragabbleImageSign  {
-	position:absolute;
-	position:fixed;
-	width:200px;
-	height:auto;
-	z-index: 9999999999999999999999999999999;
-}
 
 button:focus {
     outline: 0;

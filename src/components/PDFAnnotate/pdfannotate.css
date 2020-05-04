@@ -1,3 +1,20 @@
+.pdfAnNotateContainer #dragabbleImageText  {
+	
+	position:fixed;
+	width:100px;
+	height:auto;
+	z-index: 999999999999999999999999999999999;
+}
+
+.pdfAnNotateContainer #dragabbleImageSign  {
+	
+	position:fixed;
+	width:200px;
+	height:auto;
+	z-index: 999999999999999999999999999999999;
+}
+
+
 canvas, .canvas-container {
     margin-bottom: 25px;
 }
