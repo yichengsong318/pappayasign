@@ -2,16 +2,20 @@
 	
 	position: fixed;
 	width:100px;
-	height:auto;
-	z-index: 99999999999999999999999999999999999999999999999999999999999999999999999999999 !important;
+    height:auto;
+    z-index: 999999999999999999999999999999999999999;
 }
 
 .pdfAnNotateContainer #dragabbleImageSign  {
 	
 	position: fixed;
 	width:200px;
-	height:auto;
-	z-index: 99999999999999999999999999999999999999999999999999999999999999999999999999999 !important;
+    height:auto;
+    z-index: 999999999999999999999999999999999999999;
+}
+
+.pdfAnNotateContainer{
+    z-index: -1;
 }
 
 
