@@ -54,7 +54,10 @@ class Review extends React.Component {
     })
     .then(function (response) {
       console.log(response)
-      ip = response.data
+      var remoteAddress = response.data;
+      const array = remoteAddress.split(':')
+      const ip = array[array.length - 1]
+      //console.log(ip);
     })
     .catch(function (error) {
       console.log(error)
