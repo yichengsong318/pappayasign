@@ -39,6 +39,20 @@ class PDFAnnotate extends React.Component {
   }
 
   componentDidMount() {
+
+    var ip ='';
+    axios
+    .post('/getip', {
+    })
+    .then(function (response) {
+      console.log(response)
+      ip = response.data;
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+
+
     var modal = document.querySelectorAll('.modal')
     var copybtn = document.getElementById('copy-clipboard-btn')
     var mainurl = document.location.hash
@@ -816,6 +830,23 @@ class PDFAnnotate extends React.Component {
                       response.data === 'insert done' ||
                       response.data === 'update done'
                     ) {
+                      axios
+                      .post('/posthistory', {
+                        DocumentID: filename,
+                        HistoryTime: today,
+                        HistoryUser: email + '\n['+ip+']',
+                        HistoryAction: 'Registered',
+                        HistoryActivity: 'The envelope was created by '+email+'',
+                        HistoryStatus: 'Created'
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                      })
+
                       document.getElementById(
                         'emailbtncontainer'
                       ).style.display = 'block'
@@ -832,6 +863,8 @@ class PDFAnnotate extends React.Component {
                     console.log(error)
                     modal[1].style.display = 'none'
                   })
+
+                  
               }
             })
             .catch(function (error) {
@@ -902,6 +935,8 @@ class PDFAnnotate extends React.Component {
             dataarray.push(JSON.stringify(jsonData[index]))
           })
 
+          
+
           axios
             .post('/updatedocumentdata', {
               DocumentID: filename,
@@ -914,6 +949,24 @@ class PDFAnnotate extends React.Component {
                 response.data === 'insert done' ||
                 response.data === 'update done'
               ) {
+
+                axios
+                  .post('/posthistory', {
+                    DocumentID: filename,
+                    HistoryTime: today,
+                    HistoryUser: email + '\n['+ip+']',
+                    HistoryAction: 'Signed',
+                    HistoryActivity: ''+email+' signed the envelope',
+                    HistoryStatus: 'Completed'
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                    
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                  })
+                  
                 var recepientkey = ''
                 completedcount = 0
                 recievercount = 0
@@ -1023,6 +1076,23 @@ class PDFAnnotate extends React.Component {
                               doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
                             })
                             var dataURI = doc.output('datauristring')
+
+                            axios
+                              .post('/posthistory', {
+                                DocumentID: filename,
+                                HistoryTime: today,
+                                HistoryUser: email + '\n['+ip+']',
+                                HistoryAction: 'Printable Copy Delivered',
+                                HistoryActivity: ''+email+' received a printable copy of the envelope',
+                                HistoryStatus: 'Completed'
+                              })
+                              .then(function (response) {
+                                console.log(response)
+                                
+                              })
+                              .catch(function (error) {
+                                console.log(error)
+                              })
 
                             axios
                               .post('/sendmailattachments', {
@@ -2015,6 +2085,8 @@ class PDFAnnotate extends React.Component {
             } catch (error) {}
 
             var remail = ''
+            var today = new Date().toLocaleString().replace(',', '')
+           
 
             axios
               .post('/getReciever', {
@@ -2026,6 +2098,8 @@ class PDFAnnotate extends React.Component {
                 if (response.data.Status === 'got recievers') {
                   var recievers = response.data.Reciever
                   var status = response.data.DocStatus
+                  var OwnerEmail = response.data.OwnerEmail
+                  var DocumentName = response.data.DocumentName
                   if (
                     status === 'Void' ||
                     status === 'Deleted' ||
@@ -2065,6 +2139,23 @@ class PDFAnnotate extends React.Component {
                         ', ' +
                         hexToRgb(grabbedcolor).b
                       recepientrgbval = 'rgb(' + rgbval + ')'
+
+                      axios
+                      .post('/posthistory', {
+                        DocumentID: filename,
+                        HistoryTime: today,
+                        HistoryUser: email + '\n['+ip+']',
+                        HistoryAction: 'Viewed In-Session',
+                        HistoryActivity: ''+email+' viewed the envelope in a session hosted by '+OwnerEmail+' [documents:('+DocumentName+')]',
+                        HistoryStatus: 'Completed'
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                      })
                     }
                   })
                 }
@@ -2329,6 +2420,9 @@ class PDFAnnotate extends React.Component {
               document.getElementById('recepientscolumn').style.display = 'none'
 
               if (key != '') {
+                var today = new Date().toLocaleString().replace(',', '')
+              
+
                 axios
                   .post('/getReciever', {
                     DocumentID: fileid,
@@ -2338,6 +2432,8 @@ class PDFAnnotate extends React.Component {
                     if (response.data.Status === 'got recievers') {
                       var recievers = response.data.Reciever
                       var status = response.data.DocStatus
+                      var OwnerEmail = response.data.OwnerEmail
+                      var DocumentName = response.data.DocumentName
                       if (
                         status === 'Void' ||
                         status === 'Deleted' ||
@@ -2356,6 +2452,23 @@ class PDFAnnotate extends React.Component {
                       grabbedcolor = recievers[key].RecepientColor
                       remail = recievers[key].RecepientEmail
                       email = recievers[key].RecepientEmail
+
+                      axios
+                      .post('/posthistory', {
+                        DocumentID: filename,
+                        HistoryTime: today,
+                        HistoryUser: email + '\n['+ip+']',
+                        HistoryAction: 'Viewed In-Session',
+                        HistoryActivity: ''+email+' viewed the envelope in a session hosted by '+OwnerEmail+' [documents:('+DocumentName+')]',
+                        HistoryStatus: 'Completed'
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                      })
                       ////console.log(grabbedcolor);
                       ////console.log(remail);
                       function hexToRgb(hex) {
@@ -2481,6 +2594,7 @@ class PDFAnnotate extends React.Component {
 
     var recieverdeclinebtn = document.getElementById('recieverdeclinebtn')
     recieverdeclinebtn.addEventListener('click', function (event) {
+      var today = new Date().toLocaleString().replace(',', '')
       axios
         .post('/updatedocumentstatus', {
           DocumentID: filename,
@@ -2492,6 +2606,23 @@ class PDFAnnotate extends React.Component {
             response.data === 'insert done' ||
             response.data === 'update done'
           ) {
+            axios
+          .post('/posthistory', {
+            DocumentID: filename,
+            HistoryTime: today,
+            HistoryUser: email + '\n['+ip+']',
+            HistoryAction: 'Declined',
+            HistoryActivity: ''+email+' declined signing the envelope',
+            HistoryStatus: 'Declined'
+          })
+          .then(function (response) {
+            console.log(response)
+            
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+
             alert('Document Declined')
             window.location.hash = '#/admin/index'
           }
@@ -2500,6 +2631,9 @@ class PDFAnnotate extends React.Component {
           console.log(error)
           //modal[2].style.display = "none"
         })
+
+
+        
     })
 
     var sendemail = document.getElementById('sendemailbtn')

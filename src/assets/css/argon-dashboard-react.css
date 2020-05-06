@@ -379,6 +379,27 @@ border-radius: 20px !important;
     display: none;
   }
 
+  .modal-content-history {
+    position: relative; 
+    background-color: white;
+    border-radius: 3px;
+    padding: 20px; 
+    margin: auto; 
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    width: 70%; 
+    height: 400px;
+    overflow-y: auto; 
+    -webkit-animation: fadeinout 0.25s linear forwards;
+      animation: fadeinout 0.25s linear forwards;
+    }
+
+    #historytable tbody{
+      height: 200px !important;
+      overflow-y: auto; 
+    }
+
   
   @media (min-width: 300px) {
     #header-welcome-sign-container{

@@ -20,9 +20,16 @@ const axios = require('axios').default
 
 class Index extends React.Component {
   componentDidMount() {
-    console.log(process.env.REACT_APP_BASE_URL);
-    $.get('https://www.cloudflare.com/cdn-cgi/trace', function (data) {
-      //console.log(data)
+    var ip ='';
+    axios
+    .post('/getip', {
+    })
+    .then(function (response) {
+      console.log(response)
+      ip = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
     })
 
     var modal = document.querySelectorAll('.modal')

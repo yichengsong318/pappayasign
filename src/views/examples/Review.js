@@ -47,6 +47,20 @@ class Review extends React.Component {
   }
 
   componentDidMount() {
+
+    var ip ='';
+    axios
+    .post('/getip', {
+    })
+    .then(function (response) {
+      console.log(response)
+      ip = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+
+
     var colorArray = [
       '#E6EE9C',
       '#B6EDD8',
@@ -170,6 +184,24 @@ class Review extends React.Component {
         if (action === 'correct') {
           //console.log('correct');
         } else {
+
+          axios
+            .post('/posthistory', {
+              DocumentID: filename,
+              HistoryTime: today,
+              HistoryUser: people[0].email + '\n['+ip+']',
+              HistoryAction: 'Sent Invitations',
+              HistoryActivity: 'Envelope host sent an invitation to '+people[0].name+' ['+people[0].email+']',
+              HistoryStatus: 'Sent'
+            })
+            .then(function (response) {
+              console.log(response)
+              
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+
           axios
             .post('/getrequestuser', {
               UserEmail: people[0].email,
@@ -245,6 +277,23 @@ class Review extends React.Component {
               RecepientDateStatus: today,
             }
             Reciever.push(user)
+
+            axios
+            .post('/posthistory', {
+              DocumentID: filename,
+              HistoryTime: today,
+              HistoryUser: email + '\n['+ip+']',
+              HistoryAction: 'Sent Invitations',
+              HistoryActivity: 'Envelope host sent an invitation to '+recepientName+' ['+recepientEmail+']',
+              HistoryStatus: 'Sent'
+            })
+            .then(function (response) {
+              console.log(response)
+              
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
             //console.log(Reciever);
           }
         })
@@ -358,6 +407,23 @@ class Review extends React.Component {
               RecepientDateStatus: today,
             }
             Reciever.push(user)
+
+            axios
+            .post('/posthistory', {
+              DocumentID: filename,
+              HistoryTime: today,
+              HistoryUser: email + '\n['+ip+']',
+              HistoryAction: 'Sent Invitations',
+              HistoryActivity: 'Envelope host sent an invitation to '+recepientName+' ['+recepientEmail+']',
+              HistoryStatus: 'Sent'
+            })
+            .then(function (response) {
+              console.log(response)
+              
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
             //console.log(Reciever);
           }
         })

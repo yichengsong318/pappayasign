@@ -25,6 +25,18 @@ const axios = require('axios').default
 
 class SelectTemplateRecepients extends React.Component {
   componentDidMount() {
+    var ip ='';
+    axios
+    .post('/getip', {
+    })
+    .then(function (response) {
+      console.log(response)
+      ip = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+
     var modal = document.querySelectorAll('.modal')
 
     function getCookie(name) {
@@ -196,6 +208,8 @@ class SelectTemplateRecepients extends React.Component {
 
               //console.log(doc);
 
+              
+
               axios
                 .post('/docupload', {
                   UserID: userid,
@@ -236,6 +250,24 @@ class SelectTemplateRecepients extends React.Component {
                                 response.data === 'insert done' ||
                                 response.data === 'update done'
                               ) {
+
+                                axios
+                                .post('/posthistory', {
+                                  DocumentID: newdocid,
+                                  HistoryTime: today,
+                                  HistoryUser: email + '\n['+ip+']',
+                                  HistoryAction: 'Registered',
+                                  HistoryActivity: 'The envelope was created by '+email+'',
+                                  HistoryStatus: 'Created'
+                                })
+                                .then(function (response) {
+                                  console.log(response)
+                                  
+                                })
+                                .catch(function (error) {
+                                  console.log(error)
+                                })
+
                                 var Reciever = []
 
                                 people.forEach(function (item, index) {
@@ -267,6 +299,23 @@ class SelectTemplateRecepients extends React.Component {
                                       RecepientDateStatus: today,
                                     }
                                     Reciever.push(user)
+
+                                    axios
+                                    .post('/posthistory', {
+                                      DocumentID: newdocid,
+                                      HistoryTime: today,
+                                      HistoryUser: recepientEmail + '\n['+ip+']',
+                                      HistoryAction: 'Sent Invitations',
+                                      HistoryActivity: 'Envelope host sent an invitation to '+recepientName+' ['+recepientEmail+']',
+                                      HistoryStatus: 'Sent'
+                                    })
+                                    .then(function (response) {
+                                      console.log(response)
+                                      
+                                    })
+                                    .catch(function (error) {
+                                      console.log(error)
+                                    })
                                     //console.log(Reciever);
 
                                     axios
@@ -282,7 +331,7 @@ class SelectTemplateRecepients extends React.Component {
                                             .post('/postrequest', {
                                               UserID: response.data.UserID,
                                               DocumentName:
-                                                Template.TemplateName,
+                                              Template.TemplateName,
                                               DocumentID: newdocid,
                                               From: userid,
                                               FromEmail: Template.OwnerEmail,

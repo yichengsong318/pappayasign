@@ -94,6 +94,7 @@ class Tables extends React.Component {
 
       inboxfunc()
       datafunc()
+      //modal[5].style.display = 'block'
     } else {
       window.location.hash = '#/auth/login'
     }
@@ -1262,6 +1263,75 @@ class Tables extends React.Component {
         })
     })
 
+
+    $(document).on('click', '.history', function () {
+      $('.dropdown-menu2').css({ display: 'none' })
+      modal[2].style.display = 'block'
+      //console.log($(this).parent().parent().parent().parent().children('#datakey')[0].innerHTML);
+      //console.log($(this).parent().parent().parent().parent().children('#datauid')[0].innerHTML);
+      //console.log($(this).parent().parent().parent().parent().children('#datastatus')[0].innerHTML);
+      var exportuserid = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children('#datauid')[0].innerHTML
+      var fileid = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children('#datakey')[0].innerHTML
+      var status = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children('#datastatus')[0].innerHTML
+      var recepients = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children('#datarecep')[0].innerHTML
+
+      axios
+        .post('/gethistory', {
+          DocumentID: fileid,
+        })
+        .then(function (response) {
+          var historycontent = '';
+          $('#historytable tbody tr').remove()
+          modal[2].style.display = 'none'
+          modal[5].style.display = 'block'
+
+          console.log(response)
+          if (response.data.Status === 'history found') {
+            var History = response.data.history
+
+            History.forEach(function (item, index) {
+              historycontent += '<tr >'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryTime+'</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryUser+'</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryAction+'</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryActivity+'</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryStatus+'</th>'
+            historycontent += '</tr>'
+            });
+            $('#historytable').append(historycontent);
+
+            
+            //console.log(datarray);
+
+            //console.log(CSV(datarray, fileid));
+            
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    })
+
     function CSV(array, csvfileid) {
       // Use first element to choose the keys and the order
       var keys = Object.keys(array[0])
@@ -1750,6 +1820,14 @@ class Tables extends React.Component {
       }
       return outStr.toUpperCase()
     }
+
+
+    window.onclick = function (e) {
+      if (e.target == modal[5]) {
+        modal[5].style.display = 'none'
+      }
+    }
+
   }
   render() {
     return (
@@ -1869,6 +1947,42 @@ class Tables extends React.Component {
               </div>
             </div>
           </div>
+
+          <div className="modal">
+            <div className="modal-content-history">
+              <div>
+                <div className="mb-4 mb-xl-0">
+                  <h5>
+                    History
+                  </h5>
+                </div>
+                <Row>
+                  <Col lg="12">
+                  <Table
+                    className="align-items-center table-flush"
+                    id="historytable"
+                  >
+                    <thead className="thead-primary">
+                      <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Activity</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </Table>
+                  </Col>
+                  
+                </Row>
+              </div>
+            </div>
+          </div>
+
+
+          
+
           {/* Table */}
           <Row>
             <div className="col">
