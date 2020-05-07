@@ -3410,6 +3410,25 @@ class PDFAnnotate extends React.Component {
 
 
       SignaturePadSign();
+
+
+
+
+var droptogglesign = 0;
+
+$(document).on('click','.actionsign', function() {  
+    $('.dropdown-menu2').css({"display": "none"});
+    if(droptogglesign === 0){
+    $(this).parent().children('#dropdown')[0].style.display = 'block';
+    droptogglesign = 1;
+    }
+    else if(droptogglesign === 1){
+		droptogglesign = 0;
+      $(this).parent().children('#dropdown')[0].style.display = 'none';
+    }
+  });
+
+
   }
 
   render() {
