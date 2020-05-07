@@ -1255,6 +1255,7 @@ class Tables extends React.Component {
             //console.log(datarray);
 
             //console.log(CSV(datarray, fileid));
+            CSV(datarray, fileid);
             modal[2].style.display = 'none'
           }
         })

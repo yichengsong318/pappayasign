@@ -214,7 +214,13 @@ app.post("/signature", function (req, res) {
 
   client.connect((err) => {
     var query = { UserID: req.body.UserID };
-    var newvalues = { $set: { SignID: req.body.SignID, SignImage:req.body.SignImage } };
+    var newvalues = { $set: { 
+		SignID: req.body.SignID, 
+		SignImage:req.body.SignImage,
+		SignImageBox:req.body.SignImageBox,
+		Initials:req.body.Initials,
+		InitialsBox:req.body.InitialsBox,
+	 } };
     const collection = client.db("UsersDB").collection("Users");
     //console.log(collection);
     collection.updateOne(query, newvalues, function (err, result) {

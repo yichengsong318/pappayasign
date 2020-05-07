@@ -18,6 +18,8 @@ import Review from 'views/examples/Review'
 import UploadSuccess from 'views/examples/UploadSuccess'
 import SaveAsTemplate from 'views/examples/SaveAsTemplate'
 import StartDrop from 'views/examples/StartDrop'
+import SignManagerPageSample from "./views/examples/SignManagerPageSample";
+
 
 var routes = [
   {
@@ -160,5 +162,13 @@ var routes = [
     component: Register,
     layout: '/auth',
   },
+  {
+        path: "/sign-manager-page-sample",
+        name: "Overview",
+        icon: "ni ni-tv-2 text-primary",
+        component: SignManagerPageSample,
+        layout: "/admin",
+    },
+    
 ]
 export default routes
