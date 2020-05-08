@@ -2,7 +2,7 @@
 const express = require("express");
 const favicon = require("express-favicon");
 const bcrypt = require("bcrypt")
-var cron = require('node-cron');
+const cron = require('node-cron');
 const nodemailer = require("nodemailer");
 const path = require("path");
 const MongoClient = require("mongodb").MongoClient;
@@ -1074,17 +1074,22 @@ app.post("/expiry", function (req, res) {
 		if (err) throw err;
 		if (result) {
 			if(result.Status != 'Completed' || result.Status != 'Void' || result.Status != 'Deleted'){
-				const task = cron.scheduleJob('*/1 * * * * *',()=>{
+				const task = cron.schedule('* * '+day+' '+month+' *',()=>{
 					//Foo the bar..
 					var querydoc = { DocumentID: req.body.DocumentID };
 					var newvalues = { $set: { Status: 'Expiring' } };
 					//console.log(collection);
+					const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
+					client.connect((err) => {
+						const collection = client.db("UsersDB").collection("Documents");
 					collection.updateOne(querydoc, newvalues, function (innererr, innerresult) {
-						if (innererr) res.send(innererr);;
+						if (innererr) console.log(innererr);
 						if(innerresult){
-							res.send("expiry cron scheduled");
+							
+							console.log('cron started expiry')
 						}
 					});
+				});
 				},{
 					timezone: "Asia/Kolkata"
 				});
@@ -1143,9 +1148,10 @@ app.post("/expiry", function (req, res) {
 		if (result) {
 			var Reciever = result.Reciever;
 			if(result.Status != 'Completed' || result.Status != 'Void' || result.Status != 'Deleted'){
-				const task = cron.scheduleJob('*/'+date+' * * * * *',()=>{
+				const task = cron.schedule('* * */'+date+' * *',()=>{
 					sendEmailtoReciever(Reciever, req.body.url);
 					res.send('reminder cron scheduled');
+					console.log('cron started reminder')
 				},{
 					timezone: "Asia/Kolkata"
 				});

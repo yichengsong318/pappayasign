@@ -561,7 +561,7 @@ class Tables extends React.Component {
               </div>
             </div></td >`
                   sentcontent += '</tr>'
-                } else if (data.Status == 'Expiring Soon') {
+                } else if (data.Status == 'Expiring') {
                   expiringcontent += '<tr >'
                   expiringcontent += '<th><input  type="checkbox"></th>'
                   expiringcontent +=

@@ -180,6 +180,10 @@ class Review extends React.Component {
 
     var day, month, year = '';
 
+    day = moment().add(120,'d').format('DD');
+    month = moment().add(120,'d').format('MM');
+    year = moment().add(120,'d').format('YYYY'); 
+
 
     console.log(dateCurrent+''+dateFrom);
 
@@ -192,13 +196,26 @@ class Review extends React.Component {
 
     inputDate.addEventListener('input', function() {  
         var current = this.value; 
-        var today = moment().add(3,'d').format('YYYY-MM-DD');        
-        if (current < today){
-            document.getElementById('input-expiry-date').value = today;    
+        var thirddayfromnow = moment().add(3,'d').format('YYYY-MM-DD');        
+        var today = moment().format('YYYY-MM-DD');        
+        if (current < thirddayfromnow){
+            document.getElementById('input-expiry-date').value = today; 
+            var nextdate = moment(today).format('YYYY-MM-DD');
+            day = moment(today).format('DD');
+            month = moment(today).format('MM');
+            year = moment(today).format('YYYY');   
         }
-        else if(current > today){
-          var nextdate = moment(current).subtract(3,'d').format('YYYY-MM-DD');   
-          console.log(nextdate); 
+        else if(current > thirddayfromnow){
+          var nextdate = moment(current).subtract(3,'d').format('YYYY-MM-DD'); 
+          day = moment(current).format('DD');
+          month = moment(current).format('MM');
+          year = moment(current).format('YYYY');
+        } 
+        else if(current == thirddayfromnow){
+          var nextdate = moment().format('YYYY-MM-DD'); 
+          day = moment(today).format('DD');
+          month = moment(today).format('MM');
+          year = moment(today).format('YYYY');
         }    
     });
 
@@ -207,6 +224,39 @@ class Review extends React.Component {
       modal[1].style.display = 'block'
 
       var today = new Date().toLocaleString().replace(',', '')
+
+      axios
+    .post('/expiry', {
+      DocumentID:filename,
+      day:day,
+      month:month,
+      year:year
+    })
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+
+    if (document.getElementById('reviewautoremindercheck').checked) {
+      var select = document.getElementById('autoreminderselect')
+          var date = select.options[select.selectedIndex].value
+      console.log(date);
+        axios
+      .post('/reminder', {
+        DocumentID:filename,
+        date:date
+      })
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    }
+
+    
 
       var subject = document.getElementById('input-email-subject').value
       var emailmessage = document.getElementById('input-email-message').value
@@ -642,13 +692,13 @@ class Review extends React.Component {
                             id="autoreminderselect"
                             className="form-control  form-control-md"
                           >
-                            <option value="24">Every day</option>
-                            <option value="48">Every 2 days</option>
-                            <option value="72">Every 3 days</option>
-                            <option value="96">Every 4 days</option>
-                            <option value="120">Every 5 days</option>
-                            <option value="144">Every 6 days</option>
-                            <option value="168">Every 7 days</option>
+                            <option value="1">Every day</option>
+                            <option value="2">Every 2 days</option>
+                            <option value="3">Every 3 days</option>
+                            <option value="4">Every 4 days</option>
+                            <option value="5">Every 5 days</option>
+                            <option value="6">Every 6 days</option>
+                            <option value="7">Every 7 days</option>
                           </select>
                         </FormGroup>
                       </Col>
