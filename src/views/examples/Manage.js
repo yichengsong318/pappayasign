@@ -343,6 +343,7 @@ class Tables extends React.Component {
                 data.Status == 'Authentication Failed' ||
                 data.Status == 'Correcting' ||
                 data.Status == 'Completed' ||
+                data.Status == 'Expiring' ||
                 data.Status == 'Draft'
               ) {
                 if (data.Status == 'Waiting for Others') {
