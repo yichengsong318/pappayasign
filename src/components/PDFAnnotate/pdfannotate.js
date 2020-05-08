@@ -107,7 +107,7 @@ toggleSignModal = () => {
       console.log(response)
       var remoteAddress = response.data;
       const array = remoteAddress.split(':')
-      const ip = array[array.length - 1]
+      ip = array[array.length - 1]
       //console.log(ip);
     })
     .catch(function (error) {

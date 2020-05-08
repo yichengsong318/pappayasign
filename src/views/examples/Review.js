@@ -33,6 +33,7 @@ import routes from 'routes.js'
 import HeaderDefault from 'components/Headers/HeaderDefault.js'
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
+var moment = require('moment');
 const axios = require('axios').default
 
 class Review extends React.Component {
@@ -56,7 +57,7 @@ class Review extends React.Component {
       console.log(response)
       var remoteAddress = response.data;
       const array = remoteAddress.split(':')
-      const ip = array[array.length - 1]
+      ip = array[array.length - 1]
       //console.log(ip);
     })
     .catch(function (error) {
@@ -160,6 +161,47 @@ class Review extends React.Component {
       window.location.hash = '#/auth/login'
       modal[0].style.display = 'none'
     }
+
+
+    $('#reviewautoremindercheck').change(function () {
+      if (this.checked) {
+        document.getElementById('autoreminderselect').style.display = 'block'
+      } else {
+        document.getElementById('autoreminderselect').style.display = 'none'
+      }
+    })
+
+    
+    
+
+    var dateCurrent = moment().format('YYYY-MM-DD');
+    var dateFrom = moment().subtract(12,'d').format('YYYY-MM-DD');
+    var dateTo = moment().add(120,'d').format('YYYY-MM-DD');
+
+    var day, month, year = '';
+
+
+    console.log(dateCurrent+''+dateFrom);
+
+    $(document).ready(function () {
+      
+      $('#input-expiry-date').val(dateTo)
+    })
+
+    var inputDate = document.querySelector('input#input-expiry-date');
+
+    inputDate.addEventListener('input', function() {  
+        var current = this.value; 
+        var today = moment().add(3,'d').format('YYYY-MM-DD');        
+        if (current < today){
+            document.getElementById('input-expiry-date').value = today;    
+        }
+        else if(current > today){
+          var nextdate = moment(current).subtract(3,'d').format('YYYY-MM-DD');   
+          console.log(nextdate); 
+        }    
+    });
+
 
     $('#reviewnextbtn').click(function () {
       modal[1].style.display = 'block'
@@ -454,53 +496,7 @@ class Review extends React.Component {
       }
     })
 
-    $('#reviewautoremindercheck').change(function () {
-      if (this.checked) {
-        document.getElementById('autoreminderselect').style.display = 'block'
-      } else {
-        document.getElementById('autoreminderselect').style.display = 'none'
-      }
-    })
-
-    function today() {
-      let d = new Date()
-      let currDate = d.getDate()
-      let currMonth = d.getMonth() + 4
-      let currYear = d.getFullYear()
-      return (
-        currYear +
-        '-' +
-        (currMonth < 10 ? '0' + currMonth : currMonth) +
-        '-' +
-        (currDate < 10 ? '0' + currDate : currDate)
-      )
-    }
-
-    var inputDate = document.querySelector('input#input-expiry-date');
-
-    inputDate.addEventListener('input', function() {  
-        var current = this.value;               
-        var today = new Date();     
-        var dd = today.getDate();       
-        var mm = today.getMonth()+1;
-        var yyyy = today.getFullYear();
-        if(dd<10){
-            dd='0'+dd;
-        } 
-        if(mm<10){
-            mm='0'+mm;
-        } 
-        var today = yyyy+'-'+mm+'-'+dd;                     
-        if (current < today){
-            document.getElementById('input-expiry-date').value = today;
-        }       
-    });
-
-    $(document).ready(function () {
-      
-      console.log(today())
-      $('#input-expiry-date').val(today())
-    })
+   
   }
   render() {
     return (
@@ -752,7 +748,7 @@ class Review extends React.Component {
                         color="primary"
                         id="reviewnextbtn"
                       >
-                        Next
+                        Send
                       </Button>
                     </Col>
                   </Row>
