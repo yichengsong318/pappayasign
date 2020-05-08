@@ -27,24 +27,22 @@ class ChooseTab extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.name !== this.props.name || newProps.initial !== this.props.initial) {
-            this.generateSign(newProps.name, newProps.initial);
+        if (newProps.initial !== this.props.initial) {
+            this.generateSign(newProps.initial);
         }
     }
 
     async componentDidMount() {
         await document.fonts.ready;
-        const {name, initial} = this.props;
-        this.generateSign(name, initial);
+        const {initial} = this.props;
+        this.generateSign(initial);
     }
 
-    generateSign = (name, initial) => {
+    generateSign = (initial) => {
         let options = [];
-        if (name || initial) {
+        if (initial) {
             options = this.fonts.map(font => {
                 return {
-                    signatureBox: this.drawTextSignBox(font, name),
-                    signature: this.drawText(font, name),
                     initials: this.drawText(font, initial),
                     initialsBox: this.drawTextInitialSignBox(font, initial),
                 }
@@ -65,7 +63,7 @@ class ChooseTab extends Component {
 
     drawText(font, text) {
         let canvas = document.createElement('canvas');
-        canvas.width = 280;
+        canvas.width = 150;
         canvas.height = 50;
         if(text.length > 20){
             canvas.width = (text.length * 22)+30;
@@ -77,42 +75,7 @@ class ChooseTab extends Component {
         return canvas.toDataURL();
     };
 
-    drawTextSignBox(font, text) {
-        let canvas = document.createElement('canvas');
-        canvas.width = 470;
-        canvas.height = 150;
-
-        if(text.length > 20){
-            canvas.width = (text.length * 22)+30;
-        }
-        let context = canvas.getContext('2d');
-        context.font = `${50}px ${font.name}`;
-        context.fillStyle = "black";
-        context.fillText(text, 30, 90);
-
-        context.moveTo(10, 20);
-        context.lineTo(10, 140);
-
-        context.moveTo(10, 20);
-        context.lineTo(50, 20);
-
-        context.moveTo(10, 140);
-        context.lineTo(50, 140);
-
-        context.font = "18px Arial";
-        context.fillText("Signed By : ", 60, 20);
-
-        context.font = "13px Arial";
-        context.fillText(this.props.id, 60, 140);
-
-        context.lineWidth = 4;
-
-        // set line color
-        context.strokeStyle = '#d35400';
-        context.stroke();
-
-        return canvas.toDataURL();
-    };
+    
 
     drawTextInitialSignBox(font, text) {
         let canvas = document.createElement('canvas');
@@ -159,7 +122,7 @@ class ChooseTab extends Component {
 
     render() {
         const {options} = this.state;
-        const {initial, name, id} = this.props;
+        const {initial, id} = this.props;
         return (
             <div className="sign-manager-choose-tab">
                 {
@@ -179,15 +142,7 @@ class ChooseTab extends Component {
                             <span className="checkmark" />
 
                             <div className="sign-image-container">
-                                {
-                                    option.signature && name && (
-                                        <div className="sign-image-box sign-image-box-signature">
-                                            <span className="signed-by">Signed by:</span>
-                                            <img src={option.signature} />
-                                            <span className="sign-id">{id}</span>
-                                        </div>
-                                    )
-                                }
+                                
                                 {
                                     option.initials && initial && (
                                         <div className="sign-image-box sign-image-box-initials">
@@ -207,7 +162,6 @@ class ChooseTab extends Component {
 
 ChooseTab.propTypes = {
     id:  PropTypes.string.isRequired,
-    name:  PropTypes.string.isRequired,
     initial:  PropTypes.string.isRequired,
     onChange:  PropTypes.func.isRequired,
 }

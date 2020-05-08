@@ -21,6 +21,7 @@ import './pdfannotate.css'
 import './styles.css'
 import { getColorFromHex, randomString, getGeoInfo } from './utils'
 import SignManager from "../SignManager";
+import InitialManager from "../InitialManager";
 
 const axios = require('axios').default
 var PDFJS = require('pdfjs-dist')
@@ -31,13 +32,23 @@ const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
 class PDFAnnotate extends React.Component {
   state = {
     tabs: 1,
-    showSignModal: false
+    showSignModal: false,
+    showInitialModal: false
   }
 
 toggleSignModal = () => {
     const {showSignModal} = this.state;
     this.setState({
-          showSignModal: !showSignModal
+      showSignModal: !showSignModal
+
+      })
+  }
+
+  toggleInitialModal = () => {
+    const {showInitialModal} = this.state;
+    this.setState({
+      showInitialModal: !showInitialModal
+
       })
   }
 
@@ -60,10 +71,27 @@ toggleSignModal = () => {
                 "backgroundColor",
                 "transparent"
             );
+            this.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
             this.pdf.Reload();
             this.toggleSignModal();
         } else {
 	        alert('Please set your signature!')
+        }
+    }
+
+    saveInitial = (e) => {
+	    if (e.initialsBox) {
+            this.doubleclickobj.setSrc(e.initialsBox);
+
+            this.doubleclickobj.set(
+                "backgroundColor",
+                "transparent"
+            );
+            this.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+            this.pdf.Reload();
+            this.toggleInitialModal();
+        } else {
+	        alert('Please set your initials!')
         }
     }
 
@@ -109,6 +137,9 @@ toggleSignModal = () => {
     var dbpeople = []
     var key = ''
     var signimage = ''
+    var initialimage = ''
+    var username = ''
+    var usertitle = ''
     modal[0].style.display = 'block'
 
     var PDFAnnotate = function (
@@ -200,7 +231,9 @@ toggleSignModal = () => {
             e.target.cornerSize = 8
             e.target.cornerStyle = 'circle'
             e.target.minScaleLimit = 0
-            e.target.lockScalingFlip = false
+            e.target.lockUniScaling = true
+            e.target.lockScalingFlip = true
+            e.target.hasRotatingPoint = false
             e.target.padding = 5
             e.target.selectionDashArray = [10, 5]
             e.target.borderDashArray = [10, 5]
@@ -231,6 +264,7 @@ toggleSignModal = () => {
               //console.log("Mouse up", e);
               $('#dragabbleImageText').hide()
               $('#dragabbleImageSign').hide()
+              $('#dragabbleImageInitial').hide()
               //fabricMouseHandler(e, fabricObj);
               try {
                 if (e.target) {
@@ -364,25 +398,56 @@ toggleSignModal = () => {
                     ////console.log(doubleclickobj);
                     //this.toggleSignModal();
                     global.doubleclickobj = fabricObj.findTarget(e);
-                    
-                    if(signimage != '' && objcolor != 'transparent'){
+                    if(obj.width === obj.height){
+                      if(initialimage != '' && objcolor != 'transparent'){
 
-                      global.doubleclickobj.setSrc(signimage);
-                      global.doubleclickobj.set(
-                          "backgroundColor",
-                          "transparent"
-                      );
-                      global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
-                      setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                      global.pdf.Reload();
+                        global.doubleclickobj.setSrc(initialimage);
+                        global.doubleclickobj.set(
+                            "backgroundColor",
+                            "transparent"
+                        );
+                        global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                        global.pdf.Reload();
+                      }
+                      else {
+                        global.toggleInitialModal();
+                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                        //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                      }
                     }
-                    else {
-                      global.toggleSignModal();
-                      setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                      global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                    else{
+                      if(signimage != '' && objcolor != 'transparent'){
+
+                        global.doubleclickobj.setSrc(signimage);
+                        global.doubleclickobj.set(
+                            "backgroundColor",
+                            "transparent"
+                        );
+                        global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                        global.pdf.Reload();
+                      }
+                      else {
+                        global.toggleSignModal();
+                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                        //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                      }
                     }
+                    
                     obj.set('id', email)
                   } else if (objType === 'i-text') {
+                    //console.log(obj.text);
+                    if(username != ''){
+                      if(obj.text === 'Name'){
+                        obj.set('text',username);
+                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                      }
+                      else if(obj.text === 'Title'){
+                        obj.set('text',usertitle);
+                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                      }
+                    }
                     obj.set('backgroundColor', 'transparent')
                     global.pdf.Reload()
                     obj.set('id', email)
@@ -419,11 +484,11 @@ toggleSignModal = () => {
           var text = new fabric.IText(value, {
             left:
               e.pointer.x -
-              fabricObj.upperCanvasEl.getBoundingClientRect().left,
+              fabricObj.upperCanvasEl.getBoundingClientRect().left-50,
             top:
               e.pointer.y -
-              fabricObj.upperCanvasEl.getBoundingClientRect().top +
-              300,
+              fabricObj.upperCanvasEl.getBoundingClientRect().top -
+              30,
             fill: inst.color,
             backgroundColor: inst.recepientcolor,
             id: inst.recepientemail,
@@ -519,11 +584,11 @@ toggleSignModal = () => {
           var text = new fabric.IText(value, {
             left:
               event.clientX -
-              fabricObj.upperCanvasEl.getBoundingClientRect().left +
+              fabricObj.upperCanvasEl.getBoundingClientRect().left -
               50,
             top:
               event.clientY -
-              fabricObj.upperCanvasEl.getBoundingClientRect().top +
+              fabricObj.upperCanvasEl.getBoundingClientRect().top -
               30,
             fill: inst.color,
             backgroundColor: inst.recepientcolor,
@@ -1433,7 +1498,7 @@ toggleSignModal = () => {
     PDFAnnotate.prototype.Reload = function () {
       var inst = this
       $.each(inst.fabricObjects, function (index, fabricObj) {
-        fabricObj.renderAll.bind(fabricObj)
+        setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
       })
       // // // // // // // ////console.log('reloaded');
     }
@@ -1471,6 +1536,10 @@ toggleSignModal = () => {
             'dragabbleImageText'
           ).style.backgroundColor = recepientcolor
 
+          document.getElementById(
+            'dragabbleImageInitial'
+          ).style.backgroundColor = recepientcolor
+
           var elements = document.getElementsByClassName('tool')
           for (var i = 0; i < elements.length; i++) {
             elements[i].style.backgroundColor = recepientcolor
@@ -1487,12 +1556,19 @@ toggleSignModal = () => {
           document.getElementById(
             'dragabbleImageText'
           ).style.backgroundColor = recepientcolor
+          document.getElementById(
+            'dragabbleImageInitial'
+          ).style.backgroundColor = recepientcolor
         }
       })
 
     document.addEventListener('mousemove', function (e) {
       $('#dragabbleImageSign').css({
         left: e.clientX - 200,
+        top: e.clientY - 70,
+      })
+      $('#dragabbleImageInitial').css({
+        left: e.clientX - 100,
         top: e.clientY - 70,
       })
       $('#dragabbleImageText').css({
@@ -1506,6 +1582,10 @@ toggleSignModal = () => {
         left: e.clientX - 200,
         top: e.clientY - 70,
       })
+      $('#dragabbleImageInitial').css({
+        left: e.clientX - 100,
+        top: e.clientY - 70,
+      })
       $('#dragabbleImageText').css({
         left: e.clientX - 100,
         top: e.clientY - 30,
@@ -1514,6 +1594,8 @@ toggleSignModal = () => {
 
     $('#dragabbleImageSign').hide()
     $('#dragabbleImageText').hide()
+    $('#dragabbleImageInitial').hide()
+
     recepientcolor = '#bdbdbd'
 
     document.getElementById(
@@ -1521,6 +1603,10 @@ toggleSignModal = () => {
     ).style.backgroundColor = recepientcolor
     document.getElementById(
       'dragabbleImageText'
+    ).style.backgroundColor = recepientcolor
+
+    document.getElementById(
+      'dragabbleImageInitial'
     ).style.backgroundColor = recepientcolor
 
     document
@@ -1577,7 +1663,7 @@ toggleSignModal = () => {
 
           reader.onload = function () {
             var url = reader.result
-            //////console.log(url);
+            console.log(url);
             try {
               global.pdf.enableImage(url, recepientemail, recepientcolor)
             } catch (error) {
@@ -1729,6 +1815,7 @@ toggleSignModal = () => {
         
       } catch (error) {
         alert('Please add a document first!')
+        $('#dragabbleImageText').hide()
         $('.tool-button.active').removeClass('active')
         $('.icon-color').removeClass('icon-color')
       }
@@ -1754,6 +1841,7 @@ toggleSignModal = () => {
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
+        $('#dragabbleImageText').hide()
         $('.tool-button.active').removeClass('active')
         $('.icon-color').removeClass('icon-color')
       }
@@ -1779,6 +1867,7 @@ toggleSignModal = () => {
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
+        $('#dragabbleImageText').hide()
         $('.tool-button.active').removeClass('active')
         $('.icon-color').removeClass('icon-color')
       }
@@ -1804,26 +1893,10 @@ toggleSignModal = () => {
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
+        $('#dragabbleImageText').hide()
         $('.tool-button.active').removeClass('active')
         $('.icon-color').removeClass('icon-color')
       }
-    })
-
-    var initialbtn = document.getElementById('initialbtn')
-    initialbtn.addEventListener('click', function (event) {
-      var element = $(event.target).hasClass('tool')
-        ? $(event.target)
-        : $(event.target).parents('.tool').first()
-      $('.tool.active').removeClass('active')
-      $('.icon-color').removeClass('icon-color')
-      $(element).addClass('active')
-      const icon = this.querySelector('i')
-      icon.classList.add('icon-color')
-      modal[5].style.display = 'block'
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
-        select.options[select.selectedIndex].style.backgroundColor
     })
 
     var datebtn = document.getElementById('datebtn')
@@ -1847,6 +1920,7 @@ toggleSignModal = () => {
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
         alert('Please add a document first!')
+        $('#dragabbleImageText').hide()
         $('.tool-button.active').removeClass('active')
         $('.icon-color').removeClass('icon-color')
       }
@@ -1895,6 +1969,35 @@ toggleSignModal = () => {
         global.pdf.enableImage(dataUrl, recepientemail, recepientcolor)
       } catch (error) {
         alert('Add a Document')
+        $('#dragabbleImageSign').hide()
+      }
+    })
+
+    var initialbtn = document.getElementById('initialbtn')
+    initialbtn.addEventListener('click', function (event) {
+      var element = $(event.target).hasClass('tool')
+        ? $(event.target)
+        : $(event.target).parents('.tool').first()
+      $('.tool.active').removeClass('active')
+      $('.icon-color').removeClass('icon-color')
+      $(element).addClass('active')
+      const icon = this.querySelector('i')
+      icon.classList.add('icon-color')
+      var select = document.getElementById('recepientselect')
+      recepientemail = select.options[select.selectedIndex].value
+      recepientcolor =
+        select.options[select.selectedIndex].style.backgroundColor
+      //pdf.enablePencil();
+      // // // // // // // ////console.log('signpress');
+      var dataUrl =
+        'data:image/png;base64,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'
+      try {
+        $('#dragabbleImageInitial').show()
+        $('#dragabbleImageInitial').css("z-index", "9999999999999999999999999999999999999999999");
+        global.pdf.enableImage(dataUrl, recepientemail, recepientcolor)
+      } catch (error) {
+        alert('Add a Document')
+        $('#dragabbleImageInitial').hide()
       }
     })
 
@@ -2025,6 +2128,9 @@ toggleSignModal = () => {
                 if (response.data.user.SignID != '') {
                   if (response.data.user.SignImage) {
                     signimage = response.data.user.SignImageBox;
+                    initialimage = response.data.user.InitialsBox;
+                    username = response.data.user.UserFirstName + ' ' + response.data.user.UserLastName;
+                    usertitle = response.data.user.UserTitle;
                   }
                 }
               }
@@ -2688,34 +2794,7 @@ toggleSignModal = () => {
       }
     })
 
-    var addinitialmodalbtn = document.getElementById('addinitialmodalbtn')
-    addinitialmodalbtn.addEventListener('click', function (event) {
-      //modal[3].style.display = "block";
-      var initialval = document.getElementById('addinitialval').value
-      if (initialval == '') {
-        alert('Please enter your initials')
-      } else {
-        try {
-          global.pdf.enableAddText(initialval, recepientemail, recepientcolor)
-          $('#dragabbleImageText').show()
-          $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
-          modal[5].style.display = 'none'
-        } catch (error) {
-          modal[5].style.display = 'none'
-          alert('Please add a document first!')
-          $('.tool-button.active').removeClass('active')
-          $('.icon-color').removeClass('icon-color')
-        }
-      }
-    })
-
-    var closeinitialmodalbtn = document.getElementById('closeinitialmodalbtn')
-    closeinitialmodalbtn.addEventListener('click', function (event) {
-      modal[5].style.display = 'block'
-    })
-
-
-
+    
 
 
 var droptogglesign = 0;
@@ -2736,7 +2815,7 @@ $(document).on('click','.actionsign', function() {
   }
 
   render() {
-    const {showSignModal} = this.state;
+    const {showSignModal, showInitialModal} = this.state;
     return (
       <div className="pdfAnNotateContainer">
         <img
@@ -2749,6 +2828,12 @@ $(document).on('click','.actionsign', function() {
           id="dragabbleImageText"
           style={{zIndex: '99999999999999999999999999999999999999999'}}
           src={require('../../assets/img/icons/common/textimg.png')}
+        />
+
+      <img
+          id="dragabbleImageInitial"
+          style={{zIndex: '99999999999999999999999999999999999999999'}}
+          src={require('../../assets/img/icons/common/initialimg.png')}
         />
 
         <Row>
@@ -2900,46 +2985,7 @@ $(document).on('click','.actionsign', function() {
             </div>
           </div>
 
-          <div className="modal">
-            <div className="modal-content">
-              <div>
-                <div className="mb-4 mb-xl-0">
-                  <h5>Please enter your Initials: </h5>
-                </div>
-                <Row>
-                  <Col lg="12">
-                    <FormGroup>
-                      <Input
-                        className="form-control-alternative"
-                        id="addinitialval"
-                        placeholder="Initials"
-                        type="text"
-                      />
-                    </FormGroup>
-                  </Col>
-
-                  <Col lg="6">
-                    <Button
-                      id="addinitialmodalbtn"
-                      className="close-btn float-right px-4"
-                    >
-                      {' '}
-                      Add
-                    </Button>
-                  </Col>
-                  <Col lg="6">
-                    <Button
-                      id="closeinitialmodalbtn"
-                      className="cancel-btn float-left px-4"
-                    >
-                      {' '}
-                      Close
-                    </Button>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </div>
+          
 
           
 
@@ -3081,6 +3127,9 @@ $(document).on('click','.actionsign', function() {
             <SignManager visible={showSignModal}
                     onSave={this.saveSign}
                     onClose={this.toggleSignModal} />
+              <InitialManager visible={showInitialModal}
+                    onSave={this.saveInitial}
+                    onClose={this.toggleInitialModal} />
             </div>
           </Col>
           <Col lg="2">

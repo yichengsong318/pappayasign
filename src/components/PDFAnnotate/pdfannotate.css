@@ -12,6 +12,13 @@
     height:auto;
 }
 
+.pdfAnNotateContainer #dragabbleImageInitial  {
+	
+	position: fixed;
+	width:70px;
+    height:auto;
+}
+
 
 
 canvas, .canvas-container {

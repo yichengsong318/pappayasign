@@ -6,13 +6,9 @@ class UploadTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            signatureBox: null,
-            signature: null,
             initials: null,
             initialsBox: null,
             errors: {
-                signatureBox: '',
-                signature: '',
                 initialsBox: '',
                 initials: ''
             }
@@ -62,57 +58,7 @@ class UploadTab extends Component {
                 await this.setState({
                     [key]: res.target.result
                 })
-                if(key == "signature"){
-                    let signatureBoxCanvas = document.createElement("CANVAS");
-                    signatureBoxCanvas.width = 470;
-                    signatureBoxCanvas.height = 150;
-                    let ctx = signatureBoxCanvas.getContext("2d");
-
-                    let image = new Image();
-                    image.src = res.target.result;
-                    image.onload = () => {
-                        // ctx.drawImage(image, 25, 30,95,100);
-                        // ctx.drawImage(image, 25, 30, image.width,image.height,25,30,470,150);
-                        let canvasWidth = 440;
-                        let canvasHeight = 100;
-                        let canvas = ctx.canvas ;
-                        let hRatio = canvasWidth  / image.width    ;
-                        let vRatio =  canvasHeight / image.height  ;
-                        let ratio  = Math.min ( hRatio, vRatio );
-                        let centerShift_x = ( canvasWidth - image.width*ratio ) / 2;
-                        let centerShift_y = ( canvasHeight - image.height*ratio ) / 2;
-                        ctx.clearRect(0,0,canvas.width, canvasHeight);
-                        ctx.drawImage(image, 25,30, image.width, image.height,
-                            centerShift_x,centerShift_y+30,image.width*ratio, image.height*ratio);
-
-                        ctx.moveTo(10, 20);
-                        ctx.lineTo(10, 140);
-
-                        ctx.moveTo(10, 20);
-                        ctx.lineTo(50, 20);
-
-                        ctx.moveTo(10, 140);
-                        ctx.lineTo(50, 140);
-
-                        ctx.font = "18px Arial";
-                        ctx.fillText("Signed By : ", 60, 20);
-
-                        ctx.font = "13px Arial";
-                        ctx.fillText(this.props.id, 60, 140);
-
-
-                        ctx.lineWidth = 4;
-
-                        // set line color
-                        ctx.strokeStyle = '#d35400';
-                        ctx.stroke();
-                        this.setState({signatureBox:signatureBoxCanvas.toDataURL()},()=>{
-                            this.emitChanges();
-                        })
-
-                    }
-
-                }else{
+                
                     let initialBoxCanvas = document.createElement("CANVAS");
                     initialBoxCanvas.width = 150;
                     initialBoxCanvas.height = 150;
@@ -161,7 +107,7 @@ class UploadTab extends Component {
                         })
 
                     }
-                }
+                
 
             }
 
@@ -177,10 +123,8 @@ class UploadTab extends Component {
 
     emitChanges = () => {
         const {onChange} = this.props;
-        const {signature, initials, signatureBox, initialsBox} = this.state;
+        const { initials, initialsBox} = this.state;
         onChange({
-            signatureBox,
-            signature,
             initials,
             initialsBox
         })
@@ -194,31 +138,11 @@ class UploadTab extends Component {
     }
 
     render() {
-        const {signature, initials, errors} = this.state;
+        const {initials, errors} = this.state;
         return <Fragment>
-            <input accept="image/*" onChange={(e) => this.onFileUpload(e, 'signature')} ref={input => this.signatureInput = input}  className="d-none" type="file" />
             <input accept="image/*" onChange={(e) => this.onFileUpload(e, 'initials')} ref={input => this.initialsInput = input}  className="d-none" type="file" />
             <div className="sign-manager-upload-tab">
-                <div className={`dropzone ${errors.signature ? 'error' : ''}`}>
-                    {
-                        signature ? (
-                            <Fragment>
-                                <i onClick={() => this.removeFile('signature')} className="ni ni-fat-remove remove-icon" />
-                                <img src={signature} />
-                            </Fragment>
-                        ) : (
-                            <Fragment>
-                                <i className="ni ni-cloud-upload-96 upload-icon" />
-                                <button className="btn" onClick={() => this.onClickUpload(this.signatureInput)}>
-                                    UPLOAD SIGNATURE
-                                </button>
-                                <div className="mt-2 error-message">
-                                    {errors.signature}
-                                </div>
-                            </Fragment>
-                        )
-                    }
-                </div>
+                
                 <div className={`dropzone ${errors.initials ? 'error' : ''}`}>
                     {
                         initials ? (
@@ -246,7 +170,6 @@ class UploadTab extends Component {
 
 UploadTab.propTypes = {
     id:  PropTypes.string.isRequired,
-    name:  PropTypes.string.isRequired,
     initial:  PropTypes.string.isRequired,
     onChange:  PropTypes.func.isRequired,
 }

@@ -242,18 +242,10 @@ button:focus {
 	display:none;
 }
 
-#tpenbtn{
+#tpenbtn, #tcirclebtn, #trectanglebtn, #topenfilebtn, #timagebtn, #tfileinput, #taddobjbtn, #timageinput{
 	display:none;
 }
 
-
-
-#tcirclebtn{
-	display:none;
-}
-#trectanglebtn{
-	display:none;
-}
 
 
 .icon-color{
@@ -261,21 +253,6 @@ button:focus {
 	
 }
 
-#topenfilebtn{
-	display:none;
-}
-
-#tfileinput{
-	display:none;
-}
-
-#taddobjbtn{
-	display:none;
-}
-
-#timageinput{
-	display:none;
-}
 
 i.material-icons{
 	color: #626262;

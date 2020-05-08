@@ -243,39 +243,16 @@ button:focus {
 	display:none;
 }
 
-#penbtn{
+#penbtn, #circlebtn, #rectanglebtn, #openfilebtn, #imagebtn, #fileinput, #addobjbtn, #imageinput{
 	display:none;
 }
 
-#openfilebtn{
-	display:none;
-}
 
-#circlebtn{
-	display:none;
-}
-#rectanglebtn{
-	display:none;
-}
 
 
 .icon-color{
 	color: #d35400 !important;
 	
-}
-
-
-
-#fileinput{
-	display:none;
-}
-
-#addobjbtn{
-	display:none;
-}
-
-#imageinput{
-	display:none;
 }
 
 i.material-icons{
