@@ -1061,6 +1061,70 @@ app.post("/docupload", function (req, res) {
 const expiry_taskMap = {};
 const reminder_taskMap = {};
 
+
+async function setExpiry(Reciever, UserID, DocumentID){
+	//console.log(Reciever);
+	var recievers = Reciever;
+	var today = new Date().toLocaleString().replace(',', '')
+		const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
+
+		recievers.forEach(function (item, index) {
+			//console.log(recievers);
+			recievers[index].RecepientStatus = 'Expiring'
+			recievers[index].RecepientDateStatus = today
+
+						client.connect((err) => {
+						var queryinside = { UserEmail: item.RecepientEmail};
+						const collection = client.db("UsersDB").collection("Users");
+
+						collection.findOne(queryinside, function (err, result) {
+							if (err) throw err;
+							//console.log(result);
+							if (result) {
+								var request = result.Request
+		
+							  request.forEach(function (item, index) {
+								if (request[index].DocumentID === DocumentID) {
+								  
+								  request[index].RecepientStatus = 'Expiring'
+								  request[index].RecepientDateStatus = today
+		
+								}
+							  })
+							  
+								var querydoc = { UserID: result.UserID };
+								var newvalues = { $set: {  Request: request } };
+								
+								client.connect((err) => {
+									const collection = client.db("UsersDB").collection("Users");
+								collection.updateOne(querydoc, newvalues, function (innererr, innerresult) {
+									if (innererr) console.log(innererr);
+									if(innerresult){
+										console.log('request set')
+									}
+								});
+								});
+
+							}
+						});
+						
+					  })
+					});
+
+					var querydoc = { DocumentID: DocumentID };
+					var newvalues = { $set: { Status: 'Expiring', Reciever: recievers } };
+					client.connect((err) => {
+						const collection = client.db("UsersDB").collection("Documents");
+					collection.updateOne(querydoc, newvalues, function (innererr, innerresult) {
+						if (innererr) console.log(innererr);
+						if(innerresult){
+							console.log('cron finished expiry')
+						}
+					});
+				});
+				
+  }
+
 app.post("/expiry", function (req, res) {
 	var day = parseInt(req.body.day);
 	var month = parseInt(req.body.month);
@@ -1073,23 +1137,15 @@ app.post("/expiry", function (req, res) {
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
 		if (result) {
+			
+			//console.log(recievers);
+			
 			if(result.Status != 'Completed' || result.Status != 'Void' || result.Status != 'Deleted'){
-				const task = cron.schedule('* * '+day+' '+month+' *',()=>{
-					//Foo the bar..
-					var querydoc = { DocumentID: req.body.DocumentID };
-					var newvalues = { $set: { Status: 'Expiring' } };
-					//console.log(collection);
-					const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
-					client.connect((err) => {
-						const collection = client.db("UsersDB").collection("Documents");
-					collection.updateOne(querydoc, newvalues, function (innererr, innerresult) {
-						if (innererr) console.log(innererr);
-						if(innerresult){
-							
-							console.log('cron started expiry')
-						}
-					});
-				});
+				const task = cron.schedule('0 0 23 '+day+' '+month+' *',()=>{
+					var recievers = result.Reciever;
+					setExpiry(recievers, req.body.UserID, req.body.DocumentID);
+					console.log('cron finished expiry')
+					res.send('expiry cron scheduled');
 				},{
 					timezone: "Asia/Kolkata"
 				});
@@ -1097,7 +1153,7 @@ app.post("/expiry", function (req, res) {
 			}
 			else{
 				// for some condition in some code
-				res.send('expiry cron deleted');
+				console.log('expiry cron deleted');
 				let my_job = expiry_taskMap[result.DocumentID];
 				my_job.destroy();
 			}
@@ -1110,16 +1166,17 @@ app.post("/expiry", function (req, res) {
 	});
   });
 
-  function sendEmailtoReciever(Reciever, url){
-	Reciever.forEach(function (data, index) {		
+  async function sendEmailtoReciever(Reciever, url){
+	Reciever.forEach(function (data, index) {	
+		var recieverurl = ''+url+''+index+''	
 		var mailOptions = {
 			from: '"Pappayasign" <devsign@pappaya.com>', // sender address
 			to: data.RecepientEmail,
-			body:
+			html:
 			  `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
 			  data.RecepientName +
 			  `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. </p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
-			  url +
+			  recieverurl +
 			  `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
 			subject: 'PappayaSign: Sign Request(Reminder)',
 		  };
@@ -1146,9 +1203,10 @@ app.post("/expiry", function (req, res) {
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
 		if (result) {
-			var Reciever = result.Reciever;
+			
 			if(result.Status != 'Completed' || result.Status != 'Void' || result.Status != 'Deleted'){
-				const task = cron.schedule('* * */'+date+' * *',()=>{
+				const task = cron.schedule(' 0 0 0 */'+date+' * *',()=>{
+					var Reciever = result.Reciever;
 					sendEmailtoReciever(Reciever, req.body.url);
 					res.send('reminder cron scheduled');
 					console.log('cron started reminder')
@@ -1159,7 +1217,7 @@ app.post("/expiry", function (req, res) {
 			}
 			else{
 				// for some condition in some code
-				res.send('reminder cron deleted');
+				console.log('reminder cron deleted');
 				let my_job = reminder_taskMap[result.DocumentID];
 				my_job.destroy();
 			}

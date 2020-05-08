@@ -99,12 +99,13 @@ class Tables extends React.Component {
       window.location.hash = '#/auth/login'
     }
 
-    function inboxfunc() {
+    async function inboxfunc() {
       modal[0].style.display = 'block'
       $('#actionrequiredtable tbody tr').remove()
       $('#alltable tbody tr').remove()
       $('#deletedtable tbody tr').remove()
       $('#completedtable tbody tr').remove()
+      $('#expiringtable tbody tr').remove()
 
       axios
         .post('/getuserdata', {
@@ -117,12 +118,14 @@ class Tables extends React.Component {
             var allcontent = ''
             var deletedcontent = ''
             var completedcontent = ''
+            var expiringcontent = ''
             var actionrequiredcontent = ''
 
             Request.forEach(function (data, index) {
               if (
                 Request[index].RecepientStatus == 'Void' ||
                 Request[index].RecepientStatus == 'Need to Sign' ||
+                Request[index].RecepientStatus == 'Expiring' ||
                 Request[index].RecepientStatus == 'Correcting'
               ) {
                 allcontent += '<tr >'
@@ -287,12 +290,53 @@ class Tables extends React.Component {
             </div>
           </div></td >`
                 completedcontent += '</tr>'
+              } else if (Request[index].RecepientStatus == 'Expiring') {
+                expiringcontent += '<tr >'
+                expiringcontent += '<th><input  type="checkbox"></th>'
+                expiringcontent +=
+                  '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                  Request[index].DocumentName +
+                  '\nFrom: ' +
+                  Request[index].FromEmail +
+                  '</span></td>'
+                  expiringcontent +=
+                  '<td id="datastatus">' +
+                  Request[index].RecepientStatus +
+                  '</td>'
+                  expiringcontent +=
+                  '<td id="datakey" hidden>' +
+                  Request[index].DocumentID +
+                  '</td>'
+                  expiringcontent +=
+                  '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                  expiringcontent +=
+                  '<td id="datarecep" hidden>' +
+                  Request[index].FromEmail +
+                  '</td>'
+                  expiringcontent +=
+                  '<td >' + Request[index].RecepientDateStatus + '</td>'
+                  expiringcontent += `<td ><div class="btn-group">
+            <button type="button" class="btn btn-primary resend">RESEND</button>
+            <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+            <div class="dropdown-menu2" id="dropdown">
+            <button class="dropdown-item move" type="button">Move</button>
+            <button class="dropdown-item correct" type="button">Correct</button>
+            <button class="dropdown-item create" type="button">Create a Copy</button>
+            <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+            <button class="dropdown-item void" type="button">Void</button>
+            <button class="dropdown-item history" type="button">History</button>
+            <button class="dropdown-item export" type="button">Export as CSV</button>
+            <button class="dropdown-item deletemanage" type="button">Delete</button>
+            </div>
+          </div></td >`
+          expiringcontent += '</tr>'
               }
             })
             $('#alltable').append(allcontent)
             $('#deletedtable').append(deletedcontent)
             $('#actionrequiredtable').append(actionrequiredcontent)
             $('#completedtable').append(completedcontent)
+            $('#expiringtable').append(expiringcontent)
           }
         })
         .catch(function (error) {
@@ -301,11 +345,10 @@ class Tables extends React.Component {
         })
     }
 
-    function datafunc() {
+    async function datafunc() {
       modal[0].style.display = 'block'
       $('#senttable tbody tr').remove()
       $('#waitingtable tbody tr').remove()
-      $('#expiringtable tbody tr').remove()
       $('#authtable tbody tr').remove()
 
       axios
@@ -950,7 +993,31 @@ class Tables extends React.Component {
                     modal[2].style.display = 'none'
                   })
 
+                
+
                 axios
+                  .post('/sendmail', {
+                    to: item.RecepientEmail,
+                    body:
+                      '<div><p>Hello ' +
+                      item.RecepientName +
+                      ', ' +
+                      item.DocumentName +
+                      ' Has been voided. \n\nReason:' +
+                      managevoidmessage +
+                      '</p></div>',
+                    subject: 'PappayaSign: Document Voided',
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                  })
+                  .catch(function (error) {
+                    //console.log('no data');
+                    modal[2].style.display = 'none'
+                  })
+              })
+
+              axios
                   .post('/getRequests', {
                     UserID: voiduserid,
                   })
@@ -987,28 +1054,6 @@ class Tables extends React.Component {
                     console.log(error)
                     modal[2].style.display = 'none'
                   })
-
-                axios
-                  .post('/sendmail', {
-                    to: item.RecepientEmail,
-                    body:
-                      '<div><p>Hello ' +
-                      item.RecepientName +
-                      ', ' +
-                      item.DocumentName +
-                      ' Has been voided. \n\nReason:' +
-                      managevoidmessage +
-                      '</p></div>',
-                    subject: 'PappayaSign: Document Voided',
-                  })
-                  .then(function (response) {
-                    console.log(response)
-                  })
-                  .catch(function (error) {
-                    //console.log('no data');
-                    modal[2].style.display = 'none'
-                  })
-              })
 
               axios
                 .post('/updatedocumentstatus', {

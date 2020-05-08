@@ -225,38 +225,7 @@ class Review extends React.Component {
 
       var today = new Date().toLocaleString().replace(',', '')
 
-      axios
-    .post('/expiry', {
-      DocumentID:filename,
-      day:day,
-      month:month,
-      year:year
-    })
-    .then(function (response) {
-      console.log(response)
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
-
-    if (document.getElementById('reviewautoremindercheck').checked) {
-      var select = document.getElementById('autoreminderselect')
-          var date = select.options[select.selectedIndex].value
-      console.log(date);
-        axios
-      .post('/reminder', {
-        DocumentID:filename,
-        date:date
-      })
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-    }
-
-    
+          
 
       var subject = document.getElementById('input-email-subject').value
       var emailmessage = document.getElementById('input-email-message').value
@@ -405,6 +374,37 @@ class Review extends React.Component {
             console.log(response)
             if (response.data === 'reciever done') {
               modal[1].style.display = 'none'
+              axios
+              .post('/expiry', {
+                UserID:userid,
+                DocumentID:filename,
+                day:day,
+                month:month,
+                year:year
+              })
+              .then(function (response) {
+                console.log(response)
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
+
+              if (document.getElementById('reviewautoremindercheck').checked) {
+                var select = document.getElementById('autoreminderselect')
+                    var date = select.options[select.selectedIndex].value
+                console.log(date);
+                  axios
+                .post('/reminder', {
+                  DocumentID:filename,
+                  date:date
+                })
+                .then(function (response) {
+                  console.log(response)
+                })
+                .catch(function (error) {
+                  console.log(error)
+                })
+              }
               window.location.hash = '#/admin/sendsuccess'
             }
           })
@@ -535,6 +535,45 @@ class Review extends React.Component {
             console.log(response)
             if (response.data === 'reciever done') {
               modal[1].style.display = 'none'
+              axios
+                .post('/expiry', {
+                  UserID:userid,
+                  DocumentID:filename,
+                  day:day,
+                  month:month,
+                  year:year
+                })
+                .then(function (response) {
+                  console.log(response)
+                })
+                .catch(function (error) {
+                  console.log(error)
+                })
+
+                if (document.getElementById('reviewautoremindercheck').checked) {
+                  var select = document.getElementById('autoreminderselect')
+                      var date = select.options[select.selectedIndex].value
+                  console.log(date);
+                  var url =
+                  process.env.REACT_APP_BASE_URL +
+                  '/#/admin/sign?id=' +
+                  filename +
+                  '&type=db&u=' +
+                  userid +
+                  '&key='
+                    axios
+                  .post('/reminder', {
+                    DocumentID:filename,
+                    date:date,
+                    url:url
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                  })
+                }
               window.location.hash = '#/admin/sendsuccess'
             }
           })
