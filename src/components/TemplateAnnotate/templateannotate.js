@@ -358,7 +358,7 @@ toggleSignModal = () => {
                     //alert('double clicked on a image!');
                     global.doubleclickobj = fabricObj.findTarget(e);
                     if(obj.width === obj.height){
-                      if(initialimage != '' || initialimage === null  && objcolor != 'transparent'){
+                      if(initialimage != ''  && objcolor != 'transparent'){
 
                         global.doubleclickobj.setSrc(initialimage);
                         global.doubleclickobj.set(
@@ -376,7 +376,7 @@ toggleSignModal = () => {
                       }
                     }
                     else{
-                      if(signimage != '' || signimage === null  && objcolor != 'transparent'){
+                      if(signimage != ''  && objcolor != 'transparent'){
 
                         global.doubleclickobj.setSrc(signimage);
                         global.doubleclickobj.set(
