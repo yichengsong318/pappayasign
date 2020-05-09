@@ -188,8 +188,8 @@ class Review extends React.Component {
     console.log(dateCurrent+''+dateFrom);
 
     $(document).ready(function () {
-      
       $('#input-expiry-date').val(dateTo)
+      $('#input-expiry-date').attr('min', dateCurrent);
     })
 
     var inputDate = document.querySelector('input#input-expiry-date');
