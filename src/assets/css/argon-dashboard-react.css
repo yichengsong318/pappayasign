@@ -385,14 +385,17 @@ border-radius: 20px !important;
     border-radius: 3px;
     padding: 20px; 
     margin: auto; 
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: left;
     display: flex;
-    width: 70%; 
-    height: 400px;
-    overflow-y: auto; 
+    width: 70%;  
     -webkit-animation: fadeinout 0.25s linear forwards;
       animation: fadeinout 0.25s linear forwards;
+    }
+
+    .history-fixed{
+    height: 300px;
+    overflow-y: auto;
     }
 
     #historytable tbody{
