@@ -178,12 +178,12 @@ class Review extends React.Component {
     var dateFrom = moment().subtract(12,'d').format('YYYY-MM-DD');
     var dateTo = moment().add(120,'d').format('YYYY-MM-DD');
 
-    var day, month, year = '';
+    var day, month, year, trigger = '';
 
     day = moment().add(120,'d').format('DD');
     month = moment().add(120,'d').format('MM');
     year = moment().add(120,'d').format('YYYY'); 
-
+    trigger = 'not today';
 
     console.log(dateCurrent+''+dateFrom);
 
@@ -203,19 +203,22 @@ class Review extends React.Component {
             var nextdate = moment(today).format('YYYY-MM-DD');
             day = moment(today).format('DD');
             month = moment(today).format('MM');
-            year = moment(today).format('YYYY');   
+            year = moment(today).format('YYYY');
+            trigger='today';   
         }
         else if(current > thirddayfromnow){
           var nextdate = moment(current).subtract(3,'d').format('YYYY-MM-DD'); 
-          day = moment(current).format('DD');
-          month = moment(current).format('MM');
-          year = moment(current).format('YYYY');
+          day = moment(current).subtract(3,'d').format('DD');
+          month = moment(current).subtract(3,'d').format('MM');
+          year = moment(current).subtract(3,'d').format('YYYY');
+          trigger = 'not today';
         } 
         else if(current == thirddayfromnow){
           var nextdate = moment().format('YYYY-MM-DD'); 
           day = moment(today).format('DD');
           month = moment(today).format('MM');
           year = moment(today).format('YYYY');
+          trigger='today'; 
         }    
     });
 
@@ -380,7 +383,8 @@ class Review extends React.Component {
                 DocumentID:filename,
                 day:day,
                 month:month,
-                year:year
+                year:year,
+                trigger:trigger
               })
               .then(function (response) {
                 console.log(response)
@@ -541,7 +545,8 @@ class Review extends React.Component {
                   DocumentID:filename,
                   day:day,
                   month:month,
-                  year:year
+                  year:year,
+                  trigger: trigger
                 })
                 .then(function (response) {
                   console.log(response)

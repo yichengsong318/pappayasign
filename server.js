@@ -1137,26 +1137,31 @@ app.post("/expiry", function (req, res) {
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
 		if (result) {
-			
-			//console.log(recievers);
-			
-			if(result.Status != 'Completed' || result.Status != 'Void' || result.Status != 'Deleted'){
-				const task = cron.schedule('0 0 23 '+day+' '+month+' *',()=>{
-					var recievers = result.Reciever;
-					setExpiry(recievers, req.body.UserID, req.body.DocumentID);
-					console.log('cron finished expiry')
-					res.send('expiry cron scheduled');
-				},{
-					timezone: "Asia/Kolkata"
-				});
-				expiry_taskMap[result.DocumentID] = task;
+			if(req.body.trigger === 'today'){
+				var recievers = result.Reciever;
+				setExpiry(recievers, req.body.UserID, req.body.DocumentID);
+				res.send('expiry cron scheduled');
 			}
 			else{
-				// for some condition in some code
-				console.log('expiry cron deleted');
-				let my_job = expiry_taskMap[result.DocumentID];
-				my_job.destroy();
+				if(result.Status != 'Completed' || result.Status != 'Void' || result.Status != 'Deleted'){
+					const task = cron.schedule('0 0 23 '+day+' '+month+' *',()=>{
+						var recievers = result.Reciever;
+						setExpiry(recievers, req.body.UserID, req.body.DocumentID);
+						console.log('cron finished expiry')
+						res.send('expiry cron scheduled');
+					},{
+						timezone: "Asia/Kolkata"
+					});
+					expiry_taskMap[result.DocumentID] = task;
+				}
+				else{
+					// for some condition in some code
+					console.log('expiry cron deleted');
+					let my_job = expiry_taskMap[result.DocumentID];
+					my_job.destroy();
+				}
 			}
+			
 		} else {  
 		 res.send('expiry cron not scheduled');
 		}
