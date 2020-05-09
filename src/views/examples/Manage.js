@@ -1946,8 +1946,7 @@ class Tables extends React.Component {
               var HistoryUser = item.HistoryUser.replace(/\n/g, " ");
               signerslist += `
               User: `+HistoryUser+`\tTime: `+item.HistoryTime+`\tStatus: `+item.HistoryStatus+`
-              Action: `+item.HistoryAction+`
-              Activity: `+item.HistoryActivity+`\n
+              Action: `+item.HistoryAction+`\n
               `});
 
             var doc = new jsPDF();
@@ -1990,7 +1989,7 @@ class Tables extends React.Component {
             doc.rect(10, 95, 190, 9, 'F');
 
             doc.setTextColor(0, 0, 0);
-            doc.text(11,100, 'Signer Events');
+            doc.text(11,100, 'Envelope Events');
 
             doc.text(10, 105, 
               ` 
@@ -2144,8 +2143,7 @@ class Tables extends React.Component {
               var HistoryUser = item.HistoryUser.replace(/\n/g, " ");
               signerslist += `
               User: `+HistoryUser+`\tTime: `+item.HistoryTime+`\tStatus: `+item.HistoryStatus+`
-              Action: `+item.HistoryAction+`
-              Activity: `+item.HistoryActivity+`\n
+              Action: `+item.HistoryAction+`\n
               `});
 
             var doc = new jsPDF();
@@ -2188,7 +2186,7 @@ class Tables extends React.Component {
             doc.rect(10, 95, 190, 9, 'F');
 
             doc.setTextColor(0, 0, 0);
-            doc.text(11,100, 'Signer Events');
+            doc.text(11,100, 'Envelope Events');
 
             doc.text(10, 105, 
               ` 
