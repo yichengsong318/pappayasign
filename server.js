@@ -470,6 +470,7 @@ app.post("/getdocdata", function (req, res) {
 		if (result) {
 				var docdata = {
 				Data: result.Data,
+				SignOrder:result.SignOrder,
 				DocStatus: result.Status,
 				Document:result,
 				Status: "doc data done"

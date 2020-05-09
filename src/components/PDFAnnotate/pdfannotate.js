@@ -701,7 +701,9 @@ toggleSignModal = () => {
                 .then(function (response) {
                   console.log(response)
                   if (response.data.Status === 'doc data done') {
-                    var DocumentData = response.data.Data
+                    signorderval = response.data.SignOrder;
+                    console.log(signorderval);
+                    var DocumentData = response.data.Data;
                     $.each(inst.fabricObjects, function (index, fabricObj) {
                       ////console.log(index);
 
@@ -1290,15 +1292,17 @@ toggleSignModal = () => {
                           }
 
                           if (signorderval === true) {
+                            console.log(signorderval);
                             var nextuser = parseInt(recepientkey) + 1
                             var currentuser = parseInt(recepientkey)
                             var nextuseremail =
                               recievers[nextuser].RecepientEmail
                             var nextusername = recievers[nextuser].RecepientName
                             ////console.log(nextuser);
-                            if (currentuser === totalcount) {
-                              // // // // // // // ////console.log('no additional users left');
-                            } else if (currentuser < totalcount) {
+                            if (currentuser === recievercount) {
+                              console.log('no additional users left');
+                            } else if (currentuser < recievercount) {
+                              console.log('next users:'+nextuseremail);
                               try {
                                 var nextuserurl =
                                   process.env.REACT_APP_BASE_URL +

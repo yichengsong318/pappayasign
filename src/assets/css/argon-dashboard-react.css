@@ -255,14 +255,6 @@ background-color: #626262;
     cursor: pointer;
     }
   
- 
-  #detaildownloadbtn{
-    display:none;
-  }
-
-  #detailprintbtn{
-    display:none;
-  }
 
   #managerecepientstable li:hover{
     cursor: default;
@@ -376,6 +368,10 @@ border-radius: 20px !important;
 
 
   #autoreminderselect{
+    display: none;
+  }
+
+  #manageaddobjbtn, #manage-pdf-container, #manage-toolbar{
     display: none;
   }
 

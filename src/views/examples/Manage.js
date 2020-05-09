@@ -2,6 +2,7 @@ import classnames from 'classnames'
 // core components
 import HeaderDefault from 'components/Headers/HeaderDefault.js'
 import $ from 'jquery'
+import { fabric } from 'fabric'
 import * as jsPDF from 'jspdf'
 import React from 'react'
 // reactstrap components
@@ -21,6 +22,8 @@ import {
 import DataVar from '../../variables/data'
 import TemplateDataVar from '../../variables/templatedata'
 
+var PDFJS = require('pdfjs-dist')
+
 const axios = require('axios').default
 
 class Tables extends React.Component {
@@ -34,7 +37,11 @@ class Tables extends React.Component {
     })
   }
 
+  pdf = null;
+
   componentDidMount() {
+    var pdf = '';
+    var global = this;
     try {
       var mainurl = document.location.hash,
         params = mainurl.split('?')[1].split('&'),
@@ -74,7 +81,226 @@ class Tables extends React.Component {
     var unifileid = ''
     var historyfileid = ''
     var uniid = ''
+    var downloadfileid = ''
     var droptoggle = 0
+    var detailaction = 'download';
+    var pdfset = 'pdf not exists';
+
+    var PDFFabric = function (
+      container_id,
+      toolbar_id,
+      url,
+      filename,
+      options = {}
+    ) {
+      this.number_of_pages = 0
+      this.pages_rendered = 0
+      this.active_tool = 1 // 1 - Free hand, 2 - Text, 3 - Arrow, 4 - Rectangle
+      this.fabricObjects = []
+      this.fabricObjectsData = []
+      this.color = '#000'
+      this.borderColor = '#000000'
+      this.borderSize = 1
+      this.font_size = 16
+      this.active_canvas = 0
+      this.container_id = container_id
+      this.toolbar_id = toolbar_id
+      this.imageurl = ''
+      this.Addtext = 'Sample Text'
+      this.recepientemail = ''
+      this.recepientcolor = ''
+      this.filename = filename
+      this.url = url
+      var inst = this
+      inst.fabricObjects.length = 0;
+      inst.fabricObjectsData.length = 0;
+
+
+      var loadingTask = PDFJS.getDocument(this.url)
+      loadingTask.promise.then(
+        function (pdf) {
+          inst.number_of_pages = pdf.numPages
+          var scale = 1.3
+          for (var i = 1; i <= pdf.numPages; i++) {
+            pdf.getPage(i).then(function (page) {
+              var container = document.getElementById(inst.container_id)
+              //var viewport = page.getViewport(1);
+              //var scale = (container.clientWidth - 80) / viewport.width;
+              var viewport = page.getViewport(scale)
+              var canvas = document.createElement('canvas')
+              try {
+                document.getElementById(inst.container_id).appendChild(canvas)
+              } catch (error) {}
+              canvas.className = 'pdf-canvas'
+              canvas.height = viewport.height
+              canvas.width = viewport.width
+              var context = canvas.getContext('2d')
+
+              var renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              }
+              var renderTask = page.render(renderContext)
+              renderTask.then(function () {
+                $('.pdf-canvas').each(function (index, el) {
+                  $(el).attr('id', 'page-' + (index + 1) + '-canvas')
+                })
+                inst.pages_rendered++
+                if (inst.pages_rendered == inst.number_of_pages)
+                  inst.initFabric()
+              })
+            })
+          }
+        },
+        function (reason) {
+          console.error(reason)
+        }
+      )
+
+      this.initFabric = function () {
+        var inst = this
+        $('#' + inst.container_id + ' canvas').each(function (index, el) {
+          var background = el.toDataURL('image/png')
+          var fabricObj = new fabric.Canvas(el.id, {
+            freeDrawingBrush: {
+              width: 1,
+              color: inst.color,
+            },
+          })
+
+          fabricObj.on('object:selected', function (e) {
+            e.target.transparentCorners = false
+            e.target.borderColor = '#cccccc'
+            e.target.cornerColor = '#d35400'
+            e.target.minScaleLimit = 2
+            e.target.cornerStrokeColor = '#d35400'
+            e.target.cornerSize = 8
+            e.target.cornerStyle = 'circle'
+            e.target.minScaleLimit = 0
+            e.target.lockUniScaling = true
+            e.target.lockScalingFlip = true
+            e.target.hasRotatingPoint = false
+            e.target.padding = 5
+            e.target.selectionDashArray = [10, 5]
+            e.target.borderDashArray = [10, 5]
+          })
+          inst.fabricObjects.push(fabricObj)
+          if (typeof options.onPageUpdated == 'function') {
+            fabricObj.on('object:added', function () {
+              var oldValue = Object.assign({}, inst.fabricObjectsData[index])
+              inst.fabricObjectsData[index] = fabricObj.toJSON()
+              options.onPageUpdated(
+                index + 1,
+                oldValue,
+                inst.fabricObjectsData[index]
+              )
+            })
+          }
+          fabricObj.setBackgroundImage(
+            background,
+            fabricObj.renderAll.bind(fabricObj)
+          )
+          fabricObj.on('after:render', function () {
+            inst.fabricObjectsData[index] = fabricObj.toJSON()
+            fabricObj.off('after:render')
+          })
+
+          
+
+          
+        })
+
+        try {
+          var addobjbtn = document.getElementById('manageaddobjbtn')
+          addobjbtn.addEventListener('click', function (event) {
+            global.pdf.AddObj()
+            console.log('adding objects')
+          })
+          addobjbtn.click()
+        } catch (error) {}
+      }
+
+      
+
+      
+    }
+
+    PDFFabric.prototype.AddObj = function () {
+      var inst = this
+      console.log('started adding objects')
+              // // // // // // // ////console.log('file id found');
+              axios
+                .post('/getdocdata', {
+                  DocumentID: downloadfileid,
+                })
+                .then(function (response) {
+                  console.log(response)
+                  if (response.data.Status === 'doc data done') {
+                    var DocumentData = response.data.Data
+                    console.log(DocumentData)
+                    var count = 0;
+                    var total = DocumentData.length;
+                    $.each(inst.fabricObjects, function (index, fabricObj) {
+                      ////console.log(index);
+
+                      fabricObj.loadFromJSON(DocumentData[index], function () {
+                        fabricObj.renderAll()
+                        count = count + 1;
+                        console.log(count);
+                        if(count == total){
+                          console.log('equal');
+                          if(detailaction === 'download'){
+                            global.pdf.savePdf();
+                          }
+                          else if(detailaction === 'print'){
+                            global.pdf.printPdf();
+                          }
+                        }
+                        
+                      })
+                    })
+                    console.log('pdf done')
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[0].style.display = 'none'
+                })
+    }
+
+    PDFFabric.prototype.savePdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf saved')
+      doc.save('pappayasign_' + inst.filename + '')
+      window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.printPdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf saved')
+      window.open(doc.output('bloburl'), '_blank');
+      window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
 
     function getCookie(name) {
       var nameEQ = name + '='
@@ -885,37 +1111,96 @@ class Tables extends React.Component {
     })
 
     $('#detaildownloadbtn').click(function () {
-      modal[2].style.display = 'block'
+      modal[0].style.display = 'block'
+      detailaction = 'download';
+      //modal[2].style.display = 'block'
       //console.log(uniid);
       //console.log(unifileid);
-      var blobUrl = URL.createObjectURL('blob')
-      var link = document.createElement('a')
-      link.href = blobUrl
-      link.style = 'display: none'
-      link.download = '' + unifileid + '.pdf'
-      link.click()
-      modal[2].style.display = 'none'
+      if(pdfset === 'pdf not exists'){
+        downloadfileid = unifileid;
+      axios
+            .post('/docdownload', {
+              UserID: uniid,
+              filename: unifileid,
+            })
+            .then(function (response) {
+              console.log(response)
+              if (response.data.Status === 'doc found') {
+                var doc = response.data.data
+                console.log(doc);
+                //modal[0].style.display = 'block'
+                pdfset = 'pdf exists';
+                global.pdf = new PDFFabric(
+                  'manage-pdf-container',
+                  'manage-toolbar',
+                  doc,
+                  unifileid,
+                  {
+                    onPageUpdated: (page, oldData, newData) => {
+                      
+                      //modal[0].style.display = "block";
+                      ////console.log(page, oldData, newData);
+                    },
+                  }
+                )
+              }
+            })
+            .catch(function (error) {
+              console.log(error)
+              modal[0].style.display = 'none'
+            })
+      }
+      else{
+        global.pdf.savePdf();
+        modal[0].style.display = 'none'
+      }
+      
+      
     })
 
     $('#detailprintbtn').click(function () {
-      modal[2].style.display = 'block'
+      modal[0].style.display = 'block'
+      detailaction = 'print';
+      //modal[2].style.display = 'block'
       //console.log(uniid);
       //console.log(unifileid);
-      var iframe = document.createElement('iframe')
-      // iframe.id = 'pdfIframe'
-      iframe.className = 'pdfIframe'
-      document.body.appendChild(iframe)
-      iframe.style.display = 'none'
-      iframe.onload = function () {
-        setTimeout(function () {
-          iframe.focus()
-          iframe.contentWindow.print()
-          URL.revokeObjectURL('url')
-          // document.body.removeChild(iframe)
-        }, 1)
+      if(pdfset === 'pdf not exists'){
+        downloadfileid = unifileid;
+      axios
+            .post('/docdownload', {
+              UserID: uniid,
+              filename: unifileid,
+            })
+            .then(function (response) {
+              console.log(response)
+              if (response.data.Status === 'doc found') {
+                var doc = response.data.data
+                console.log(doc);
+                pdfset = 'pdf exists';
+                //modal[0].style.display = 'block'
+                global.pdf = new PDFFabric(
+                  'manage-pdf-container',
+                  'manage-toolbar',
+                  doc,
+                  unifileid,
+                  {
+                    onPageUpdated: (page, oldData, newData) => {
+                      //modal[0].style.display = "block";
+                      ////console.log(page, oldData, newData);
+                    },
+                  }
+                )
+              }
+            })
+            .catch(function (error) {
+              console.log(error)
+              modal[0].style.display = 'none'
+            })
       }
-      iframe.src = 'url'
-      modal[2].style.display = 'none'
+      else{
+        global.pdf.printPdf();
+        modal[0].style.display = 'none'
+      }
     })
 
     $(document).on('click', '.void', function () {
@@ -2952,22 +3237,32 @@ class Tables extends React.Component {
                         Back
                       </Button>
                       <Button
-                        color="primary"
+                        color="dark"
                         size="sm"
                         type="button"
-                        className="float-right"
+                        className="float-right px-4"
                         id="detaildownloadbtn"
                       >
                         Download
                       </Button>
                       <Button
+                        color="dark"
+                        size="sm"
+                        type="button"
+                        className="float-right px-4"
+                        id="detailprintbtn"
+                      >
+                        Print
+                      </Button>
+
+                      <Button
                         color="primary"
                         size="sm"
                         type="button"
                         className="float-right"
-                        id="detailprintbtn"
+                        id="manageaddobjbtn"
                       >
-                        Print
+                        AddObj
                       </Button>
                     </Col>
                     <Col lg="12">
@@ -3065,6 +3360,8 @@ class Tables extends React.Component {
               </Card>
             </div>
           </Row>
+          <div id="manage-pdf-container"></div>
+          <div id="manage-toolbar"></div>
         </div>
       </>
     )
