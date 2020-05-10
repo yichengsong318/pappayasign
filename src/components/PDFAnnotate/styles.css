@@ -270,7 +270,7 @@ i.material-icons{
 .modal {
 	display: none;
 	position: fixed; 
-	padding-top: 10%;
+	padding-top: 2%;
 	left: 0; 
 	top: 0;
 	width: 100%;

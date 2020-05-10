@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SimpleCrypto from 'simple-crypto-js'
 import DataVar from 'variables/data'
 import './Dropzone.css'
+import PreviewData from '../../variables/preview'
 
 class Dropzone extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class Dropzone extends Component {
     reader.onload = function () {
       DataVar.DataURI = files[0]
       DataVar.DataPath = reader.result
+      PreviewData.DataPath = reader.result
       DataVar.DocName = files[0].name
       //console.log(DataVar);
 
@@ -85,6 +87,7 @@ class Dropzone extends Component {
     reader.onload = function () {
       DataVar.DataURI = files[0]
       DataVar.DataPath = reader.result
+      PreviewData.DataPath = reader.result
       DataVar.DocName = files[0].name
       //console.log(DataVar);
       modal[0].style.display = 'block'

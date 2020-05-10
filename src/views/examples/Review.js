@@ -1,8 +1,11 @@
 import React from 'react'
 import classnames from 'classnames'
 import $ from 'jquery'
+import { fabric } from 'fabric'
+import * as jsPDF from 'jspdf'
 
 import DataVar from '../../variables/data'
+import PreviewData from '../../variables/preview'
 
 // reactstrap components
 import {
@@ -33,6 +36,7 @@ import routes from 'routes.js'
 import HeaderDefault from 'components/Headers/HeaderDefault.js'
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
+var PDFJS = require('pdfjs-dist')
 var moment = require('moment');
 const axios = require('axios').default
 
@@ -47,7 +51,209 @@ class Review extends React.Component {
     })
   }
 
+  pdf = null;
+
   componentDidMount() {
+    var pdf = '';
+    var global = this;
+
+    var PDFFabric = function (
+      container_id,
+      toolbar_id,
+      url,
+      filename,
+      options = {}
+    ) {
+      this.number_of_pages = 0
+      this.pages_rendered = 0
+      this.active_tool = 1 // 1 - Free hand, 2 - Text, 3 - Arrow, 4 - Rectangle
+      this.fabricObjects = []
+      this.fabricObjectsData = []
+      this.color = '#000'
+      this.borderColor = '#000000'
+      this.borderSize = 1
+      this.font_size = 16
+      this.active_canvas = 0
+      this.container_id = container_id
+      this.toolbar_id = toolbar_id
+      this.imageurl = ''
+      this.Addtext = 'Sample Text'
+      this.recepientemail = ''
+      this.recepientcolor = ''
+      this.filename = filename
+      this.url = url
+      var inst = this
+      inst.fabricObjects.length = 0;
+      inst.fabricObjectsData.length = 0;
+
+
+      var loadingTask = PDFJS.getDocument(this.url)
+      loadingTask.promise.then(
+        function (pdf) {
+          inst.number_of_pages = pdf.numPages
+          var scale = 1.3
+          for (var i = 1; i <= pdf.numPages; i++) {
+            pdf.getPage(i).then(function (page) {
+              var container = document.getElementById(inst.container_id)
+              //var viewport = page.getViewport(1);
+              //var scale = (container.clientWidth - 80) / viewport.width;
+              var viewport = page.getViewport(scale)
+              var canvas = document.createElement('canvas')
+              try {
+                document.getElementById(inst.container_id).appendChild(canvas)
+              } catch (error) {}
+              canvas.className = 'review-pdf-canvas'
+              canvas.height = viewport.height
+              canvas.width = viewport.width
+              var context = canvas.getContext('2d')
+
+              var renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              }
+              var renderTask = page.render(renderContext)
+              renderTask.then(function () {
+                $('.review-pdf-canvas').each(function (index, el) {
+                  $(el).attr('id', 'page-' + (index + 1) + '-canvas')
+                })
+                inst.pages_rendered++
+                if (inst.pages_rendered == inst.number_of_pages)
+                  inst.initFabric()
+              })
+            })
+          }
+        },
+        function (reason) {
+          console.error(reason)
+        }
+      )
+
+      this.initFabric = function () {
+        var inst = this
+        $('#' + inst.container_id + ' canvas').each(function (index, el) {
+          var background = el.toDataURL('image/png')
+          var fabricObj = new fabric.Canvas(el.id, {
+            freeDrawingBrush: {
+              width: 1,
+              color: inst.color,
+            },
+          })
+
+          fabricObj.on('object:selected', function (e) {
+            e.target.transparentCorners = false
+            e.target.borderColor = '#cccccc'
+            e.target.cornerColor = '#d35400'
+            e.target.minScaleLimit = 2
+            e.target.cornerStrokeColor = '#d35400'
+            e.target.cornerSize = 8
+            e.target.cornerStyle = 'circle'
+            e.target.minScaleLimit = 0
+            e.target.lockUniScaling = true
+            e.target.lockScalingFlip = true
+            e.target.hasRotatingPoint = false
+            e.target.padding = 5
+            e.target.selectionDashArray = [10, 5]
+            e.target.borderDashArray = [10, 5]
+            e.lockMovementX = true
+            e.lockMovementY = true
+            e.selectable = false
+            e.hasControls = false
+          })
+          inst.fabricObjects.push(fabricObj)
+          
+          fabricObj.setBackgroundImage(
+            background,
+            fabricObj.renderAll.bind(fabricObj)
+          )
+          fabricObj.on('after:render', function () {
+            inst.fabricObjectsData[index] = fabricObj.toJSON()
+            fabricObj.off('after:render')
+          })
+
+          
+
+          
+        })
+
+        try {
+          var addobjbtn = document.getElementById('manageaddobjbtn')
+          addobjbtn.addEventListener('click', function (event) {
+            global.pdf.AddObj()
+            //console.log(global.pdf)
+            //console.log('adding objects')
+          })
+          addobjbtn.click()
+        } catch (error) {}
+      }
+
+      
+
+      
+    }
+
+    PDFFabric.prototype.AddObj = function () {
+      var inst = this
+      //console.log('started adding objects')
+              // // // // // // // ////console.log('file id found');
+              $.each(inst.fabricObjects, function (index, fabricObj) {
+                ////console.log(index);
+
+                fabricObj.loadFromJSON(PreviewData.Data[index], function () {
+                  fabricObj.renderAll()
+                  fabricObj.getObjects().forEach(function (targ) {
+                    ////console.log(targ);
+                    targ.selectable = false
+                    targ.hasControls = false
+                  })
+                  
+                  
+                })
+              })
+              //console.log('pdf done')
+    }
+
+    PDFFabric.prototype.savePdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf saved')
+      doc.save('pappayasign_' + inst.filename + '')
+      //window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.printPdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf printed')
+      window.open(doc.output('bloburl'), '_blank');
+      //window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.Clear = function () {
+      var inst = this
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        inst.fabricObjects.slice(index,1);
+      })
+      modal[0].style.display = 'none'
+      
+    }
 
     var ip ='';
     axios
@@ -86,6 +292,7 @@ class Review extends React.Component {
     var filename = ''
     var docname = ''
     var action = ''
+    var pdfset = 'not set'
 
     var modal = document.querySelectorAll('.modal')
     modal[0].style.display = 'block'
@@ -162,6 +369,38 @@ class Review extends React.Component {
       modal[0].style.display = 'none'
     }
 
+
+      $('#reviewpreviewbtn').click(async function () {
+      modal[2].style.display = 'block'
+      try {
+        if(pdfset === 'not set'){
+          pdfset = 'set';
+                      global.pdf = await new PDFFabric(
+                        'review-pdf-container',
+                        'review-toolbar',
+                        PreviewData.DataPath,
+                        'Default',
+                        {
+                          onPageUpdated: (page, oldData, newData) => {
+                            
+                            //modal[0].style.display = "block";
+                            ////console.log(page, oldData, newData);
+                          },
+                        }
+                      )
+                      modal[2].style.display = 'none'
+                      modal[3].style.display = 'block'
+        }
+        else{
+          modal[2].style.display = 'none'
+          modal[3].style.display = 'block'
+        }
+      } catch (error) {
+        
+      }
+      
+                    
+    })
 
     $('#reviewautoremindercheck').change(function () {
       if (this.checked) {
@@ -590,6 +829,10 @@ class Review extends React.Component {
       }
     })
 
+    $(document).on('click', '.preview-close', function () {
+      modal[3].style.display = 'none';
+    });
+
    
   }
   render() {
@@ -672,6 +915,36 @@ class Review extends React.Component {
               </div>
             </div>
           </div>
+
+          <div className="modal">
+            <div className="review-modal-content">
+            <Card className="shadow border-0 mx-3">
+                <CardHeader className=" bg-transparent">
+                <div className="review-manager-title">
+                        <span>Preview</span>
+                        <i className="ni ni-fat-remove preview-close" />
+                    </div>
+                </CardHeader>
+                <CardBody>
+
+                
+            <Row>
+                    <Col lg="12">
+                    <div id="review-container">
+                    <div id="review-pdf-container"></div>
+                    <div id="review-toolbar"></div>
+                    </div>
+                    </Col>
+            </Row>  
+            </CardBody>
+            <CardFooter className=" bg-transparent">
+            
+            </CardFooter> 
+            </Card>     
+            </div>
+          </div>
+
+          
 
           <Row>
             <div className="col  pb-2">
@@ -837,12 +1110,29 @@ class Review extends React.Component {
                 <CardFooter>
                   <Row>
                     <Col lg="12">
+                    
                       <Button
-                        className="float-right px-4"
+                        className="float-right px-4 mx-2"
                         color="primary"
                         id="reviewnextbtn"
                       >
                         Send
+                      </Button>
+                      <Button
+                        className="mx-2 float-right px-4"
+                        color="dark"
+                        id="reviewpreviewbtn"
+                      >
+                        Preview
+                      </Button>
+                      <Button
+                        color="primary"
+                        size="sm"
+                        type="button"
+                        className="float-right"
+                        id="manageaddobjbtn"
+                      >
+                        AddObj
                       </Button>
                     </Col>
                   </Row>

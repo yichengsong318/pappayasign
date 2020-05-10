@@ -15,6 +15,7 @@ import {
   Row,
 } from 'reactstrap'
 import TemplateDataVar from '../../variables/templatedata'
+import PreviewData from '../../variables/preview'
 import './selecttemplaterecepients.css'
 
 require('jquery-ui')
@@ -210,6 +211,7 @@ class SelectTemplateRecepients extends React.Component {
               var doc = response.data.data
 
               //console.log(doc);
+              PreviewData.DataPath = doc;
 
               
 
@@ -232,6 +234,7 @@ class SelectTemplateRecepients extends React.Component {
                         console.log(response)
                         if (response.data.Status === 'template found') {
                           var Template = response.data.Template
+                          PreviewData.Data = Template.Data;
 
                           axios
                             .post('/adddocumentdata', {

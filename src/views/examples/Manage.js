@@ -83,8 +83,9 @@ class Tables extends React.Component {
     var uniid = ''
     var downloadfileid = ''
     var droptoggle = 0
-    var detailaction = 'download';
-    var pdfset = 'pdf not exists';
+    var detailaction = 'download'
+    var pdfset = 'pdf not exists'
+    var RowSelectData = []
 
     var PDFFabric = function (
       container_id,
@@ -131,7 +132,7 @@ class Tables extends React.Component {
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
               } catch (error) {}
-              canvas.className = 'pdf-canvas'
+              canvas.className = 'manage-pdf-canvas'
               canvas.height = viewport.height
               canvas.width = viewport.width
               var context = canvas.getContext('2d')
@@ -142,7 +143,7 @@ class Tables extends React.Component {
               }
               var renderTask = page.render(renderContext)
               renderTask.then(function () {
-                $('.pdf-canvas').each(function (index, el) {
+                $('.manage-pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
                 inst.pages_rendered++
@@ -183,19 +184,13 @@ class Tables extends React.Component {
             e.target.padding = 5
             e.target.selectionDashArray = [10, 5]
             e.target.borderDashArray = [10, 5]
+            e.lockMovementX = true
+            e.lockMovementY = true
+            e.selectable = false
+            e.hasControls = false
           })
           inst.fabricObjects.push(fabricObj)
-          if (typeof options.onPageUpdated == 'function') {
-            fabricObj.on('object:added', function () {
-              var oldValue = Object.assign({}, inst.fabricObjectsData[index])
-              inst.fabricObjectsData[index] = fabricObj.toJSON()
-              options.onPageUpdated(
-                index + 1,
-                oldValue,
-                inst.fabricObjectsData[index]
-              )
-            })
-          }
+          
           fabricObj.setBackgroundImage(
             background,
             fabricObj.renderAll.bind(fabricObj)
@@ -214,7 +209,8 @@ class Tables extends React.Component {
           var addobjbtn = document.getElementById('manageaddobjbtn')
           addobjbtn.addEventListener('click', function (event) {
             global.pdf.AddObj()
-            console.log('adding objects')
+            //console.log(global.pdf)
+            //console.log('adding objects')
           })
           addobjbtn.click()
         } catch (error) {}
@@ -227,45 +223,23 @@ class Tables extends React.Component {
 
     PDFFabric.prototype.AddObj = function () {
       var inst = this
-      console.log('started adding objects')
+      //console.log('started adding objects')
               // // // // // // // ////console.log('file id found');
-              axios
-                .post('/getdocdata', {
-                  DocumentID: downloadfileid,
-                })
-                .then(function (response) {
-                  console.log(response)
-                  if (response.data.Status === 'doc data done') {
-                    var DocumentData = response.data.Data
-                    console.log(DocumentData)
-                    var count = 0;
-                    var total = DocumentData.length;
-                    $.each(inst.fabricObjects, function (index, fabricObj) {
-                      ////console.log(index);
+              $.each(inst.fabricObjects, function (index, fabricObj) {
+                ////console.log(index);
 
-                      fabricObj.loadFromJSON(DocumentData[index], function () {
-                        fabricObj.renderAll()
-                        count = count + 1;
-                        console.log(count);
-                        if(count == total){
-                          console.log('equal');
-                          if(detailaction === 'download'){
-                            global.pdf.savePdf();
-                          }
-                          else if(detailaction === 'print'){
-                            global.pdf.printPdf();
-                          }
-                        }
-                        
-                      })
-                    })
-                    console.log('pdf done')
-                  }
+                fabricObj.loadFromJSON(RowSelectData[index], function () {
+                  fabricObj.renderAll()
+                  fabricObj.getObjects().forEach(function (targ) {
+                    ////console.log(targ);
+                    targ.selectable = false
+                    targ.hasControls = false
+                  })
+                  
+                  
                 })
-                .catch(function (error) {
-                  console.log(error)
-                  modal[0].style.display = 'none'
-                })
+              })
+              //console.log('pdf done')
     }
 
     PDFFabric.prototype.savePdf = function () {
@@ -280,7 +254,7 @@ class Tables extends React.Component {
       })
       console.log('pdf saved')
       doc.save('pappayasign_' + inst.filename + '')
-      window.location.reload(false)
+      //window.location.reload(false)
       modal[0].style.display = 'none'
       
     }
@@ -295,9 +269,18 @@ class Tables extends React.Component {
         }
         doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
       })
-      console.log('pdf saved')
+      console.log('pdf printed')
       window.open(doc.output('bloburl'), '_blank');
-      window.location.reload(false)
+      //window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.Clear = function () {
+      var inst = this
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        inst.fabricObjects.slice(index,1);
+      })
       modal[0].style.display = 'none'
       
     }
@@ -335,7 +318,7 @@ class Tables extends React.Component {
       $('#completedtable tbody tr').remove()
       $('#expiringtable tbody tr').remove()
 
-      axios
+      await axios
         .post('/getuserdata', {
           UserID: userid,
         })
@@ -579,7 +562,7 @@ class Tables extends React.Component {
       $('#waitingtable tbody tr').remove()
       $('#authtable tbody tr').remove()
 
-      axios
+      await axios
         .post('/getmanagedocdata', {
           UserID: userid,
         })
@@ -1013,6 +996,7 @@ class Tables extends React.Component {
       modal[2].style.display = 'block'
       $('#managerecepientstable li').remove()
       $('#managerecepientstable').innerHTML = ''
+      global.pdf = null;
       document.getElementById('managebody').style.display = 'none'
       document.getElementById('detailbody').style.display = 'block'
       //console.log($(this).parent().children('#datakey')[0].innerHTML);
@@ -1024,15 +1008,18 @@ class Tables extends React.Component {
         .innerHTML
       unifileid = rowselectfileid
       uniid = rowselectuserid
+      downloadfileid = rowselectfileid;
 
       axios
         .post('/getdocdata', {
           DocumentID: rowselectfileid,
         })
-        .then(function (response) {
+        .then(async function (response) {
           console.log(response)
           if (response.data.Status === 'doc data done') {
             var Document = response.data.Document
+            RowSelectData = response.data.Data
+            
             //console.log(Document.Reciever);
 
             var reciverlistrow = ''
@@ -1084,6 +1071,39 @@ class Tables extends React.Component {
                 Document.Status
               document.getElementById('detailstatusdate').innerHTML =
                 Document.DateStatus
+
+                await axios
+                .post('/docdownload', {
+                  UserID: rowselectuserid,
+                  filename: rowselectfileid,
+                })
+                .then(async function (response) {
+                  console.log(response)
+                  if (response.data.Status === 'doc found') {
+                    var doc = response.data.data
+                    console.log(doc);
+                    //modal[0].style.display = 'block'
+                    pdfset = 'pdf exists';
+                    global.pdf = await new PDFFabric(
+                      'manage-pdf-container',
+                      'manage-toolbar',
+                      doc,
+                      rowselectfileid,
+                      {
+                        onPageUpdated: (page, oldData, newData) => {
+                          
+                          //modal[0].style.display = "block";
+                          ////console.log(page, oldData, newData);
+                        },
+                      }
+                    )
+                    console.log(global.pdf)
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[0].style.display = 'none'
+                })
               modal[2].style.display = 'none'
             } catch (error) {
               modal[2].style.display = 'none'
@@ -1096,6 +1116,10 @@ class Tables extends React.Component {
     })
 
     $('#detailbackbtn').click(function () {
+      $('.manage-pdf-canvas').remove()
+      const myNode = document.getElementById('manage-pdf-container')
+      myNode.innerHTML = ''
+      global.pdf.Clear();
       document.getElementById('managebody').style.display = 'block'
       document.getElementById('detailbody').style.display = 'none'
       $('#managerecepientstable li').remove()
@@ -1112,95 +1136,20 @@ class Tables extends React.Component {
 
     $('#detaildownloadbtn').click(function () {
       modal[0].style.display = 'block'
-      detailaction = 'download';
-      //modal[2].style.display = 'block'
-      //console.log(uniid);
-      //console.log(unifileid);
-      if(pdfset === 'pdf not exists'){
-        downloadfileid = unifileid;
-      axios
-            .post('/docdownload', {
-              UserID: uniid,
-              filename: unifileid,
-            })
-            .then(function (response) {
-              console.log(response)
-              if (response.data.Status === 'doc found') {
-                var doc = response.data.data
-                console.log(doc);
-                //modal[0].style.display = 'block'
-                pdfset = 'pdf exists';
-                global.pdf = new PDFFabric(
-                  'manage-pdf-container',
-                  'manage-toolbar',
-                  doc,
-                  unifileid,
-                  {
-                    onPageUpdated: (page, oldData, newData) => {
-                      
-                      //modal[0].style.display = "block";
-                      ////console.log(page, oldData, newData);
-                    },
-                  }
-                )
-              }
-            })
-            .catch(function (error) {
-              console.log(error)
-              modal[0].style.display = 'none'
-            })
-      }
-      else{
+      setTimeout(function(){ 
         global.pdf.savePdf();
-        modal[0].style.display = 'none'
-      }
+      }, 1000);
+      
       
       
     })
 
     $('#detailprintbtn').click(function () {
       modal[0].style.display = 'block'
-      detailaction = 'print';
-      //modal[2].style.display = 'block'
-      //console.log(uniid);
-      //console.log(unifileid);
-      if(pdfset === 'pdf not exists'){
-        downloadfileid = unifileid;
-      axios
-            .post('/docdownload', {
-              UserID: uniid,
-              filename: unifileid,
-            })
-            .then(function (response) {
-              console.log(response)
-              if (response.data.Status === 'doc found') {
-                var doc = response.data.data
-                console.log(doc);
-                pdfset = 'pdf exists';
-                //modal[0].style.display = 'block'
-                global.pdf = new PDFFabric(
-                  'manage-pdf-container',
-                  'manage-toolbar',
-                  doc,
-                  unifileid,
-                  {
-                    onPageUpdated: (page, oldData, newData) => {
-                      //modal[0].style.display = "block";
-                      ////console.log(page, oldData, newData);
-                    },
-                  }
-                )
-              }
-            })
-            .catch(function (error) {
-              console.log(error)
-              modal[0].style.display = 'none'
-            })
-      }
-      else{
+      setTimeout(function(){ 
         global.pdf.printPdf();
-        modal[0].style.display = 'none'
-      }
+      }, 1000);
+      
     })
 
     $(document).on('click', '.void', function () {
@@ -3265,7 +3214,11 @@ class Tables extends React.Component {
                         AddObj
                       </Button>
                     </Col>
+                    
                     <Col lg="12">
+                    <Row>
+                      <Col lg="9">
+                      <Col lg="12">
                       <h4 className="py-4 px-3" color="dark">
                         Details:
                       </h4>
@@ -3347,6 +3300,17 @@ class Tables extends React.Component {
                         </FormGroup>
                       </Col>
                     </Col>
+                    
+                      </Col>
+                      <Col lg="3">
+                        <div id="manage-container">
+                        <div id="manage-pdf-container"></div>
+                        <div id="manage-toolbar"></div>
+                        </div>
+                      
+                      </Col>
+                      </Row>
+                    </Col>
                     <Col lg="12">
                       <h4 className="py-4 px-3" color="dark">
                         Recepients:
@@ -3355,13 +3319,12 @@ class Tables extends React.Component {
                         <ul id="managerecepientstable"></ul>
                       </div>
                     </Col>
+                   
                   </Row>
                 </CardBody>
               </Card>
             </div>
           </Row>
-          <div id="manage-pdf-container"></div>
-          <div id="manage-toolbar"></div>
         </div>
       </>
     )

@@ -16,6 +16,7 @@ import {
   TabPane,
 } from 'reactstrap'
 import DataVar from '../../variables/data'
+import PreviewData from '../../variables/preview'
 import './pdfannotate.css'
 //import fabric from 'fabric-webpack'
 import './styles.css'
@@ -926,6 +927,7 @@ toggleSignModal = () => {
                   ////console.log(JSON.stringify(jsonData[index]));
                   dataarray.push(JSON.stringify(jsonData[index]))
                 })
+                PreviewData.Data = dataarray;
 
                 axios
                   .post('/adddocumentdata', {
@@ -999,6 +1001,7 @@ toggleSignModal = () => {
             ////console.log(jsonData[index]);
             ////console.log(JSON.stringify(jsonData[index]));
             dataarray.push(JSON.stringify(jsonData[index]))
+            PreviewData.Data = dataarray;
 
             if (index != 0) {
               doc.addPage()
@@ -1051,6 +1054,7 @@ toggleSignModal = () => {
             ////console.log(JSON.stringify(jsonData[index]));
             dataarray.push(JSON.stringify(jsonData[index]))
           })
+          PreviewData.Data = dataarray;
 
           
 
