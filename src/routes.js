@@ -9,9 +9,9 @@ import Templates from 'views/examples/Templates.js'
 import SelectTemplate from 'views/examples/SelectTemplate.js'
 import Manage from 'views/examples/Manage.js'
 import Signature from 'views/examples/Signature.js'
-import Recepients from 'views/examples/Recepients.js'
-import TemplateRecepients from 'views/examples/TemplateRecepients.js'
-import SelectTemplateRecepients from 'views/examples/SelectTemplateRecepients.js'
+import Recipients from 'views/examples/Recipients.js'
+import TemplateRecipients from 'views/examples/TemplateRecipients.js'
+import SelectTemplateRecipients from 'views/examples/SelectTemplateRecipients.js'
 import Sign from 'views/examples/Sign.js'
 import SendSuccess from 'views/examples/SendSuccess'
 import Review from 'views/examples/Review'
@@ -93,24 +93,24 @@ var routes = [
     layout: '/admin',
   },
   {
-    path: '/recepients',
-    name: 'Recepients',
+    path: '/recipients',
+    name: 'Recipients',
     icon: 'ni ni-bullet-list-67 text-red',
-    component: Recepients,
+    component: Recipients,
     layout: '/admin',
   },
   {
-    path: '/templaterecepients',
-    name: 'TemplateRecepients',
+    path: '/templaterecipients',
+    name: 'TemplateRecipients',
     icon: 'ni ni-bullet-list-67 text-red',
-    component: TemplateRecepients,
+    component: TemplateRecipients,
     layout: '/admin',
   },
   {
-    path: '/selecttemplaterecepients',
-    name: 'SelectTemplateRecepients',
+    path: '/selecttemplaterecipients',
+    name: 'SelectTemplateRecipients',
     icon: 'ni ni-bullet-list-67 text-red',
-    component: SelectTemplateRecepients,
+    component: SelectTemplateRecipients,
     layout: '/admin',
   },
   {

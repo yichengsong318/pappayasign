@@ -78,8 +78,8 @@ class Review extends React.Component {
       this.toolbar_id = toolbar_id
       this.imageurl = ''
       this.Addtext = 'Sample Text'
-      this.recepientemail = ''
-      this.recepientcolor = ''
+      this.recipientemail = ''
+      this.recipientcolor = ''
       this.filename = filename
       this.url = url
       var inst = this
@@ -336,29 +336,38 @@ class Review extends React.Component {
         //console.log(userid);
         //console.log(filename);
 
+        
+
         var people = []
-        people = DataVar.RecepientArray
+        people = DataVar.RecipientArray
         people.forEach(function (item, index) {
           var li = document.createElement('li')
           li.innerHTML =
             `<div>
         <div>
-        <strong><span class="summarylabelspan" id="summary-recepient-name">` +
+        <strong><span class="summarylabelspan" id="summary-recipient-name">` +
             people[index].name +
             `</span></strong>
         </div>
         <div>
-        <span class="summarylabelspan" id="summary-recepient-name">` +
+        <span class="summarylabelspan" id="summary-recipient-name">` +
             people[index].email +
             `</span>
         </div>
         <div>
-        <span class="summarylabelspan" id="summary-recepient-name">` +
+        <span class="summarylabelspan" id="summary-recipient-name">` +
             people[index].option +
             `</span>
         </div>
         </div>`
-          $('#reviewrecepientstable').append(li)
+          $('#reviewrecipientstable').append(li)
+
+          if (people[index].option == 'Needs to Sign') {
+            var option = document.createElement('option')
+            option.value = people[index].email
+            option.innerHTML = '' + people[index].name + ''
+            $('#privaterecipientselect').append(option)
+          }
         })
         modal[0].style.display = 'none'
       } catch (error) {
@@ -368,6 +377,10 @@ class Review extends React.Component {
       window.location.hash = '#/auth/login'
       modal[0].style.display = 'none'
     }
+
+    $('#reviewprivatebtn').click(async function () {
+      modal[4].style.display = 'block';
+    });
 
 
       $('#reviewpreviewbtn').click(async function () {
@@ -398,8 +411,7 @@ class Review extends React.Component {
       } catch (error) {
         
       }
-      
-                    
+                  
     })
 
     $('#reviewautoremindercheck').change(function () {
@@ -461,9 +473,157 @@ class Review extends React.Component {
         }    
     });
 
+    $(document).on('click', '.preview-close', function () {
+      modal[3].style.display = 'none';
+    });
+
+    $(document).on('click', '.private-close', function () {
+      modal[4].style.display = 'none';
+    });
+
+    $("#privatecancelbtn").on('click', function () {
+      modal[4].style.display = 'none';
+    });
+
+    
+
+    var selecteditem = '';
+    $("#privaterecipientselect").on('focus', function () {
+      selecteditem = this.value;
+      var privatemessage =  document.getElementById('input-private-message').value;
+      changePrivate ( selecteditem, privatemessage );
+      console.log(people);
+      
+  })
+
+    $('#privaterecipientselect').on('change', function() {
+      console.log( this.value );
+        getPrivate ( this.value );
+        console.log(people);
+    });
+
+    function changePrivate( value, privatemessage ) {
+      for (var i in people) {
+        if (people[i].email == value) {
+          people[i].privatemessage = privatemessage;
+           break; //Stop this loop, we found it!
+        }
+      }
+   }
+
+   function getPrivate( value ) {
+     try {
+      for (var i in people) {
+        if (people[i].email == value) {
+          if(people[i].privatemessage){
+           document.getElementById('input-private-message').value = people[i].privatemessage
+          }
+          else{
+            document.getElementById('input-private-message').value = ''
+          }
+           break; //Stop this loop, we found it!
+        }
+      }
+     } catch (error) {
+       
+     }
+    
+ }
+
+ var privatemessagekey = false;
+ $("#privatesavebtn").on('click', function () {
+  privatemessagekey = true;
+  var select = document.getElementById('privaterecipientselect')
+  var recipientemail = select.options[select.selectedIndex].value
+  var privatemessage =  document.getElementById('input-private-message').value;
+  changePrivate ( recipientemail, privatemessage );
+  $("#reviewrecipientstable").html("");
+  people.forEach(function (item, index) {
+
+    if (item.privatemessage){
+      if(item.privatemessage != ''){
+        var li = document.createElement('li')
+        li.innerHTML =
+          `<div>
+      <div>
+      <strong><span class="summarylabelspan" id="summary-recipient-name">` +
+          people[index].name +
+          `</span></strong>
+      </div>
+      <div>
+      <span class="summarylabelspan" id="summary-recipient-name">` +
+          people[index].email +
+          `</span>
+      </div>
+      <div>
+      <span class="summarylabelspan" id="summary-recipient-name">` +
+          people[index].option +
+          `</span>
+      </div>
+      <div>
+      <span class="summarylabelspan" id="summary-recipient-name">Private Message</span>
+      </div>
+      </div>`
+        $('#reviewrecipientstable').append(li)
+      }
+      else{
+        var li = document.createElement('li')
+        li.innerHTML =
+          `<div>
+      <div>
+      <strong><span class="summarylabelspan" id="summary-recipient-name">` +
+          people[index].name +
+          `</span></strong>
+      </div>
+      <div>
+      <span class="summarylabelspan" id="summary-recipient-name">` +
+          people[index].email +
+          `</span>
+      </div>
+      <div>
+      <span class="summarylabelspan" id="summary-recipient-name">` +
+          people[index].option +
+          `</span>
+      </div>
+      
+      </div>`
+        $('#reviewrecipientstable').append(li)
+      }
+ 
+    }
+    else{
+      var li = document.createElement('li')
+    li.innerHTML =
+      `<div>
+  <div>
+  <strong><span class="summarylabelspan" id="summary-recipient-name">` +
+      people[index].name +
+      `</span></strong>
+  </div>
+  <div>
+  <span class="summarylabelspan" id="summary-recipient-name">` +
+      people[index].email +
+      `</span>
+  </div>
+  <div>
+  <span class="summarylabelspan" id="summary-recipient-name">` +
+      people[index].option +
+      `</span>
+  </div>
+  
+  </div>`
+    $('#reviewrecipientstable').append(li)
+    }
+
+  })
+  modal[4].style.display = 'none';
+});
+
 
     $('#reviewnextbtn').click(function () {
       modal[1].style.display = 'block'
+
+      
 
       var today = new Date().toLocaleString().replace(',', '')
 
@@ -475,9 +635,14 @@ class Review extends React.Component {
       var people = []
       var Reciever = []
       var Requests = []
-      people = DataVar.RecepientArray
+      people = DataVar.RecipientArray
       if (DataVar.SignOrder === true) {
-        var firstRecepientEmail = people[0].email
+
+        var firstRecipientPrivateMessage = ''
+        if(privatemessagekey){
+          firstRecipientPrivateMessage = people[0].privatemessage
+        }
+        var firstRecipientEmail = people[0].email
         var url =
           process.env.REACT_APP_BASE_URL +
           '/#/admin/sign?id=' +
@@ -485,7 +650,7 @@ class Review extends React.Component {
           '&type=db&u=' +
           userid +
           '&key=0'
-        var firstRecepientName = people[0].name
+        var firstRecipientName = people[0].name
 
         if (action === 'correct') {
           //console.log('correct');
@@ -522,8 +687,8 @@ class Review extends React.Component {
                     DocumentID: filename,
                     From: userid,
                     FromEmail: email,
-                    RecepientStatus: 'Need to Sign',
-                    RecepientDateStatus: today,
+                    RecipientStatus: 'Need to Sign',
+                    RecipientDateStatus: today,
                   })
                   .then(function (response) {
                     console.log(response)
@@ -544,12 +709,12 @@ class Review extends React.Component {
 
         axios
           .post('/sendmail', {
-            to: firstRecepientEmail,
+            to: firstRecipientEmail,
             body:
               `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
-              firstRecepientName +
+              firstRecipientName +
               `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. <p>Personal Message: ` +
-              emailmessage +
+              emailmessage + '\n' + firstRecipientPrivateMessage +
               `</p></p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
               url +
               `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
@@ -563,24 +728,24 @@ class Review extends React.Component {
           })
 
         people.forEach(function (item, index) {
-          var recepientName = people[index].name
-          var recepientEmail = people[index].email
-          var firstRecepientEmail = people[0].email
-          var recepientOption = people[index].option
-          var recepientColor = colorArray[index]
+          var recipientName = people[index].name
+          var recipientEmail = people[index].email
+          var firstRecipientEmail = people[0].email
+          var recipientOption = people[index].option
+          var recipientColor = colorArray[index]
           if (
-            recepientOption == 'Needs to Sign' ||
-            recepientOption == 'Needs to View'
+            recipientOption == 'Needs to Sign' ||
+            recipientOption == 'Needs to View'
           ) {
-            //console.log(recepientEmail + ',' + recepientName);
+            //console.log(recipientEmail + ',' + recipientName);
             var user = {
-              RecepientName: recepientName,
+              RecipientName: recipientName,
               DocumentName: docname,
-              RecepientEmail: recepientEmail,
-              RecepientColor: recepientColor,
-              RecepientOption: recepientOption,
-              RecepientStatus: 'Sent',
-              RecepientDateStatus: today,
+              RecipientEmail: recipientEmail,
+              RecipientColor: recipientColor,
+              RecipientOption: recipientOption,
+              RecipientStatus: 'Sent',
+              RecipientDateStatus: today,
             }
             Reciever.push(user)
 
@@ -590,7 +755,7 @@ class Review extends React.Component {
               HistoryTime: today,
               HistoryUser: email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
-              HistoryActivity: 'Envelope host sent an invitation to '+recepientName+' ['+recepientEmail+']',
+              HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
               HistoryStatus: 'Sent'
             })
             .then(function (response) {
@@ -658,16 +823,21 @@ class Review extends React.Component {
           })
       } else {
         people.forEach(function (item, index) {
-          var recepientName = people[index].name
-          var recepientEmail = people[index].email
-          var recepientOption = people[index].option
+
+          var RecipientPrivateMessage = ''
+        if(privatemessagekey){
+          RecipientPrivateMessage = people[index].privatemessage
+        }
+          var recipientName = people[index].name
+          var recipientEmail = people[index].email
+          var recipientOption = people[index].option
           var key = ''
-          var recepientColor = colorArray[index]
+          var recipientColor = colorArray[index]
           if (
-            recepientOption == 'Needs to Sign' ||
-            recepientOption == 'Needs to View'
+            recipientOption == 'Needs to Sign' ||
+            recipientOption == 'Needs to View'
           ) {
-            //console.log(recepientEmail + ',' + recepientName);
+            //console.log(recipientEmail + ',' + recipientName);
             var url =
               process.env.REACT_APP_BASE_URL +
               '/#/admin/sign?id=' +
@@ -683,7 +853,7 @@ class Review extends React.Component {
             } else {
               axios
                 .post('/getrequestuser', {
-                  UserEmail: recepientEmail,
+                  UserEmail: recipientEmail,
                 })
                 .then(function (response) {
                   console.log(response)
@@ -695,8 +865,8 @@ class Review extends React.Component {
                         DocumentID: filename,
                         From: userid,
                         FromEmail: email,
-                        RecepientStatus: 'Need to Sign',
-                        RecepientDateStatus: today,
+                        RecipientStatus: 'Need to Sign',
+                        RecipientDateStatus: today,
                       })
                       .then(function (response) {
                         console.log(response)
@@ -717,12 +887,12 @@ class Review extends React.Component {
 
             axios
               .post('/sendmail', {
-                to: recepientEmail,
+                to: recipientEmail,
                 body:
                   `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
-                  recepientName +
+                  recipientName +
                   `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. <p>Personal Message: ` +
-                  emailmessage +
+                  emailmessage + '\n' + RecipientPrivateMessage +
                   `</p></p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
                   url +
                   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
@@ -736,13 +906,13 @@ class Review extends React.Component {
               })
 
             var user = {
-              RecepientName: recepientName,
+              RecipientName: recipientName,
               DocumentName: docname,
-              RecepientEmail: recepientEmail,
-              RecepientColor: recepientColor,
-              RecepientOption: recepientOption,
-              RecepientStatus: 'Sent',
-              RecepientDateStatus: today,
+              RecipientEmail: recipientEmail,
+              RecipientColor: recipientColor,
+              RecipientOption: recipientOption,
+              RecipientStatus: 'Sent',
+              RecipientDateStatus: today,
             }
             Reciever.push(user)
 
@@ -752,7 +922,7 @@ class Review extends React.Component {
               HistoryTime: today,
               HistoryUser: email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
-              HistoryActivity: 'Envelope host sent an invitation to '+recepientName+' ['+recepientEmail+']',
+              HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
               HistoryStatus: 'Sent'
             })
             .then(function (response) {
@@ -829,9 +999,8 @@ class Review extends React.Component {
       }
     })
 
-    $(document).on('click', '.preview-close', function () {
-      modal[3].style.display = 'none';
-    });
+    
+
 
    
   }
@@ -944,6 +1113,63 @@ class Review extends React.Component {
             </div>
           </div>
 
+          <div className="modal">
+            <div className="private-modal-content">
+              <div>
+              <Card className="shadow border-0 mx-3 p-3">
+              <CardHeader className=" bg-transparent">
+                <div className="review-manager-title">
+                        <span>Private Message</span>
+                        <i className="ni ni-fat-remove private-close" />
+                    </div>
+                </CardHeader>
+                <Row>
+                  <Col lg='12'>
+                  <FormGroup className="my-4">
+                    <span className="emaillabelspan py-2">
+                      <strong>Select Recipient:</strong>
+                    </span>
+                    <select
+                      id="privaterecipientselect"
+                      className="form-control selectpicker form-control-sm"
+                    ></select>
+                  </FormGroup>
+                  <FormGroup className="">
+                    <span className="emaillabelspan  py-2">
+                      <strong>Message:</strong>
+                    </span>
+                    <Input
+                      id="input-private-message"
+                      placeholder="Enter message here ..."
+                      rows="3"
+                      type="textarea"
+                    />
+                    <span className="emaillabelspan">
+                      Max Characters: 10000
+                    </span>
+                  </FormGroup>
+                  <Button
+                    className="mx-2 float-right px-4"
+                    color="neutral"
+                    id="privatecancelbtn"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                        className="float-right px-4 mx-2"
+                        color="primary"
+                        id="privatesavebtn"
+                      >
+                        Save
+                      </Button>
+                  
+                  </Col>
+                </Row>
+                </Card>
+              </div>
+            </div>
+          </div>
+
           
 
           <Row>
@@ -954,11 +1180,19 @@ class Review extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <Row>
-                    <Col lg="6" className="">
+                    <Col lg="6" className="my-3">
                       <Col lg="12">
-                        <h4 className="py-3">Message to Recepients!</h4>
-                        <FormGroup>
-                          <span className="emaillabelspan">
+                      <Button
+                        className="float-right px-3 mx-1"
+                        color="dark"
+                        id="reviewprivatebtn"
+                      >
+                        Private Message
+                      </Button>
+                        <h4 className="">Message to Recipients!</h4>
+                        
+                        <FormGroup className="my-4">
+                          <span className="emaillabelspan py-2">
                             <strong>Email Subject*</strong>
                           </span>
                           <Input
@@ -973,7 +1207,7 @@ class Review extends React.Component {
                       </Col>
                       <Col lg="12">
                         <FormGroup className="">
-                          <span className="emaillabelspan">
+                          <span className="emaillabelspan  py-2">
                             <strong>Email Body*</strong>
                           </span>
                           <Input
@@ -1073,14 +1307,17 @@ class Review extends React.Component {
                               <hr className="my-3" />
                               <strong>
                                 <span className="summarylabelspan py-2">
-                                  <strong>Recepients:</strong>
+                                  <strong>Recipients:</strong>
                                 </span>
                               </strong>
                             </Col>
                             <Col lg="12">
-                              <div className="reviewrecepientstable">
-                                <ul id="reviewrecepientstable"></ul>
+                              <div className="reviewrecipientstable">
+                                <ul id="reviewrecipientstable"></ul>
                               </div>
+                              <hr className="my-2" />
+                              <span className="summarylabelspan">Once the envelope is completed, all recipients will receive a copy of the completed envelope.</span>
+                              
                             </Col>
                           </Row>
                         </TabPane>

@@ -2,9 +2,9 @@ var TemplateDataVar = {
   TemplateDataPath: '',
   TemplateDataURI: '',
   TemplateDocName: 'default',
-  TemplateRecepientArray: [],
+  TemplateRecipientArray: [],
   TemplateID: '',
-  TemplateRecepientCount: 0,
+  TemplateRecipientCount: 0,
   TemplateUserID: '',
 }
 

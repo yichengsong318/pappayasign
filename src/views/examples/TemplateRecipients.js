@@ -15,13 +15,13 @@ import {
   Row,
 } from 'reactstrap'
 import TemplateDataVar from '../../variables/templatedata'
-import './templaterecepients.css'
+import './templaterecipients.css'
 
 require('jquery-ui')
 require('jquery-ui/ui/widgets/sortable')
 require('jquery-ui/ui/disable-selection')
 
-class TemplateRecepients extends React.Component {
+class TemplateRecipients extends React.Component {
   componentDidMount() {
     $(function () {
       $('#tsortable').sortable()
@@ -29,35 +29,35 @@ class TemplateRecepients extends React.Component {
     })
 
     $('#tappend-btn').click(function () {
-      var recepientName = document.getElementById('trecepient-input-name').value
-      var recepientEmail = document.getElementById('trecepient-input-email')
+      var recipientName = document.getElementById('trecipient-input-name').value
+      var recipientEmail = document.getElementById('trecipient-input-email')
         .value
-      var recepientoptionselect = document.getElementById(
-        'trecepientoptionselect'
+      var recipientoptionselect = document.getElementById(
+        'trecipientoptionselect'
       )
-      var recepientoption =
-        recepientoptionselect.options[recepientoptionselect.selectedIndex].value
-      if (recepientName == '' || recepientEmail == '') {
+      var recipientoption =
+        recipientoptionselect.options[recipientoptionselect.selectedIndex].value
+      if (recipientName == '' || recipientEmail == '') {
         alert('Please enter all details.')
       } else {
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="trcard"><input class="form-control-alternative p-3 inputr" id="trecepient-name" placeholder="' +
-          recepientName +
-          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="trecepient-email" placeholder="' +
-          recepientEmail +
-          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="trecepient-option" placeholder="' +
-          recepientoption +
+          '<div class="p-2 rcard" id="trcard"><input class="form-control-alternative p-3 inputr" id="trecipient-name" placeholder="' +
+          recipientName +
+          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="trecipient-email" placeholder="' +
+          recipientEmail +
+          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="trecipient-option" placeholder="' +
+          recipientoption +
           '" type="text" disabled/><button class="buttonr delete">x</button></div>'
         $('#tsortable').append(li)
-        document.getElementById('trecepient-input-name').value = ''
-        document.getElementById('trecepient-input-email').value = ''
+        document.getElementById('trecipient-input-name').value = ''
+        document.getElementById('trecipient-input-email').value = ''
       }
     })
 
     $(document).on('click', '.delete', function () {
       $(this).parent().parent().remove()
-      //console.log($(this).parent().children('#trecepient-name').attr("placeholder"));
+      //console.log($(this).parent().children('#trecipient-name').attr("placeholder"));
     })
 
     Array.prototype.pushWithReplace = function (o, k) {
@@ -70,29 +70,29 @@ class TemplateRecepients extends React.Component {
       var people = []
       var listItems = $('#tsortable li')
       if (listItems.length == 0) {
-        alert('There are no recepeints, Please add some recepients')
-        TemplateDataVar.TemplateRecepientArray = people
+        alert('There are no recepeints, Please add some recipients')
+        TemplateDataVar.TemplateRecipientArray = people
       } else {
         listItems.each(function (li) {
-          var recepientN = $(this)
+          var recipientN = $(this)
             .children('#trcard')
-            .children('#trecepient-name')
+            .children('#trecipient-name')
             .attr('placeholder')
-          var recepientE = $(this)
+          var recipientE = $(this)
             .children('#trcard')
-            .children('#trecepient-email')
+            .children('#trecipient-email')
             .attr('placeholder')
-          var recepientO = $(this)
+          var recipientO = $(this)
             .children('#trcard')
-            .children('#trecepient-option')
+            .children('#trecipient-option')
             .attr('placeholder')
           people.pushWithReplace(
-            { name: recepientN, email: recepientE, option: recepientO },
+            { name: recipientN, email: recipientE, option: recipientO },
             'email'
           )
         })
         //console.log(people);
-        TemplateDataVar.TemplateRecepientArray = people
+        TemplateDataVar.TemplateRecipientArray = people
         //console.log(TemplateDataVar);
         var url = '#/admin/templatecreate'
         window.location.hash = url
@@ -110,19 +110,19 @@ class TemplateRecepients extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Add PlaceHolder Recepients</h3>
+                  <h3 className="mb-0">Add PlaceHolder Recipients</h3>
                 </CardHeader>
                 <CardBody>
                   <div>
                     <div className="mb-4 mb-xl-0">
-                      <h5>Enter Recepients: </h5>
+                      <h5>Enter Recipients: </h5>
                     </div>
                     <Row>
                       <Col lg="4">
                         <FormGroup>
                           <Input
                             className="form-control-alternative"
-                            id="trecepient-input-name"
+                            id="trecipient-input-name"
                             placeholder="Name"
                             type="text"
                           />
@@ -132,7 +132,7 @@ class TemplateRecepients extends React.Component {
                         <FormGroup>
                           <Input
                             className="form-control-alternative"
-                            id="trecepient-input-email"
+                            id="trecipient-input-email"
                             placeholder="Email Address"
                             type="email"
                           />
@@ -141,7 +141,7 @@ class TemplateRecepients extends React.Component {
                       <Col lg="4">
                         <FormGroup>
                           <select
-                            id="trecepientoptionselect"
+                            id="trecipientoptionselect"
                             className="form-control  form-control-md"
                           >
                             <option value="Needs to Sign">Needs to Sign</option>
@@ -172,7 +172,7 @@ class TemplateRecepients extends React.Component {
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  <div id="trecepientdiv">
+                  <div id="trecipientdiv">
                     <ul id="tsortable"></ul>
                   </div>
                 </CardBody>
@@ -185,4 +185,4 @@ class TemplateRecepients extends React.Component {
   }
 }
 
-export default TemplateRecepients
+export default TemplateRecipients

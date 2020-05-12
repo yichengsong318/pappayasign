@@ -59,7 +59,7 @@ canvas, .canvas-container {
 	
 }
 
-.recepientsbar{
+.recipientsbar{
 	width: 100%;
 	height: 90%;
 	top:10px;
@@ -74,7 +74,7 @@ canvas, .canvas-container {
 	padding-right:10px;
 }
 
-.recepientsbar .tool {
+.recipientsbar .tool {
 	display: inline-block;
 	color: #626262;
 	width: 100%;
@@ -92,16 +92,16 @@ canvas, .canvas-container {
 	
 }
 
-.recepientsbar .tool:hover {
+.recipientsbar .tool:hover {
 	color:#d35400;
   }
   
-  .recepientsbar .tool.active {
+  .recipientsbar .tool.active {
 	  color:#d35400 !important;
 	}
 	
   
-  .recepientsbar .tool:hover i.material-icons {
+  .recipientsbar .tool:hover i.material-icons {
 	  color:#d35400;
   }
 
@@ -420,18 +420,18 @@ i.material-icons{
   }
   
   
-  #trecepientselect option:nth-child(1) {color:#000; background-color:#E6EE9C;}
-  #trecepientselect option:nth-child(2) {color:#000; background-color:#B6EDD8;}
-  #trecepientselect option:nth-child(3) {color:#000; background-color:#FFCDD3;}
-  #trecepientselect option:nth-child(4) {color:#000; background-color:#90CAF9;}
-  #trecepientselect option:nth-child(5) {color:#000; background-color:#E1BEE7;}
-  #trecepientselect option:nth-child(6) {color:#000; background-color:#A5D6A7;}
-  #trecepientselect option:nth-child(7) {color:#000; background-color:#B3E2E3;}
-  #trecepientselect option:nth-child(8) {color:#000; background-color:#BCAAA4;}
-  #trecepientselect option:nth-child(9) {color:#000; background-color:#E0E0E0;}
-  #trecepientselect option:nth-child(10) {color:#000; background-color:#FFAB00;}
-  #trecepientselect option:nth-child(11) {color:#000; background-color:#64DD17;}
-  #trecepientselect option:nth-child(12) {color:#000; background-color:#00B8D4;}
-  #trecepientselect option:nth-child(13) {color:#000; background-color:#00BFA5;}
+  #trecipientselect option:nth-child(1) {color:#000; background-color:#E6EE9C;}
+  #trecipientselect option:nth-child(2) {color:#000; background-color:#B6EDD8;}
+  #trecipientselect option:nth-child(3) {color:#000; background-color:#FFCDD3;}
+  #trecipientselect option:nth-child(4) {color:#000; background-color:#90CAF9;}
+  #trecipientselect option:nth-child(5) {color:#000; background-color:#E1BEE7;}
+  #trecipientselect option:nth-child(6) {color:#000; background-color:#A5D6A7;}
+  #trecipientselect option:nth-child(7) {color:#000; background-color:#B3E2E3;}
+  #trecipientselect option:nth-child(8) {color:#000; background-color:#BCAAA4;}
+  #trecipientselect option:nth-child(9) {color:#000; background-color:#E0E0E0;}
+  #trecipientselect option:nth-child(10) {color:#000; background-color:#FFAB00;}
+  #trecipientselect option:nth-child(11) {color:#000; background-color:#64DD17;}
+  #trecipientselect option:nth-child(12) {color:#000; background-color:#00B8D4;}
+  #trecipientselect option:nth-child(13) {color:#000; background-color:#00BFA5;}
 
   

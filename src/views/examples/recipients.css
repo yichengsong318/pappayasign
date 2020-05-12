@@ -23,7 +23,7 @@
 	  margin-bottom: 5px;
   }
 
-  .recepientoption{
+  .recipientoption{
 	  width:20%;
 	border: 1px solid #ebebeb;
   }
@@ -49,7 +49,7 @@ input[disabled]{
 	background-color: #626262;
   }
 
-  #recepientoptionselect{
+  #recipientoptionselect{
 	border: 1px solid #f6f6f6;
   }
 

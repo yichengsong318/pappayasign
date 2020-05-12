@@ -126,12 +126,12 @@ toggleSignModal = () => {
     var type = ''
     var userid = ''
     var email = ''
-    var recepientemail = ''
-    var recepientcolor = ''
+    var recipientemail = ''
+    var recipientcolor = ''
     var useridother = ''
     var owner = ''
     var grabbedcolor = ''
-    var recepientrgbval = ''
+    var recipientrgbval = ''
     var docname = ''
     var action = ''
     var signorderval = false
@@ -164,8 +164,8 @@ toggleSignModal = () => {
       this.toolbar_id = toolbar_id
       this.imageurl = ''
       this.Addtext = 'Sample Text'
-      this.recepientemail = ''
-      this.recepientcolor = ''
+      this.recipientemail = ''
+      this.recipientcolor = ''
       this.filename = filename
       this.url = url
       docname = filename
@@ -491,8 +491,8 @@ toggleSignModal = () => {
               fabricObj.upperCanvasEl.getBoundingClientRect().top -
               30,
             fill: inst.color,
-            backgroundColor: inst.recepientcolor,
-            id: inst.recepientemail,
+            backgroundColor: inst.recipientcolor,
+            id: inst.recipientemail,
             fontSize: inst.font_size,
             selectable: false,
             lockMovementX: true,
@@ -518,12 +518,12 @@ toggleSignModal = () => {
               oImg.scale(0.2)
               oImg.set({ left: l })
               oImg.set({ top: t })
-              oImg.set({ id: inst.recepientemail })
+              oImg.set({ id: inst.recipientemail })
               oImg.set({ selectable: false })
               oImg.set({ lockMovementX: true })
               oImg.set({ lockMovementY: true })
               oImg.set({ hasControls: false })
-              oImg.set({ backgroundColor: inst.recepientcolor })
+              oImg.set({ backgroundColor: inst.recipientcolor })
               fabricObj.add(oImg)
             },
             { crossOrigin: 'Anonymous' }
@@ -544,7 +544,7 @@ toggleSignModal = () => {
             height: 100,
             fill: 'rgba(0,0,0,0)',
             stroke: inst.color,
-            id: inst.recepientemail,
+            id: inst.recipientemail,
             selectable: false,
             strokeSize: inst.borderSize,
           })
@@ -564,7 +564,7 @@ toggleSignModal = () => {
             radius: 50,
             fill: 'rgba(0,0,0,0)',
             stroke: inst.color,
-            id: inst.recepientemail,
+            id: inst.recipientemail,
             selectable: false,
             strokeSize: inst.borderSize,
           })
@@ -592,8 +592,8 @@ toggleSignModal = () => {
               fabricObj.upperCanvasEl.getBoundingClientRect().top -
               30,
             fill: inst.color,
-            backgroundColor: inst.recepientcolor,
-            id: inst.recepientemail,
+            backgroundColor: inst.recipientcolor,
+            id: inst.recipientemail,
             fontSize: inst.font_size,
             selectable: false,
             lockMovementX: true,
@@ -620,12 +620,12 @@ toggleSignModal = () => {
               oImg.scale(0.3)
               oImg.set({ left: l })
               oImg.set({ top: t })
-              oImg.set({ id: inst.recepientemail })
+              oImg.set({ id: inst.recipientemail })
               oImg.set({ selectable: false })
               oImg.set({ lockMovementX: true })
               oImg.set({ lockMovementY: true })
               oImg.set({ hasControls: false })
-              oImg.set({ backgroundColor: inst.recepientcolor })
+              oImg.set({ backgroundColor: inst.recipientcolor })
               fabricObj.add(oImg)
             },
             { crossOrigin: 'Anonymous' }
@@ -647,7 +647,7 @@ toggleSignModal = () => {
             height: 100,
             fill: 'rgba(0,0,0,0)',
             stroke: inst.color,
-            id: inst.recepientemail,
+            id: inst.recipientemail,
             strokeSize: inst.borderSize,
             selectable: false,
           })
@@ -668,7 +668,7 @@ toggleSignModal = () => {
             radius: 50,
             fill: 'rgba(0,0,0,0)',
             stroke: inst.color,
-            id: inst.recepientemail,
+            id: inst.recipientemail,
             strokeSize: inst.borderSize,
             selectable: false,
           })
@@ -758,13 +758,13 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.enableAddText = function (
       text,
-      recepientemail,
-      recepientcolor
+      recipientemail,
+      recipientcolor
     ) {
       var inst = this
       inst.Addtext = text
-      inst.recepientemail = recepientemail
-      inst.recepientcolor = recepientcolor
+      inst.recipientemail = recipientemail
+      inst.recipientcolor = recipientcolor
       inst.active_tool = 2
       if (inst.fabricObjects.length > 0) {
         $.each(inst.fabricObjects, function (index, fabricObj) {
@@ -775,12 +775,12 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.enableImage = function (
       url,
-      recepientemail,
-      recepientcolor
+      recipientemail,
+      recipientcolor
     ) {
       var inst = this
-      inst.recepientemail = recepientemail
-      inst.recepientcolor = recepientcolor
+      inst.recipientemail = recipientemail
+      inst.recipientcolor = recipientcolor
       var fabricObj = inst.fabricObjects[inst.active_canvas]
       inst.active_tool = 4
       inst.imageurl = url
@@ -873,7 +873,7 @@ toggleSignModal = () => {
             ////console.log(targ);
             targ.selectable = false
             targ.hasControls = false
-            if (targ.backgroundColor === recepientrgbval) {
+            if (targ.backgroundColor === recipientrgbval) {
               count = count + 1
               ////console.log(count);
             }
@@ -1088,7 +1088,7 @@ toggleSignModal = () => {
                     console.log(error)
                   })
                   
-                var recepientkey = ''
+                var recipientkey = ''
                 completedcount = 0
                 recievercount = 0
 
@@ -1105,16 +1105,16 @@ toggleSignModal = () => {
 
                       recievers.forEach(function (item, index) {
                         recievercount = recievers.length
-                        if (recievers[index].RecepientStatus === 'Completed') {
+                        if (recievers[index].RecipientStatus === 'Completed') {
                           completedcount = completedcount + 1
                         }
-                        if (recievers[index].RecepientEmail === email) {
-                          var recepient_index = index
-                          recepientkey = index
-                          ////console.log(recepient_index);
+                        if (recievers[index].RecipientEmail === email) {
+                          var recipient_index = index
+                          recipientkey = index
+                          ////console.log(recipient_index);
 
-                          recievers[index].RecepientStatus = 'Completed'
-                          recievers[index].RecepientDateStatus = today
+                          recievers[index].RecipientStatus = 'Completed'
+                          recievers[index].RecipientDateStatus = today
                           completedcount = completedcount + 1
 
                           axios
@@ -1141,13 +1141,13 @@ toggleSignModal = () => {
                                         if (
                                           request[index].DocumentID === filename
                                         ) {
-                                          var recepient_index = index
-                                          ////console.log(recepient_index);
-                                          request[index].RecepientStatus =
+                                          var recipient_index = index
+                                          ////console.log(recipient_index);
+                                          request[index].RecipientStatus =
                                             'Completed'
                                           request[
                                             index
-                                          ].RecepientDateStatus = today
+                                          ].RecipientDateStatus = today
 
                                           axios
                                             .post('/updaterequestdata', {
@@ -1242,15 +1242,15 @@ toggleSignModal = () => {
                               })
 
                             dbpeople.forEach(function (item, index) {
-                              var recepientName = dbpeople[index].name
-                              var recepientEmail = dbpeople[index].email
+                              var recipientName = dbpeople[index].name
+                              var recipientEmail = dbpeople[index].email
 
                               axios
                                 .post('/sendmailattachments', {
-                                  to: recepientEmail,
+                                  to: recipientEmail,
                                   body:
                                     '<div><p>Hello ' +
-                                    recepientName +
+                                    recipientName +
                                     ', Please find the signed document in the attachment.</p></div>',
                                   subject:
                                     'PappayaSign: ' +
@@ -1297,11 +1297,11 @@ toggleSignModal = () => {
 
                           if (signorderval === true) {
                             console.log(signorderval);
-                            var nextuser = parseInt(recepientkey) + 1
-                            var currentuser = parseInt(recepientkey)
+                            var nextuser = parseInt(recipientkey) + 1
+                            var currentuser = parseInt(recipientkey)
                             var nextuseremail =
-                              recievers[nextuser].RecepientEmail
-                            var nextusername = recievers[nextuser].RecepientName
+                              recievers[nextuser].RecipientEmail
+                            var nextusername = recievers[nextuser].RecipientName
                             ////console.log(nextuser);
                             if (currentuser === recievercount) {
                               console.log('no additional users left');
@@ -1332,8 +1332,8 @@ toggleSignModal = () => {
                                           DocumentID: filename,
                                           From: useridother,
                                           FromEmail: email,
-                                          RecepientStatus: 'Need to Sign',
-                                          RecepientDateStatus: today,
+                                          RecipientStatus: 'Need to Sign',
+                                          RecipientDateStatus: today,
                                         })
                                         .then(function (response) {
                                           console.log(response)
@@ -1530,27 +1530,27 @@ toggleSignModal = () => {
     var pdf
 
     document
-      .getElementById('recepientselect')
+      .getElementById('recipientselect')
       .addEventListener('change', function () {
-        var select = document.getElementById('recepientselect')
-        recepientcolor =
+        var select = document.getElementById('recipientselect')
+        recipientcolor =
           select.options[select.selectedIndex].style.backgroundColor
-        ////console.log(recepientcolor);
-        if (recepientcolor != 'rgb(189, 189, 189)') {
+        ////console.log(recipientcolor);
+        if (recipientcolor != 'rgb(189, 189, 189)') {
           document.getElementById(
             'dragabbleImageSign'
-          ).style.backgroundColor = recepientcolor
+          ).style.backgroundColor = recipientcolor
           document.getElementById(
             'dragabbleImageText'
-          ).style.backgroundColor = recepientcolor
+          ).style.backgroundColor = recipientcolor
 
           document.getElementById(
             'dragabbleImageInitial'
-          ).style.backgroundColor = recepientcolor
+          ).style.backgroundColor = recipientcolor
 
           var elements = document.getElementsByClassName('tool')
           for (var i = 0; i < elements.length; i++) {
-            elements[i].style.backgroundColor = recepientcolor
+            elements[i].style.backgroundColor = recipientcolor
           }
         } else {
           var elements = document.getElementsByClassName('tool')
@@ -1560,13 +1560,13 @@ toggleSignModal = () => {
 
           document.getElementById(
             'dragabbleImageSign'
-          ).style.backgroundColor = recepientcolor
+          ).style.backgroundColor = recipientcolor
           document.getElementById(
             'dragabbleImageText'
-          ).style.backgroundColor = recepientcolor
+          ).style.backgroundColor = recipientcolor
           document.getElementById(
             'dragabbleImageInitial'
-          ).style.backgroundColor = recepientcolor
+          ).style.backgroundColor = recipientcolor
         }
       })
 
@@ -1604,18 +1604,18 @@ toggleSignModal = () => {
     $('#dragabbleImageText').hide()
     $('#dragabbleImageInitial').hide()
 
-    recepientcolor = '#bdbdbd'
+    recipientcolor = '#bdbdbd'
 
     document.getElementById(
       'dragabbleImageSign'
-    ).style.backgroundColor = recepientcolor
+    ).style.backgroundColor = recipientcolor
     document.getElementById(
       'dragabbleImageText'
-    ).style.backgroundColor = recepientcolor
+    ).style.backgroundColor = recipientcolor
 
     document.getElementById(
       'dragabbleImageInitial'
-    ).style.backgroundColor = recepientcolor
+    ).style.backgroundColor = recipientcolor
 
     document
       .getElementById('fileinput')
@@ -1659,8 +1659,8 @@ toggleSignModal = () => {
       .getElementById('imageinput')
       .addEventListener('input', function (input) {
         try {
-          var select = document.getElementById('recepientselect')
-          recepientemail = select.options[select.selectedIndex].value
+          var select = document.getElementById('recipientselect')
+          recipientemail = select.options[select.selectedIndex].value
           ////console.log(input.target.value);
           ////console.log(input.srcElement.files[0].name);
           var file = input.srcElement.files[0]
@@ -1673,7 +1673,7 @@ toggleSignModal = () => {
             var url = reader.result
             console.log(url);
             try {
-              global.pdf.enableImage(url, recepientemail, recepientcolor)
+              global.pdf.enableImage(url, recipientemail, recipientcolor)
             } catch (error) {
               alert('Invalid Image')
             }
@@ -1811,13 +1811,13 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
-      ////console.log(recepientemail);
+      ////console.log(recipientemail);
       try {
-        global.pdf.enableAddText('Text', recepientemail, recepientcolor)
+        global.pdf.enableAddText('Text', recipientemail, recipientcolor)
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
         
@@ -1839,12 +1839,12 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       try {
-        global.pdf.enableAddText('Name', recepientemail, recepientcolor)
+        global.pdf.enableAddText('Name', recipientemail, recipientcolor)
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -1865,12 +1865,12 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       try {
-        global.pdf.enableAddText('Company', recepientemail, recepientcolor)
+        global.pdf.enableAddText('Company', recipientemail, recipientcolor)
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -1891,12 +1891,12 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       try {
-        global.pdf.enableAddText('Title', recepientemail, recepientcolor)
+        global.pdf.enableAddText('Title', recipientemail, recipientcolor)
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -1917,13 +1917,13 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       
       try {
-        global.pdf.enableAddText('Date Signed', recepientemail, recepientcolor)
+        global.pdf.enableAddText('Date Signed', recipientemail, recipientcolor)
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -1963,9 +1963,9 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       //pdf.enablePencil();
       // // // // // // // ////console.log('signpress');
@@ -1974,7 +1974,7 @@ toggleSignModal = () => {
       try {
         $('#dragabbleImageSign').show()
         $('#dragabbleImageSign').css("z-index", "9999999999999999999999999999999999999999999");
-        global.pdf.enableImage(dataUrl, recepientemail, recepientcolor)
+        global.pdf.enableImage(dataUrl, recipientemail, recipientcolor)
       } catch (error) {
         alert('Add a Document')
         $('#dragabbleImageSign').hide()
@@ -1991,9 +1991,9 @@ toggleSignModal = () => {
       $(element).addClass('active')
       const icon = this.querySelector('i')
       icon.classList.add('icon-color')
-      var select = document.getElementById('recepientselect')
-      recepientemail = select.options[select.selectedIndex].value
-      recepientcolor =
+      var select = document.getElementById('recipientselect')
+      recipientemail = select.options[select.selectedIndex].value
+      recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       //pdf.enablePencil();
       // // // // // // // ////console.log('signpress');
@@ -2002,7 +2002,7 @@ toggleSignModal = () => {
       try {
         $('#dragabbleImageInitial').show()
         $('#dragabbleImageInitial').css("z-index", "9999999999999999999999999999999999999999999");
-        global.pdf.enableImage(dataUrl, recepientemail, recepientcolor)
+        global.pdf.enableImage(dataUrl, recipientemail, recipientcolor)
       } catch (error) {
         alert('Add a Document')
         $('#dragabbleImageInitial').hide()
@@ -2123,7 +2123,7 @@ toggleSignModal = () => {
         optiondefault.value = email
         optiondefault.style.backgroundColor = '#bdbdbd'
         optiondefault.innerHTML = 'Default(Me)'
-        $('#recepientselect').append(optiondefault)
+        $('#recipientselect').append(optiondefault)
 
         try {
           axios
@@ -2180,14 +2180,14 @@ toggleSignModal = () => {
               document.getElementById('getlinkbtn').style.display = 'none'
             }
             var people = []
-            people = DataVar.RecepientArray
+            people = DataVar.RecipientArray
             people.forEach(function (item, index) {
               if (people[index].option == 'Needs to Sign') {
                 var option = document.createElement('option')
                 option.value = people[index].email
                 option.style.backgroundColor = colorArray[index]
                 option.innerHTML = '' + people[index].name + ''
-                $('#recepientselect').append(option)
+                $('#recipientselect').append(option)
               }
             })
           } catch (error) {}
@@ -2235,9 +2235,9 @@ toggleSignModal = () => {
               document.getElementById('titlebtn').style.display = 'none'
               document.getElementById('companybtn').style.display = 'none'
               document.getElementById('initialbtn').style.display = 'none'
-              document.getElementById('recepientselect').style.display = 'none'
+              document.getElementById('recipientselect').style.display = 'none'
               document.getElementById('fieldscolumn').style.display = 'none'
-              document.getElementById('recepientscolumn').style.display = 'none'
+              document.getElementById('recipientscolumn').style.display = 'none'
             } catch (error) {}
 
             var remail = ''
@@ -2267,13 +2267,13 @@ toggleSignModal = () => {
                   recievers.forEach(function (item, index) {
                     ////console.log(item);
                     dbpeople.push({
-                      name: recievers[index].RecepientName,
-                      email: recievers[index].RecepientEmail,
-                      option: recievers[index].RecepientOption,
+                      name: recievers[index].RecipientName,
+                      email: recievers[index].RecipientEmail,
+                      option: recievers[index].RecipientOption,
                     })
-                    if (item.RecepientEmail === email) {
-                      grabbedcolor = item.RecepientColor
-                      remail = item.RecepientEmail
+                    if (item.RecipientEmail === email) {
+                      grabbedcolor = item.RecipientColor
+                      remail = item.RecipientEmail
                       ////console.log(grabbedcolor);
                       function hexToRgb(hex) {
                         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
@@ -2294,7 +2294,7 @@ toggleSignModal = () => {
                         hexToRgb(grabbedcolor).g +
                         ', ' +
                         hexToRgb(grabbedcolor).b
-                      recepientrgbval = 'rgb(' + rgbval + ')'
+                      recipientrgbval = 'rgb(' + rgbval + ')'
 
                       axios
                       .post('/posthistory', {
@@ -2324,14 +2324,14 @@ toggleSignModal = () => {
               try {
                 action = 'create'
                 var people = []
-                people = DataVar.RecepientArray
+                people = DataVar.RecipientArray
                 people.forEach(function (item, index) {
                   if (people[index].option == 'Needs to Sign') {
                     var option = document.createElement('option')
                     option.value = people[index].email
                     option.style.backgroundColor = colorArray[index]
                     option.innerHTML = '' + people[index].name + ''
-                    $('#recepientselect').append(option)
+                    $('#recipientselect').append(option)
                   }
                 })
               } catch (error) {}
@@ -2357,20 +2357,20 @@ toggleSignModal = () => {
                 document.getElementById('titlebtn').style.display = 'block'
                 document.getElementById('companybtn').style.display = 'block'
                 document.getElementById('initialbtn').style.display = 'block'
-                document.getElementById('recepientselect').style.display =
+                document.getElementById('recipientselect').style.display =
                   'block'
                 document.getElementById('fieldscolumn').style.display = 'block'
-                document.getElementById('recepientscolumn').style.display =
+                document.getElementById('recipientscolumn').style.display =
                   'block'
                 var people = []
-                people = DataVar.RecepientArray
+                people = DataVar.RecipientArray
                 people.forEach(function (item, index) {
                   if (people[index].option == 'Needs to Sign') {
                     var option = document.createElement('option')
                     option.value = people[index].email
                     option.style.backgroundColor = colorArray[index]
                     option.innerHTML = '' + people[index].name + ''
-                    $('#recepientselect').append(option)
+                    $('#recipientselect').append(option)
                   }
                 })
               } catch (error) {}
@@ -2403,7 +2403,7 @@ toggleSignModal = () => {
               try {
                 action = 'correct'
                 var people = []
-                people = DataVar.RecepientArray
+                people = DataVar.RecipientArray
                 userid = useridother
                 people.forEach(function (item, index) {
                   if (people[index].option == 'Needs to Sign') {
@@ -2411,7 +2411,7 @@ toggleSignModal = () => {
                     option.value = people[index].email
                     option.style.backgroundColor = colorArray[index]
                     option.innerHTML = '' + people[index].name + ''
-                    $('#recepientselect').append(option)
+                    $('#recipientselect').append(option)
                   }
                 })
               } catch (error) {}
@@ -2419,7 +2419,7 @@ toggleSignModal = () => {
               try {
                 action = 'create'
                 var people = []
-                people = DataVar.RecepientArray
+                people = DataVar.RecipientArray
                 userid = useridother
                 people.forEach(function (item, index) {
                   if (people[index].option == 'Needs to Sign') {
@@ -2427,7 +2427,7 @@ toggleSignModal = () => {
                     option.value = people[index].email
                     option.style.backgroundColor = colorArray[index]
                     option.innerHTML = '' + people[index].name + ''
-                    $('#recepientselect').append(option)
+                    $('#recipientselect').append(option)
                   }
                 })
               } catch (error) {}
@@ -2488,7 +2488,7 @@ toggleSignModal = () => {
         optiondefault.value = email
         optiondefault.style.backgroundColor = '#bdbdbd'
         optiondefault.innerHTML = 'Default(Me)'
-        $('#recepientselect').append(optiondefault)
+        $('#recipientselect').append(optiondefault)
 
         try {
           var mainurl = document.location.hash,
@@ -2517,14 +2517,14 @@ toggleSignModal = () => {
           owner = 'admin'
           try {
             var people = []
-            people = DataVar.RecepientArray
+            people = DataVar.RecipientArray
             people.forEach(function (item, index) {
               if (people[index].option == 'Needs to Sign') {
                 var option = document.createElement('option')
                 option.value = people[index].email
                 option.style.backgroundColor = colorArray[index]
                 option.innerHTML = '' + people[index].name + ''
-                $('#recepientselect').append(option)
+                $('#recipientselect').append(option)
               }
             })
           } catch (error) {}
@@ -2571,9 +2571,9 @@ toggleSignModal = () => {
               document.getElementById('titlebtn').style.display = 'none'
               document.getElementById('companybtn').style.display = 'none'
               document.getElementById('initialbtn').style.display = 'none'
-              document.getElementById('recepientselect').style.display = 'none'
+              document.getElementById('recipientselect').style.display = 'none'
               document.getElementById('fieldscolumn').style.display = 'none'
-              document.getElementById('recepientscolumn').style.display = 'none'
+              document.getElementById('recipientscolumn').style.display = 'none'
 
               if (key != '') {
                 var today = new Date().toLocaleString().replace(',', '')
@@ -2600,14 +2600,14 @@ toggleSignModal = () => {
                       }
                       recievers.forEach(function (item, index) {
                         dbpeople.push({
-                          name: recievers[index].RecepientName,
-                          email: recievers[index].RecepientEmail,
-                          option: recievers[index].RecepientOption,
+                          name: recievers[index].RecipientName,
+                          email: recievers[index].RecipientEmail,
+                          option: recievers[index].RecipientOption,
                         })
                       })
-                      grabbedcolor = recievers[key].RecepientColor
-                      remail = recievers[key].RecepientEmail
-                      email = recievers[key].RecepientEmail
+                      grabbedcolor = recievers[key].RecipientColor
+                      remail = recievers[key].RecipientEmail
+                      email = recievers[key].RecipientEmail
 
                       axios
                       .post('/posthistory', {
@@ -2646,7 +2646,7 @@ toggleSignModal = () => {
                         hexToRgb(grabbedcolor).g +
                         ', ' +
                         hexToRgb(grabbedcolor).b
-                      recepientrgbval = 'rgb(' + rgbval + ')'
+                      recipientrgbval = 'rgb(' + rgbval + ')'
                     }
                   })
                   .catch(function (error) {
@@ -2999,16 +2999,16 @@ $(document).on('click','.actionsign', function() {
 
           <Col lg="2">
             <div id="toolbar" className="toolbar">
-              <div className="divider" id="recepientscolumn">
+              <div className="divider" id="recipientscolumn">
                 <div className="col my-3 p-2">
                   <h6 className="text-uppercase text-black ls-1 mb-1 float-left">
-                    Recepients
+                    Recipients
                   </h6>
                 </div>
                 <hr className="my-1" />
               </div>
               <select
-                id="recepientselect"
+                id="recipientselect"
                 className="form-control selectpicker form-control-sm"
               ></select>
               <div className="divider">
@@ -3141,7 +3141,7 @@ $(document).on('click','.actionsign', function() {
             </div>
           </Col>
           <Col lg="2">
-            <div id="recepientsbar" className="recepientsbar">
+            <div id="recipientsbar" className="recipientsbar">
               <div className="divider" id="customfieldscolumn">
                 <div className="col my-3 p-2">
                   <h6 className="text-uppercase text-black ls-1 mb-1 float-left">

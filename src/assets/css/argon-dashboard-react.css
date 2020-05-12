@@ -198,9 +198,9 @@ background-color: #626262;
 .reviewcontainer{
   width:100%;
   height: 100% !important;
-  padding:10px;
-  border: 1px solid rgba(226, 226, 226, 0.479);
-  border-radius: 5px;
+  padding:0;
+  margin:0;
+  border-left: 1px solid rgba(226, 226, 226, 0.479);
 
 }
 
@@ -234,8 +234,8 @@ background-color: #626262;
   display: inline-block;
 }
 
-#managerecepientstable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-  #managerecepientstable li { margin: 1%; padding: 5px; border-radius: 5px; border: 1px solid #f6f6f6; background-color: #ffffff; padding-left: 1.5em; width:98%; }
+#managerecipientstable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+  #managerecipientstable li { margin: 1%; padding: 5px; border-radius: 5px; border: 1px solid #f6f6f6; background-color: #ffffff; padding-left: 1.5em; width:98%; }
 
 
   .rcardmanage{
@@ -256,31 +256,31 @@ background-color: #626262;
     }
   
 
-  #managerecepientstable li:hover{
+  #managerecipientstable li:hover{
     cursor: default;
   }
 
-  #managerecepientstable li:nth-child(1) {border-left: 10px solid #E6EE9C;}
-  #managerecepientstable li:nth-child(2) {border-left: 10px solid #B6EDD8;}
-  #managerecepientstable li:nth-child(3) {border-left: 10px solid #FFCDD3;}
-  #managerecepientstable li:nth-child(4) {border-left: 10px solid #90CAF9;}
-  #managerecepientstable li:nth-child(5) {border-left: 10px solid #E1BEE7;}
-  #managerecepientstable li:nth-child(6) {border-left: 10px solid #A5D6A7;}
-  #managerecepientstable li:nth-child(7) {border-left: 10px solid #B3E2E3;}
-  #managerecepientstable li:nth-child(8) {border-left: 10px solid #BCAAA4;}
-  #managerecepientstable li:nth-child(9) {border-left: 10px solid #E0E0E0;}
-  #managerecepientstable li:nth-child(10) {border-left: 10px solid #FFAB00;}
-  #managerecepientstable li:nth-child(11) {border-left: 10px solid #64DD17;}
-  #managerecepientstable li:nth-child(12) {border-left: 10px solid #00B8D4;}
-  #managerecepientstable li:nth-child(13) {border-left: 10px solid #00BFA5;}
+  #managerecipientstable li:nth-child(1) {border-left: 10px solid #E6EE9C;}
+  #managerecipientstable li:nth-child(2) {border-left: 10px solid #B6EDD8;}
+  #managerecipientstable li:nth-child(3) {border-left: 10px solid #FFCDD3;}
+  #managerecipientstable li:nth-child(4) {border-left: 10px solid #90CAF9;}
+  #managerecipientstable li:nth-child(5) {border-left: 10px solid #E1BEE7;}
+  #managerecipientstable li:nth-child(6) {border-left: 10px solid #A5D6A7;}
+  #managerecipientstable li:nth-child(7) {border-left: 10px solid #B3E2E3;}
+  #managerecipientstable li:nth-child(8) {border-left: 10px solid #BCAAA4;}
+  #managerecipientstable li:nth-child(9) {border-left: 10px solid #E0E0E0;}
+  #managerecipientstable li:nth-child(10) {border-left: 10px solid #FFAB00;}
+  #managerecipientstable li:nth-child(11) {border-left: 10px solid #64DD17;}
+  #managerecipientstable li:nth-child(12) {border-left: 10px solid #00B8D4;}
+  #managerecipientstable li:nth-child(13) {border-left: 10px solid #00BFA5;}
 
 
 
 
 
-.reviewrecepientstable{
+.reviewrecipientstable{
   overflow: auto;
-  height: 250px !important;
+  height: 200px !important;
 }
 
 .form-check-inline{
@@ -348,23 +348,23 @@ border-radius: 20px !important;
 }
 
 
-#reviewrecepientstable { list-style-type: none; margin: 0; padding: 0; width: 100%; height: 100%; }
-  #reviewrecepientstable li { margin: 1%; padding: 5px; border-radius: 5px; border: 1px solid #f6f6f6; background-color: #fbfbfb; padding-left: 1.5em; width:98%; }
-  #reviewrecepientstable li span { position: relative; margin-left: 1.3em; }
+#reviewrecipientstable { list-style-type: none; margin: 0; padding: 0; width: 100%; height: 100%; }
+  #reviewrecipientstable li { margin: 1%; padding: 5px; border-radius: 5px; border: 1px solid #f6f6f6; background-color: #fbfbfb; padding-left: 1.5em; width:98%; }
+  #reviewrecipientstable li span { position: relative; margin-left: 1.3em; }
 
-  #reviewrecepientstable li:nth-child(1) {border-left: 10px solid #E6EE9C;}
-  #reviewrecepientstable li:nth-child(2) {border-left: 10px solid #B6EDD8;}
-  #reviewrecepientstable li:nth-child(3) {border-left: 10px solid #FFCDD3;}
-  #reviewrecepientstable li:nth-child(4) {border-left: 10px solid #90CAF9;}
-  #reviewrecepientstable li:nth-child(5) {border-left: 10px solid #E1BEE7;}
-  #reviewrecepientstable li:nth-child(6) {border-left: 10px solid #A5D6A7;}
-  #reviewrecepientstable li:nth-child(7) {border-left: 10px solid #B3E2E3;}
-  #reviewrecepientstable li:nth-child(8) {border-left: 10px solid #BCAAA4;}
-  #reviewrecepientstable li:nth-child(9) {border-left: 10px solid #E0E0E0;}
-  #reviewrecepientstable li:nth-child(10) {border-left: 10px solid #FFAB00;}
-  #reviewrecepientstable li:nth-child(11) {border-left: 10px solid #64DD17;}
-  #reviewrecepientstable li:nth-child(12) {border-left: 10px solid #00B8D4;}
-  #reviewrecepientstable li:nth-child(13) {border-left: 10px solid #00BFA5;}
+  #reviewrecipientstable li:nth-child(1) {border-left: 10px solid #E6EE9C;}
+  #reviewrecipientstable li:nth-child(2) {border-left: 10px solid #B6EDD8;}
+  #reviewrecipientstable li:nth-child(3) {border-left: 10px solid #FFCDD3;}
+  #reviewrecipientstable li:nth-child(4) {border-left: 10px solid #90CAF9;}
+  #reviewrecipientstable li:nth-child(5) {border-left: 10px solid #E1BEE7;}
+  #reviewrecipientstable li:nth-child(6) {border-left: 10px solid #A5D6A7;}
+  #reviewrecipientstable li:nth-child(7) {border-left: 10px solid #B3E2E3;}
+  #reviewrecipientstable li:nth-child(8) {border-left: 10px solid #BCAAA4;}
+  #reviewrecipientstable li:nth-child(9) {border-left: 10px solid #E0E0E0;}
+  #reviewrecipientstable li:nth-child(10) {border-left: 10px solid #FFAB00;}
+  #reviewrecipientstable li:nth-child(11) {border-left: 10px solid #64DD17;}
+  #reviewrecipientstable li:nth-child(12) {border-left: 10px solid #00B8D4;}
+  #reviewrecipientstable li:nth-child(13) {border-left: 10px solid #00BFA5;}
 
 
   #autoreminderselect{
@@ -441,7 +441,6 @@ border-radius: 20px !important;
 
     .review-manager-title {
         font-weight: bold;
-        padding: 5px;
         font-size: 16px;
         display: flex;
         width:100%;
@@ -459,6 +458,18 @@ border-radius: 20px !important;
     .review-manager-title i:hover {
       color: #d35400;
     }
+
+.private-modal-content{
+  top:20%;
+  position: relative; 
+  width:80%;
+  padding: 20px; 
+  margin: auto; 
+  text-align: left;
+  justify-content: left;
+  -webkit-animation: fadeinout 0.25s linear forwards;
+  animation: fadeinout 0.25s linear forwards;
+}
 
 
   .modal-content-history {

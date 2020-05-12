@@ -89,9 +89,9 @@ class Templates extends React.Component {
         var id = $(this).parent().parent().children('#templateid')[0].innerHTML
         //console.log(id);
         TemplateDataVar.TemplateID = id
-        TemplateDataVar.TemplateRecepientCount = reciverlist
+        TemplateDataVar.TemplateRecipientCount = reciverlist
         //console.log(TemplateDataVar);
-        window.location.hash = '#/admin/selecttemplaterecepients'
+        window.location.hash = '#/admin/selecttemplaterecipients'
       })
     } else {
       //window.location.hash = "#/auth/login";
@@ -146,7 +146,7 @@ class Templates extends React.Component {
                           <tr>
                             <th scope="col">Document Name</th>
                             <th scope="col">Document ID</th>
-                            <th scope="col">Recepients</th>
+                            <th scope="col">Recipients</th>
                             <th scope="col">Options</th>
                           </tr>
                         </thead>

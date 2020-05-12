@@ -2,7 +2,7 @@ var DataVar = {
   DataPath: '',
   DataURI: '',
   DocName: 'default',
-  RecepientArray: [],
+  RecipientArray: [],
   OnlySigner: false,
   SignOrder: false,
 }

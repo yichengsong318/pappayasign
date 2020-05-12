@@ -72,9 +72,9 @@ class Index extends React.Component {
             if (response.data.Status === 'user found') {
               var Request = response.data.user.Request
               Request.forEach(function (data, index) {
-                if (data.RecepientStatus == 'Completed') {
+                if (data.RecipientStatus == 'Completed') {
                   completecount = completecount + 1
-                } else if (data.RecepientStatus == 'Need to Sign') {
+                } else if (data.RecipientStatus == 'Need to Sign') {
                   requestcount = requestcount + 1
                 }
               })

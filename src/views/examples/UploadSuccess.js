@@ -42,7 +42,7 @@ class UploadSuccess extends React.Component {
       //console.log(wuserid);
       //console.log(fileid);
       wurl =
-        '#/admin/recepients?id=' +
+        '#/admin/recipients?id=' +
         fileid +
         '&u=' +
         wuserid +
@@ -54,14 +54,14 @@ class UploadSuccess extends React.Component {
 
     var uploadsuccessnextbtn = document.getElementById('uploadsuccessnextbtn')
     uploadsuccessnextbtn.addEventListener('click', function (event) {
-      //window.location.hash = '#/admin/recepients';
+      //window.location.hash = '#/admin/recipients';
       if (document.getElementById('onlysignercheck').checked) {
         DataVar.OnlySigner = true
         window.location.hash = '#/admin/sign'
       } else {
         if (wurl === '') {
           DataVar.OnlySigner = false
-          window.location.hash = '#/admin/recepients'
+          window.location.hash = '#/admin/recipients'
         } else {
           DataVar.OnlySigner = false
           window.location.hash = wurl

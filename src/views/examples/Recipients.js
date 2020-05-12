@@ -15,13 +15,13 @@ import {
   Row,
 } from 'reactstrap'
 import DataVar from '../../variables/data'
-import './recepients.css'
+import './recipients.css'
 
 require('jquery-ui')
 require('jquery-ui/ui/widgets/sortable')
 require('jquery-ui/ui/disable-selection')
 
-class Recepients extends React.Component {
+class Recipients extends React.Component {
   componentDidMount() {
     var wurl = ''
     var fileid = ''
@@ -53,15 +53,15 @@ class Recepients extends React.Component {
         ''
 
       var people = []
-      people = DataVar.RecepientArray
+      people = DataVar.RecipientArray
       people.forEach(function (item, index) {
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="rcard"><input class="form-control-alternative p-3 inputr" id="recepient-name" placeholder="' +
+          '<div class="p-2 rcard" id="rcard"><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
           people[index].name +
-          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recepient-email" placeholder="' +
+          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-email" placeholder="' +
           people[index].email +
-          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="recepient-option" placeholder="' +
+          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-option" placeholder="' +
           people[index].option +
           '" type="text" disabled/><button class="buttonr delete">x</button></div>'
         $('#sortable').append(li)
@@ -74,35 +74,35 @@ class Recepients extends React.Component {
     })
 
     $('#append-btn').click(function () {
-      var recepientName = document.getElementById('recepient-input-name').value
-      var recepientEmail = document.getElementById('recepient-input-email')
+      var recipientName = document.getElementById('recipient-input-name').value
+      var recipientEmail = document.getElementById('recipient-input-email')
         .value
-      var recepientoptionselect = document.getElementById(
-        'recepientoptionselect'
+      var recipientoptionselect = document.getElementById(
+        'recipientoptionselect'
       )
-      var recepientoption =
-        recepientoptionselect.options[recepientoptionselect.selectedIndex].value
-      if (recepientName == '' || recepientEmail == '') {
+      var recipientoption =
+        recipientoptionselect.options[recipientoptionselect.selectedIndex].value
+      if (recipientName == '' || recipientEmail == '') {
         alert('Please enter all details.')
       } else {
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="rcard"><input class="form-control-alternative p-3 inputr" id="recepient-name" placeholder="' +
-          recepientName +
-          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recepient-email" placeholder="' +
-          recepientEmail +
-          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="recepient-option" placeholder="' +
-          recepientoption +
+          '<div class="p-2 rcard" id="rcard"><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
+          recipientName +
+          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-email" placeholder="' +
+          recipientEmail +
+          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-option" placeholder="' +
+          recipientoption +
           '" type="text" disabled/><button class="buttonr delete">x</button></div>'
         $('#sortable').append(li)
-        document.getElementById('recepient-input-name').value = ''
-        document.getElementById('recepient-input-email').value = ''
+        document.getElementById('recipient-input-name').value = ''
+        document.getElementById('recipient-input-email').value = ''
       }
     })
 
     $(document).on('click', '.delete', function () {
       $(this).parent().parent().remove()
-      //console.log($(this).parent().children('#recepient-name').attr("placeholder"));
+      //console.log($(this).parent().children('#recipient-name').attr("placeholder"));
     })
 
     Array.prototype.pushWithReplace = function (o, k) {
@@ -115,24 +115,24 @@ class Recepients extends React.Component {
       var people = []
       var listItems = $('#sortable li')
       if (listItems.length == 0) {
-        alert('There are no recepeints, Please add recepients')
-        DataVar.RecepientArray = people
+        alert('There are no recepeints, Please add recipients')
+        DataVar.RecipientArray = people
       } else {
         listItems.each(function (li) {
-          var recepientN = $(this)
+          var recipientN = $(this)
             .children('#rcard')
-            .children('#recepient-name')
+            .children('#recipient-name')
             .attr('placeholder')
-          var recepientE = $(this)
+          var recipientE = $(this)
             .children('#rcard')
-            .children('#recepient-email')
+            .children('#recipient-email')
             .attr('placeholder')
-          var recepientO = $(this)
+          var recipientO = $(this)
             .children('#rcard')
-            .children('#recepient-option')
+            .children('#recipient-option')
             .attr('placeholder')
           people.pushWithReplace(
-            { name: recepientN, email: recepientE, option: recepientO },
+            { name: recipientN, email: recipientE, option: recipientO },
             'email'
           )
         })
@@ -140,14 +140,14 @@ class Recepients extends React.Component {
           if (document.getElementById('signordercheck').checked) {
             DataVar.SignOrder = true
             //console.log(people);
-            DataVar.RecepientArray = people
+            DataVar.RecipientArray = people
             //console.log(DataVar);
             var url = '#/admin/sign'
             window.location.hash = url
           } else {
             DataVar.SignOrder = false
             //console.log(people);
-            DataVar.RecepientArray = people
+            DataVar.RecipientArray = people
             //console.log(DataVar);
             var url = '#/admin/sign'
             window.location.hash = url
@@ -156,13 +156,13 @@ class Recepients extends React.Component {
           if (document.getElementById('signordercheck').checked) {
             DataVar.SignOrder = true
             //console.log(people);
-            DataVar.RecepientArray = people
+            DataVar.RecipientArray = people
             //console.log(DataVar);
             window.location.hash = wurl
           } else {
             DataVar.SignOrder = false
             //console.log(people);
-            DataVar.RecepientArray = people
+            DataVar.RecipientArray = people
             //console.log(DataVar);
             window.location.hash = wurl
           }
@@ -229,19 +229,19 @@ class Recepients extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Add Recepients</h3>
+                  <h3 className="mb-0">Add Recipients</h3>
                 </CardHeader>
                 <CardBody>
                   <div>
                     <div className="mb-4 mb-xl-0">
-                      <h5>Enter Recepients: </h5>
+                      <h5>Enter Recipients: </h5>
                     </div>
                     <Row>
                       <Col lg="4">
                         <FormGroup>
                           <Input
                             className="form-control-alternative"
-                            id="recepient-input-name"
+                            id="recipient-input-name"
                             placeholder="Name"
                             type="text"
                           />
@@ -251,7 +251,7 @@ class Recepients extends React.Component {
                         <FormGroup>
                           <Input
                             className="form-control-alternative"
-                            id="recepient-input-email"
+                            id="recipient-input-email"
                             placeholder="Email Address"
                             type="email"
                           />
@@ -260,7 +260,7 @@ class Recepients extends React.Component {
                       <Col lg="4">
                         <FormGroup>
                           <select
-                            id="recepientoptionselect"
+                            id="recipientoptionselect"
                             className="form-control  form-control-md"
                           >
                             <option value="Needs to Sign">Needs to Sign</option>
@@ -307,7 +307,7 @@ class Recepients extends React.Component {
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  <div id="recepientdiv">
+                  <div id="recipientdiv">
                     <ul id="sortable"></ul>
                   </div>
                 </CardBody>
@@ -320,4 +320,4 @@ class Recepients extends React.Component {
   }
 }
 
-export default Recepients
+export default Recipients

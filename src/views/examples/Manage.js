@@ -108,8 +108,8 @@ class Tables extends React.Component {
       this.toolbar_id = toolbar_id
       this.imageurl = ''
       this.Addtext = 'Sample Text'
-      this.recepientemail = ''
-      this.recepientcolor = ''
+      this.recipientemail = ''
+      this.recipientcolor = ''
       this.filename = filename
       this.url = url
       var inst = this
@@ -334,10 +334,10 @@ class Tables extends React.Component {
 
             Request.forEach(function (data, index) {
               if (
-                Request[index].RecepientStatus == 'Void' ||
-                Request[index].RecepientStatus == 'Need to Sign' ||
-                Request[index].RecepientStatus == 'Expiring' ||
-                Request[index].RecepientStatus == 'Correcting'
+                Request[index].RecipientStatus == 'Void' ||
+                Request[index].RecipientStatus == 'Need to Sign' ||
+                Request[index].RecipientStatus == 'Expiring' ||
+                Request[index].RecipientStatus == 'Correcting'
               ) {
                 allcontent += '<tr >'
                 allcontent += '<th><input  type="checkbox"></th>'
@@ -349,7 +349,7 @@ class Tables extends React.Component {
                   '</span></td>'
                 allcontent +=
                   '<td id="datastatus">' +
-                  Request[index].RecepientStatus +
+                  Request[index].RecipientStatus +
                   '</td>'
                 allcontent +=
                   '<td id="datakey" hidden>' +
@@ -362,7 +362,7 @@ class Tables extends React.Component {
                   Request[index].FromEmail +
                   '</td>'
                 allcontent +=
-                  '<td >' + Request[index].RecepientDateStatus + '</td>'
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
                 allcontent +=
                   `<td ><div class="btn-group">
               <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
@@ -383,7 +383,7 @@ class Tables extends React.Component {
               </div>
             </div></td >`
                 allcontent += '</tr>'
-                if (Request[index].RecepientStatus == 'Need to Sign') {
+                if (Request[index].RecipientStatus == 'Need to Sign') {
                   actionrequiredcontent += '<tr >'
                   actionrequiredcontent += '<th><input  type="checkbox"></th>'
                   actionrequiredcontent +=
@@ -394,7 +394,7 @@ class Tables extends React.Component {
                     '</span></td>'
                   actionrequiredcontent +=
                     '<td id="datastatus">' +
-                    Request[index].RecepientStatus +
+                    Request[index].RecipientStatus +
                     '</td>'
                   actionrequiredcontent +=
                     '<td id="datakey" hidden>' +
@@ -407,7 +407,7 @@ class Tables extends React.Component {
                     Request[index].FromEmail +
                     '</td>'
                   actionrequiredcontent +=
-                    '<td >' + Request[index].RecepientDateStatus + '</td>'
+                    '<td >' + Request[index].RecipientDateStatus + '</td>'
                   actionrequiredcontent +=
                     `<td ><div class="btn-group">
                 <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
@@ -429,7 +429,7 @@ class Tables extends React.Component {
               </div></td >`
                   actionrequiredcontent += '</tr>'
                 }
-              } else if (Request[index].RecepientStatus == 'Deleted') {
+              } else if (Request[index].RecipientStatus == 'Deleted') {
                 deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
                 deletedcontent +=
@@ -440,7 +440,7 @@ class Tables extends React.Component {
                   '</span></td>'
                 deletedcontent +=
                   '<td id=datastatus>' +
-                  Request[index].RecepientStatus +
+                  Request[index].RecipientStatus +
                   '</td>'
                 deletedcontent +=
                   '<td id="datakey" hidden>' +
@@ -453,7 +453,7 @@ class Tables extends React.Component {
                   Request[index].FromEmail +
                   '</td>'
                 deletedcontent +=
-                  '<td >' + Request[index].RecepientDateStatus + '</td>'
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
                 deletedcontent += `<td ><div class="btn-group">
               <button type="button" class="btn btn-primary restore">CONTINUE</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
@@ -463,7 +463,7 @@ class Tables extends React.Component {
               </div>
               </div></td >`
                 deletedcontent += '</tr>'
-              } else if (Request[index].RecepientStatus == 'Completed') {
+              } else if (Request[index].RecipientStatus == 'Completed') {
                 completedcontent += '<tr >'
                 completedcontent += '<th><input  type="checkbox"></th>'
                 completedcontent +=
@@ -474,7 +474,7 @@ class Tables extends React.Component {
                   '</span></td>'
                 completedcontent +=
                   '<td id="datastatus">' +
-                  Request[index].RecepientStatus +
+                  Request[index].RecipientStatus +
                   '</td>'
                 completedcontent +=
                   '<td id="datakey" hidden>' +
@@ -487,7 +487,7 @@ class Tables extends React.Component {
                   Request[index].FromEmail +
                   '</td>'
                 completedcontent +=
-                  '<td >' + Request[index].RecepientDateStatus + '</td>'
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
                 completedcontent += `<td ><div class="btn-group">
             <button type="button" class="btn btn-primary move">MOVE</button>
             <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
@@ -501,7 +501,7 @@ class Tables extends React.Component {
             </div>
           </div></td >`
                 completedcontent += '</tr>'
-              } else if (Request[index].RecepientStatus == 'Expiring') {
+              } else if (Request[index].RecipientStatus == 'Expiring') {
                 expiringcontent += '<tr >'
                 expiringcontent += '<th><input  type="checkbox"></th>'
                 expiringcontent +=
@@ -512,7 +512,7 @@ class Tables extends React.Component {
                   '</span></td>'
                   expiringcontent +=
                   '<td id="datastatus">' +
-                  Request[index].RecepientStatus +
+                  Request[index].RecipientStatus +
                   '</td>'
                   expiringcontent +=
                   '<td id="datakey" hidden>' +
@@ -525,7 +525,7 @@ class Tables extends React.Component {
                   Request[index].FromEmail +
                   '</td>'
                   expiringcontent +=
-                  '<td >' + Request[index].RecepientDateStatus + '</td>'
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
                   expiringcontent += `<td ><div class="btn-group">
             <button type="button" class="btn btn-primary resend">RESEND</button>
             <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
@@ -585,7 +585,7 @@ class Tables extends React.Component {
                 data.Reciever.forEach(function (reciever, index) {
                   var id = index + 1
                   reciverlist =
-                    reciverlist + ' ' + reciever.RecepientEmail + '\n'
+                    reciverlist + ' ' + reciever.RecipientEmail + '\n'
                 })
               } catch (error) {}
 
@@ -994,8 +994,8 @@ class Tables extends React.Component {
     $(document).on('click', '.rowselect', function () {
       $('.dropdown-menu2').css({ display: 'none' })
       modal[2].style.display = 'block'
-      $('#managerecepientstable li').remove()
-      $('#managerecepientstable').innerHTML = ''
+      $('#managerecipientstable li').remove()
+      $('#managerecipientstable').innerHTML = ''
       global.pdf = null;
       document.getElementById('managebody').style.display = 'none'
       document.getElementById('detailbody').style.display = 'block'
@@ -1027,33 +1027,33 @@ class Tables extends React.Component {
               Document.Reciever.forEach(function (reciever, index) {
                 var id = index + 1
                 reciverlistrow =
-                  reciverlistrow + ' ' + reciever.RecepientEmail + ','
+                  reciverlistrow + ' ' + reciever.RecipientEmail + ','
 
                 var li = document.createElement('li')
                 li.innerHTML =
                   `<div class="rcardmanage">
                 <div class="managelabelspan">
-                <strong><span  id="summary-recepient-name">Name: ` +
-                  reciever.RecepientName +
+                <strong><span  id="summary-recipient-name">Name: ` +
+                  reciever.RecipientName +
                   `</span></strong>
                 </div>
                 <div class="managelabelspan">
-                <span  id="summary-recepient-name">` +
-                  reciever.RecepientEmail +
+                <span  id="summary-recipient-name">` +
+                  reciever.RecipientEmail +
                   `</span>
                 </div>
                 <div class="managelabelspan">
-                <span  id="summary-recepient-name">Action: ` +
-                  reciever.RecepientOption +
+                <span  id="summary-recipient-name">Action: ` +
+                  reciever.RecipientOption +
                   `</span>
                 </div>
                 <div class="managelabelspan">
-                <span  id="summary-recepient-name">Status: ` +
-                  reciever.RecepientStatus +
+                <span  id="summary-recipient-name">Status: ` +
+                  reciever.RecipientStatus +
                   `</span>
                 </div>
                 </div>`
-                $('#managerecepientstable').append(li)
+                $('#managerecipientstable').append(li)
               })
               document.getElementById('detailsubject').innerHTML =
                 Document.DocumentName
@@ -1065,7 +1065,7 @@ class Tables extends React.Component {
               document.getElementById('detailholder').innerHTML =
                 Document.OwnerEmail
               document.getElementById(
-                'detailrecepients'
+                'detailrecipients'
               ).innerHTML = reciverlistrow
               document.getElementById('detailstatus').innerHTML =
                 Document.Status
@@ -1122,14 +1122,14 @@ class Tables extends React.Component {
       global.pdf.Clear();
       document.getElementById('managebody').style.display = 'block'
       document.getElementById('detailbody').style.display = 'none'
-      $('#managerecepientstable li').remove()
-      $('#managerecepientstable').innerHTML = ''
+      $('#managerecipientstable li').remove()
+      $('#managerecipientstable').innerHTML = ''
       document.getElementById('detailsubject').innerHTML = ''
       document.getElementById('detailid').innerHTML = ''
       document.getElementById('detailsent').innerHTML = ''
       document.getElementById('detailcreate').innerHTML = ''
       document.getElementById('detailholder').innerHTML = ''
-      document.getElementById('detailrecepients').innerHTML = ''
+      document.getElementById('detailrecipients').innerHTML = ''
       document.getElementById('detailstatus').innerHTML = ''
       document.getElementById('detailstatusdate').innerHTML = ''
     })
@@ -1211,11 +1211,11 @@ class Tables extends React.Component {
               var status = response.data.DocStatus
 
               recievers.forEach(function (item, index) {
-                var recepient_index = index
-                //console.log(recepient_index);
+                var recipient_index = index
+                //console.log(recipient_index);
 
-                recievers[index].RecepientStatus = 'Void'
-                recievers[index].RecepientDateStatus = today
+                recievers[index].RecipientStatus = 'Void'
+                recievers[index].RecipientDateStatus = today
 
                 axios
                   .post('/updaterecieverdata', {
@@ -1233,10 +1233,10 @@ class Tables extends React.Component {
 
                 axios
                   .post('/sendmail', {
-                    to: item.RecepientEmail,
+                    to: item.RecipientEmail,
                     body:
                       '<div><p>Hello ' +
-                      item.RecepientName +
+                      item.RecipientName +
                       ', ' +
                       item.DocumentName +
                       ' Has been voided. \n\nReason:' +
@@ -1265,10 +1265,10 @@ class Tables extends React.Component {
 
                       request.forEach(function (item, index) {
                         if (request[index].DocumentID === voidfileid) {
-                          var recepient_index = index
-                          //console.log(recepient_index);
-                          request[index].RecepientStatus = 'Void'
-                          request[index].RecepientDateStatus = today
+                          var recipient_index = index
+                          //console.log(recipient_index);
+                          request[index].RecipientStatus = 'Void'
+                          request[index].RecipientDateStatus = today
 
                           axios
                             .post('/updaterequestdata', {
@@ -1319,7 +1319,7 @@ class Tables extends React.Component {
             modal[2].style.display = 'none'
           })
       } else {
-        alert('Please provide a reason, So we could let your recepients know.')
+        alert('Please provide a reason, So we could let your recipients know.')
       }
     })
 
@@ -1391,11 +1391,11 @@ class Tables extends React.Component {
             var status = response.data.DocStatus
 
             recievers.forEach(function (item, index) {
-              var recepient_index = index
-              //console.log(recepient_index);
+              var recipient_index = index
+              //console.log(recipient_index);
 
-              recievers[index].RecepientStatus = 'Deleted'
-              recievers[index].RecepientDateStatus = today
+              recievers[index].RecipientStatus = 'Deleted'
+              recievers[index].RecipientDateStatus = today
 
               axios
                 .post('/updaterecieverdata', {
@@ -1421,10 +1421,10 @@ class Tables extends React.Component {
 
                     request.forEach(function (item, index) {
                       if (request[index].DocumentID === deletefileid) {
-                        var recepient_index = index
-                        //console.log(recepient_index);
-                        request[index].RecepientStatus = 'Deleted'
-                        request[index].RecepientDateStatus = today
+                        var recipient_index = index
+                        //console.log(recipient_index);
+                        request[index].RecipientStatus = 'Deleted'
+                        request[index].RecipientDateStatus = today
 
                         axios
                           .post('/updaterequestdata', {
@@ -1506,7 +1506,7 @@ class Tables extends React.Component {
         .parent()
         .parent()
         .children('#datastatus')[0].innerHTML
-      var recepients = $(this)
+      var recipients = $(this)
         .parent()
         .parent()
         .parent()
@@ -1531,7 +1531,7 @@ class Tables extends React.Component {
               DocumentName: Document.DocumentName,
               Owmer: Document.Owner,
               OwnerEmail: Document.OwnerEmail,
-              Recepients: recepients,
+              Recipients: recipients,
               Status: Document.Status,
             })
             //console.log(datarray);
@@ -1571,7 +1571,7 @@ class Tables extends React.Component {
         .parent()
         .parent()
         .children('#datastatus')[0].innerHTML
-      var recepients = $(this)
+      var recipients = $(this)
         .parent()
         .parent()
         .parent()
@@ -1602,7 +1602,7 @@ class Tables extends React.Component {
               document.getElementById('historyholder').innerHTML =
                 Document.OwnerEmail
               document.getElementById(
-                'historyrecepients'
+                'historyrecipients'
               ).innerHTML = reciverlistrow
               document.getElementById('historystatus').innerHTML =
                 Document.Status
@@ -1747,16 +1747,16 @@ class Tables extends React.Component {
             recievers.forEach(function (item, index) {
               docname = item.DocumentName
               dbpeople.push({
-                name: item.RecepientName,
-                email: item.RecepientEmail,
-                option: item.RecepientOption,
+                name: item.RecipientName,
+                email: item.RecipientEmail,
+                option: item.RecipientOption,
               })
               //console.log(dbpeople);
-              var recepient_index = index
-              //console.log(recepient_index);
+              var recipient_index = index
+              //console.log(recipient_index);
 
-              recievers[index].RecepientStatus = 'Correcting'
-              recievers[index].RecepientDateStatus = today
+              recievers[index].RecipientStatus = 'Correcting'
+              recievers[index].RecipientDateStatus = today
 
               axios
                 .post('/updaterecieverdata', {
@@ -1782,10 +1782,10 @@ class Tables extends React.Component {
 
                     request.forEach(function (item, index) {
                       if (request[index].DocumentID === fileid) {
-                        var recepient_index = index
-                        //console.log(recepient_index);
-                        request[index].RecepientStatus = 'Correcting'
-                        request[index].RecepientDateStatus = today
+                        var recipient_index = index
+                        //console.log(recipient_index);
+                        request[index].RecipientStatus = 'Correcting'
+                        request[index].RecipientDateStatus = today
 
                         axios
                           .post('/updaterequestdata', {
@@ -1823,7 +1823,7 @@ class Tables extends React.Component {
                   //alert('Document Correcting');
                   setTimeout(function () {
                     modal[2].style.display = 'none'
-                    DataVar.RecepientArray = dbpeople
+                    DataVar.RecipientArray = dbpeople
                     var wurl =
                       '#/admin/uploadsuccess?id=' +
                       fileid +
@@ -1904,13 +1904,13 @@ class Tables extends React.Component {
             var dbpeople = []
             Document.Reciever.forEach(function (data, index) {
               dbpeople.push({
-                name: data.RecepientName,
-                email: data.RecepientEmail,
-                option: data.RecepientOption,
+                name: data.RecipientName,
+                email: data.RecipientEmail,
+                option: data.RecipientOption,
               })
               //console.log(dbpeople);
             })
-            DataVar.RecepientArray = dbpeople
+            DataVar.RecipientArray = dbpeople
             docname = Document.DocumentName
 
             var newdocid = randomString(13)
@@ -2009,17 +2009,17 @@ class Tables extends React.Component {
             var dbpeople = []
             Document.Reciever.forEach(function (data, index) {
               dbpeople.push({
-                name: data.RecepientName,
-                email: data.RecepientEmail,
-                option: data.RecepientOption,
+                name: data.RecipientName,
+                email: data.RecipientEmail,
+                option: data.RecipientOption,
               })
               //console.log(dbpeople);
             })
 
             TemplateDataVar.TemplateID = fileid
             TemplateDataVar.TemplateUserID = templateuserid
-            TemplateDataVar.TemplateRecepientCount = dbpeople.length
-            TemplateDataVar.TemplateRecepientArray = dbpeople
+            TemplateDataVar.TemplateRecipientCount = dbpeople.length
+            TemplateDataVar.TemplateRecipientArray = dbpeople
 
             modal[2].style.display = 'none'
             var wurl = '#/admin/saveastemplate'
@@ -2087,21 +2087,21 @@ class Tables extends React.Component {
                 '&key=' +
                 index +
                 ''
-              if (data.RecepientStatus === 'Sent') {
+              if (data.RecipientStatus === 'Sent') {
                 var dbpeople = []
                 dbpeople.push({
-                  name: data.RecepientName,
-                  email: data.RecepientEmail,
-                  option: data.RecepientOption,
+                  name: data.RecipientName,
+                  email: data.RecipientEmail,
+                  option: data.RecipientOption,
                 })
                 //console.log(dbpeople);
 
                 axios
                   .post('/sendmail', {
-                    to: data.RecepientEmail,
+                    to: data.RecipientEmail,
                     body:
                       `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
-                      data.RecepientName +
+                      data.RecipientName +
                       `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. </p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
                       url +
                       `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
@@ -2109,7 +2109,7 @@ class Tables extends React.Component {
                   })
                   .then(function (response) {
                     console.log(response)
-                    //firebase.database().ref(voiduserid + '/Documents/'+voidfileid+'/Reciever/'+childdata.key+'/').child('RecepientStatus').set('Void');
+                    //firebase.database().ref(voiduserid + '/Documents/'+voidfileid+'/Reciever/'+childdata.key+'/').child('RecipientStatus').set('Void');
                   })
                   .catch(function (error) {
                     //console.log('message could not be sent');
@@ -2736,7 +2736,7 @@ class Tables extends React.Component {
                           </span>
                           <span
                             className="emaillabelspan"
-                            id="historyrecepients"
+                            id="historyrecipients"
                           ></span>
                         </FormGroup>
                         <FormGroup>
@@ -3277,7 +3277,7 @@ class Tables extends React.Component {
                           </span>
                           <span
                             className="emaillabelspan"
-                            id="detailrecepients"
+                            id="detailrecipients"
                           ></span>
                         </FormGroup>
                         <FormGroup>
@@ -3313,10 +3313,10 @@ class Tables extends React.Component {
                     </Col>
                     <Col lg="12">
                       <h4 className="py-4 px-3" color="dark">
-                        Recepients:
+                        Recipients:
                       </h4>
-                      <div className="managerecepientstable">
-                        <ul id="managerecepientstable"></ul>
+                      <div className="managerecipientstable">
+                        <ul id="managerecipientstable"></ul>
                       </div>
                     </Col>
                    

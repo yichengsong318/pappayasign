@@ -44,7 +44,7 @@ class TemplateDropzone extends Component {
       TemplateDataVar.TemplateDocName = files[0].name
       //console.log(TemplateDataVar);
 
-      var url = '#/admin/templaterecepients'
+      var url = '#/admin/templaterecipients'
       window.location.hash = url
       //$('<a href="'+url+'" target="blank"></a>')[0].click();
     }
@@ -91,7 +91,7 @@ class TemplateDropzone extends Component {
       //console.log(TemplateDataVar);
       modal[0].style.display = 'block'
 
-      var url = '#/admin/templaterecepients'
+      var url = '#/admin/templaterecipients'
       window.location.hash = url
       //$('<a href="'+url+'" target="blank"></a>')[0].click();
     }

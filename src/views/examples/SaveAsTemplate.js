@@ -15,7 +15,7 @@ import {
   Row,
 } from 'reactstrap'
 import TemplateDataVar from '../../variables/templatedata'
-import './selecttemplaterecepients.css'
+import './selecttemplaterecipients.css'
 
 require('jquery-ui')
 require('jquery-ui/ui/widgets/sortable')
@@ -30,15 +30,15 @@ class SaveAsTemplate extends React.Component {
 
     try {
       var people = []
-      people = TemplateDataVar.TemplateRecepientArray
+      people = TemplateDataVar.TemplateRecipientArray
       people.forEach(function (item, index) {
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="satrcard"><input class="form-control-alternative p-3 inputr" id="satrecepient-name" placeholder="' +
+          '<div class="p-2 rcard" id="satrcard"><input class="form-control-alternative p-3 inputr" id="satrecipient-name" placeholder="' +
           people[index].name +
-          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="satrecepient-email" placeholder="' +
+          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="satrecipient-email" placeholder="' +
           people[index].email +
-          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="satrecepient-option" placeholder="' +
+          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="satrecipient-option" placeholder="' +
           people[index].option +
           '" type="text" disabled/><button class="buttonr delete">x</button></div>'
         $('#satsortable').append(li)
@@ -95,62 +95,62 @@ class SaveAsTemplate extends React.Component {
       })
 
       $('#satappend-btn').click(function () {
-        var recepientName = document.getElementById('satrecepient-input-name')
+        var recipientName = document.getElementById('satrecipient-input-name')
           .value
-        var recepientEmail = document.getElementById('satrecepient-input-email')
+        var recipientEmail = document.getElementById('satrecipient-input-email')
           .value
-        var recepientoptionselect = document.getElementById(
-          'satrecepientoptionselect'
+        var recipientoptionselect = document.getElementById(
+          'satrecipientoptionselect'
         )
-        var recepientoption =
-          recepientoptionselect.options[recepientoptionselect.selectedIndex]
+        var recipientoption =
+          recipientoptionselect.options[recipientoptionselect.selectedIndex]
             .value
         if (
-          recepientoption == 'Needs to View' ||
-          recepientoption == 'Recieves a Copy'
+          recipientoption == 'Needs to View' ||
+          recipientoption == 'Recieves a Copy'
         ) {
-          if (recepientName == '' || recepientEmail == '') {
+          if (recipientName == '' || recipientEmail == '') {
             alert('Please enter all details.')
           } else {
             var li = document.createElement('li')
             li.innerHTML =
-              '<div class="p-2 rcard" id="satrcard"><input class="form-control-alternative p-3 inputr" id="satrecepient-name" placeholder="' +
-              recepientName +
-              '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="satrecepient-email" placeholder="' +
-              recepientEmail +
-              '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="satrecepient-option" placeholder="' +
-              recepientoption +
+              '<div class="p-2 rcard" id="satrcard"><input class="form-control-alternative p-3 inputr" id="satrecipient-name" placeholder="' +
+              recipientName +
+              '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="satrecipient-email" placeholder="' +
+              recipientEmail +
+              '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="satrecipient-option" placeholder="' +
+              recipientoption +
               '" type="text" disabled/><button class="buttonr delete">x</button></div>'
             $('#satsortable').append(li)
-            document.getElementById('satrecepient-input-name').value = ''
-            document.getElementById('satrecepient-input-email').value = ''
+            document.getElementById('satrecipient-input-name').value = ''
+            document.getElementById('satrecipient-input-email').value = ''
           }
-        } else if (count < TemplateDataVar.TemplateRecepientCount) {
-          if (recepientName == '' || recepientEmail == '') {
+        } else if (count < TemplateDataVar.TemplateRecipientCount) {
+          if (recipientName == '' || recipientEmail == '') {
             alert('Please enter all details.')
           } else {
             var li = document.createElement('li')
             li.innerHTML =
-              '<div class="p-2 rcard" id="satrcard"><input class="form-control-alternative p-3 inputr" id="satrecepient-name" placeholder="' +
-              recepientName +
-              '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="satrecepient-email" placeholder="' +
-              recepientEmail +
-              '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="satrecepient-option" placeholder="' +
-              recepientoption +
+              '<div class="p-2 rcard" id="satrcard"><input class="form-control-alternative p-3 inputr" id="satrecipient-name" placeholder="' +
+              recipientName +
+              '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="satrecipient-email" placeholder="' +
+              recipientEmail +
+              '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="satrecipient-option" placeholder="' +
+              recipientoption +
               '" type="text" disabled/><button class="buttonr delete">x</button></div>'
             $('#satsortable').append(li)
-            document.getElementById('satrecepient-input-name').value = ''
-            document.getElementById('satrecepient-input-email').value = ''
+            document.getElementById('satrecipient-input-name').value = ''
+            document.getElementById('satrecipient-input-email').value = ''
             count = count + 1
           }
         } else {
-          alert('Sorry all recepient positions have been filled')
+          alert('Sorry all recipient positions have been filled')
         }
       })
 
       $(document).on('click', '.delete', function () {
         $(this).parent().parent().remove()
-        //console.log($(this).parent().children('#satrecepient-name').attr("placeholder"));
+        //console.log($(this).parent().children('#satrecipient-name').attr("placeholder"));
       })
 
       Array.prototype.pushWithReplace = function (o, k) {
@@ -174,10 +174,10 @@ class SaveAsTemplate extends React.Component {
       }
 
       $('#sat-btn').click(function () {
-        var recepienttemplatename = document.getElementById(
+        var recipienttemplatename = document.getElementById(
           'sat-input-template-name'
         ).value
-        if (recepienttemplatename !== '') {
+        if (recipienttemplatename !== '') {
           var today = new Date().toLocaleString().replace(',', '')
           modal[0].style.display = 'block'
           url =
@@ -189,29 +189,29 @@ class SaveAsTemplate extends React.Component {
           people = []
           var listItems = $('#satsortable li')
           if (listItems.length == 0) {
-            alert('There are no recepeints, Please add recepients')
-            TemplateDataVar.TemplateRecepientArray = people
+            alert('There are no recepeints, Please add recipients')
+            TemplateDataVar.TemplateRecipientArray = people
           } else {
             listItems.each(function (li) {
-              var recepientN = $(this)
+              var recipientN = $(this)
                 .children('#satrcard')
-                .children('#satrecepient-name')
+                .children('#satrecipient-name')
                 .attr('placeholder')
-              var recepientE = $(this)
+              var recipientE = $(this)
                 .children('#satrcard')
-                .children('#satrecepient-email')
+                .children('#satrecipient-email')
                 .attr('placeholder')
-              var recepientO = $(this)
+              var recipientO = $(this)
                 .children('#satrcard')
-                .children('#satrecepient-option')
+                .children('#satrecipient-option')
                 .attr('placeholder')
               people.pushWithReplace(
-                { name: recepientN, email: recepientE, option: recepientO },
+                { name: recipientN, email: recipientE, option: recipientO },
                 'email'
               )
             })
             //console.log(people);
-            TemplateDataVar.TemplateRecepientArray = people
+            TemplateDataVar.TemplateRecipientArray = people
             //console.log(TemplateDataVar);
           }
 
@@ -251,7 +251,7 @@ class SaveAsTemplate extends React.Component {
 
                             axios
                               .post('/addtemplatedata', {
-                                TemplateName: recepienttemplatename,
+                                TemplateName: recipienttemplatename,
                                 TemplateID: docid,
                                 OwnerEmail: Document.OwnerEmail,
                                 DateCreated: today,
@@ -271,23 +271,23 @@ class SaveAsTemplate extends React.Component {
                                 ) {
                                   var Reciever = []
                                   people.forEach(function (item, index) {
-                                    var recepientName = people[index].name
-                                    var recepientEmail = people[index].email
-                                    var recepientOption = people[index].option
-                                    var recepientColor = colorArray[index]
+                                    var recipientName = people[index].name
+                                    var recipientEmail = people[index].email
+                                    var recipientOption = people[index].option
+                                    var recipientColor = colorArray[index]
                                     if (
-                                      recepientOption == 'Needs to Sign' ||
-                                      recepientOption == 'Needs to View'
+                                      recipientOption == 'Needs to Sign' ||
+                                      recipientOption == 'Needs to View'
                                     ) {
-                                      //console.log(recepientEmail + ',' + recepientName);
+                                      //console.log(recipientEmail + ',' + recipientName);
                                       var user = {
-                                        RecepientName: recepientName,
-                                        DocumentName: recepienttemplatename,
-                                        RecepientEmail: recepientEmail,
-                                        RecepientColor: recepientColor,
-                                        RecepientOption: recepientOption,
-                                        RecepientStatus: 'Sent',
-                                        RecepientDateStatus: today,
+                                        RecipientName: recipientName,
+                                        DocumentName: recipienttemplatename,
+                                        RecipientEmail: recipientEmail,
+                                        RecipientColor: recipientColor,
+                                        RecipientOption: recipientOption,
+                                        RecipientStatus: 'Sent',
+                                        RecipientDateStatus: today,
                                       }
                                       Reciever.push(user)
                                       //console.log(Reciever);
@@ -394,7 +394,7 @@ class SaveAsTemplate extends React.Component {
                       </Col>
                     </Row>
                     <div className="mb-4 mb-xl-0">
-                      <h5>Enter Placeholder Recepients: </h5>
+                      <h5>Enter Placeholder Recipients: </h5>
                     </div>
 
                     <Row>
@@ -402,7 +402,7 @@ class SaveAsTemplate extends React.Component {
                         <FormGroup>
                           <Input
                             className="form-control-alternative"
-                            id="satrecepient-input-name"
+                            id="satrecipient-input-name"
                             placeholder="Name"
                             type="text"
                           />
@@ -412,7 +412,7 @@ class SaveAsTemplate extends React.Component {
                         <FormGroup>
                           <Input
                             className="form-control-alternative"
-                            id="satrecepient-input-email"
+                            id="satrecipient-input-email"
                             placeholder="Email Address"
                             type="email"
                           />
@@ -421,7 +421,7 @@ class SaveAsTemplate extends React.Component {
                       <Col lg="4">
                         <FormGroup>
                           <select
-                            id="satrecepientoptionselect"
+                            id="satrecipientoptionselect"
                             className="form-control  form-control-md"
                           >
                             <option value="Needs to Sign">Needs to Sign</option>
@@ -452,7 +452,7 @@ class SaveAsTemplate extends React.Component {
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  <div id="strecepientdiv">
+                  <div id="strecipientdiv">
                     <ul id="satsortable"></ul>
                   </div>
                 </CardBody>
