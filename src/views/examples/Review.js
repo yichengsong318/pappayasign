@@ -289,7 +289,7 @@ class Review extends React.Component {
 
     console.log(process.env.REACT_APP_BASE_URL);
 
-    var filename = ''
+    var filenamemain = ''
     var docname = ''
     var action = ''
     var pdfset = 'not set'
@@ -326,7 +326,7 @@ class Review extends React.Component {
           tmp = params[i].split('=')
           data[tmp[0]] = tmp[1]
         }
-        filename = data.id
+        filenamemain = data.id
         try {
           action = data.action
         } catch (error) {}
@@ -646,7 +646,7 @@ class Review extends React.Component {
         var url =
           process.env.REACT_APP_BASE_URL +
           '/#/admin/sign?id=' +
-          filename +
+          filenamemain +
           '&type=db&u=' +
           userid +
           '&key=0'
@@ -658,7 +658,7 @@ class Review extends React.Component {
 
           axios
             .post('/posthistory', {
-              DocumentID: filename,
+              DocumentID: filenamemain,
               HistoryTime: today,
               HistoryUser: people[0].email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
@@ -684,7 +684,7 @@ class Review extends React.Component {
                   .post('/postrequest', {
                     UserID: response.data.UserID,
                     DocumentName: docname,
-                    DocumentID: filename,
+                    DocumentID: filenamemain,
                     From: userid,
                     FromEmail: email,
                     RecipientStatus: 'Need to Sign',
@@ -751,7 +751,7 @@ class Review extends React.Component {
 
             axios
             .post('/posthistory', {
-              DocumentID: filename,
+              DocumentID: filenamemain,
               HistoryTime: today,
               HistoryUser: email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
@@ -772,7 +772,7 @@ class Review extends React.Component {
         axios
           .post('/addreciever', {
             Status: 'Waiting for Others',
-            DocumentID: filename,
+            DocumentID: filenamemain,
             SignOrder: true,
             DateSent: today,
             Reciever: Reciever,
@@ -784,7 +784,7 @@ class Review extends React.Component {
               axios
               .post('/expiry', {
                 UserID:userid,
-                DocumentID:filename,
+                DocumentID:filenamemain,
                 day:day,
                 month:month,
                 year:year,
@@ -803,7 +803,7 @@ class Review extends React.Component {
                 console.log(date);
                   axios
                 .post('/reminder', {
-                  DocumentID:filename,
+                  DocumentID:filenamemain,
                   date:date
                 })
                 .then(function (response) {
@@ -841,7 +841,7 @@ class Review extends React.Component {
             var url =
               process.env.REACT_APP_BASE_URL +
               '/#/admin/sign?id=' +
-              filename +
+              filenamemain +
               '&type=db&u=' +
               userid +
               '&key=' +
@@ -862,7 +862,7 @@ class Review extends React.Component {
                       .post('/postrequest', {
                         UserID: response.data.UserID,
                         DocumentName: docname,
-                        DocumentID: filename,
+                        DocumentID: filenamemain,
                         From: userid,
                         FromEmail: email,
                         RecipientStatus: 'Need to Sign',
@@ -918,7 +918,7 @@ class Review extends React.Component {
 
             axios
             .post('/posthistory', {
-              DocumentID: filename,
+              DocumentID: filenamemain,
               HistoryTime: today,
               HistoryUser: email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
@@ -939,7 +939,7 @@ class Review extends React.Component {
         axios
           .post('/addreciever', {
             Status: 'Waiting for Others',
-            DocumentID: filename,
+            DocumentID: filenamemain,
             SignOrder: false,
             DateSent: today,
             Reciever: Reciever,
@@ -951,7 +951,7 @@ class Review extends React.Component {
               axios
                 .post('/expiry', {
                   UserID:userid,
-                  DocumentID:filename,
+                  DocumentID:filenamemain,
                   day:day,
                   month:month,
                   year:year,
@@ -971,13 +971,13 @@ class Review extends React.Component {
                   var url =
                   process.env.REACT_APP_BASE_URL +
                   '/#/admin/sign?id=' +
-                  filename +
+                  filenamemain +
                   '&type=db&u=' +
                   userid +
                   '&key='
                     axios
                   .post('/reminder', {
-                    DocumentID:filename,
+                    DocumentID:filenamemain,
                     date:date,
                     url:url
                   })

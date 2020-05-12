@@ -1297,7 +1297,8 @@ toggleSignModal = () => {
 
                           if (signorderval === true) {
                             console.log(signorderval);
-                            var nextuser = parseInt(recipientkey) + 1
+                            try {
+                              var nextuser = parseInt(recipientkey) + 1
                             var currentuser = parseInt(recipientkey)
                             var nextuseremail =
                               recievers[nextuser].RecipientEmail
@@ -1370,6 +1371,10 @@ toggleSignModal = () => {
                                   .catch(function (error) {})
                               } catch (error) {}
                             }
+                            } catch (error) {
+                              
+                            }
+                            
                           }
                         }
                       })
