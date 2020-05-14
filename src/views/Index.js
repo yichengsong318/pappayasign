@@ -63,6 +63,45 @@ class Index extends React.Component {
       var email = getCookie('useremail')
 
       try {
+        var recentactivity = getCookie('recents');
+        
+        var recents = JSON.parse(recentactivity)
+        console.log(recents);
+        if(recents){
+          $('#recentactivitylist li').remove()
+          $('#recentactivitylist').innerHTML = ''
+          recents.forEach(function(item,index){
+            console.log(item);
+            var li = document.createElement('li')
+            li.innerHTML =
+              `<div class="rcardrecent">
+            <div class="recentlabelspan">
+            <strong><span  id="summary-recipient-name">Document Name: ` +
+            item.DocumentName +
+              `</span></strong>
+            </div>
+            <div class="recentlabelspan">
+            <span  id="summary-recipient-name">Status: ` +
+            item.Status +
+              `</span>
+            </div>
+            <div class="recentlabelspan">
+            <span  id="summary-recipient-name">Last Activity: ` +
+            item.Timestamp +
+              `</span>
+            </div>
+            </div>`
+            $('#recentactivitylist').append(li)
+            
+          });
+        }
+        
+      } catch (error) {
+        
+      }
+      
+
+      try {
         axios
           .post('/getuserdata', {
             UserID: userid,
@@ -141,7 +180,7 @@ class Index extends React.Component {
         </div>
 
         <Row className="mt--7 mx-3">
-          <Col className="mb-5 mb-xl-0" xl="12">
+          <Col className="mb-2 mb-xl-0" xl="12">
             <Card className="bg-gradient-white shadow">
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
@@ -176,6 +215,16 @@ class Index extends React.Component {
           </Col>
         </Row>
         <Row className="mt-5 mx-3 mb-3">
+        <Col lg='12' >
+        <h6 className="text-uppercase text-black ls-1 mx-2 mb-1">
+          Recent Activity
+        </h6>
+        <div className="recentactivitylist">
+          <ul id="recentactivitylist"></ul>
+        </div>
+        </Col>
+        </Row>
+        <Row className="mt-5 mx-3 mb-3">
           <Col lg="6" xl="3">
             <a href="#/admin/manage?action=inbox">
               <Card className="card-stats mb-4 mb-xl-0">
@@ -183,14 +232,14 @@ class Index extends React.Component {
                   <Row>
                     <div className="col">
                       <CardTitle
-                        tag="h5"
+                        tag="h6"
                         className="text-uppercase text-muted mb-0"
                       >
                         Documents
                       </CardTitle>
                       <span
                         id="homedocspan"
-                        className="h2 font-weight-bold mb-0"
+                        className="h4 font-weight-bold mb-0"
                       ></span>
                     </div>
                     <Col className="col-auto">
@@ -211,14 +260,14 @@ class Index extends React.Component {
                   <Row>
                     <div className="col">
                       <CardTitle
-                        tag="h5"
+                        tag="h6"
                         className="text-uppercase text-muted mb-0"
                       >
                         Sent
                       </CardTitle>
                       <span
                         id="homesentspan"
-                        className="h2 font-weight-bold mb-0"
+                        className="h4 font-weight-bold mb-0"
                       ></span>
                     </div>
                     <Col className="col-auto">
@@ -238,14 +287,14 @@ class Index extends React.Component {
                   <Row>
                     <div className="col">
                       <CardTitle
-                        tag="h5"
+                        tag="h6"
                         className="text-uppercase text-muted mb-0"
                       >
                         Completed
                       </CardTitle>
                       <span
                         id="homecompletespan"
-                        className="h2 font-weight-bold mb-0"
+                        className="h4 font-weight-bold mb-0"
                       ></span>
                     </div>
                     <Col className="col-auto">
@@ -265,14 +314,14 @@ class Index extends React.Component {
                   <Row>
                     <div className="col">
                       <CardTitle
-                        tag="h5"
+                        tag="h6"
                         className="text-uppercase text-muted mb-0"
                       >
                         Requests
                       </CardTitle>
                       <span
                         id="homerequestspan"
-                        className="h2 font-weight-bold mb-0"
+                        className="h4 font-weight-bold mb-0"
                       ></span>
                     </div>
                     <Col className="col-auto">

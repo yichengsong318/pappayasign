@@ -116,6 +116,25 @@ toggleSignModal = () => {
     })
 
 
+    function setCookie(name, value, days) {
+      var expires = ''
+      if (days) {
+        var date = new Date()
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+        expires = '; expires=' + date.toUTCString()
+      }
+      document.cookie = name + '=' + (value || '') + expires + '; path=/'
+    }
+
+    Array.prototype.pushWithReplace = function (o, k) {
+      var fi = this.findIndex((f) => f[k] === o[k])
+      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
+      return this
+    }
+
+    var recents = [];
+
+
     var modal = document.querySelectorAll('.modal')
     var copybtn = document.getElementById('copy-clipboard-btn')
     var mainurl = document.location.hash
@@ -928,6 +947,18 @@ toggleSignModal = () => {
                   dataarray.push(JSON.stringify(jsonData[index]))
                 })
                 PreviewData.Data = dataarray;
+
+                if(recents.length >= 5){
+                  var removefirst = recents.shift();
+                }
+                
+                recents.pushWithReplace(
+                  { DocumentName: inst.filename, DocumentID: filename, Status: 'Draft', Timestamp: today },
+                  'DocumentID'
+                )
+                var recents_str = JSON.stringify(recents)
+    
+                setCookie('recents', recents_str, 10)
 
                 axios
                   .post('/adddocumentdata', {
@@ -2121,6 +2152,10 @@ toggleSignModal = () => {
       if (userid) {
         // // // // // // // ////console.log('user logged in');
         email = getCookie('useremail')
+        var cookierecents = getCookie('recents');
+          if(cookierecents){
+            recents = JSON.parse(cookierecents);
+          }
         ////console.log(userid);
         ////console.log(email);
 

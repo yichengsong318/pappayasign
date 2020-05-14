@@ -11,6 +11,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  CardFooter,
   Col,
   FormGroup,
   Input,
@@ -40,7 +41,28 @@ class Tables extends React.Component {
   pdf = null;
 
   componentDidMount() {
+    
+    function setCookie(name, value, days) {
+      var expires = ''
+      if (days) {
+        var date = new Date()
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+        expires = '; expires=' + date.toUTCString()
+      }
+      document.cookie = name + '=' + (value || '') + expires + '; path=/'
+    }
+
+    Array.prototype.pushWithReplace = function (o, k) {
+      var fi = this.findIndex((f) => f[k] === o[k])
+      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
+      return this
+    }
+
+    var recents = [];
+    
+    
     var pdf = '';
+
     var global = this;
     try {
       var mainurl = document.location.hash,
@@ -302,7 +324,10 @@ class Tables extends React.Component {
       //console.log('user logged in');
       //console.log(userid);
       var email = getCookie('useremail')
-
+      var cookierecents = getCookie('recents');
+      if(cookierecents){
+        recents = JSON.parse(cookierecents);
+      }
       inboxfunc()
       datafunc()
       //modal[5].style.display = 'block'
@@ -1019,8 +1044,31 @@ class Tables extends React.Component {
           if (response.data.Status === 'doc data done') {
             var Document = response.data.Document
             RowSelectData = response.data.Data
+
+            if(recents.length >= 5){
+              var removefirst = recents.shift();
+            }
+            
+            recents.pushWithReplace(
+              { DocumentName: Document.DocumentName, DocumentID: Document.DocumentID, Status: Document.Status, Timestamp: Document.DateStatus },
+              'DocumentID'
+            )
+            var recents_str = JSON.stringify(recents)
+
+            setCookie('recents', recents_str, 10)
             
             //console.log(Document.Reciever);
+            var liStart = document.createElement('li')
+                  liStart.innerHTML =
+                    `<div class="rcardflow ">
+                  <div class="flowlabelspan">
+                  <strong><span  id="summary-recipient-name">Sent By: </span></strong>
+                  </div>
+                  <div class="flowlabelspan vertical-line-start">
+                  <span  id="summary-recipient-name">`+Document.OwnerEmail.substr(0, 1).toUpperCase() +Document.OwnerEmail.substr(0, 1).toUpperCase() +`</span>
+                  </div>
+                  </div>`
+                  $('#recipientflowtable').append(liStart)
 
             var reciverlistrow = ''
             try {
@@ -1028,6 +1076,27 @@ class Tables extends React.Component {
                 var id = index + 1
                 reciverlistrow =
                   reciverlistrow + ' ' + reciever.RecipientEmail + ','
+
+                  
+                  //console.log(Document.Reciever);
+                  
+
+                  
+                  var flowli = document.createElement('li')
+                  flowli.innerHTML =
+                    `<div class="rcardmanage">
+                  <div class="flowlabelspan">
+                  <strong><span  id="summary-recipient-name">` +
+                  id +
+                    `</span></strong>
+                  </div>
+                  <div class="flowlabelspan vertical-line">
+                  <span  id="summary-recipient-name">` +
+                    reciever.RecipientName.substr(0, 1).toUpperCase()  + reciever.RecipientName.substr(0, 1).toUpperCase()  +
+                    `</span>
+                  </div>
+                  </div>`
+                  $('#recipientflowtable').append(flowli)
 
                 var li = document.createElement('li')
                 li.innerHTML =
@@ -1055,6 +1124,19 @@ class Tables extends React.Component {
                 </div>`
                 $('#managerecipientstable').append(li)
               })
+
+              var liEnd = document.createElement('li')
+                  liEnd.innerHTML =
+                    `<div class="rcardflow">
+                  <div class="flowlabelspan">
+                  <strong><span  id="summary-recipient-name">Status: </span></strong>
+                  </div>
+                  <div class="flowlabelend">
+                  <span  id="summary-recipient-name">`+Document.Status +`</span>
+                  </div>
+                  </div>`
+                  $('#recipientflowtable').append(liEnd)
+
               document.getElementById('detailsubject').innerHTML =
                 Document.DocumentName
               document.getElementById('detailid').innerHTML = rowselectfileid
@@ -1124,6 +1206,8 @@ class Tables extends React.Component {
       document.getElementById('detailbody').style.display = 'none'
       $('#managerecipientstable li').remove()
       $('#managerecipientstable').innerHTML = ''
+      $('#recipientflowtable li').remove()
+      $('#recipientflowtable').innerHTML = ''
       document.getElementById('detailsubject').innerHTML = ''
       document.getElementById('detailid').innerHTML = ''
       document.getElementById('detailsent').innerHTML = ''
@@ -1150,6 +1234,15 @@ class Tables extends React.Component {
         global.pdf.printPdf();
       }, 1000);
       
+    })
+
+    $('.flow-close').click(function () {
+      modal[6].style.display = 'none'
+    });
+
+    $('#signflowbtn').click(function () {
+      modal[6].style.display = 'block'
+
     })
 
     $(document).on('click', '.void', function () {
@@ -2810,6 +2903,32 @@ class Tables extends React.Component {
             </div>
           </div>
 
+          
+          <div className="modal">
+          <div className="flow-modal-content">
+            <Card className="shadow border-0 mx-3">
+                <CardHeader className=" bg-transparent">
+                <div className="review-manager-title">
+                        <span>Sign Flow</span>
+                        <i className="ni ni-fat-remove flow-close" />
+                    </div>
+                </CardHeader>
+                <CardBody>
+                <Row>
+                        <Col lg="12">
+                        <div className="recipientflowtable">
+                            <ul id="recipientflowtable"></ul>
+                          </div>
+                        </Col>
+                </Row>  
+            </CardBody>
+            <CardFooter className=" bg-transparent">
+            
+            </CardFooter> 
+            </Card>     
+            </div>
+          </div>
+
 
           
 
@@ -3312,9 +3431,21 @@ class Tables extends React.Component {
                       </Row>
                     </Col>
                     <Col lg="12">
+                    <Button
+                          className="float-right px-4"
+                          color="primary"
+                          size="sm"
+                          type="button"
+                          id="signflowbtn"
+                          outline
+                        >
+                          <i className="material-icons">device_hub</i>
+                          Flow Diagram
+                        </Button>
                       <h4 className="py-4 px-3" color="dark">
                         Recipients:
                       </h4>
+                      
                       <div className="managerecipientstable">
                         <ul id="managerecipientstable"></ul>
                       </div>

@@ -11,8 +11,18 @@ const cors = require("cors");
 const port = process.env.PORT || 8080;
 const app = express();
 const AWS = require('aws-sdk');
+var upload = require('express-fileupload');
+var docxConverter = require('docx-pdf');
+var fs = require('fs');
 
 require('dotenv').config({path: path.resolve(__dirname+'/.env')});
+
+const extend_pdf = '.pdf'
+const extend_docx = '.docx'
+
+var down_name
+
+app.use(upload());
 
 app.use(cors());
 
@@ -47,6 +57,27 @@ app.post("/getip", function (req, res) {
 	var ip = req.ip;
 	res.send(ip);
 });
+
+app.post('/upload',function(req,res){
+	console.log(req.body.files);
+	if(req.body.files){
+		var First_name = 'default';
+		
+		var initialPath = path.join(__dirname, `./uploads/${First_name}${extend_docx}`);
+		  console.log('initial path')
+		  //Path where the converted pdf will be placed/uploaded
+		  var upload_path = path.join(__dirname, `./uploads/${First_name}${extend_pdf}`);
+		  console.log('upload path')
+		var base64Data = req.body.files.replace(/^data:application\/\w+;base64,/, "");
+
+		require("fs").writeFile("output.docx", base64Data, function(err) {
+		  console.log(err);
+		});
+	}else{
+	  res.send("No File selected !");
+	  res.end();
+	}
+  });
 
 
 app.post("/login", function (req, res) {

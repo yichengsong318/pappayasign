@@ -300,6 +300,24 @@ class Review extends React.Component {
     var email = ''
     var droptoggle = 0
 
+    function setCookie(name, value, days) {
+      var expires = ''
+      if (days) {
+        var date = new Date()
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+        expires = '; expires=' + date.toUTCString()
+      }
+      document.cookie = name + '=' + (value || '') + expires + '; path=/'
+    }
+
+    Array.prototype.pushWithReplace = function (o, k) {
+      var fi = this.findIndex((f) => f[k] === o[k])
+      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
+      return this
+    }
+
+    var recents = [];
+
     function getCookie(name) {
       var nameEQ = name + '='
       var ca = document.cookie.split(';')
@@ -317,6 +335,12 @@ class Review extends React.Component {
       //console.log('user logged in');
       //console.log(userid);
       email = getCookie('useremail')
+
+      var cookierecents = getCookie('recents');
+      if(cookierecents){
+        recents = JSON.parse(cookierecents);
+      }
+      
       try {
         var mainurl = document.location.hash,
           params = mainurl.split('?')[1].split('&'),
@@ -627,7 +651,17 @@ class Review extends React.Component {
 
       var today = new Date().toLocaleString().replace(',', '')
 
-          
+      if(recents.length >= 5){
+        var removefirst = recents.shift();
+      }
+      
+      recents.pushWithReplace(
+        { DocumentName: docname, DocumentID: filenamemain, Status: 'Sent', Timestamp: today },
+        'DocumentID'
+      )
+      var recents_str = JSON.stringify(recents)
+
+      setCookie('recents', recents_str, 10)
 
       var subject = document.getElementById('input-email-subject').value
       var emailmessage = document.getElementById('input-email-message').value

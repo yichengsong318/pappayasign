@@ -472,6 +472,8 @@ border-radius: 20px !important;
 }
 
 
+
+
   .modal-content-history {
     position: relative; 
     background-color: white;
@@ -496,6 +498,93 @@ border-radius: 20px !important;
       overflow-y: auto; 
     }
 
+
+    .flow-modal-content{
+      top:10%;
+      position: relative; 
+      width:50%;
+      padding: 20px; 
+      margin: auto; 
+      text-align: left;
+      justify-content: left;
+      -webkit-animation: fadeinout 0.25s linear forwards;
+      animation: fadeinout 0.25s linear forwards;
+    }
+
+    .flowlabelspan{
+      font-size: 12px;
+      padding-left: 10%;
+      width:45%;
+      display: inline-block;
+    }
+
+    .flowlabelend{
+      font-size: 12px;
+      padding-left: 2%;
+      width:45%;
+      display: inline-block;
+    }
+    
+    #recipientflowtable { list-style-type: none; margin: 0; padding: 0; width: 100%; max-height: 300px; overflow-x: auto; }
+      #recipientflowtable li {  border-radius: 5px; margin-bottom: 3px; border: 1px solid #f3f3f3; background-color: #f3f3f3; padding-left: 1.5em; width:100%; }
+    
+      .rcardflow{
+        background-color: #f3f3f3;
+        border-radius: 5px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      .vertical-line {
+        position: relative;
+        display: inline-block;
+        width: 10%;
+        height: 0;
+        padding: 5% 0;
+        margin-left: 5%;
+        border-radius: 50%;
+        line-height:0;
+        background: #1a1a1a91;
+        color: white;
+        text-align: center !important;
+        justify-content: center;
+        float: center;
+      }
+
+      .vertical-line-start {
+        position: relative;
+        display: inline-block;
+        width: 10%;
+        height: 0;
+        padding: 5% 0;
+        margin-left: 5%;
+        border-radius: 50%;
+        line-height:0;
+        background: #ff8d40;
+        color: white;
+        text-align: center !important;
+        justify-content: center;
+        float: center;
+      }
+
+      .recentlabelspan{
+        font-size: 12px;
+        padding-left: 10px;
+        width:33%;
+        display: inline-block;
+        text-align: left !important;
+      }
+
+      #recentactivitylist { list-style-type: none; margin: 0; padding: 0; width: 100%; margin-top: 10px;  }
+      #recentactivitylist li {  border-radius: 5px; margin-bottom: 5px; border: 1px solid #f3f3f3; background-color: #ffffff; padding-left: 1.5em; width:100%; }
+    
+      .rcardrecent{
+        background-color: #ffffff;
+        border-radius: 5px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        text-align: left !important;
+      }
     
   @media screen and (max-width: 480px) {
     #review-pdf-container {
