@@ -176,6 +176,10 @@ background-color: #626262;
     font-size: 1rem !important;
   }
 
+  #onlysignerfinishbtn{
+    display: none;
+  }
+
   #detailbody{
     display: none;
   }

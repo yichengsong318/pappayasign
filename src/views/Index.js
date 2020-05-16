@@ -138,6 +138,7 @@ class Index extends React.Component {
                     signcount = signcount + 1
                   } else if (data.Status == 'Completed') {
                     completecount = completecount + 1
+                    signcount = signcount + 1
                   }
                   doccount = doccount + 1
                 })
@@ -243,7 +244,7 @@ class Index extends React.Component {
                       ></span>
                     </div>
                     <Col className="col-auto">
-                      <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                      <div className="icon icon-shape bg-primary text-white rounded-circle shadow">
                         <i className="fas fa-folder-open" />
                       </div>
                     </Col>
@@ -271,7 +272,7 @@ class Index extends React.Component {
                       ></span>
                     </div>
                     <Col className="col-auto">
-                      <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                      <div className="icon icon-shape bg-primary text-white rounded-circle shadow">
                         <i className="fas fa-file-contract" />
                       </div>
                     </Col>
@@ -298,7 +299,7 @@ class Index extends React.Component {
                       ></span>
                     </div>
                     <Col className="col-auto">
-                      <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                      <div className="icon icon-shape bg-primary text-white rounded-circle shadow">
                         <i className="fas fa-file-signature" />
                       </div>
                     </Col>
@@ -325,7 +326,7 @@ class Index extends React.Component {
                       ></span>
                     </div>
                     <Col className="col-auto">
-                      <div className="icon icon-shape bg-info text-white rounded-circle shadow">
+                      <div className="icon icon-shape bg-primary text-white rounded-circle shadow">
                         <i className="fas fa-file-import" />
                       </div>
                     </Col>

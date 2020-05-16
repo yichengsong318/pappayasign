@@ -907,6 +907,243 @@ toggleSignModal = () => {
       }
     }
 
+    PDFAnnotate.prototype.OnlySignerSave = function () {
+      var inst = this
+      var doc = new jsPDF()
+      var today = new Date().toLocaleString().replace(',', '')
+      // // // // // // // ////console.log('action:'+action);
+
+      if (
+        action === '' ||
+        action === 'correct' ||
+        typeof action === 'undefined'
+      ) {
+        if (useridother == '') {
+          // // // // // // // ////console.log('fileid:'+fileid);
+          if (fileid === '') {
+            filename = randomString(13)
+            // // // // // // // ////console.log('filename:'+filename);
+          } else {
+            filename = fileid
+          }
+
+          axios
+            .post('/docupload', {
+              UserID: userid,
+              filename: filename,
+              filedata: DataVar.DataPath,
+            })
+            .then(function (response) {
+              console.log(response)
+              if (response.data === 'document upload success') {
+                // // // // // // // ////console.log('completed');
+                var dataarray = []
+                var jsonData = []
+                $.each(inst.fabricObjects, function (index, fabricObj) {
+                  //////console.log(fabricObj.toJSON());
+                  jsonData[index] = fabricObj.toJSON()
+                  if (index != 0) {
+                    doc.addPage()
+                    doc.setPage(index + 1)
+                  }
+                  doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+                  ////console.log(jsonData[index]);
+                  ////console.log(JSON.stringify(jsonData[index]));
+                  dataarray.push(JSON.stringify(jsonData[index]))
+                })
+                PreviewData.Data = dataarray;
+                var dataURI = doc.output('datauristring')
+
+               
+                
+
+                if(recents.length >= 5){
+                  var removefirst = recents.shift();
+                }
+                
+                recents.pushWithReplace(
+                  { DocumentName: inst.filename, DocumentID: filename, Status: 'Completed', Timestamp: today },
+                  'DocumentID'
+                )
+                var recents_str = JSON.stringify(recents)
+    
+                setCookie('recents', recents_str, 10)
+
+                axios
+                  .post('/adddocumentdata', {
+                    DocumentName: inst.filename,
+                    DocumentID: filename,
+                    OwnerEmail: email,
+                    DateCreated: today,
+                    DateStatus: today,
+                    DateSent: '',
+                    Owner: userid,
+                    Status: 'Completed',
+                    SignOrder: DataVar.SignOrder,
+                    Data: dataarray,
+                    Reciever: []
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                    if (
+                      response.data === 'insert done' ||
+                      response.data === 'update done'
+                    ) {
+
+                      axios
+                        .post('/updatedocumentdata', {
+                          DocumentID: filename,
+                          DateStatus: today,
+                          Data: dataarray,
+                        })
+                        .then(function (response) {
+                          console.log(response)
+                          if (
+                            response.data === 'insert done' ||
+                            response.data === 'update done'
+                          ) {
+                            
+                          }
+                        })
+                        .catch(function (error) {
+                          console.log(error)
+                          modal[1].style.display = 'none'
+                        })
+
+                      var Reciever= [
+                        {
+                        RecipientName: email,
+                        DocumentName: inst.filename,
+                        RecipientEmail: email,
+                        RecipientColor: '#bdbdbd',
+                        RecipientOption: 'Need to Sign',
+                        RecipientStatus: 'Completed',
+                        RecipientDateStatus: today
+                        }
+                      ]
+                      axios
+                    .post('/addreciever', {
+                      Status: 'Completed',
+                      DocumentID: filename,
+                      SignOrder: false,
+                      DateSent: today,
+                      Reciever: Reciever,
+                    })
+                    .then(function (response) {
+                      console.log(response)
+                      if (response.data === 'reciever done') {
+                      }
+                    })
+                    .catch(function (error) {
+                      console.log(error)
+                      alert(error)
+                    })
+                      axios
+                      .post('/posthistory', {
+                        DocumentID: filename,
+                        HistoryTime: today,
+                        HistoryUser: email + '\n['+ip+']',
+                        HistoryAction: 'Registered',
+                        HistoryActivity: 'The envelope was created by '+email+'',
+                        HistoryStatus: 'Created'
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                      })
+
+                      axios
+                      .post('/postrequest', {
+                        UserID: userid,
+                        DocumentName: inst.filename,
+                        DocumentID: filename,
+                        From: userid,
+                        FromEmail: email,
+                        RecipientStatus: 'Completed',
+                        RecipientDateStatus: today,
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        if (response.data === 'user found') {
+                        }
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                        alert(error)
+                      })
+
+                      axios
+                      .post('/posthistory', {
+                        DocumentID: filename,
+                        HistoryTime: today,
+                        HistoryUser: email + '\n['+ip+']',
+                        HistoryAction: 'Signed',
+                        HistoryActivity: ''+email+' signed the envelope',
+                        HistoryStatus: 'Completed'
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                      })
+
+                      axios
+                        .post('/sendmailattachments', {
+                          to: email,
+                          body:
+                            '<div><p>Hello , Please find the signed document in the attachment.</p></div>',
+                          subject:
+                            'PappayaSign: ' +
+                            inst.filename +
+                            ' :Completed Document',
+                          attachments: {
+                            // utf-8 string as an attachment
+                            filename:
+                              'PappayaSign_Completed' +
+                              inst.filename +
+                              '.pdf',
+                            path: dataURI,
+                          },
+                        })
+                        .then(function (response) {
+                          console.log(response)
+                        })
+                        .catch(function (error) {
+                          alert('Error, Please try again later')
+                          modal[1].style.display = 'none'
+                        })
+
+                        window.location.hash = '#/admin/sendsuccess'
+                      url =
+                        process.env.REACT_APP_BASE_URL +
+                        '/#/admin/sign?id=' +
+                        encodeURIComponent(filename) +
+                        '&type=db&u=' +
+                        userid
+                      modal[1].style.display = 'none'
+                    }
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                    modal[1].style.display = 'none'
+                  })
+
+                  
+              }
+            })
+            .catch(function (error) {
+              console.log(error)
+              modal[1].style.display = 'none'
+            })
+          }
+        } 
+      }       
+
     PDFAnnotate.prototype.savetoCloudPdf = function () {
       var inst = this
 
@@ -942,11 +1179,14 @@ toggleSignModal = () => {
                 $.each(inst.fabricObjects, function (index, fabricObj) {
                   //////console.log(fabricObj.toJSON());
                   jsonData[index] = fabricObj.toJSON()
+                  
                   ////console.log(jsonData[index]);
                   ////console.log(JSON.stringify(jsonData[index]));
                   dataarray.push(JSON.stringify(jsonData[index]))
                 })
                 PreviewData.Data = dataarray;
+
+                
 
                 if(recents.length >= 5){
                   var removefirst = recents.shift();
@@ -996,6 +1236,8 @@ toggleSignModal = () => {
                       .catch(function (error) {
                         console.log(error)
                       })
+
+                      
 
                       document.getElementById(
                         'emailbtncontainer'
@@ -2218,6 +2460,7 @@ toggleSignModal = () => {
           try {
             if (DataVar.OnlySigner == true) {
               document.getElementById('getlinkbtn').style.display = 'none'
+              document.getElementById('onlysignerfinishbtn').style.display = 'block'
             }
             var people = []
             people = DataVar.RecipientArray
@@ -2775,6 +3018,20 @@ toggleSignModal = () => {
       }
     })
 
+
+    var onlysignerfinishbtn = document.getElementById('onlysignerfinishbtn')
+    onlysignerfinishbtn.addEventListener('click', function (event) {
+      try {
+        modal[1].style.display = 'block'
+        setTimeout(function(){ 
+          global.pdf.OnlySignerSave()
+        }, 1000);
+       
+      } catch (error) {
+        alert('There are no changes to save')
+      }
+    })
+
     var recieverfinishbtn = document.getElementById('recieverfinishbtn')
     recieverfinishbtn.addEventListener('click', function (event) {
       modal[1].style.display = 'block'
@@ -3157,6 +3414,14 @@ $(document).on('click','.actionsign', function() {
                 type="button"
               >
                 Save
+              </Button>
+              <Button
+                id="onlysignerfinishbtn"
+                className="m-2 float-left px-4"
+                color="primary"
+                type="button"
+              >
+                Finish
               </Button>
               <div lg="6" id="emailbtncontainer">
                 <Button
