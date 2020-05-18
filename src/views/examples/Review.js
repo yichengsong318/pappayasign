@@ -356,6 +356,8 @@ class Review extends React.Component {
         } catch (error) {}
 
         docname = DataVar.DocName
+        document.getElementById('input-docnameedit-message').value = docname;
+        document.getElementById('document-name').innerHTML = docname;
 
         //console.log(userid);
         //console.log(filename);
@@ -848,6 +850,7 @@ class Review extends React.Component {
                 })
               }
               window.location.hash = '#/admin/sendsuccess'
+              DataVar.RecipientArray = [];
             }
           })
           .catch(function (error) {
@@ -1023,6 +1026,7 @@ class Review extends React.Component {
                   })
                 }
               window.location.hash = '#/admin/sendsuccess'
+              DataVar.RecipientArray = [];
             }
           })
           .catch(function (error) {
@@ -1033,8 +1037,39 @@ class Review extends React.Component {
       }
     })
 
-    
+    $("#docnameeditbtn").on('click', function () {
+      modal[5].style.display = 'block';
+    });
 
+    $(document).on('click', '.docnameedit-close', function () {
+      modal[5].style.display = 'none';
+    });
+
+    $("#docnameeditcancelbtn").on('click', function () {
+      modal[5].style.display = 'none';
+    });
+
+    $("#docnameeditsavebtn").on('click', function () {
+      docname = document.getElementById('input-docnameedit-message').value
+      document.getElementById('input-docnameedit-message').value = '';
+        document.getElementById('document-name').innerHTML = '';
+      document.getElementById('input-docnameedit-message').value = docname;
+      document.getElementById('document-name').innerHTML = docname;
+      modal[5].style.display = 'none';
+    });
+
+    
+    $('#stepaddbtn').click(function () {
+      window.location.hash = '#/admin/uploadsuccess'
+    });
+
+    $('#stepselectbtn').click(function () {
+      window.location.hash = '#/admin/recipients'
+    });
+
+    $('#stepprocessbtn').click(function () {
+      window.location.hash = '#/admin/sign'
+    });
 
    
   }
@@ -1053,6 +1088,7 @@ class Review extends React.Component {
                       <div className="stepwizard-step">
                         <button
                           type="button"
+                          id="stepaddbtn"
                           className="btn btn-primary btn-circle-process"
                         >
                           1
@@ -1062,6 +1098,7 @@ class Review extends React.Component {
                       <div className="stepwizard-step">
                         <button
                           type="button"
+                          id="stepselectbtn"
                           className="btn btn-primary btn-circle-process"
                         >
                           2
@@ -1071,6 +1108,7 @@ class Review extends React.Component {
                       <div className="stepwizard-step">
                         <button
                           type="button"
+                          id="stepprocessbtn"
                           className="btn btn-primary btn-circle-process"
                         >
                           3
@@ -1204,6 +1242,45 @@ class Review extends React.Component {
             </div>
           </div>
 
+          <div className="modal">
+            <div className="private-modal-content">
+              <div>
+              <Card className="shadow border-0 mx-3 p-3">
+              <CardHeader className=" bg-transparent">
+                <div className="review-manager-title">
+                    <span>Change Document Name:</span>
+                        <i className="ni ni-fat-remove docnameedit-close" />
+                    </div>
+                </CardHeader>
+                <Row>
+                  <Col lg='12'>
+                  <FormGroup className=" p-3">
+                    <Input
+                      id="input-docnameedit-message"
+                      placeholder="Enter Document Name"
+                      type="text"
+                    />
+                  </FormGroup>
+                  <Button
+                    className="mx-2 float-right px-4"
+                    color="neutral"
+                    id="docnameeditcancelbtn"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                        className="float-right px-4 mx-2"
+                        color="primary"
+                        id="docnameeditsavebtn"
+                      >
+                        Save
+                      </Button>
+                  </Col>
+                </Row>
+                </Card>
+              </div>
+            </div>
+          </div>
           
 
           <Row>
@@ -1337,7 +1414,15 @@ class Review extends React.Component {
                                   <strong>Documents:</strong>
                                 </span>
                               </strong>
-                              <span className="summarylabelspan">docname</span>
+                              
+                              <span id="document-name" className="summarylabelspan"></span>
+                              <Button
+                              className="mx-3 px-4"
+                              color="neutral"
+                              id="docnameeditbtn"
+                            >
+                              Edit
+                            </Button>
                               <hr className="my-3" />
                               <strong>
                                 <span className="summarylabelspan py-2">

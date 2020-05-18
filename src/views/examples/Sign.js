@@ -1,6 +1,7 @@
 // core components
 import HeaderDefault from 'components/Headers/HeaderDefault.js'
 import React from 'react'
+import $ from 'jquery'
 // reactstrap components
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap'
 import PDFAnnotate from '../../components/PDFAnnotate/pdfannotate'
@@ -28,6 +29,15 @@ class Icons extends React.Component {
       // no user
       //window.location.hash = "#/auth/login";
     }
+
+    $('#stepaddbtn').click(function () {
+      window.location.hash = '#/admin/uploadsuccess'
+    });
+
+    $('#stepselectbtn').click(function () {
+      window.location.hash = '#/admin/recipients'
+    });
+
   }
   render() {
     return (
@@ -47,6 +57,7 @@ class Icons extends React.Component {
                       <div className="stepwizard-step">
                         <button
                           type="button"
+                          id="stepaddbtn"
                           className="btn btn-primary btn-circle-process"
                         >
                           1
@@ -56,6 +67,7 @@ class Icons extends React.Component {
                       <div className="stepwizard-step">
                         <button
                           type="button"
+                          id="stepselectbtn"
                           className="btn btn-primary btn-circle-process"
                         >
                           2

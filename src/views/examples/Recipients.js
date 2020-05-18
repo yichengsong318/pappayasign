@@ -51,7 +51,10 @@ class Recipients extends React.Component {
         '&action=' +
         waction +
         ''
+    } catch (error) {}
 
+
+    try {
       var people = []
       people = DataVar.RecipientArray
       people.forEach(function (item, index) {
@@ -66,7 +69,9 @@ class Recipients extends React.Component {
           '" type="text" disabled/><button class="buttonr delete">x</button></div>'
         $('#sortable').append(li)
       })
-    } catch (error) {}
+    } catch (error) {
+      
+    }
 
     $(function () {
       $('#sortable').sortable()
@@ -97,22 +102,7 @@ class Recipients extends React.Component {
         $('#sortable').append(li)
         document.getElementById('recipient-input-name').value = ''
         document.getElementById('recipient-input-email').value = ''
-      }
-    })
-
-    $(document).on('click', '.delete', function () {
-      $(this).parent().parent().remove()
-      //console.log($(this).parent().children('#recipient-name').attr("placeholder"));
-    })
-
-    Array.prototype.pushWithReplace = function (o, k) {
-      var fi = this.findIndex((f) => f[k] === o[k])
-      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
-      return this
-    }
-
-    $('#s-btn').click(function () {
-      var people = []
+        var people = []
       var listItems = $('#sortable li')
       if (listItems.length == 0) {
         alert('There are no recepeints, Please add recipients')
@@ -136,18 +126,37 @@ class Recipients extends React.Component {
             'email'
           )
         })
+        DataVar.RecipientArray = people
+      }
+      }
+    })
+
+    $(document).on('click', '.delete', function () {
+      $(this).parent().parent().remove()
+      //console.log($(this).parent().children('#recipient-name').attr("placeholder"));
+    })
+
+    Array.prototype.pushWithReplace = function (o, k) {
+      var fi = this.findIndex((f) => f[k] === o[k])
+      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
+      return this
+    }
+
+    $('#s-btn').click(function () {
+      var listItems = $('#sortable li')
+      if (listItems.length == 0) {
+        alert('There are no recepeints, Please add recipients')
+      } else {
         if (wurl === '') {
           if (document.getElementById('signordercheck').checked) {
             DataVar.SignOrder = true
             //console.log(people);
-            DataVar.RecipientArray = people
             //console.log(DataVar);
             var url = '#/admin/sign'
             window.location.hash = url
           } else {
             DataVar.SignOrder = false
             //console.log(people);
-            DataVar.RecipientArray = people
             //console.log(DataVar);
             var url = '#/admin/sign'
             window.location.hash = url
@@ -156,19 +165,23 @@ class Recipients extends React.Component {
           if (document.getElementById('signordercheck').checked) {
             DataVar.SignOrder = true
             //console.log(people);
-            DataVar.RecipientArray = people
             //console.log(DataVar);
             window.location.hash = wurl
           } else {
             DataVar.SignOrder = false
             //console.log(people);
-            DataVar.RecipientArray = people
             //console.log(DataVar);
             window.location.hash = wurl
           }
         }
       }
     })
+
+
+    $('#stepaddbtn').click(function () {
+      window.location.hash = '#/admin/uploadsuccess'
+    });
+
   }
   render() {
     return (
@@ -185,6 +198,7 @@ class Recipients extends React.Component {
                       <div className="stepwizard-step">
                         <button
                           type="button"
+                          id="stepaddbtn"
                           className="btn btn-primary btn-circle-process"
                         >
                           1
