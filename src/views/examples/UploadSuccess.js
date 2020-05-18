@@ -1,6 +1,7 @@
 // core components
 import HeaderDefault from 'components/Headers/HeaderDefault.js'
 import React from 'react'
+import $ from 'jquery'
 // react plugin used to create google maps
 // reactstrap components
 import {
@@ -12,6 +13,8 @@ import {
   Col,
   Container,
   Row,
+  FormGroup,
+  Input
 } from 'reactstrap'
 import DataVar from '../../variables/data'
 import './uploadsuccess.css'
@@ -25,6 +28,8 @@ class UploadSuccess extends React.Component {
     var wuserid = ''
     var wdocname = ''
     var waction = ''
+    var modal = document.querySelectorAll('.modal')
+    
 
     try {
       var mainurl = document.location.hash,
@@ -72,13 +77,80 @@ class UploadSuccess extends React.Component {
     var documentname = document.getElementById('documentname')
     if (wurl === '') {
       documentname.innerHTML = 'Document Name: ' + DataVar.DocName
+      document.getElementById('input-docnameedit-message').value = DataVar.DocName
     } else {
       documentname.innerHTML = 'Document Name: ' + wdocname
+      document.getElementById('input-docnameedit-message').value = DataVar.DocName
     }
+
+
+    $("#docnameeditbtn").on('click', function () {
+      modal[0].style.display = 'block';
+    });
+
+    $(document).on('click', '.docnameedit-close', function () {
+      modal[0].style.display = 'none';
+    });
+
+    $("#docnameeditcancelbtn").on('click', function () {
+      modal[0].style.display = 'none';
+    });
+
+    $("#docnameeditsavebtn").on('click', function () {
+      DataVar.DocName= document.getElementById('input-docnameedit-message').value
+      document.getElementById('input-docnameedit-message').value = '';
+        document.getElementById('documentname').innerHTML = '';
+      document.getElementById('input-docnameedit-message').value = DataVar.DocName;
+      document.getElementById('documentname').innerHTML = 'Document Name: ' + DataVar.DocName;
+      modal[0].style.display = 'none';
+    });
+
+
   }
   render() {
     return (
       <>
+
+<div className="modal">
+            <div className="private-modal-content">
+              <div>
+              <Card className="shadow border-0 mx-3 p-3">
+              <CardHeader className=" bg-transparent">
+                <div className="review-manager-title">
+                    <span>Change Document Name:</span>
+                        <i className="ni ni-fat-remove docnameedit-close" />
+                    </div>
+                </CardHeader>
+                <Row>
+                  <Col lg='12'>
+                  <FormGroup className=" p-3">
+                    <Input
+                      id="input-docnameedit-message"
+                      placeholder="Enter Document Name"
+                      type="text"
+                    />
+                  </FormGroup>
+                  <Button
+                    className="mx-2 float-right px-4"
+                    color="neutral"
+                    id="docnameeditcancelbtn"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                        className="float-right px-4 mx-2"
+                        color="primary"
+                        id="docnameeditsavebtn"
+                      >
+                        Save
+                      </Button>
+                  </Col>
+                </Row>
+                </Card>
+              </div>
+            </div>
+          </div>
+
         <HeaderDefault />
         {/* Page content */}
         <Container className="mt--9 pb-8">
@@ -140,8 +212,17 @@ class UploadSuccess extends React.Component {
                   <Row>
                     <Col lg="12">
                       <div id="docnamecontainer">
-                        <h5 id="documentname"></h5>
+                      <Button
+                        className="mx-3 px-4 float-right"
+                        color="neutral"
+                        id="docnameeditbtn"
+                      >
+                        Rename
+                      </Button>
+                        <span><h5 id="documentname"></h5></span>
+                        
                       </div>
+                      
                     </Col>
                   </Row>
                 </CardBody>
