@@ -59,7 +59,7 @@ class Tables extends React.Component {
     }
 
     var recents = [];
-    
+    var Signatures = 0
     
     var pdf = '';
 
@@ -362,6 +362,7 @@ class Tables extends React.Component {
                 Request[index].RecipientStatus == 'Void' ||
                 Request[index].RecipientStatus == 'Need to Sign' ||
                 Request[index].RecipientStatus == 'Expiring' ||
+                Request[index].RecipientStatus == 'Completed' ||
                 Request[index].RecipientStatus == 'Correcting'
               ) {
                 allcontent += '<tr >'
@@ -567,6 +568,44 @@ class Tables extends React.Component {
           </div></td >`
           expiringcontent += '</tr>'
               }
+
+              else if (Request[index].RecipientStatus == 'Void'){
+                deletedcontent += '<tr >'
+                deletedcontent += '<th><input  type="checkbox"></th>'
+                deletedcontent +=
+                  '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                  Request[index].DocumentName +
+                  '\nFrom: ' +
+                  Request[index].FromEmail +
+                  '</span></td>'
+                deletedcontent +=
+                  '<td id=datastatus>' +
+                  Request[index].RecipientStatus +
+                  '</td>'
+                deletedcontent +=
+                  '<td id="datakey" hidden>' +
+                  Request[index].DocumentID +
+                  '</td>'
+                deletedcontent +=
+                  '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                deletedcontent +=
+                  '<td id="datarecep" hidden>' +
+                  Request[index].FromEmail +
+                  '</td>'
+                deletedcontent +=
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
+                deletedcontent += `<td ><div class="btn-group">
+              <button type="button" class="btn btn-primary restore">CONTINUE</button>
+              <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+              <div class="dropdown-menu2" id="dropdown">
+              <button class="dropdown-item correct" type="button">Continue</button>
+              <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+              </div>
+              </div></td >`
+                deletedcontent += '</tr>'
+              }
+
+
             })
             $('#alltable').append(allcontent)
             $('#deletedtable').append(deletedcontent)
@@ -625,6 +664,7 @@ class Tables extends React.Component {
                 data.Status == 'Expiring' ||
                 data.Status == 'Draft'
               ) {
+                
                 if (data.Status == 'Waiting for Others') {
                   waitingcontent += '<tr >'
                   waitingcontent += '<th><input  type="checkbox"></th>'
@@ -750,6 +790,33 @@ class Tables extends React.Component {
               </div>
             </div></td >`
                   sentcontent += '</tr>'
+
+                  deletedcontent += '<tr >'
+                deletedcontent += '<th><input  type="checkbox"></th>'
+                deletedcontent +=
+                  '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                  data.DocumentName +
+                  '\nTo: ' +
+                  reciverlist +
+                  '</span></td>'
+                deletedcontent += '<td id=datastatus>' + data.Status + '</td>'
+                deletedcontent +=
+                  '<td id="datakey" hidden>' + data.DocumentID + '</td>'
+                deletedcontent +=
+                  '<td id="datarecep" hidden>' + reciverlist + '</td>'
+                deletedcontent +=
+                  '<td id="datauid" hidden>' + data.Owner + '</td>'
+                deletedcontent += '<td >' + data.DateStatus + '</td>'
+                deletedcontent += `<td ><div class="btn-group">
+                <button type="button" class="btn btn-primary restore">CONTINUE</button>
+                <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+                <div class="dropdown-menu2" id="dropdown">
+                <button class="dropdown-item correct" type="button">Continue</button>
+                <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+                </div>
+                </div></td >`
+                deletedcontent += '</tr>'
+                
                 } else if (data.Status == 'Draft') {
                   draftcontent += '<tr >'
                   draftcontent += '<th><input  type="checkbox"></th>'
@@ -1022,6 +1089,7 @@ class Tables extends React.Component {
       $('#managerecipientstable li').remove()
       $('#managerecipientstable').innerHTML = ''
       global.pdf = null;
+      var Pages = 0;
       document.getElementById('managebody').style.display = 'none'
       document.getElementById('detailbody').style.display = 'block'
       //console.log($(this).parent().children('#datakey')[0].innerHTML);
@@ -1044,6 +1112,7 @@ class Tables extends React.Component {
           if (response.data.Status === 'doc data done') {
             var Document = response.data.Document
             RowSelectData = response.data.Data
+            Pages = RowSelectData.length;
 
             if(recents.length >= 5){
               var removefirst = recents.shift();
@@ -1614,20 +1683,26 @@ class Tables extends React.Component {
           console.log(response)
           if (response.data.Status === 'doc data done') {
             var Document = response.data.Document
-
+            Signatures = Document.Reciever.length
+            var Pages = Document.Data.length
             var datarray = []
             datarray.push({
+              EnvelopeName: Document.DocumentName,
+              EnvelopeID: Document.DocumentID,
+              Subject: 'Please Sign: '+ Document.DocumentName +'',
+              Status: Document.Status,
+              EnvelopeOriginator: Document.Owner,
+              OriginatorEmail: Document.OwnerEmail,
+              Recipients: recipients,
+              EnvelopePages: Pages,
+              Signatures: Signatures,
               DateCreated: Document.DateCreated,
               DateSent: Document.DateSent,
-              DateCreated: Document.DateCreated,
-              DateStatus: Document.DateStatus,
-              DocumentName: Document.DocumentName,
-              Owmer: Document.Owner,
-              OwnerEmail: Document.OwnerEmail,
-              Recipients: recipients,
-              Status: Document.Status,
+              LastChange: Document.DateStatus,
+              TimeZone: '(UTC+05:30) (Asia/Kolkata)',
+              
             })
-            //console.log(datarray);
+            
 
             //console.log(CSV(datarray, fileid));
             CSV(datarray, fileid);
@@ -1679,10 +1754,18 @@ class Tables extends React.Component {
         .then(function (response) {
           console.log(response)
           if (response.data.Status === 'doc data done') {
+            var reciverlistrow = ''
             var Document = response.data.Document
+            Signatures = Document.Reciever.length
+            Document.Reciever.forEach(function (reciever, index) {
+              var id = index + 1
+              reciverlistrow =
+                reciverlistrow + ' ' + reciever.RecipientEmail + ','
+              });
+            
             //console.log(Document.Reciever);
 
-            var reciverlistrow = ''
+            
             try {
               
               document.getElementById('historysubject').innerHTML =
@@ -2180,7 +2263,7 @@ class Tables extends React.Component {
                 '&key=' +
                 index +
                 ''
-              if (data.RecipientStatus === 'Sent') {
+              if (data.RecipientStatus === 'Sent' || data.RecipientStatus === 'Need to Sign') {
                 var dbpeople = []
                 dbpeople.push({
                   name: data.RecipientName,
@@ -2248,7 +2331,7 @@ class Tables extends React.Component {
     $('#historycertificatebtn').click(function () {
       modal[2].style.display = 'block'
       modal[5].style.display = 'none'
-
+      var Pages = 0
       axios
         .post('/getdocdata', {
           DocumentID: historyfileid,
@@ -2257,6 +2340,7 @@ class Tables extends React.Component {
           console.log(response)
           if (response.data.Status === 'doc data done') {
             var Document = response.data.Document
+            Pages = Document.Data.length;
 
             axios
         .post('/gethistory', {
@@ -2267,6 +2351,7 @@ class Tables extends React.Component {
           console.log(response)
           if (response.data.Status === 'history found') {
             var signers = response.data.history
+            
             var signerslist = '';
 
             signers.forEach(function (item, index) {
@@ -2289,12 +2374,14 @@ class Tables extends React.Component {
             doc.setTextColor(0, 0, 0);
             doc.text(11,25, 'PappayaSign Certificate');
 
-            doc.text(10, 30, 
+            doc.text(10, 27, 
             ` \n
             EnvelopeID:`+Document.DocumentID+`
             Subject: Please Sign: `+Document.DocumentName+`
-            Status: `+Document.Status+`
             Envelope Orginator: `+Document.OwnerEmail+`
+            Status: `+Document.Status+`
+            Envelope Pages: `+Pages+`
+            Signatures: `+Signatures+`
             Time Zone:  (UTC+05:30) (Asia/Kolkata)
             `);
 

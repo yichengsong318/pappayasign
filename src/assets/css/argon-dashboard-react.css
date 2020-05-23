@@ -407,13 +407,36 @@ border-radius: 20px !important;
     position: relative;
   }
 
+  #template-container {
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.027);
+    border-radius: 2px;
+    top:20px;
+    margin:1%;
+    margin:1%;
+    width: 98%;
+    padding-left:10px;
+    padding-right:10px;
+    overflow: auto;
+    position: relative;
+  }
 
-  #reviewaddobjbtn, #review-toolbar{
+
+  #reviewaddobjbtn, #review-toolbar, #template-toolbar{
     display: none;
   }
 
   #review-pdf-container{
     transform: scale(1);
+    width:100% !important;
+		padding:8px;
+     transform-origin: 0% 0% 0px;
+     height: 450px;
+  }
+
+  #template-pdf-container{
+    transform: scale(0.7);
     width:100% !important;
 		padding:8px;
      transform-origin: 0% 0% 0px;
