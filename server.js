@@ -59,7 +59,7 @@ app.post("/getip", function (req, res) {
 });
 
 app.post('/upload',function(req,res){
-	console.log(req.body.files);
+	//console.log(req.body.files);
 	if(req.body.files){
 		var First_name = 'default';
 		
@@ -68,11 +68,17 @@ app.post('/upload',function(req,res){
 		  //Path where the converted pdf will be placed/uploaded
 		  var upload_path = path.join(__dirname, `./uploads/${First_name}${extend_pdf}`);
 		  console.log('upload path')
-		var base64Data = req.body.files.replace(/^data:application\/\w+;base64,/, "");
+		var base64Data = new Buffer.from(req.body.files, 'base64');
+		console.log(base64Data)
 
-		require("fs").writeFile("output.docx", base64Data, function(err) {
-		  console.log(err);
-		});
+		require("fs").writeFile(initialPath, base64Data, function(err) {
+			console.log(err);
+			docxConverter(initialPath,upload_path,function(err,result){
+				if(err){
+				  console.log(err);
+				}
+			});
+		  });
 	}else{
 	  res.send("No File selected !");
 	  res.end();

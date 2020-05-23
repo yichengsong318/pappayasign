@@ -703,16 +703,32 @@ toggleSignModal = () => {
     }
 
     PDFAnnotate.prototype.AddObj = function () {
+      var inst = this
       try {
         if (type == 'home') {
           modal[0].style.display = 'none'
         } else {
           try {
             if (fileid == '') {
+              fileid = randomString(13)
               // // // // // // // ////console.log('no file id found');
               modal[0].style.display = 'none'
+              $.each(inst.fabricObjects, function (index, fabricObj) {
+                ////console.log(index);
+                var text = new fabric.IText('Envelope ID: '+ fileid, {
+                  left:10,
+                  top:10,
+                  fill: '#000',
+                  fontSize: 12,
+                  selectable: false,
+                  lockMovementX: true,
+                  lockMovementY: true,
+                  hasControls: false,
+                })
+                fabricObj.add(text)
+              });
             } else {
-              var inst = this
+              
               // // // // // // // ////console.log('file id found');
               axios
                 .post('/getdocdata', {
@@ -726,6 +742,17 @@ toggleSignModal = () => {
                     var DocumentData = response.data.Data;
                     $.each(inst.fabricObjects, function (index, fabricObj) {
                       ////console.log(index);
+                      var text = new fabric.IText('Envelope ID: '+ fileid, {
+                        left:50,
+                        top:50,
+                        fill: '#000',
+                        fontSize: inst.font_size,
+                        selectable: false,
+                        lockMovementX: true,
+                        lockMovementY: true,
+                        hasControls: false,
+                      })
+                      fabricObj.add(text)
 
                       fabricObj.loadFromJSON(DocumentData[index], function () {
                         fabricObj.renderAll()
@@ -735,6 +762,7 @@ toggleSignModal = () => {
                         })
                         fabricObj.getObjects().forEach(function (targ) {
                           ////console.log(targ);
+                          
                           targ.selectable = false
                           targ.hasControls = false
                         })

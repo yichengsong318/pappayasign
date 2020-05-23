@@ -424,6 +424,15 @@ toggleSignModal = () => {
             }
           )
         })
+
+        try {
+          var taddobjbtn = document.getElementById('taddobjbtn')
+          taddobjbtn.addEventListener('click', function (event) {
+            global.pdf.AddObj()
+          })
+          taddobjbtn.click()
+        } catch (error) {}
+
       }
 
       function fabricMouseHandler(e, fabricObj) {
@@ -632,6 +641,37 @@ toggleSignModal = () => {
       $('#tcontainer').css("z-index", "0");
       $('.pdf-canvas').css("z-index", "0");
       $('canvas').css("z-index", "0");
+
+      
+    
+    }
+
+    TemplateAnnotate.prototype.AddObj = function () {
+      var inst = this
+      try {
+        if (fileid == '') {
+          fileid = randomString(13)
+          // // // // // // // ////console.log('no file id found');
+          modal[0].style.display = 'none'
+          $.each(inst.fabricObjects, function (index, fabricObj) {
+            ////console.log(index);
+            var text = new fabric.IText('Envelope ID: '+ fileid, {
+              left:10,
+              top:10,
+              fill: '#000',
+              fontSize: 12,
+              selectable: false,
+              lockMovementX: true,
+              lockMovementY: true,
+              hasControls: false,
+            })
+            fabricObj.add(text)
+          });
+        }
+        
+      } catch (error) {
+        modal[0].style.display = 'none'
+      }
     }
 
     TemplateAnnotate.prototype.enableSelector = function () {

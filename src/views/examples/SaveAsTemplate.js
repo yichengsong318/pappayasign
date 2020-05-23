@@ -2,6 +2,9 @@
 import HeaderDefault from 'components/Headers/HeaderDefault.js'
 import $ from 'jquery'
 import React from 'react'
+import { fabric } from 'fabric'
+import * as jsPDF from 'jspdf'
+import PreviewData from '../../variables/preview'
 // reactstrap components
 import {
   Button,
@@ -22,9 +25,234 @@ require('jquery-ui/ui/widgets/sortable')
 require('jquery-ui/ui/disable-selection')
 
 const axios = require('axios').default
+var PDFJS = require('pdfjs-dist')
 
 class SaveAsTemplate extends React.Component {
+ 
+  pdf = null;
+
   componentDidMount() {
+
+    var pdf = '';
+    var global = this;
+
+    var PDFFabric = function (
+      container_id,
+      toolbar_id,
+      url,
+      filename,
+      options = {}
+    ) {
+      this.number_of_pages = 0
+      this.pages_rendered = 0
+      this.active_tool = 1 // 1 - Free hand, 2 - Text, 3 - Arrow, 4 - Rectangle
+      this.fabricObjects = []
+      this.fabricObjectsData = []
+      this.color = '#000'
+      this.borderColor = '#000000'
+      this.borderSize = 1
+      this.font_size = 16
+      this.active_canvas = 0
+      this.container_id = container_id
+      this.toolbar_id = toolbar_id
+      this.imageurl = ''
+      this.Addtext = 'Sample Text'
+      this.recipientemail = ''
+      this.recipientcolor = ''
+      this.filename = filename
+      this.url = url
+      var inst = this
+      inst.fabricObjects.length = 0;
+      inst.fabricObjectsData.length = 0;
+
+
+      var loadingTask = PDFJS.getDocument(this.url)
+      loadingTask.promise.then(
+        function (pdf) {
+          inst.number_of_pages = pdf.numPages
+          var scale = 1.3
+          for (var i = 1; i <= pdf.numPages; i++) {
+            pdf.getPage(i).then(function (page) {
+              var container = document.getElementById(inst.container_id)
+              //var viewport = page.getViewport(1);
+              //var scale = (container.clientWidth - 80) / viewport.width;
+              var viewport = page.getViewport(scale)
+              var canvas = document.createElement('canvas')
+              try {
+                document.getElementById(inst.container_id).appendChild(canvas)
+              } catch (error) {}
+              canvas.className = 'review-pdf-canvas'
+              canvas.height = viewport.height
+              canvas.width = viewport.width
+              var context = canvas.getContext('2d')
+
+              var renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              }
+              var renderTask = page.render(renderContext)
+              renderTask.then(function () {
+                $('.review-pdf-canvas').each(function (index, el) {
+                  $(el).attr('id', 'page-' + (index + 1) + '-canvas')
+                })
+                inst.pages_rendered++
+                if (inst.pages_rendered == inst.number_of_pages)
+                  inst.initFabric()
+              })
+            })
+          }
+        },
+        function (reason) {
+          console.error(reason)
+        }
+      )
+
+      this.initFabric = function () {
+        var inst = this
+        $('#' + inst.container_id + ' canvas').each(function (index, el) {
+          var background = el.toDataURL('image/png')
+          var fabricObj = new fabric.Canvas(el.id, {
+            freeDrawingBrush: {
+              width: 1,
+              color: inst.color,
+            },
+          })
+
+          fabricObj.on('object:selected', function (e) {
+            e.target.transparentCorners = false
+            e.target.borderColor = '#cccccc'
+            e.target.cornerColor = '#d35400'
+            e.target.minScaleLimit = 2
+            e.target.cornerStrokeColor = '#d35400'
+            e.target.cornerSize = 8
+            e.target.cornerStyle = 'circle'
+            e.target.minScaleLimit = 0
+            e.target.lockUniScaling = true
+            e.target.lockScalingFlip = true
+            e.target.hasRotatingPoint = false
+            e.target.padding = 5
+            e.target.selectionDashArray = [10, 5]
+            e.target.borderDashArray = [10, 5]
+            e.lockMovementX = true
+            e.lockMovementY = true
+            e.selectable = false
+            e.hasControls = false
+          })
+          inst.fabricObjects.push(fabricObj)
+          
+          fabricObj.setBackgroundImage(
+            background,
+            fabricObj.renderAll.bind(fabricObj)
+          )
+          fabricObj.on('after:render', function () {
+            inst.fabricObjectsData[index] = fabricObj.toJSON()
+            fabricObj.off('after:render')
+          })
+
+          
+
+          
+        })
+
+        try {
+          var addobjbtn = document.getElementById('manageaddobjbtn')
+          addobjbtn.addEventListener('click', function (event) {
+            global.pdf.AddObj()
+            //console.log(global.pdf)
+            //console.log('adding objects')
+          })
+          addobjbtn.click()
+        } catch (error) {}
+      }
+
+      
+
+      
+    }
+
+    PDFFabric.prototype.AddObj = function () {
+      var inst = this
+      //console.log('started adding objects')
+              // // // // // // // ////console.log('file id found');
+              axios
+        .post('/getdocdata', {
+          DocumentID: TemplateDataVar.TemplateID,
+        })
+        .then(async function (response) {
+          console.log(response)
+          if (response.data.Status === 'doc data done') {
+            console.log(response);
+            var Document = response.data.Document
+            var DocumentData = response.data.Data
+            $.each(inst.fabricObjects, function (index, fabricObj) {
+              ////console.log(index);
+
+              fabricObj.loadFromJSON(DocumentData[index], function () {
+                fabricObj.renderAll()
+                fabricObj.getObjects().forEach(function (targ) {
+                  ////console.log(targ);
+                  targ.selectable = false
+                  targ.hasControls = false
+                })
+                
+                
+              })
+            })
+            modal[1].style.display = 'none'
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+              
+              
+              //console.log('pdf done')
+    }
+
+    PDFFabric.prototype.savePdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf saved')
+      doc.save('pappayasign_' + inst.filename + '')
+      //window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.printPdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf printed')
+      window.open(doc.output('bloburl'), '_blank');
+      //window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.Clear = function () {
+      var inst = this
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        inst.fabricObjects.slice(index,1);
+      })
+      modal[0].style.display = 'none'
+      
+    }
+
+
     var modal = document.querySelectorAll('.modal')
     modal[1].style.display = 'block'
 
@@ -48,6 +276,8 @@ class SaveAsTemplate extends React.Component {
       modal[1].style.display = 'none'
     }
 
+    
+
     function getCookie(name) {
       var nameEQ = name + '='
       var ca = document.cookie.split(';')
@@ -64,6 +294,48 @@ class SaveAsTemplate extends React.Component {
     if (userid) {
       //console.log('user logged in');
       //console.log(userid);
+
+
+      try {
+        modal[1].style.display = 'block'
+        axios
+                .post('/docdownload', {
+                  UserID: userid,
+                  filename: TemplateDataVar.TemplateID,
+                })
+                .then(async function (response) {
+                  console.log(response)
+                  if (response.data.Status === 'doc found') {
+                    var doc = response.data.data
+                    console.log(doc);
+                    //modal[0].style.display = 'block'
+                    PreviewData.DataPath = doc;
+                    global.pdf = await new PDFFabric(
+                      'template-pdf-container',
+                      'template-toolbar',
+                      doc,
+                      TemplateDataVar.TemplateID,
+                      {
+                        onPageUpdated: (page, oldData, newData) => {
+                          
+                          //modal[0].style.display = "block";
+                          ////console.log(page, oldData, newData);
+                        },
+                      }
+                    )
+                    console.log(global.pdf)
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[1].style.display = 'none'
+                })
+        
+        
+      } catch (error) {
+        modal[1].style.display = 'none'
+      }
+
       email = getCookie('useremail')
 
       var count = 0
@@ -368,7 +640,8 @@ class SaveAsTemplate extends React.Component {
             </div>
           </div>
         </div>
-        <Container className="mt--7 pb-8">
+
+        <div className="mt--7 mx-3 pb-8">
           {/* Table */}
           <Row>
             <div className="col">
@@ -377,6 +650,8 @@ class SaveAsTemplate extends React.Component {
                   <h3 className="mb-0">Save as Template</h3>
                 </CardHeader>
                 <CardBody>
+                <Row>
+                <Col lg="6">
                   <div>
                     <Row>
                       <Col lg="12">
@@ -449,17 +724,43 @@ class SaveAsTemplate extends React.Component {
                           Add
                         </Button>
                       </Col>
+
+                      <Col lg="12">
+                      <hr className="my-4" />
+                      <div id="strecipientdiv">
+                        <ul id="satsortable"></ul>
+                      </div>
+                      </Col>
                     </Row>
                   </div>
-                  <hr className="my-4" />
-                  <div id="strecipientdiv">
-                    <ul id="satsortable"></ul>
-                  </div>
+                  </Col>
+                  <Col lg="6">
+                    <div className="mb-4 mb-xl-0 pl-4">
+                          <h5>Preview: </h5>
+                        </div>
+                      <Col lg="12">
+                        <div id="template-container">
+                        <div id="template-pdf-container"></div>
+                        <div id="template-toolbar"></div>
+                        </div>
+                    </Col>
+                </Col>
+                  </Row>
+                  
                 </CardBody>
               </Card>
+              <Button
+                        color="primary"
+                        size="sm"
+                        type="button"
+                        className="float-right"
+                        id="manageaddobjbtn"
+                      >
+                        AddObj
+                      </Button>
             </div>
           </Row>
-        </Container>
+        </div>
       </>
     )
   }
