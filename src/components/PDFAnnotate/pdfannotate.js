@@ -320,21 +320,24 @@ toggleSignModal = () => {
 
                   if (objcolor == RGB || owner == 'admin' || objid == email) {
                     // // // // // // // ////console.log('Object selected');
-                    e.target.lockMovementX = false
-                    e.target.lockMovementY = false
-                    var id = fabricObj.getObjects().indexOf(e.target)
-                    e.target.selectable = true
-                    fabricObj.setActiveObject(fabricObj.item(id))
-                    fabricObj.requestRenderAll()
-                    e.target.hasControls = true
-                    e.target.set('id', email)
-                  } else {
-                    // // // // // // // ////console.log('Object not selected');
-                    e.target.selectable = false
-                    e.target.lockMovementX = true
-                    e.target.lockMovementY = true
-                    e.target.hasControls = false
-                  }
+                  if(fabricObj.findTarget(e).type !=  'text'){
+                        e.target.lockMovementX = false
+                      e.target.lockMovementY = false
+                      var id = fabricObj.getObjects().indexOf(e.target)
+                      e.target.selectable = true
+                      fabricObj.setActiveObject(fabricObj.item(id))
+                      fabricObj.requestRenderAll()
+                      e.target.hasControls = true
+                      e.target.set('id', email)
+                    } else {
+                      // // // // // // // ////console.log('Object not selected');
+                      e.target.selectable = false
+                      e.target.lockMovementX = true
+                      e.target.lockMovementY = true
+                      e.target.hasControls = false
+                    }
+                    }
+                    
                 } else {
                   //add rectangle
                   if (
@@ -404,6 +407,7 @@ toggleSignModal = () => {
                 }
 
                 if (objcolor == RGB || owner == 'admin' || objid == email) {
+                if(fabricObj.findTarget(e).type !=  'text'){
                   var id = fabricObj.getObjects().indexOf(obj)
                   obj.selectable = true
                   fabricObj.setActiveObject(fabricObj.item(id))
@@ -472,6 +476,8 @@ toggleSignModal = () => {
                     global.pdf.Reload()
                     obj.set('id', email)
                   }
+
+                }
                 } else {
                   obj.lockMovementX = true
                   obj.lockMovementY = true
@@ -715,7 +721,7 @@ toggleSignModal = () => {
               modal[0].style.display = 'none'
               $.each(inst.fabricObjects, function (index, fabricObj) {
                 ////console.log(index);
-                var text = new fabric.IText('Envelope ID: '+ fileid, {
+                var text = new fabric.Text('Envelope ID: '+ fileid, {
                   left:10,
                   top:10,
                   fill: '#000',
@@ -743,7 +749,7 @@ toggleSignModal = () => {
                     var DocumentData = response.data.Data;
                     $.each(inst.fabricObjects, function (index, fabricObj) {
                       ////console.log(index);
-                      var text = new fabric.IText('Envelope ID: '+ fileid, {
+                      var text = new fabric.Text('Envelope ID: '+ fileid, {
                         left:50,
                         top:50,
                         fill: '#000',

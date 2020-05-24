@@ -659,7 +659,7 @@ toggleSignModal = () => {
               // // // // // // // ////console.log('no file id found');
               $.each(inst.fabricObjects, function (index, fabricObj) {
                 ////console.log(index);
-                var text = new fabric.IText('Envelope ID: '+ fileid, {
+                var text = new fabric.Text('Envelope ID: '+ fileid, {
                   left:10,
                   top:10,
                   fill: '#000',
@@ -688,7 +688,7 @@ toggleSignModal = () => {
                     var TemplateData = Template.Data;
                     $.each(inst.fabricObjects, function (index, fabricObj) {
                       ////console.log(index);
-                      var text = new fabric.IText('Envelope ID: '+ fileid, {
+                      var text = new fabric.Text('Envelope ID: '+ fileid, {
                         left:50,
                         top:50,
                         fill: '#000',
