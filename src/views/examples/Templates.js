@@ -75,7 +75,12 @@ class Templates extends React.Component {
                 templatecontent += '</tr>'
               })
 
-              $('#templatetable').append(templatecontent)
+              if(templatecontent != ''){
+                $('#templatetable tbody tr').remove()
+                $('#templatetable').append(templatecontent)
+              }
+
+              
               modal[0].style.display = 'none'
             }
           })
@@ -151,7 +156,14 @@ class Templates extends React.Component {
                             <th scope="col">Options</th>
                           </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                        <tr>
+                                <td scope="col">You have no templates</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                        </tbody>
                       </Table>
                     </Col>
                   </Row>
