@@ -36,6 +36,21 @@ class SelectTemplateRecipients extends React.Component {
   pdf = null;
 
   componentDidMount() {
+
+    function getCookie(name) {
+      var nameEQ = name + '='
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
+      }
+      return null
+    }
+
+    var userid = getCookie('uid')
+    var docid = TemplateDataVar.TemplateID
+    
     var pdf = '';
     var global = this;
 
@@ -180,6 +195,7 @@ class SelectTemplateRecipients extends React.Component {
               axios
         .post('/gettemplatedata', {
           TemplateID: TemplateDataVar.TemplateID,
+          Owner: userid
         })
         .then(async function (response) {
           console.log(response)
@@ -272,27 +288,16 @@ class SelectTemplateRecipients extends React.Component {
 
     var modal = document.querySelectorAll('.modal')
 
-    function getCookie(name) {
-      var nameEQ = name + '='
-      var ca = document.cookie.split(';')
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i]
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length)
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
-      }
-      return null
-    }
-
-    var userid = getCookie('uid')
-
+    
+    var email = ''
     if (userid) {
       //console.log('user logged in');
       //console.log(userid);
       email = getCookie('useremail')
       var count = 0
       var url = ''
-      var docid = TemplateDataVar.TemplateID
-      var email = ''
+      
+      
       var docname = ''
       var people = []
       var colorArray = [
@@ -498,6 +503,7 @@ class SelectTemplateRecipients extends React.Component {
                     axios
                       .post('/gettemplatedata', {
                         TemplateID: docid,
+                        Owner: userid
                       })
                       .then(function (response) {
                         console.log(response)
@@ -533,7 +539,8 @@ class SelectTemplateRecipients extends React.Component {
                                   HistoryUser: email + '\n['+ip+']',
                                   HistoryAction: 'Registered',
                                   HistoryActivity: 'The envelope was created by '+email+'',
-                                  HistoryStatus: 'Created'
+                                  HistoryStatus: 'Created',
+                                  Owner: userid
                                 })
                                 .then(function (response) {
                                   console.log(response)
@@ -582,7 +589,8 @@ class SelectTemplateRecipients extends React.Component {
                                       HistoryUser: recipientEmail + '\n['+ip+']',
                                       HistoryAction: 'Sent Invitations',
                                       HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
-                                      HistoryStatus: 'Sent'
+                                      HistoryStatus: 'Sent',
+                                      Owner: userid
                                     })
                                     .then(function (response) {
                                       console.log(response)
@@ -658,6 +666,7 @@ class SelectTemplateRecipients extends React.Component {
                                     SignOrder: false,
                                     DateSent: today,
                                     Reciever: Reciever,
+                                    Owner: userid
                                   })
                                   .then(function (response) {
                                     console.log(response)
@@ -709,6 +718,7 @@ class SelectTemplateRecipients extends React.Component {
       axios
         .post('/gettemplatedata', {
           TemplateID: TemplateDataVar.TemplateID,
+          Owner: userid
         })
         .then(function (response) {
           console.log(response)

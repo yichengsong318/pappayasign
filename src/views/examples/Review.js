@@ -699,7 +699,8 @@ class Review extends React.Component {
               HistoryUser: people[0].email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
               HistoryActivity: 'Envelope host sent an invitation to '+people[0].name+' ['+people[0].email+']',
-              HistoryStatus: 'Sent'
+              HistoryStatus: 'Sent',
+              Owner: userid
             })
             .then(function (response) {
               console.log(response)
@@ -792,7 +793,8 @@ class Review extends React.Component {
               HistoryUser: email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
               HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
-              HistoryStatus: 'Sent'
+              HistoryStatus: 'Sent',
+              Owner: userid
             })
             .then(function (response) {
               console.log(response)
@@ -812,6 +814,7 @@ class Review extends React.Component {
             SignOrder: true,
             DateSent: today,
             Reciever: Reciever,
+            Owner: userid
           })
           .then(function (response) {
             console.log(response)
@@ -840,7 +843,8 @@ class Review extends React.Component {
                   axios
                 .post('/reminder', {
                   DocumentID:filenamemain,
-                  date:date
+                  date:date,
+                  Owner: userid
                 })
                 .then(function (response) {
                   console.log(response)
@@ -960,7 +964,8 @@ class Review extends React.Component {
               HistoryUser: email + '\n['+ip+']',
               HistoryAction: 'Sent Invitations',
               HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
-              HistoryStatus: 'Sent'
+              HistoryStatus: 'Sent',
+              Owner: userid
             })
             .then(function (response) {
               console.log(response)
@@ -980,6 +985,7 @@ class Review extends React.Component {
             SignOrder: false,
             DateSent: today,
             Reciever: Reciever,
+            Owner: userid
           })
           .then(function (response) {
             console.log(response)
@@ -1016,7 +1022,8 @@ class Review extends React.Component {
                   .post('/reminder', {
                     DocumentID:filenamemain,
                     date:date,
-                    url:url
+                    url:url,
+                    Owner:userid
                   })
                   .then(function (response) {
                     console.log(response)

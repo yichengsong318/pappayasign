@@ -733,6 +733,7 @@ toggleSignModal = () => {
               axios
                 .post('/getdocdata', {
                   DocumentID: fileid,
+                  Owner: useridother
                 })
                 .then(function (response) {
                   console.log(response)
@@ -1023,6 +1024,7 @@ toggleSignModal = () => {
                           DocumentID: filename,
                           DateStatus: today,
                           Data: dataarray,
+                          Owner: userid,
                         })
                         .then(function (response) {
                           console.log(response)
@@ -1056,6 +1058,7 @@ toggleSignModal = () => {
                       SignOrder: false,
                       DateSent: today,
                       Reciever: Reciever,
+                      Owner: userid
                     })
                     .then(function (response) {
                       console.log(response)
@@ -1073,7 +1076,8 @@ toggleSignModal = () => {
                         HistoryUser: email + '\n['+ip+']',
                         HistoryAction: 'Registered',
                         HistoryActivity: 'The envelope was created by '+email+'',
-                        HistoryStatus: 'Created'
+                        HistoryStatus: 'Created',
+                        Owner: userid
                       })
                       .then(function (response) {
                         console.log(response)
@@ -1110,7 +1114,8 @@ toggleSignModal = () => {
                         HistoryUser: email + '\n['+ip+']',
                         HistoryAction: 'Signed',
                         HistoryActivity: ''+email+' signed the envelope',
-                        HistoryStatus: 'Completed'
+                        HistoryStatus: 'Completed',
+                        Owner: userid
                       })
                       .then(function (response) {
                         console.log(response)
@@ -1255,7 +1260,8 @@ toggleSignModal = () => {
                         HistoryUser: email + '\n['+ip+']',
                         HistoryAction: 'Registered',
                         HistoryActivity: 'The envelope was created by '+email+'',
-                        HistoryStatus: 'Created'
+                        HistoryStatus: 'Created',
+                        Owner: userid
                       })
                       .then(function (response) {
                         console.log(response)
@@ -1318,6 +1324,7 @@ toggleSignModal = () => {
               DocumentID: filename,
               DateStatus: today,
               Data: dataarray,
+              Owner: userid,
             })
             .then(function (response) {
               console.log(response)
@@ -1364,6 +1371,7 @@ toggleSignModal = () => {
               DocumentID: filename,
               DateStatus: today,
               Data: dataarray,
+              Owner: useridother,
             })
             .then(function (response) {
               console.log(response)
@@ -1379,7 +1387,8 @@ toggleSignModal = () => {
                     HistoryUser: email + '\n['+ip+']',
                     HistoryAction: 'Signed',
                     HistoryActivity: ''+email+' signed the envelope',
-                    HistoryStatus: 'Completed'
+                    HistoryStatus: 'Completed',
+                    Owner: useridother
                   })
                   .then(function (response) {
                     console.log(response)
@@ -1396,6 +1405,7 @@ toggleSignModal = () => {
                 axios
                   .post('/getReciever', {
                     DocumentID: filename,
+                    Owner: useridother
                   })
                   .then(function (response) {
                     console.log(response)
@@ -1422,6 +1432,7 @@ toggleSignModal = () => {
                             .post('/updaterecieverdata', {
                               Reciever: recievers,
                               DocumentID: filename,
+                              Owner: useridother
                             })
                             .then(function (response) {
                               console.log(response)
@@ -1506,7 +1517,8 @@ toggleSignModal = () => {
                                 HistoryUser: email + '\n['+ip+']',
                                 HistoryAction: 'Printable Copy Delivered',
                                 HistoryActivity: ''+email+' received a printable copy of the envelope',
-                                HistoryStatus: 'Completed'
+                                HistoryStatus: 'Completed',
+                                Owner: useridother
                               })
                               .then(function (response) {
                                 console.log(response)
@@ -1579,6 +1591,7 @@ toggleSignModal = () => {
                               .post('/updatedocumentstatus', {
                                 DocumentID: filename,
                                 Status: 'Completed',
+                                Owner: useridother,
                               })
                               .then(function (response) {
                                 console.log(response)
@@ -2558,6 +2571,7 @@ toggleSignModal = () => {
             axios
               .post('/getReciever', {
                 DocumentID: fileid,
+                Owner:useridother
               })
               .then(function (response) {
                 console.log(response)
@@ -2614,7 +2628,8 @@ toggleSignModal = () => {
                         HistoryUser: email + '\n['+ip+']',
                         HistoryAction: 'Viewed In-Session',
                         HistoryActivity: ''+email+' viewed the envelope in a session hosted by '+OwnerEmail+' [documents:('+DocumentName+')]',
-                        HistoryStatus: 'Completed'
+                        HistoryStatus: 'Completed',
+                        Owner: useridother
                       })
                       .then(function (response) {
                         console.log(response)
@@ -2694,6 +2709,7 @@ toggleSignModal = () => {
             axios
               .post('/getReciever', {
                 DocumentID: fileid,
+                Owner: useridother
               })
               .then(function (response) {
                 console.log(response)
@@ -2893,6 +2909,7 @@ toggleSignModal = () => {
                 axios
                   .post('/getReciever', {
                     DocumentID: fileid,
+                    Owner: useridother
                   })
                   .then(function (response) {
                     console.log(response)
@@ -2927,7 +2944,8 @@ toggleSignModal = () => {
                         HistoryUser: email + '\n['+ip+']',
                         HistoryAction: 'Viewed In-Session',
                         HistoryActivity: ''+email+' viewed the envelope in a session hosted by '+OwnerEmail+' [documents:('+DocumentName+')]',
-                        HistoryStatus: 'Completed'
+                        HistoryStatus: 'Completed',
+                        Owner: useridother
                       })
                       .then(function (response) {
                         console.log(response)
@@ -2977,6 +2995,7 @@ toggleSignModal = () => {
             axios
               .post('/getReciever', {
                 DocumentID: fileid,
+                Owner: useridother
               })
               .then(function (response) {
                 console.log(response)
@@ -3080,6 +3099,7 @@ toggleSignModal = () => {
         .post('/updatedocumentstatus', {
           DocumentID: filename,
           Status: 'Declined',
+          Owner: useridother
         })
         .then(function (response) {
           console.log(response)
@@ -3094,7 +3114,9 @@ toggleSignModal = () => {
             HistoryUser: email + '\n['+ip+']',
             HistoryAction: 'Declined',
             HistoryActivity: ''+email+' declined signing the envelope',
-            HistoryStatus: 'Declined'
+            HistoryStatus: 'Declined',
+            Owner: useridother
+
           })
           .then(function (response) {
             console.log(response)

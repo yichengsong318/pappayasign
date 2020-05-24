@@ -62,6 +62,7 @@ class Tables extends React.Component {
     var Signatures = 0
     
     var pdf = '';
+    var docuserid=''
 
     var global = this;
     try {
@@ -102,6 +103,7 @@ class Tables extends React.Component {
     var deletestatus = ''
     var unifileid = ''
     var historyfileid = ''
+    var historyuserid = ''
     var uniid = ''
     var downloadfileid = ''
     var droptoggle = 0
@@ -319,6 +321,9 @@ class Tables extends React.Component {
     }
 
     var userid = getCookie('uid')
+    var deletekey = false
+    var completedkey  = false
+    var expirykey = false
 
     if (userid) {
       //console.log('user logged in');
@@ -337,11 +342,7 @@ class Tables extends React.Component {
 
     async function inboxfunc() {
       modal[0].style.display = 'block'
-      $('#actionrequiredtable tbody tr').remove()
-      $('#alltable tbody tr').remove()
-      $('#deletedtable tbody tr').remove()
-      $('#completedtable tbody tr').remove()
-      $('#expiringtable tbody tr').remove()
+      
 
       await axios
         .post('/getuserdata', {
@@ -380,6 +381,10 @@ class Tables extends React.Component {
                 allcontent +=
                   '<td id="datakey" hidden>' +
                   Request[index].DocumentID +
+                  '</td>'
+                allcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
                   '</td>'
                 allcontent +=
                   '<td id="datauid" hidden>' + Request[index].From + '</td>'
@@ -425,6 +430,10 @@ class Tables extends React.Component {
                   actionrequiredcontent +=
                     '<td id="datakey" hidden>' +
                     Request[index].DocumentID +
+                    '</td>'
+                  actionrequiredcontent +=
+                    '<td id="datauid" hidden>' +
+                    Request[index].From +
                     '</td>'
                   actionrequiredcontent +=
                     '<td id="datauid" hidden>' + Request[index].From + '</td>'
@@ -473,6 +482,10 @@ class Tables extends React.Component {
                   Request[index].DocumentID +
                   '</td>'
                 deletedcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
+                  '</td>'
+                deletedcontent +=
                   '<td id="datauid" hidden>' + Request[index].From + '</td>'
                 deletedcontent +=
                   '<td id="datarecep" hidden>' +
@@ -481,10 +494,9 @@ class Tables extends React.Component {
                 deletedcontent +=
                   '<td >' + Request[index].RecipientDateStatus + '</td>'
                 deletedcontent += `<td ><div class="btn-group">
-              <button type="button" class="btn btn-primary restore">CONTINUE</button>
+              <button type="button" class="btn btn-primary correct">CONTINUE</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
               <div class="dropdown-menu2" id="dropdown">
-              <button class="dropdown-item correct" type="button">Continue</button>
               <button class="dropdown-item savetemplate" type="button">Save as Template</button>
               </div>
               </div></td >`
@@ -505,6 +517,10 @@ class Tables extends React.Component {
                 completedcontent +=
                   '<td id="datakey" hidden>' +
                   Request[index].DocumentID +
+                  '</td>'
+                completedcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
                   '</td>'
                 completedcontent +=
                   '<td id="datauid" hidden>' + Request[index].From + '</td>'
@@ -543,6 +559,10 @@ class Tables extends React.Component {
                   expiringcontent +=
                   '<td id="datakey" hidden>' +
                   Request[index].DocumentID +
+                  '</td>'
+                  expiringcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
                   '</td>'
                   expiringcontent +=
                   '<td id="datauid" hidden>' + Request[index].From + '</td>'
@@ -587,6 +607,10 @@ class Tables extends React.Component {
                   Request[index].DocumentID +
                   '</td>'
                 deletedcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
+                  '</td>'
+                deletedcontent +=
                   '<td id="datauid" hidden>' + Request[index].From + '</td>'
                 deletedcontent +=
                   '<td id="datarecep" hidden>' +
@@ -595,23 +619,47 @@ class Tables extends React.Component {
                 deletedcontent +=
                   '<td >' + Request[index].RecipientDateStatus + '</td>'
                 deletedcontent += `<td ><div class="btn-group">
-              <button type="button" class="btn btn-primary restore">CONTINUE</button>
+              <button type="button" class="btn btn-primary correct">RESTORE</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
               <div class="dropdown-menu2" id="dropdown">
-              <button class="dropdown-item correct" type="button">Continue</button>
+              <button class="dropdown-item history" type="button">History</button>
               <button class="dropdown-item savetemplate" type="button">Save as Template</button>
               </div>
               </div></td >`
                 deletedcontent += '</tr>'
+
+            
               }
 
 
             })
-            $('#alltable').append(allcontent)
-            $('#deletedtable').append(deletedcontent)
-            $('#actionrequiredtable').append(actionrequiredcontent)
-            $('#completedtable').append(completedcontent)
-            $('#expiringtable').append(expiringcontent)
+                        
+            if(allcontent != ''){
+              $('#alltable tbody tr').remove()
+              $('#alltable').append(allcontent)
+            }
+            if(deletedcontent != ''){
+              deletekey = true
+              $('#deletedtable tbody tr').remove()
+              $('#deletedtable').append(deletedcontent)
+            }
+            if(actionrequiredcontent != ''){
+              $('#actionrequiredtable tbody tr').remove()
+              $('#actionrequiredtable').append(actionrequiredcontent)
+            }
+            if(completedcontent != ''){
+              completedkey = true
+              $('#completedtable tbody tr').remove()
+              $('#completedtable').append(completedcontent)
+            }
+            if(expiringcontent != ''){
+              expirykey = true
+              $('#expiringtable tbody tr').remove()
+              $('#expiringtable').append(expiringcontent)
+            }
+            
+            
+            
           }
         })
         .catch(function (error) {
@@ -622,10 +670,7 @@ class Tables extends React.Component {
 
     async function datafunc() {
       modal[0].style.display = 'block'
-      $('#senttable tbody tr').remove()
-      $('#waitingtable tbody tr').remove()
-      $('#authtable tbody tr').remove()
-
+      
       await axios
         .post('/getmanagedocdata', {
           UserID: userid,
@@ -675,6 +720,8 @@ class Tables extends React.Component {
                     reciverlist +
                     '</span></td>'
                   waitingcontent += '<td id=datastatus>' + data.Status + '</td>'
+                  waitingcontent +=
+                    '<td id="datakey" hidden>' + data.DocumentID + '</td>'
                   waitingcontent +=
                     '<td id="datakey" hidden>' + data.DocumentID + '</td>'
                   waitingcontent +=
@@ -808,10 +855,10 @@ class Tables extends React.Component {
                   '<td id="datauid" hidden>' + data.Owner + '</td>'
                 deletedcontent += '<td >' + data.DateStatus + '</td>'
                 deletedcontent += `<td ><div class="btn-group">
-                <button type="button" class="btn btn-primary restore">CONTINUE</button>
+                <button type="button" class="btn btn-primary restore">RESTORE</button>
                 <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                 <div class="dropdown-menu2" id="dropdown">
-                <button class="dropdown-item correct" type="button">Continue</button>
+                <button class="dropdown-item history" type="button">History</button>
                 <button class="dropdown-item savetemplate" type="button">Save as Template</button>
                 </div>
                 </div></td >`
@@ -1027,7 +1074,6 @@ class Tables extends React.Component {
               <button type="button" class="btn btn-primary move">Move</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
               <div class="dropdown-menu2" id="dropdown">
-              <button class="dropdown-item move" type="button">Move</button>
               <button class="dropdown-item correct" type="button">Correct</button>
               <button class="dropdown-item create" type="button">Create a Copy</button>
               <button class="dropdown-item savetemplate" type="button">Save as Template</button>
@@ -1057,23 +1103,64 @@ class Tables extends React.Component {
                   '<td id="datauid" hidden>' + data.Owner + '</td>'
                 deletedcontent += '<td >' + data.DateStatus + '</td>'
                 deletedcontent += `<td ><div class="btn-group">
-                <button type="button" class="btn btn-primary restore">CONTINUE</button>
+                <button type="button" class="btn btn-primary correct">RESTORE</button>
                 <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                 <div class="dropdown-menu2" id="dropdown">
-                <button class="dropdown-item correct" type="button">Continue</button>
                 <button class="dropdown-item savetemplate" type="button">Save as Template</button>
                 </div>
                 </div></td >`
                 deletedcontent += '</tr>'
               }
             })
-            $('#senttable').append(sentcontent)
-            $('#draftstable').append(draftcontent)
-            $('#deletedtable').append(deletedcontent)
-            $('#completedtable').append(completedcontent)
-            $('#waitingtable').append(waitingcontent)
-            $('#expiringtable').append(expiringcontent)
-            $('#authtable').append(authcontent)
+                      
+
+            if(sentcontent != ''){
+              $('#senttable tbody tr').remove()
+              $('#senttable').append(sentcontent)
+            }
+            if(authcontent != ''){
+              $('#authtable tbody tr').remove()
+              $('#authtable').append(authcontent)
+            }
+            if(waitingcontent != ''){
+              $('#waitingtable tbody tr').remove()
+              $('#waitingtable').append(waitingcontent)
+            }
+            if(draftcontent != ''){
+              $('#draftstable tbody tr').remove()
+              $('#draftstable').append(draftcontent)
+            }
+            if(deletedcontent != ''){
+              if(deletekey == true){
+                $('#deletedtable').append(deletedcontent)
+              }
+              else{
+                $('#deletedtable tbody tr').remove()
+                $('#deletedtable').append(deletedcontent)
+              }
+              
+            }
+            if(completedcontent != ''){
+              if(completedkey == true){
+                $('#completedtable').append(completedcontent)
+              }
+              else{
+                $('#completedtable tbody tr').remove()
+                $('#completedtable').append(completedcontent)
+              }
+              
+            }
+            if(expiringcontent != ''){
+              if(expirykey == true){
+                $('#expiringtable').append(expiringcontent)
+              }
+              else{
+                $('#expiringtable tbody tr').remove()
+                $('#expiringtable').append(expiringcontent)
+              }
+              
+            }
+            
             modal[0].style.display = 'none'
           }
         })
@@ -1106,6 +1193,7 @@ class Tables extends React.Component {
       axios
         .post('/getdocdata', {
           DocumentID: rowselectfileid,
+          Owner: rowselectuserid
         })
         .then(async function (response) {
           console.log(response)
@@ -1359,21 +1447,26 @@ class Tables extends React.Component {
     $('#managevoidapprovebtn').click(function () {
       modal[3].style.display = 'none'
       modal[2].style.display = 'block'
+      var DodumentName = '';
       var today = new Date().toLocaleString().replace(',', '')
       var managevoidmessage = document.getElementById('managevoidmessage').value
       if (managevoidmessage !== '') {
         axios
           .post('/getReciever', {
             DocumentID: voidfileid,
+            Owner: voiduserid
           })
           .then(function (response) {
             console.log(response)
             if (response.data.Status === 'got recievers') {
               var recievers = response.data.Reciever
               var status = response.data.DocStatus
+              var DocID = voidfileid;
+              var OwnerEmail=response.data.OwnerEmail;
 
               recievers.forEach(function (item, index) {
                 var recipient_index = index
+                DodumentName = item.DocumentName
                 //console.log(recipient_index);
 
                 recievers[index].RecipientStatus = 'Void'
@@ -1382,6 +1475,7 @@ class Tables extends React.Component {
                 axios
                   .post('/updaterecieverdata', {
                     Reciever: recievers,
+                    Owner: voiduserid
                   })
                   .then(function (response) {
                     console.log(response)
@@ -1396,14 +1490,7 @@ class Tables extends React.Component {
                 axios
                   .post('/sendmail', {
                     to: item.RecipientEmail,
-                    body:
-                      '<div><p>Hello ' +
-                      item.RecipientName +
-                      ', ' +
-                      item.DocumentName +
-                      ' Has been voided. \n\nReason:' +
-                      managevoidmessage +
-                      '</p></div>',
+                    body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+OwnerEmail+` has voided the document: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: `+managevoidmessage+`</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the PappayaSign Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
                     subject: 'PappayaSign: Document Voided',
                   })
                   .then(function (response) {
@@ -1457,6 +1544,7 @@ class Tables extends React.Component {
                 .post('/updatedocumentstatus', {
                   DocumentID: voidfileid,
                   Status: 'Void',
+                  Owner: voiduserid
                 })
                 .then(function (response) {
                   console.log(response)
@@ -1464,7 +1552,7 @@ class Tables extends React.Component {
                     response.data === 'insert done' ||
                     response.data === 'update done'
                   ) {
-                    alert('Document Voided')
+                    alert('Document '+DodumentName+' has been voided successfully')
                     inboxfunc()
                     datafunc()
                     modal[2].style.display = 'none'
@@ -1482,6 +1570,7 @@ class Tables extends React.Component {
           })
       } else {
         alert('Please provide a reason, So we could let your recipients know.')
+        modal[2].style.display = 'none'
       }
     })
 
@@ -1540,28 +1629,48 @@ class Tables extends React.Component {
     $('#managedeleteapprovebtn').click(function () {
       modal[4].style.display = 'none'
       modal[2].style.display = 'block'
+      var DocumentName = ''
       var today = new Date().toLocaleString().replace(',', '')
 
       axios
         .post('/getReciever', {
           DocumentID: deletefileid,
+          Owner: deleteuserid
         })
         .then(function (response) {
           console.log(response)
           if (response.data.Status === 'got recievers') {
             var recievers = response.data.Reciever
             var status = response.data.DocStatus
+            var DocID = deletefileid;
+              var OwnerEmail=response.data.OwnerEmail;
 
             recievers.forEach(function (item, index) {
               var recipient_index = index
+              DocumentName = item.DocumentName;
               //console.log(recipient_index);
 
               recievers[index].RecipientStatus = 'Deleted'
               recievers[index].RecipientDateStatus = today
 
               axios
+                  .post('/sendmail', {
+                    to: item.RecipientEmail,
+                    body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+OwnerEmail+` has voided the document: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: User deleted the file.</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the PappayaSign Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
+                    subject: 'PappayaSign: Document Voided',
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                  })
+                  .catch(function (error) {
+                    //console.log('no data');
+                    modal[2].style.display = 'none'
+                  })
+
+              axios
                 .post('/updaterecieverdata', {
                   Reciever: recievers,
+                  Owner: deleteuserid
                 })
                 .then(function (response) {
                   console.log(response)
@@ -1614,6 +1723,7 @@ class Tables extends React.Component {
               .post('/updatedocumentstatus', {
                 DocumentID: deletefileid,
                 Status: 'Deleted',
+                Owner: deleteuserid
               })
               .then(function (response) {
                 console.log(response)
@@ -1621,7 +1731,7 @@ class Tables extends React.Component {
                   response.data === 'insert done' ||
                   response.data === 'update done'
                 ) {
-                  alert('Document Deleted')
+                  alert('Document '+DocumentName+' has been deleted successfully, you can find it in the deleted folder before it is permanantly deleted')
                   inboxfunc()
                   datafunc()
                   modal[2].style.display = 'none'
@@ -1678,6 +1788,7 @@ class Tables extends React.Component {
       axios
         .post('/getdocdata', {
           DocumentID: fileid,
+          Owner: exportuserid
         })
         .then(function (response) {
           console.log(response)
@@ -1721,7 +1832,7 @@ class Tables extends React.Component {
       //console.log($(this).parent().parent().parent().parent().children('#datakey')[0].innerHTML);
       //console.log($(this).parent().parent().parent().parent().children('#datauid')[0].innerHTML);
       //console.log($(this).parent().parent().parent().parent().children('#datastatus')[0].innerHTML);
-      var exportuserid = $(this)
+      historyuserid = $(this)
         .parent()
         .parent()
         .parent()
@@ -1750,6 +1861,7 @@ class Tables extends React.Component {
         axios
         .post('/getdocdata', {
           DocumentID: fileid,
+          Owner: historyuserid
         })
         .then(function (response) {
           console.log(response)
@@ -1796,6 +1908,7 @@ class Tables extends React.Component {
       axios
         .post('/gethistory', {
           DocumentID: fileid,
+          Owner: historyuserid
         })
         .then(function (response) {
           var historycontent = '';
@@ -1913,6 +2026,7 @@ class Tables extends React.Component {
       axios
         .post('/getReciever', {
           DocumentID: fileid,
+          Owner: correctuserid
         })
         .then(function (response) {
           console.log(response)
@@ -1937,6 +2051,7 @@ class Tables extends React.Component {
               axios
                 .post('/updaterecieverdata', {
                   Reciever: recievers,
+                  Owner: correctuserid
                 })
                 .then(function (response) {
                   console.log(response)
@@ -1989,6 +2104,7 @@ class Tables extends React.Component {
               .post('/updatedocumentstatus', {
                 DocumentID: correctuserid,
                 Status: 'Correcting',
+                Owner: correctuserid
               })
               .then(function (response) {
                 console.log(response)
@@ -2072,6 +2188,7 @@ class Tables extends React.Component {
       axios
         .post('/getdocdata', {
           DocumentID: fileid,
+          Owner: createuserid
         })
         .then(function (response) {
           console.log(response)
@@ -2173,10 +2290,12 @@ class Tables extends React.Component {
       }
 
       var docname = ''
+      console.log(templateuserid)
 
       axios
         .post('/getdocdata', {
           DocumentID: fileid,
+          Owner: templateuserid
         })
         .then(function (response) {
           console.log(response)
@@ -2196,6 +2315,8 @@ class Tables extends React.Component {
             TemplateDataVar.TemplateUserID = templateuserid
             TemplateDataVar.TemplateRecipientCount = dbpeople.length
             TemplateDataVar.TemplateRecipientArray = dbpeople
+
+            console.log(TemplateDataVar)
 
             modal[2].style.display = 'none'
             var wurl = '#/admin/saveastemplate'
@@ -2247,6 +2368,7 @@ class Tables extends React.Component {
       axios
         .post('/getdocdata', {
           DocumentID: fileid,
+          Owner: resenduserid
         })
         .then(function (response) {
           console.log(response)
@@ -2335,6 +2457,7 @@ class Tables extends React.Component {
       axios
         .post('/getdocdata', {
           DocumentID: historyfileid,
+          Owner: historyuserid
         })
         .then(function (response) {
           console.log(response)
@@ -2536,6 +2659,7 @@ class Tables extends React.Component {
       axios
         .post('/getdocdata', {
           DocumentID: historyfileid,
+          Owner: historyuserid
         })
         .then(function (response) {
           console.log(response)
@@ -3233,7 +3357,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                         <TabPane tabId="tabs2" className="managetabpane">
@@ -3250,7 +3382,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
 
@@ -3268,7 +3408,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
 
@@ -3286,7 +3434,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                         <TabPane tabId="tabs5" className="managetabpane">
@@ -3303,7 +3459,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                         <TabPane tabId="tabs6" className="managetabpane">
@@ -3321,7 +3485,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                         <TabPane tabId="tabs7" className="managetabpane">
@@ -3338,7 +3510,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                         <TabPane tabId="tabs8" className="managetabpane">
@@ -3355,7 +3535,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                         <TabPane tabId="tabs9" className="managetabpane">
@@ -3372,7 +3560,15 @@ class Tables extends React.Component {
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            <tr>
+                                <td scope="col"></td>
+                                <td scope="col">You have no documents</td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                                <td scope="col"></td>
+                              </tr>
+                            </tbody>
                           </Table>
                         </TabPane>
                       </TabContent>

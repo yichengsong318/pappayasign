@@ -338,7 +338,7 @@ app.post("/adddocumentdata", function (req, res) {
 				History: []
 			
 		}
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
@@ -386,7 +386,7 @@ app.post("/updatedocumentdata", function (req, res) {
 				Data: req.body.Data
 			
 		}}
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 
 	  collection.updateOne(query, dataupdate, function (errorupdate, resultupdate) {
 		if (errorupdate) res.send(errorupdate);
@@ -416,7 +416,7 @@ app.post("/updatedocumentstatus", function (req, res) {
 				Status: req.body.Status
 			
 		}}
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 
 	  collection.updateOne(query, dataupdate, function (errorupdate, resultupdate) {
 		if (errorupdate) res.send(errorupdate);
@@ -445,7 +445,7 @@ app.post("/updaterecieverdata", function (req, res) {
 			$set:{
 				Reciever: req.body.Reciever			
 		}}
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 
 	  collection.updateOne(query, dataupdate, function (errorupdate, resultupdate) {
 		if (errorupdate) res.send(errorupdate);
@@ -499,7 +499,7 @@ app.post("/getdocdata", function (req, res) {
   
 	client.connect((err) => {
 	  var query = { DocumentID: req.body.DocumentID };
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 	  //console.log(collection);
   
 	  collection.findOne(query, function (err, result) {
@@ -541,7 +541,7 @@ app.post("/addreciever", function (req, res) {
 				Reciever: req.body.Reciever
 			
 		}}
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 
 	  collection.updateOne(query, dataupdate, function (errorupdate, resultupdate) {
 		if (errorupdate) res.send(errorupdate);
@@ -566,7 +566,7 @@ app.post("/getReciever", function (req, res) {
   
 	client.connect((err) => {
 	  var query = { DocumentID: req.body.DocumentID };
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 	  //console.log(collection);
   
 	  collection.findOne(query, function (err, result) {
@@ -577,6 +577,7 @@ app.post("/getReciever", function (req, res) {
 				DocumentName:result.DocumentName,
 				OwnerEmail: result.OwnerEmail,
 				DocStatus: result.Status,
+				DocumentFrom: result.Owner,
 				Status: "got recievers"
 			  };
 			  res.send(docdata);
@@ -748,7 +749,7 @@ app.post("/getrequestuser", function (req, res) {
   
 	client.connect((err) => {
 	  var query = { Owner: req.body.UserID };
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.UserID);
 	  //console.log(collection);
   
 	  collection.find(query).toArray(function (err, result) {
@@ -778,7 +779,7 @@ app.post("/getrequestuser", function (req, res) {
   
 	client.connect((err) => {
 	  var query = { Owner: req.body.UserID };
-	  const collection = client.db("UsersDB").collection("Templates");
+	  const collection = client.db("TemplateDB").collection(req.body.UserID);
 	  //console.log(collection);
   
 	  collection.find(query).toArray(function (err, result) {
@@ -836,7 +837,7 @@ app.post("/getrequestuser", function (req, res) {
 				Reciever: []
 			
 		}
-	  const collection = client.db("UsersDB").collection("Templates");
+	  const collection = client.db("TemplateDB").collection(req.body.Owner);
 
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
@@ -877,7 +878,7 @@ app.post("/getrequestuser", function (req, res) {
   
 	client.connect((err) => {
 	  var query = { TemplateID: req.body.TemplateID };
-	  const collection = client.db("UsersDB").collection("Templates");
+	  const collection = client.db("TemplateDB").collection(req.body.Owner);
 	  //console.log(collection);
   
 	  collection.findOne(query, function (err, result) {
@@ -915,7 +916,7 @@ app.post("/getrequestuser", function (req, res) {
 				Reciever: req.body.Reciever
 			
 		}}
-	  const collection = client.db("UsersDB").collection("Templates");
+	  const collection = client.db("TemplateDB").collection(req.body.Owner);
 
 	  collection.updateOne(query, dataupdate, function (errorupdate, resultupdate) {
 		if (errorupdate) res.send(errorupdate);
@@ -1152,7 +1153,7 @@ async function setExpiry(Reciever, UserID, DocumentID){
 					var querydoc = { DocumentID: DocumentID };
 					var newvalues = { $set: { Status: 'Expiring', Reciever: recievers } };
 					client.connect((err) => {
-						const collection = client.db("UsersDB").collection("Documents");
+						const collection = client.db("DocumentDB").collection(UserID);
 					collection.updateOne(querydoc, newvalues, function (innererr, innerresult) {
 						if (innererr) console.log(innererr);
 						if(innerresult){
@@ -1170,7 +1171,7 @@ app.post("/expiry", function (req, res) {
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
 	client.connect((err) => {
 	  var query = { DocumentID: req.body.DocumentID };
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.UserID);
 	  //console.log(collection);
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
@@ -1241,7 +1242,7 @@ app.post("/expiry", function (req, res) {
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
 	client.connect((err) => {
 	  var query = { DocumentID: req.body.DocumentID };
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 	  //console.log(collection);
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
@@ -1301,7 +1302,7 @@ app.post("/posthistory", function (req, res) {
 			HistoryStatus: req.body.HistoryStatus
 			
 		}
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 
 	  collection.findOne(query, function (err, result) {
 		if (err) throw err;
@@ -1338,7 +1339,7 @@ app.post("/gethistory", function (req, res) {
   
 	client.connect((err) => {
 	  var query = { DocumentID: req.body.DocumentID };
-	  const collection = client.db("UsersDB").collection("Documents");
+	  const collection = client.db("DocumentDB").collection(req.body.Owner);
 	  //console.log(collection);
   
 	  collection.findOne(query, function (err, result) {

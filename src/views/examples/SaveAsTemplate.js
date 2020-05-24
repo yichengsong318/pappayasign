@@ -32,6 +32,8 @@ class SaveAsTemplate extends React.Component {
   pdf = null;
 
   componentDidMount() {
+    var useridother = TemplateDataVar.TemplateUserID
+    var docid = TemplateDataVar.TemplateID
 
     var pdf = '';
     var global = this;
@@ -177,6 +179,7 @@ class SaveAsTemplate extends React.Component {
               axios
         .post('/getdocdata', {
           DocumentID: TemplateDataVar.TemplateID,
+          Owner: useridother
         })
         .then(async function (response) {
           console.log(response)
@@ -300,7 +303,7 @@ class SaveAsTemplate extends React.Component {
         modal[1].style.display = 'block'
         axios
                 .post('/docdownload', {
-                  UserID: userid,
+                  UserID: useridother,
                   filename: TemplateDataVar.TemplateID,
                 })
                 .then(async function (response) {
@@ -340,8 +343,8 @@ class SaveAsTemplate extends React.Component {
 
       var count = 0
       var url = ''
-      var docid = TemplateDataVar.TemplateID
-      var useridother = TemplateDataVar.TemplateUserID
+      
+      
       var email = ''
       var docname = ''
       var people = []
@@ -515,6 +518,7 @@ class SaveAsTemplate extends React.Component {
                       axios
                         .post('/getdocdata', {
                           DocumentID: docid,
+                          Owner: useridother
                         })
                         .then(function (response) {
                           console.log(response)
@@ -524,7 +528,7 @@ class SaveAsTemplate extends React.Component {
                             axios
                               .post('/addtemplatedata', {
                                 TemplateName: recipienttemplatename,
-                                TemplateID: docid,
+                                TemplateID: newtemplateid,
                                 OwnerEmail: Document.OwnerEmail,
                                 DateCreated: today,
                                 DateStatus: today,
@@ -569,9 +573,10 @@ class SaveAsTemplate extends React.Component {
                                   axios
                                     .post('/addtemplatereciever', {
                                       Status: 'Waiting for Others',
-                                      TemplateID: docid,
+                                      TemplateID: newtemplateid,
                                       DateSent: today,
                                       Reciever: Reciever,
+                                      Owner: userid
                                     })
                                     .then(function (response) {
                                       console.log(response)
