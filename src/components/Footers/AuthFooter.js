@@ -22,15 +22,6 @@ class Login extends React.Component {
                     </NavLink>
                   </NavItem>
 
-                  <NavItem>
-                    <NavLink
-                      to="/admin/sign"
-                      tag={Link}
-                      rel="noopener noreferrer"
-                    >
-                      Sign
-                    </NavLink>
-                  </NavItem>
 
                   <NavItem>
                     <NavLink
@@ -41,6 +32,18 @@ class Login extends React.Component {
                       Manage
                     </NavLink>
                   </NavItem>
+
+                  
+                  <NavItem>
+                    <NavLink
+                      to="/admin/templates"
+                      tag={Link}
+                      rel="noopener noreferrer"
+                    >
+                      Templates
+                    </NavLink>
+                  </NavItem>
+
 
                   <NavItem>
                     <NavLink

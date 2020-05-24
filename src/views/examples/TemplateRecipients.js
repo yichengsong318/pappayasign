@@ -23,6 +23,59 @@ require('jquery-ui/ui/disable-selection')
 
 class TemplateRecipients extends React.Component {
   componentDidMount() {
+    var wurl = ''
+    var fileid = ''
+    var wuserid = ''
+    var wdocname = ''
+    var waction = ''
+
+    
+    try {
+      var mainurl = document.location.hash,
+        params = mainurl.split('?')[1].split('&'),
+        data = {},
+        tmp
+      for (var i = 0, l = params.length; i < l; i++) {
+        tmp = params[i].split('=')
+        data[tmp[0]] = tmp[1]
+      }
+      fileid = data.id
+      wuserid = data.u
+      waction = data.action
+      //console.log(wuserid);
+      //console.log(fileid);
+      wurl =
+        '#/admin/templatecreate?id=' +
+        fileid +
+        '&type=db&u=' +
+        wuserid +
+        '&action=' +
+        waction +
+        ''
+    } catch (error) {}
+
+    try {
+      var people = []
+      people = TemplateDataVar.TemplateRecipientArray
+      people.forEach(function (item, index) {
+        var li = document.createElement('li')
+        li.innerHTML =
+        '<div class="p-2 rcard" id="trcard"><input class="form-control-alternative p-3 inputr" id="trecipient-name" placeholder="' +
+          people[index].name +
+          '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="trecipient-email" placeholder="' +
+          people[index].email +
+          '" type="email" disabled/><input class="form-control-alternative p-3 inputr" id="trecipient-option" placeholder="' +
+          people[index].option +
+          '" type="text" disabled/><button class="buttonr delete">x</button></div>'
+        $('#tsortable').append(li)
+        
+      })
+    } catch (error) {
+      
+    }
+
+
+
     $(function () {
       $('#tsortable').sortable()
       $('#tsortable').disableSelection()
@@ -52,25 +105,10 @@ class TemplateRecipients extends React.Component {
         $('#tsortable').append(li)
         document.getElementById('trecipient-input-name').value = ''
         document.getElementById('trecipient-input-email').value = ''
-      }
-    })
-
-    $(document).on('click', '.delete', function () {
-      $(this).parent().parent().remove()
-      //console.log($(this).parent().children('#trecipient-name').attr("placeholder"));
-    })
-
-    Array.prototype.pushWithReplace = function (o, k) {
-      var fi = this.findIndex((f) => f[k] === o[k])
-      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
-      return this
-    }
-
-    $('#ts-btn').click(function () {
-      var people = []
+        var people = []
       var listItems = $('#tsortable li')
       if (listItems.length == 0) {
-        alert('There are no recepeints, Please add some recipients')
+        alert('There are no recepeints, Please add recipients')
         TemplateDataVar.TemplateRecipientArray = people
       } else {
         listItems.each(function (li) {
@@ -91,11 +129,33 @@ class TemplateRecipients extends React.Component {
             'email'
           )
         })
-        //console.log(people);
         TemplateDataVar.TemplateRecipientArray = people
-        //console.log(TemplateDataVar);
-        var url = '#/admin/templatecreate'
-        window.location.hash = url
+      }
+      }
+    })
+
+    $(document).on('click', '.delete', function () {
+      $(this).parent().parent().remove()
+      //console.log($(this).parent().children('#trecipient-name').attr("placeholder"));
+    })
+
+    Array.prototype.pushWithReplace = function (o, k) {
+      var fi = this.findIndex((f) => f[k] === o[k])
+      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
+      return this
+    }
+
+    $('#ts-btn').click(function () {
+      var listItems = $('#tsortable li')
+      if (listItems.length == 0) {
+        alert('There are no recepeints, Please add recipients')
+      } else {
+        if (wurl === '') {
+          var url = '#/admin/templatecreate'
+            window.location.hash = url
+        } else {
+            window.location.hash = wurl
+        }
       }
     })
   }

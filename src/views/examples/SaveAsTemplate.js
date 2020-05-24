@@ -619,6 +619,133 @@ class SaveAsTemplate extends React.Component {
           alert('Please enter a template name.')
         }
       })
+
+
+
+
+      $('#sedittemplate-btn').click(function () {
+        var recipienttemplatename = document.getElementById(
+          'sat-input-template-name'
+        ).value
+        if (recipienttemplatename !== '') {
+        var docname = ''
+        modal[1].style.display = 'block'
+        var today = new Date().toLocaleString().replace(',', '')
+        var newtemplateid = randomString(13)
+
+
+      axios
+        .post('/getdocdata', {
+          DocumentID: docid,
+          Owner: useridother
+        })
+        .then(function (response) {
+          console.log(response)
+          if (response.data.Status === 'doc data done') {
+            var Document = response.data.Document
+            var dbpeople = []
+            Document.Reciever.forEach(function (data, index) {
+              dbpeople.push({
+                name: data.RecipientName,
+                email: data.RecipientEmail,
+                option: data.RecipientOption,
+              })
+              //console.log(dbpeople);
+            })
+            TemplateDataVar.TemplateRecipientArray = dbpeople
+            docname = Document.DocumentName
+
+            PreviewData.Data = Document.Data;
+
+            axios
+              .post('/addtemplatedata', {
+                TemplateName: recipienttemplatename,
+                TemplateID: newtemplateid,
+                OwnerEmail: Document.OwnerEmail,
+                DateCreated: today,
+                DateStatus: today,
+                DateSent: '',
+                Owner: userid,
+                Status: 'Draft',
+                SignOrder: false,
+                Data: Document.Data,
+                Reciever: Document.Reciever,
+              })
+              .then(function (response) {
+                console.log(response)
+                if (
+                  response.data === 'insert done' ||
+                  response.data === 'update done'
+                ) {
+                  
+                  axios
+                    .post('/docdownload', {
+                      UserID: userid,
+                      filename: TemplateDataVar.TemplateID,
+                    })
+                    .then(function (response) {
+                      console.log(response)
+                      if (response.data.Status === 'doc found') {
+                        var doc = response.data.data
+      
+                        axios
+                      .post('/templateupload', {
+                        UserID: userid,
+                        filename: newtemplateid,
+                        filedata: doc,
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        if (response.data === 'document upload success') {
+                          TemplateDataVar.TemplateDocName = recipienttemplatename
+                          TemplateDataVar.TemplateDataURI = doc
+                          TemplateDataVar.TemplateDataPath = doc
+                          modal[1].style.display = 'none'
+                          var wurl =
+                            '#/admin/templaterecipients?id=' +
+                            newtemplateid +
+                            '&u=' +
+                            userid +
+                            '&docname=' +
+                            docname +
+                            '&action=create'
+                          window.location.hash = wurl
+      
+                        }
+      
+                        })
+                        .catch(function (error) {
+                          console.log(error)
+                          modal[1].style.display = 'none'
+                        })
+      
+                      }
+                    })
+                    .catch(function (error) {
+                      console.log(error)
+                      modal[1].style.display = 'none'
+                    })
+                }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[1].style.display = 'none'
+                })
+
+            
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        }
+        else{
+          alert('Please fill in a template name')
+        }
+      });
+
+
+
     } else {
       //window.location.hash = "#/auth/login";
     }
@@ -714,6 +841,15 @@ class SaveAsTemplate extends React.Component {
                       </Col>
 
                       <Col lg="12">
+                      <Button
+                          id="sedittemplate-btn"
+                          className="close-btn float-right m-2 px-5"
+                          color="primary"
+                          outline
+                        >
+                          {' '}
+                          Edit
+                        </Button>
                         <Button
                           id="sat-btn"
                           className="close-btn float-right m-2 px-5"

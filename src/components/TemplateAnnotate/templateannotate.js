@@ -87,6 +87,7 @@ toggleSignModal = () => {
     var global = this;
 
     var modal = document.querySelectorAll('.modal')
+    modal[0].style.display = 'block'
     var copybtn = document.getElementById('copy-clipboard-btn')
     var mainurl = document.location.hash
     var url = document.location.hash
@@ -107,6 +108,9 @@ toggleSignModal = () => {
     var initialimage = ''
     var username = ''
     var usertitle = ''
+    var action = ''
+    var tpeople = []
+    var Reciever = []
 
     var TemplateAnnotate = function (
       container_id,
@@ -636,7 +640,6 @@ toggleSignModal = () => {
           $('.icon-color').removeClass('icon-color')
         }
       }
-      modal[0].style.display = 'none'
       $('#tpdf-container').css("z-index", "0");
       $('#tcontainer').css("z-index", "0");
       $('.pdf-canvas').css("z-index", "0");
@@ -649,25 +652,67 @@ toggleSignModal = () => {
     TemplateAnnotate.prototype.AddObj = function () {
       var inst = this
       try {
-        if (fileid == '') {
-          fileid = randomString(13)
-          // // // // // // // ////console.log('no file id found');
-          modal[0].style.display = 'none'
-          $.each(inst.fabricObjects, function (index, fabricObj) {
-            ////console.log(index);
-            var text = new fabric.IText('Envelope ID: '+ fileid, {
-              left:10,
-              top:10,
-              fill: '#000',
-              fontSize: 12,
-              selectable: false,
-              lockMovementX: true,
-              lockMovementY: true,
-              hasControls: false,
-            })
-            fabricObj.add(text)
-          });
-        }
+        
+            if (fileid == '') {
+              console.log('addobj')
+              fileid = randomString(13)
+              // // // // // // // ////console.log('no file id found');
+              $.each(inst.fabricObjects, function (index, fabricObj) {
+                ////console.log(index);
+                var text = new fabric.IText('Envelope ID: '+ fileid, {
+                  left:10,
+                  top:10,
+                  fill: '#000',
+                  fontSize: 12,
+                  selectable: false,
+                  lockMovementX: true,
+                  lockMovementY: true,
+                  hasControls: false,
+                })
+                fabricObj.add(text)
+              });
+              modal[0].style.display = 'none'
+            } else {
+              console.log(fileid)
+              // // // // // // // ////console.log('file id found');
+              axios
+                .post('/gettemplatedata', {
+                  TemplateID: fileid,
+                  Owner: useridother
+                })
+                .then(function (response) {
+                  console.log(response)
+                  if (response.data.Status === 'template found') {
+                    
+                    var Template = response.data.Template;
+                    var TemplateData = Template.Data;
+                    $.each(inst.fabricObjects, function (index, fabricObj) {
+                      ////console.log(index);
+                      var text = new fabric.IText('Envelope ID: '+ fileid, {
+                        left:50,
+                        top:50,
+                        fill: '#000',
+                        fontSize: inst.font_size,
+                        selectable: false,
+                        lockMovementX: true,
+                        lockMovementY: true,
+                        hasControls: false,
+                      })
+                      fabricObj.add(text)
+
+                      fabricObj.loadFromJSON(TemplateData[index], function () {
+                        fabricObj.renderAll()
+                        
+                        modal[0].style.display = 'none'
+                      })
+                    })
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[0].style.display = 'none'
+                })
+            }
         
       } catch (error) {
         modal[0].style.display = 'none'
@@ -802,6 +847,11 @@ toggleSignModal = () => {
       var inst = this
 
       var today = new Date().toLocaleString().replace(',', '')
+      if (
+        action === '' ||
+        action === 'correct' ||
+        typeof action === 'undefined'
+      ) {
 
       //console.log('fileid:'+fileid);
       if (fileid == '') {
@@ -925,6 +975,10 @@ toggleSignModal = () => {
           console.log(error)
           modal[1].style.display = 'none'
         })
+      }
+      else if (action === 'create') {
+        
+      }
     }
 
     var randomString = function (len, bits) {
@@ -936,6 +990,119 @@ toggleSignModal = () => {
         outStr += newStr.slice(0, Math.min(newStr.length, len - outStr.length))
       }
       return outStr.toUpperCase()
+    }
+
+    TemplateAnnotate.prototype.saveTemplate = function (size) {
+      var inst = this
+      var today = new Date().toLocaleString().replace(',', '')
+        // // // // // // // ////console.log('filename:'+filename);
+        
+
+        axios
+          .post('/templateupload', {
+            UserID: userid,
+            filename: filename,
+            filedata: TemplateDataVar.TemplateDataPath,
+          })
+          .then(function (response) {
+            console.log(response)
+            if (response.data === 'document upload success') {
+              // // // // // // // ////console.log('completed');
+              var dataarray = []
+              var jsonData = []
+              $.each(inst.fabricObjects, function (index, fabricObj) {
+                //////console.log(fabricObj.toJSON());
+                jsonData[index] = fabricObj.toJSON()
+                ////console.log(jsonData[index]);
+                ////console.log(JSON.stringify(jsonData[index]));
+                dataarray.push(JSON.stringify(jsonData[index]))
+              })
+
+              
+
+              axios
+                .post('/addtemplatedata', {
+                  TemplateName: TemplateDataVar.TemplateDocName,
+                  TemplateID: filename,
+                  OwnerEmail: email,
+                  DateCreated: today,
+                  DateStatus: today,
+                  DateSent: '',
+                  Owner: userid,
+                  Status: 'Draft',
+                  SignOrder: false,
+                  Data: dataarray,
+                  Reciever: Reciever,
+
+                })
+                .then(function (response) {
+                  console.log(response)
+                  if (
+                    response.data === 'insert done' ||
+                    response.data === 'update done'
+                  ) {
+                    var people = []
+                  var Reciever = []
+                  people = TemplateDataVar.TemplateRecipientArray
+                  people.forEach(function (item, index) {
+                    var recipientName = people[index].name
+                    var recipientEmail = people[index].email
+                    var recipientOption = people[index].option
+                    var recipientColor = colorArray[index]
+                    if (
+                      recipientOption == 'Needs to Sign' ||
+                      recipientOption == 'Needs to View'
+                    ) {
+                      //console.log(recipientEmail + ',' + recipientName);
+
+                      var user = {
+                        RecipientName: recipientName,
+                        DocumentName: inst.filename,
+                        RecipientEmail: recipientEmail,
+                        RecipientColor: recipientColor,
+                        RecipientOption: recipientOption,
+                        RecipientStatus: 'Waiting for Others',
+                        RecipientDateStatus: today,
+                      }
+                      Reciever.push(user)
+                      //console.log(Reciever);
+                    }
+                  })
+
+                  axios
+                    .post('/addtemplatereciever', {
+                      Status: 'Waiting for Others',
+                      TemplateID: filename,
+                      DateSent: today,
+                      Reciever: Reciever,
+                      Owner: userid
+                    })
+                    .then(function (response) {
+                      console.log(response)
+                      if (response.data === 'reciever done') {
+                        window.location.hash = '#/admin/templates'
+                    modal[1].style.display = 'none'
+                      }
+                    })
+                    .catch(function (error) {
+                      console.log(error)
+                      modal[1].style.display = 'none'
+                      alert(error)
+                    })
+                    
+                    
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[1].style.display = 'none'
+                })
+            }
+          })
+          .catch(function (error) {
+            console.log(error)
+            modal[1].style.display = 'none'
+          })
     }
 
     TemplateAnnotate.prototype.setBrushSize = function (size) {
@@ -1594,6 +1761,37 @@ toggleSignModal = () => {
         } catch (error) {}
 
         try {
+          var mainurl = document.location.hash,
+            params = mainurl.split('?')[1].split('&'),
+            data = {},
+            tmp
+          for (var i = 0, l = params.length; i < l; i++) {
+            tmp = params[i].split('=')
+            data[tmp[0]] = tmp[1]
+          }
+          filename = data.id
+          type = data.type
+          useridother = data.u
+          try {
+            action = data.action
+          } catch (error) {
+            // // // // // // // ////console.log('no action');
+          }
+          ////console.log(type);
+          ////console.log(userid);
+          ////console.log(useridother);
+          fileid = data.id
+        } catch (error) {}
+
+        if (filename == '' || useridother == '' ) {
+          try {
+            document.getElementById('saveastemplatebtn').style.display = 'none'
+            document.getElementById('tgetlinkbtn').style.display = 'block'
+            
+          } catch (error) {}
+          
+
+        try {
           if (TemplateDataVar.TemplateDataPath != '') {
             //console.log(TemplateDataVar.TemplateDataPath);
             global.pdf = new TemplateAnnotate(
@@ -1626,6 +1824,90 @@ toggleSignModal = () => {
         } catch (error) {
           console.log(error)
         }
+      }
+      else {
+        try {
+          document.getElementById('tgetlinkbtn').style.display = 'none'
+          document.getElementById('saveastemplatebtn').style.display = 'block'
+        } catch (error) {}
+        axios
+            .post('/templatedownload', {
+              UserID: useridother,
+              filename: filename,
+            })
+            .then(function (response) {
+              console.log(response)
+              if (response.data.Status === 'doc found') {
+                var doc = response.data.data
+
+                modal[0].style.display = 'block'
+                global.pdf = new TemplateAnnotate(
+                  'tpdf-container',
+                  'toolbar',
+                  doc,
+                  filename,
+                  {
+                    onPageUpdated: (page, oldData, newData) => {
+                      //modal[0].style.display = "block";
+                      ////console.log(page, oldData, newData);
+                    },
+                  }
+                )
+              }
+            })
+            .catch(function (error) {
+              console.log(error)
+              modal[0].style.display = 'none'
+            })
+        
+       var today = new Date().toLocaleString().replace(',', '')
+
+        tpeople = []
+          tpeople = TemplateDataVar.TemplateRecipientArray
+          //console.log(tpeople);
+          tpeople.forEach(function (item, index) {
+            if (tpeople[index].option == 'Needs to Sign') {
+              var toption = document.createElement('option')
+              toption.value = tpeople[index].email
+              toption.style.backgroundColor = colorArray[index]
+              toption.innerHTML = '' + tpeople[index].name + ''
+              $('#trecipientselect').append(toption)
+
+              
+              var recipientName = tpeople[index].name
+              var recipientEmail = tpeople[index].email
+              var recipientOption = tpeople[index].option
+              var recipientColor = colorArray[index]
+              if (
+                recipientOption == 'Needs to Sign' ||
+                recipientOption == 'Needs to View'
+              ) {
+                //console.log(recipientEmail + ',' + recipientName);
+
+                var user = {
+                  RecipientName: recipientName,
+                  DocumentName: TemplateDataVar.TemplateDocName,
+                  RecipientEmail: recipientEmail,
+                  RecipientColor: recipientColor,
+                  RecipientOption: recipientOption,
+                  RecipientStatus: 'Waiting for Others',
+                  RecipientDateStatus: today,
+                }
+                Reciever.push(user)
+                //console.log(Reciever);
+              }
+
+            }
+          })
+          console.log(Reciever)
+
+
+              
+
+      }
+
+
+
       } else {
         // no user
         //window.location.hash = "#/auth/login";
@@ -1649,6 +1931,17 @@ toggleSignModal = () => {
       try {
         modal[1].style.display = 'block'
         global.pdf.savetoCloudPdf()
+      } catch (error) {
+        alert('There are no changes to save')
+      }
+    })
+
+
+    var saveastemplatebtn = document.getElementById('saveastemplatebtn')
+    saveastemplatebtn.addEventListener('click', function (event) {
+      try {
+        modal[1].style.display = 'block'
+        global.pdf.saveTemplate()
       } catch (error) {
         alert('There are no changes to save')
       }
@@ -1866,6 +2159,14 @@ toggleSignModal = () => {
                     type="button"
                   >
                     Save
+                  </Button>
+                  <Button
+                    id="saveastemplatebtn"
+                    className="m-2 float-right px-4"
+                    color="primary"
+                    type="button"
+                  >
+                    Finish
                   </Button>
                 </Col>
               </Row>
