@@ -86,7 +86,7 @@ app.post('/upload',function(req,res){
   });
 
 
-app.post("/login", function (req, res) {
+app.post("/loginapi", function (req, res) {
 
 
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
@@ -152,7 +152,7 @@ app.post("/login", function (req, res) {
   });
 });
 
-app.post("/register", function (req, res) {
+app.post("/registerapi", function (req, res) {
 	//console.log(req.body);
 	bcrypt.hash(req.body.UserPassword, salt, (bcrypterr, encrypted) => {
 		req.body.UserPassword = encrypted
@@ -1378,5 +1378,5 @@ app.get("/*", function (req, res) {
 });
 
 app.listen(port, function () {
-  //console.log("Server is running on Port: " + port);
+  console.log("Server is running on Port: " + port);
 });

@@ -318,7 +318,7 @@ class Register extends React.Component {
         var useractivated = false
 
         axios
-          .post('/register', {
+          .post('/registerapi', {
             UserID: userid,
             UserEmail: registeremail,
             UserPassword: registerpassword,
