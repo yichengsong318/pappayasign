@@ -160,6 +160,7 @@ toggleSignModal = () => {
     var initialimage = ''
     var username = ''
     var usertitle = ''
+    var ownerasreciever = false;
     modal[0].style.display = 'block'
 
     var PDFAnnotate = function (
@@ -1292,7 +1293,7 @@ toggleSignModal = () => {
               console.log(error)
               modal[1].style.display = 'none'
             })
-        } else if (userid == useridother) {
+        } else if (userid == useridother && ownerasreciever == false) {
           var jsonData = []
           var dataarray = []
           var doc = new jsPDF()
@@ -1342,7 +1343,7 @@ toggleSignModal = () => {
               console.log(error)
               modal[1].style.display = 'none'
             })
-        } else if (userid != useridother) {
+        } else if (userid != useridother || ownerasreciever == true) {
           var completedcount = 0
           var recievercount = 0
           var totalcount = 0
@@ -2535,7 +2536,9 @@ toggleSignModal = () => {
           } catch (error) {
             console.log(error)
           }
-        } else {
+        } 
+        
+          else {
           if (userid != useridother) {
             try {
               document.getElementById('openfilebtn').style.display = 'none'
@@ -2697,6 +2700,9 @@ toggleSignModal = () => {
               } catch (error) {}
             }
           } else {
+
+            
+              
             document.getElementById('recieverfinishbtn').style.display = 'none'
             document.getElementById('moreoptions').style.display = 'none'
             owner = 'admin'
@@ -2711,10 +2717,68 @@ toggleSignModal = () => {
                 if (response.data.Status === 'got recievers') {
                   var recievers = response.data.Reciever
                   var status = response.data.DocStatus
+                  var OwnerEmail = response.data.OwnerEmail
+                  var DocumentName = response.data.DocumentName
                   if (status === 'Void') {
                     modal[0].style.display = 'none'
                     window.location.hash = '#/admin/index'
                   }
+                  recievers.forEach(function (item, index) {
+                    ////console.log(item);
+                    dbpeople.push({
+                      name: recievers[index].RecipientName,
+                      email: recievers[index].RecipientEmail,
+                      option: recievers[index].RecipientOption,
+                    })
+                    if (item.RecipientEmail === email) {
+                      document.getElementById('recieverfinishbtn').style.display = 'block'
+                      document.getElementById('moreoptions').style.display = 'block'
+                      document.getElementById('getlinkbtn').style.display = 'none'
+                      ownerasreciever = true
+
+                      grabbedcolor = item.RecipientColor
+                      remail = item.RecipientEmail
+                      ////console.log(grabbedcolor);
+                      function hexToRgb(hex) {
+                        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+                          hex
+                        )
+                        return result
+                          ? {
+                              r: parseInt(result[1], 16),
+                              g: parseInt(result[2], 16),
+                              b: parseInt(result[3], 16),
+                            }
+                          : null
+                      }
+
+                      var rgbval =
+                        hexToRgb(grabbedcolor).r +
+                        ', ' +
+                        hexToRgb(grabbedcolor).g +
+                        ', ' +
+                        hexToRgb(grabbedcolor).b
+                      recipientrgbval = 'rgb(' + rgbval + ')'
+
+                      axios
+                      .post('/posthistory', {
+                        DocumentID: filename,
+                        HistoryTime: today,
+                        HistoryUser: email + '\n['+ip+']',
+                        HistoryAction: 'Viewed In-Session',
+                        HistoryActivity: ''+email+' viewed the envelope in a session hosted by '+OwnerEmail+' [documents:('+DocumentName+')]',
+                        HistoryStatus: 'Completed',
+                        Owner: useridother
+                      })
+                      .then(function (response) {
+                        console.log(response)
+                        
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                      })
+                    }
+                  })
                 }
               })
               .catch(function (error) {

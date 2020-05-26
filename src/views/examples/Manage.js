@@ -1134,7 +1134,6 @@ class Tables extends React.Component {
               <button class="dropdown-item correct" type="button">Correct</button>
               <button class="dropdown-item create" type="button">Create a Copy</button>
               <button class="dropdown-item savetemplate" type="button">Save as Template</button>
-              <button class="dropdown-item void" type="button">Void</button>
               <button class="dropdown-item history" type="button">History</button>
               <button class="dropdown-item export" type="button">Export as CSV</button>
               <button class="dropdown-item deletemanage" type="button">Delete</button>
