@@ -8,7 +8,7 @@ const path = require("path");
 const MongoClient = require("mongodb").MongoClient;
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const port = 8080;
+const port = process.env.PORT || 8080;
 const app = express();
 const AWS = require('aws-sdk');
 var upload = require('express-fileupload');
@@ -1377,6 +1377,6 @@ app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(port,'0.0.0.0', function () {
+app.listen(port, function () {
   console.log("Server is running on Port: " + port);
 });
