@@ -16,7 +16,7 @@
   "author": "Prashanth",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -43,6 +43,7 @@
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "cors": "^2.8.5",
+    "datatables": "^1.10.18",
     "docx-pdf": "0.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

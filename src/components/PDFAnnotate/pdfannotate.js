@@ -1588,7 +1588,7 @@ toggleSignModal = () => {
                             })
                             axios
                               .post('/updatedocumentstatus', {
-                                DocumentID: documentname,
+                                DocumentID: filename,
                                 Status: 'Completed',
                                 Owner: useridother,
                               })
