@@ -405,7 +405,9 @@ class Tables extends React.Component {
                 Request[index].RecipientStatus == 'Completed' ||
                 Request[index].RecipientStatus == 'Correcting'
               ) {
-                allcontent += '<tr >'
+                
+                if (Request[index].RecipientStatus === 'Need to Sign') {
+                  allcontent += '<tr >'
                 allcontent += '<th><input  type="checkbox"></th>'
                 allcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">inbox</i></th>'
                 allcontent +=
@@ -454,7 +456,7 @@ class Tables extends React.Component {
               </div>
             </div></td >`
                 allcontent += '</tr>'
-                if (Request[index].RecipientStatus == 'Need to Sign') {
+
                   actionrequiredcontent += '<tr >'
                   actionrequiredcontent += '<th><input  type="checkbox"></th>'
                   actionrequiredcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
@@ -505,7 +507,8 @@ class Tables extends React.Component {
               </div></td >`
                   actionrequiredcontent += '</tr>'
                 }
-              } else if (Request[index].RecipientStatus == 'Deleted') {
+               else if (Request[index].RecipientStatus === 'Deleted') {
+
                 deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
                 deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
@@ -543,7 +546,52 @@ class Tables extends React.Component {
               </div>
               </div></td >`
                 deletedcontent += '</tr>'
-              } else if (Request[index].RecipientStatus == 'Completed') {
+              } else if (Request[index].RecipientStatus === 'Completed') {
+                allcontent += '<tr >'
+                allcontent += '<th><input  type="checkbox"></th>'
+                allcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">done</i></th>'
+                allcontent +=
+                  '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                  Request[index].DocumentName +
+                  '\nFrom: ' +
+                  Request[index].FromEmail +
+                  '</span></td>'
+                allcontent +=
+                  '<td id="datastatus">' +
+                  Request[index].RecipientStatus +
+                  '</td>'
+                allcontent +=
+                  '<td id="datakey" hidden>' +
+                  Request[index].DocumentID +
+                  '</td>'
+                allcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
+                  '</td>'
+                allcontent +=
+                  '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                allcontent +=
+                  '<td id="datarecep" hidden>' +
+                  Request[index].FromEmail +
+                  '</td>'
+                allcontent +=
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
+                allcontent +=
+                  `<td ><div class="btn-group">
+              
+                  <button type="button" class="btn btn-primary move">MOVE</button>
+                  <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+                  <div class="dropdown-menu2" id="dropdown">
+                  <button class="dropdown-item correct" type="button">Forward</button>
+                  <button class="dropdown-item create" type="button">Create a Copy</button>
+                  <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+                  <button class="dropdown-item history" type="button">History</button>
+                  <button class="dropdown-item export" type="button">Export as CSV</button>
+                  <button class="dropdown-item deletemanage" type="button">Delete</button>
+              </div>
+            </div></td >`
+                allcontent += '</tr>'
+
                 completedcontent += '<tr >'
                 completedcontent += '<th><input  type="checkbox"></th>'
                 completedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">done</i></th>'
@@ -586,57 +634,104 @@ class Tables extends React.Component {
             </div>
           </div></td >`
                 completedcontent += '</tr>'
-              } else if (Request[index].RecipientStatus == 'Expiring') {
-                expiringcontent += '<tr >'
-                expiringcontent += '<th><input  type="checkbox"></th>'
-                expiringcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
-                expiringcontent +=
+              } else if (Request[index].RecipientStatus === 'Expiring') {
+                allcontent += '<tr >'
+                allcontent += '<th><input  type="checkbox"></th>'
+                allcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
+                allcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
                   '\nFrom: ' +
                   Request[index].FromEmail +
                   '</span></td>'
-                  expiringcontent +=
+                allcontent +=
                   '<td id="datastatus">' +
                   Request[index].RecipientStatus +
                   '</td>'
-                  expiringcontent +=
+                allcontent +=
                   '<td id="datakey" hidden>' +
                   Request[index].DocumentID +
                   '</td>'
-                  expiringcontent +=
+                allcontent +=
                   '<td id="datauid" hidden>' +
                   Request[index].From +
                   '</td>'
-                  expiringcontent +=
+                allcontent +=
                   '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  expiringcontent +=
+                allcontent +=
                   '<td id="datarecep" hidden>' +
                   Request[index].FromEmail +
                   '</td>'
-                  expiringcontent +=
+                allcontent +=
                   '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  expiringcontent += `<td ><div class="btn-group">
-            <button type="button" class="btn btn-primary resend">RESEND</button>
-            <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
-            <div class="dropdown-menu2" id="dropdown">
-            <button class="dropdown-item move" type="button">Move</button>
-            <button class="dropdown-item correct" type="button">Correct</button>
-            <button class="dropdown-item create" type="button">Create a Copy</button>
-            <button class="dropdown-item savetemplate" type="button">Save as Template</button>
-            <button class="dropdown-item void" type="button">Void</button>
-            <button class="dropdown-item history" type="button">History</button>
-            <button class="dropdown-item export" type="button">Export as CSV</button>
-            <button class="dropdown-item deletemanage" type="button">Delete</button>
-            </div>
-          </div></td >`
-          expiringcontent += '</tr>'
+                allcontent +=
+                  `<td ><div class="btn-group">
+              <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
+                  Request[index].DocumentID +
+                  `&type=db&u=` +
+                  Request[index].From +
+                  `">SIGN</a></button>
+              <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+              <div class="dropdown-menu2" id="dropdown">
+              <button class="dropdown-item move" type="button">Move</button>
+              <button class="dropdown-item correct" type="button">Correct</button>
+              <button class="dropdown-item create" type="button">Create a Copy</button>
+              <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+              <button class="dropdown-item void" type="button">Void</button>
+              <button class="dropdown-item history" type="button">History</button>
+              <button class="dropdown-item export" type="button">Export as CSV</button>
+              <button class="dropdown-item deletemanage" type="button">Delete</button>
+              </div>
+            </div></td >`
+                allcontent += '</tr>'
+
+                
               }
 
-              else if (Request[index].RecipientStatus == 'Void'){
+              else if (Request[index].RecipientStatus === 'Void'){
+                allcontent += '<tr >'
+                allcontent += '<th><input  type="checkbox"></th>'
+                allcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">block</i></th>'
+                allcontent +=
+                  '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                  Request[index].DocumentName +
+                  '\nFrom: ' +
+                  Request[index].FromEmail +
+                  '</span></td>'
+                allcontent +=
+                  '<td id="datastatus">' +
+                  Request[index].RecipientStatus +
+                  '</td>'
+                allcontent +=
+                  '<td id="datakey" hidden>' +
+                  Request[index].DocumentID +
+                  '</td>'
+                allcontent +=
+                  '<td id="datauid" hidden>' +
+                  Request[index].From +
+                  '</td>'
+                allcontent +=
+                  '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                allcontent +=
+                  '<td id="datarecep" hidden>' +
+                  Request[index].FromEmail +
+                  '</td>'
+                allcontent +=
+                  '<td >' + Request[index].RecipientDateStatus + '</td>'
+                allcontent +=
+                  `<td ><div class="btn-group">
+                  <button type="button" class="btn btn-primary correct">RESTORE</button>
+                  <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+                  <div class="dropdown-menu2" id="dropdown">
+                  <button class="dropdown-item history" type="button">History</button>
+                  <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+              </div>
+            </div></td >`
+                allcontent += '</tr>' 
+
                 deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
-                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
+                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">block</i></th>'
                 deletedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
@@ -675,7 +770,7 @@ class Tables extends React.Component {
 
             
               }
-
+            }
 
             })
                         
@@ -859,7 +954,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Void') {
                   sentcontent += '<tr >'
                   sentcontent += '<th><input  type="checkbox"></th>'
-                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
+                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">block</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -889,7 +984,7 @@ class Tables extends React.Component {
 
                   deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
-                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
+                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">block</i></th>'
                 deletedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   data.DocumentName +

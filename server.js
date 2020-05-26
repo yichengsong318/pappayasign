@@ -1379,5 +1379,5 @@ app.get("/*", function (req, res) {
 });
 
 app.listen(port, ip, function () {
-  //console.log("Server is running on Port: " + port);
+  console.log("Server is running on Port: " + port);
 });

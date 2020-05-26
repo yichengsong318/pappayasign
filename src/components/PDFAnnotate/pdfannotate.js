@@ -1359,6 +1359,7 @@ toggleSignModal = () => {
             dataarray.push(JSON.stringify(jsonData[index]))
           })
           PreviewData.Data = dataarray;
+          var documentname = docname
 
           
 
@@ -1410,8 +1411,10 @@ toggleSignModal = () => {
                       var OwnerEmail = response.data.OwnerEmail
                       var status = response.data.DocStatus
 
+
                       recievers.forEach(function (item, index) {
                         recievercount = recievers.length
+                        documentname = recievers[0].DocumentName;
                         if (recievers[index].RecipientStatus === 'Completed') {
                           completedcount = completedcount + 1
                         }
@@ -1531,13 +1534,13 @@ toggleSignModal = () => {
                                   '<div><p>Hello , Please find the signed document in the attachment.</p></div>',
                                 subject:
                                   'PappayaSign: ' +
-                                  inst.filename +
+                                  documentname +
                                   ' :Completed Document',
                                 attachments: {
                                   // utf-8 string as an attachment
                                   filename:
                                     'PappayaSign_Completed' +
-                                    inst.filename +
+                                    documentname +
                                     '.pdf',
                                   path: dataURI,
                                 },
@@ -1563,13 +1566,13 @@ toggleSignModal = () => {
                                     ', Please find the signed document in the attachment.</p></div>',
                                   subject:
                                     'PappayaSign: ' +
-                                    inst.filename +
+                                    documentname +
                                     ' :Completed Document',
                                   attachments: {
                                     // utf-8 string as an attachment
                                     filename:
                                       'PappayaSign_Completed' +
-                                      inst.filename +
+                                      documentname +
                                       '.pdf',
                                     path: dataURI,
                                   },
@@ -1585,7 +1588,7 @@ toggleSignModal = () => {
                             })
                             axios
                               .post('/updatedocumentstatus', {
-                                DocumentID: filename,
+                                DocumentID: documentname,
                                 Status: 'Completed',
                                 Owner: useridother,
                               })
@@ -1639,7 +1642,7 @@ toggleSignModal = () => {
                                       axios
                                         .post('/postrequest', {
                                           UserID: response.data.UserID,
-                                          DocumentName: docname,
+                                          DocumentName: documentname,
                                           DocumentID: filename,
                                           From: useridother,
                                           FromEmail: email,
@@ -2734,6 +2737,28 @@ toggleSignModal = () => {
                       document.getElementById('recieverfinishbtn').style.display = 'block'
                       document.getElementById('moreoptions').style.display = 'block'
                       document.getElementById('getlinkbtn').style.display = 'none'
+                      try {
+                        document.getElementById('openfilebtn').style.display = 'none'
+                        document.getElementById('penbtn').style.display = 'none'
+                        document.getElementById('textbtn').style.display = 'none'
+                        document.getElementById('signaturebtn').style.display = 'none'
+                        document.getElementById('imagebtn').style.display = 'none'
+                        document.getElementById('circlebtn').style.display = 'none'
+                        document.getElementById('rectanglebtn').style.display = 'none'
+                        document.getElementById('deletebtn').style.display = 'none'
+                        document.getElementById('selectcolor').style.display = 'none'
+                        document.getElementById('getlinkbtn').style.display = 'none'
+                        document.getElementById('clearbtn').style.display = 'none'
+                        document.getElementById('datebtn').style.display = 'none'
+                        document.getElementById('namebtn').style.display = 'none'
+                        document.getElementById('titlebtn').style.display = 'none'
+                        document.getElementById('companybtn').style.display = 'none'
+                        document.getElementById('initialbtn').style.display = 'none'
+                        document.getElementById('recipientselect').style.display = 'none'
+                        document.getElementById('fieldscolumn').style.display = 'none'
+                        document.getElementById('recipientscolumn').style.display = 'none'
+                      } catch (error) {}
+
                       ownerasreciever = true
 
                       grabbedcolor = item.RecipientColor
