@@ -2532,6 +2532,7 @@ class Tables extends React.Component {
           .parent()
           .children('#datastatus')[0].innerHTML
       }
+      var count = 0;
 
       axios
         .post('/getdocdata', {
@@ -2544,7 +2545,7 @@ class Tables extends React.Component {
             var Document = response.data.Document
             var DocName = Document.DocumentName;
             var dbpeople = []
-            var count = 0;
+            
             Document.Reciever.forEach(function (data, index) {
               var url =
                 process.env.REACT_APP_BASE_URL +
@@ -2566,7 +2567,8 @@ class Tables extends React.Component {
                       option: data.RecipientOption,
                     })
                     //console.log(dbpeople);
-                    
+                    if(count === 1){
+
                     axios
                       .post('/sendmail', {
                         to: data.RecipientEmail,
@@ -2580,11 +2582,13 @@ class Tables extends React.Component {
                       })
                       .then(function (response) {
                         console.log(response)
+                        
                         //firebase.database().ref(voiduserid + '/Documents/'+voidfileid+'/Reciever/'+childdata.key+'/').child('RecipientStatus').set('Void');
                       })
                       .catch(function (error) {
                         //console.log('message could not be sent');
                       })
+                    }
                   }
                 }
               }
@@ -2592,8 +2596,9 @@ class Tables extends React.Component {
             })
             
             modal[1].style.display = 'none'
-            //console.log('Document Resent');
             alert('Document '+DocName+' has been successfully resent')
+            //console.log('Document Resent');
+            
           }
         })
         .catch(function (error) {
@@ -3025,6 +3030,18 @@ class Tables extends React.Component {
       
     })
 
+    $(document).on('input', '#managevoidmessage', function () {
+      if($('#managevoidmessage').val() == ''){
+        $("#managevoidapprovebtn").attr("disabled",true);
+      }
+      else{
+        $("#managevoidapprovebtn").attr("disabled",false);
+      }
+      
+
+    });
+
+    $("#managevoidapprovebtn").attr("disabled",true);
   }
   render() {
     return (

@@ -641,6 +641,12 @@ border-radius: 20px !important;
         text-align: left !important;
       }
 
+      #managevoidapprovebtn:disabled{
+        background-color: #626262 !important;
+        color:#fff;
+        cursor: default;
+        pointer-events: none;
+      }
  
     
   @media screen and (max-width: 480px) {
