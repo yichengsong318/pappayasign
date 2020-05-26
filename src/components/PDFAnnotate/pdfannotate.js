@@ -749,18 +749,7 @@ toggleSignModal = () => {
                     var DocumentData = response.data.Data;
                     $.each(inst.fabricObjects, function (index, fabricObj) {
                       ////console.log(index);
-                      var text = new fabric.Text('Envelope ID: '+ fileid, {
-                        left:50,
-                        top:50,
-                        fill: '#000',
-                        fontSize: inst.font_size,
-                        selectable: false,
-                        lockMovementX: true,
-                        lockMovementY: true,
-                        hasControls: false,
-                      })
-                      fabricObj.add(text)
-
+                   
                       fabricObj.loadFromJSON(DocumentData[index], function () {
                         fabricObj.renderAll()
                         fabricObj.trigger('mouse:up', {

@@ -8,7 +8,7 @@ const path = require("path");
 const MongoClient = require("mongodb").MongoClient;
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const port = process.env.PORT || 8080;
+const port = 8080;
 const app = express();
 const AWS = require('aws-sdk');
 var upload = require('express-fileupload');
@@ -1373,10 +1373,10 @@ app.use(express.static(path.join(__dirname, "build")));
 app.get("/ping", function (req, res) {
   return res.send("pong");
 });
-app.get("/*", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(port, function () {
+app.listen(port,'0.0.0.0', function () {
   console.log("Server is running on Port: " + port);
 });

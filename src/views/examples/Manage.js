@@ -110,6 +110,7 @@ class Tables extends React.Component {
     var detailaction = 'download'
     var pdfset = 'pdf not exists'
     var RowSelectData = []
+    var checkvoid = false
 
     var PDFFabric = function (
       container_id,
@@ -153,8 +154,14 @@ class Tables extends React.Component {
               //var scale = (container.clientWidth - 80) / viewport.width;
               var viewport = page.getViewport(scale)
               var canvas = document.createElement('canvas')
+              var btn = document.createElement("BUTTON");
+
+              btn.className = 'manage-pdf-download-btn'
+
+              btn.innerHTML='<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
+                document.getElementById(inst.container_id).appendChild(btn)
               } catch (error) {}
               canvas.className = 'manage-pdf-canvas'
               canvas.height = viewport.height
@@ -251,17 +258,36 @@ class Tables extends React.Component {
               // // // // // // // ////console.log('file id found');
               $.each(inst.fabricObjects, function (index, fabricObj) {
                 ////console.log(index);
-
-                fabricObj.loadFromJSON(RowSelectData[index], function () {
-                  fabricObj.renderAll()
-                  fabricObj.getObjects().forEach(function (targ) {
-                    ////console.log(targ);
-                    targ.selectable = false
-                    targ.hasControls = false
+                if(checkvoid == true){
+                  var text = new fabric.Text('VOIDED', {
+                    left:fabricObj.width/2 - 230,
+                    top:fabricObj.height/2 - 50,
+                    fill: '#7f7f7f',
+                    backgroundColor: '#e5e5e5',
+                    fontSize: 110,
+                    selectable: false,
+                    lockMovementX: true,
+                    lockMovementY: true,
+                    hasControls: false,
                   })
+                  fabricObj.add(text)
+                  fabricObj.renderAll()
+                }
+                else{
+                  fabricObj.loadFromJSON(RowSelectData[index], function () {
                   
-                  
-                })
+                    fabricObj.renderAll()
+                    fabricObj.getObjects().forEach(function (targ) {
+                      ////console.log(targ);
+                      targ.selectable = false
+                      targ.hasControls = false
+                    })
+                    
+                    
+                  })
+                }
+
+                
               })
               //console.log('pdf done')
     }
@@ -299,6 +325,19 @@ class Tables extends React.Component {
       modal[0].style.display = 'none'
       
     }
+
+    PDFFabric.prototype.DownloadIndividual = function (fabricindex) {
+      var inst = this
+      var fabricObj = inst.fabricObjects[fabricindex];
+      var doc = new jsPDF()
+      doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      console.log('pdf saved')
+      doc.save('pappayasign_' + fabricindex + '')
+      modal[0].style.display = 'none'
+      
+    }
+
+    
 
     PDFFabric.prototype.Clear = function () {
       var inst = this
@@ -368,6 +407,7 @@ class Tables extends React.Component {
               ) {
                 allcontent += '<tr >'
                 allcontent += '<th><input  type="checkbox"></th>'
+                allcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">inbox</i></th>'
                 allcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
@@ -417,6 +457,7 @@ class Tables extends React.Component {
                 if (Request[index].RecipientStatus == 'Need to Sign') {
                   actionrequiredcontent += '<tr >'
                   actionrequiredcontent += '<th><input  type="checkbox"></th>'
+                  actionrequiredcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
                   actionrequiredcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     Request[index].DocumentName +
@@ -467,6 +508,7 @@ class Tables extends React.Component {
               } else if (Request[index].RecipientStatus == 'Deleted') {
                 deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
+                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
                 deletedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
@@ -504,6 +546,7 @@ class Tables extends React.Component {
               } else if (Request[index].RecipientStatus == 'Completed') {
                 completedcontent += '<tr >'
                 completedcontent += '<th><input  type="checkbox"></th>'
+                completedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">done</i></th>'
                 completedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
@@ -546,6 +589,7 @@ class Tables extends React.Component {
               } else if (Request[index].RecipientStatus == 'Expiring') {
                 expiringcontent += '<tr >'
                 expiringcontent += '<th><input  type="checkbox"></th>'
+                expiringcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
                 expiringcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
@@ -592,6 +636,7 @@ class Tables extends React.Component {
               else if (Request[index].RecipientStatus == 'Void'){
                 deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
+                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
                 deletedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   Request[index].DocumentName +
@@ -713,6 +758,7 @@ class Tables extends React.Component {
                 if (data.Status == 'Waiting for Others') {
                   waitingcontent += '<tr >'
                   waitingcontent += '<th><input  type="checkbox"></th>'
+                  waitingcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></th>'
                   waitingcontent +=
                     '<td scope="row" class="rowselect" ><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -748,6 +794,7 @@ class Tables extends React.Component {
                   sentcontent += '<tr >'
                   sentcontent +=
                     '<th><input class="primary" type="checkbox"></th>'
+                    sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -780,6 +827,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Correcting') {
                   sentcontent += '<tr >'
                   sentcontent += '<th><input  type="checkbox"></th>'
+                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">create</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -811,6 +859,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Void') {
                   sentcontent += '<tr >'
                   sentcontent += '<th><input  type="checkbox"></th>'
+                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -840,6 +889,7 @@ class Tables extends React.Component {
 
                   deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
+                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
                 deletedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   data.DocumentName +
@@ -867,6 +917,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Draft') {
                   draftcontent += '<tr >'
                   draftcontent += '<th><input  type="checkbox"></th>'
+                  draftcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">drafts</i></th>'
                   draftcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -893,6 +944,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Authentication Failed') {
                   authcontent += '<tr >'
                   authcontent += '<th><input  type="checkbox"></th>'
+                  authcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">warning</i></th>'
                   authcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -926,6 +978,7 @@ class Tables extends React.Component {
                   sentcontent += '<tr >'
                   sentcontent +=
                     '<th><input class="primary" type="checkbox"></th>'
+                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">warning</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -958,6 +1011,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Expiring') {
                   expiringcontent += '<tr >'
                   expiringcontent += '<th><input  type="checkbox"></th>'
+                  expiringcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
                   expiringcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -992,6 +1046,7 @@ class Tables extends React.Component {
                   sentcontent += '<tr >'
                   sentcontent +=
                     '<th><input class="primary" type="checkbox"></th>'
+                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">error</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -1024,6 +1079,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Completed') {
                   completedcontent += '<tr >'
                   completedcontent += '<th><input  type="checkbox"></th>'
+                  completedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">done</i></th>'
                   completedcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -1056,6 +1112,7 @@ class Tables extends React.Component {
                   sentcontent += '<tr >'
                   sentcontent +=
                     '<th><input class="primary" type="checkbox"></th>'
+                  sentcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">done</i></th>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -1088,6 +1145,7 @@ class Tables extends React.Component {
               } else if (data.Status == 'Deleted') {
                 deletedcontent += '<tr >'
                 deletedcontent += '<th><input  type="checkbox"></th>'
+                deletedcontent += '<th><i class="material-icons manage-pdf-download-btn-icon">delete</i></th>'
                 deletedcontent +=
                   '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                   data.DocumentName +
@@ -1170,12 +1228,23 @@ class Tables extends React.Component {
         })
     }
 
+    
+    $(document).on('click', '.manage-pdf-download-btn', function () {
+      //console.log($(".manage-pdf-download-btn").index(this));
+      var index = $(".manage-pdf-download-btn").index(this);
+      modal[0].style.display = 'block'
+      setTimeout(function(){ 
+        global.pdf.DownloadIndividual(index);
+      }, 1000);
+    });
+
     $(document).on('click', '.rowselect', function () {
       $('.dropdown-menu2').css({ display: 'none' })
       modal[2].style.display = 'block'
       $('#managerecipientstable li').remove()
       $('#managerecipientstable').innerHTML = ''
       global.pdf = null;
+      checkvoid = false;
       var Pages = 0;
       document.getElementById('managebody').style.display = 'none'
       document.getElementById('detailbody').style.display = 'block'
@@ -1201,6 +1270,9 @@ class Tables extends React.Component {
             var Document = response.data.Document
             RowSelectData = response.data.Data
             Pages = RowSelectData.length;
+            if(Document.Status == 'Void'){
+              checkvoid = true;
+            }
 
             if(recents.length >= 5){
               var removefirst = recents.shift();
@@ -1555,6 +1627,7 @@ class Tables extends React.Component {
                     alert('Document '+DodumentName+' has been voided successfully')
                     inboxfunc()
                     datafunc()
+                    
                     modal[2].style.display = 'none'
                   }
                 })
@@ -1571,6 +1644,7 @@ class Tables extends React.Component {
       } else {
         alert('Please provide a reason, So we could let your recipients know.')
         modal[2].style.display = 'none'
+        modal[3].style.display = 'block'
       }
     })
 
@@ -2423,9 +2497,6 @@ class Tables extends React.Component {
               
             })
             
-              
-            inboxfunc()
-            datafunc()
             modal[1].style.display = 'none'
             //console.log('Document Resent');
             alert('Document '+DocName+' has been successfully resent')
@@ -3361,6 +3432,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3370,6 +3442,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3386,6 +3459,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3395,6 +3469,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3412,6 +3487,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3421,6 +3497,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3438,6 +3515,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3447,6 +3525,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3463,6 +3542,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3472,6 +3552,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3489,6 +3570,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3498,6 +3580,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3514,6 +3597,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3523,6 +3607,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3539,6 +3624,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3548,6 +3634,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
@@ -3564,6 +3651,7 @@ class Tables extends React.Component {
                             <thead className="thead-primary">
                               <tr>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Last Change</th>
@@ -3573,6 +3661,7 @@ class Tables extends React.Component {
                             <tbody>
                             <tr>
                                 <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
