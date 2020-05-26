@@ -63,6 +63,8 @@ class Templates extends React.Component {
                 } catch (error) {}
 
                 templatecontent += '<tr >'
+                templatecontent += '<td >'
+                templatecontent += '<td >'
                 templatecontent +=
                   '<th scope="row"><span className="mb-0 text-sm">' +
                   data.TemplateName +
@@ -150,6 +152,8 @@ class Templates extends React.Component {
                       >
                         <thead className="thead-primary">
                           <tr>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                             <th scope="col">Document Name</th>
                             <th scope="col">Document ID</th>
                             <th scope="col">Recipients</th>
@@ -158,6 +162,8 @@ class Templates extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
+                                <td scope="col"></td>
+                                <td scope="col"><i class="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no templates</td>
                                 <td scope="col"></td>
                                 <td scope="col"></td>
