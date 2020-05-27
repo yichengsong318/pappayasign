@@ -263,10 +263,10 @@ class Tables extends React.Component {
                   fabricObj.loadFromJSON(RowSelectData[index], function () {
 
                     var text = new fabric.Text('VOIDED', {
-                      left:fabricObj.width/2 - 230,
+                      left:fabricObj.width/2 - 210,
                       top:fabricObj.height/2 - 50,
-                      fill: '#7f7f7f69',
-                      backgroundColor: '#e5e5e554',
+                      fill: '#7f7f7f4f',
+                      backgroundColor: '#e5e5e546',
                       fontSize: 110,
                       selectable: false,
                       lockMovementX: true,
