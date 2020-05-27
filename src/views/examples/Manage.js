@@ -265,8 +265,8 @@ class Tables extends React.Component {
                     var text = new fabric.Text('VOIDED', {
                       left:fabricObj.width/2 - 210,
                       top:fabricObj.height/2 - 50,
-                      fill: '#7f7f7f4f',
-                      backgroundColor: '#e5e5e546',
+                      fill: '#7f7f7f36',
+                      backgroundColor: '#e5e5e53a',
                       fontSize: 110,
                       selectable: false,
                       lockMovementX: true,
