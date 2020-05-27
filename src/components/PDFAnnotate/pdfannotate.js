@@ -1645,7 +1645,7 @@ toggleSignModal = () => {
                                           DocumentName: documentname,
                                           DocumentID: filename,
                                           From: useridother,
-                                          FromEmail: email,
+                                          FromEmail: OwnerEmail,
                                           RecipientStatus: 'Need to Sign',
                                           RecipientDateStatus: today,
                                         })

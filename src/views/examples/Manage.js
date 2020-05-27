@@ -260,19 +260,30 @@ class Tables extends React.Component {
               $.each(inst.fabricObjects, function (index, fabricObj) {
                 ////console.log(index);
                 if(checkvoid == true){
-                  var text = new fabric.Text('VOIDED', {
-                    left:fabricObj.width/2 - 230,
-                    top:fabricObj.height/2 - 50,
-                    fill: '#7f7f7f',
-                    backgroundColor: '#e5e5e5',
-                    fontSize: 110,
-                    selectable: false,
-                    lockMovementX: true,
-                    lockMovementY: true,
-                    hasControls: false,
+                  fabricObj.loadFromJSON(RowSelectData[index], function () {
+
+                    var text = new fabric.Text('VOIDED', {
+                      left:fabricObj.width/2 - 230,
+                      top:fabricObj.height/2 - 50,
+                      fill: '#7f7f7f69',
+                      backgroundColor: '#e5e5e554',
+                      fontSize: 110,
+                      selectable: false,
+                      lockMovementX: true,
+                      lockMovementY: true,
+                      hasControls: false,
+                    })
+                    fabricObj.add(text)
+                    fabricObj.renderAll()
+                    fabricObj.getObjects().forEach(function (targ) {
+                      ////console.log(targ);
+                      targ.selectable = false
+                      targ.hasControls = false
+                    })
+                    
+                    
                   })
-                  fabricObj.add(text)
-                  fabricObj.renderAll()
+                  
                 }
                 else{
                   fabricObj.loadFromJSON(RowSelectData[index], function () {
@@ -364,7 +375,8 @@ class Tables extends React.Component {
     var deletekey = false
     var completedkey  = false
     var expirykey = false
-    var sentkey = false
+    var inboxkey = false
+    var actionrequiredkey = false
     var admindocid = ''
 
     if (userid) {
@@ -736,162 +748,29 @@ class Tables extends React.Component {
                     '<td >' + Request[index].RecipientDateStatus + '</td>'
                   allcontent +=
                     `<td ><div class="btn-group">
-                    <button type="button" class="btn btn-primary correct">RESTORE</button>
+                    <button type="button" class="btn btn-primary move">MOVE</button>
                     <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                     <div class="dropdown-menu2" id="dropdown">
-                    <button class="dropdown-item history" type="button">History</button>
+                    <button class="dropdown-item create" type="button">Create a Copy</button>
                     <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+                    <button class="dropdown-item history" type="button">History</button>
+                    <button class="dropdown-item export" type="button">Export to CSV</button>
+                    <button class="dropdown-item delete" type="button">Delete</button>
                 </div>
               </div></td >`
                   allcontent += '</tr>' 
-  
-                  deletedcontent += '<tr >'
-                  deletedcontent += '<td><input  type="checkbox"></td>'
-                  deletedcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">block</i></td>'
-                  deletedcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  deletedcontent +=
-                    '<td id=datastatus>' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  deletedcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  deletedcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  deletedcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  deletedcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  deletedcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  deletedcontent += `<td ><div class="btn-group">
-                <button type="button" class="btn btn-primary correct">RESTORE</button>
-                <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
-                <div class="dropdown-menu2" id="dropdown">
-                <button class="dropdown-item history" type="button">History</button>
-                <button class="dropdown-item savetemplate" type="button">Save as Template</button>
-                </div>
-                </div></td >`
-                  deletedcontent += '</tr>'
+
   
               
                 }
                 }
                 else if(Request[index].FromEmail == email){
-                    if(Request[index].RecipientStatus === 'Need to Sign' || Request[index].RecipientStatus === 'Sent'){
+
+                    if(Request[index].RecipientStatus === 'Need to Sign'){
                       admindocid = Request[index].DocumentID;
                       console.log('equal')
                       
 
-                      allcontent += '<tr >'
-                  allcontent += '<td><input  type="checkbox"></td>'
-                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">inbox</i></td>'
-                  allcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  allcontent +=
-                    '<td id="datastatus">' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  allcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  allcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  allcontent +=
-                    `<td ><div class="btn-group">
-                <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
-                    Request[index].DocumentID +
-                    `&type=db&u=` +
-                    Request[index].From +
-                    `">SIGN</a></button>
-                <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
-                <div class="dropdown-menu2" id="dropdown">
-                <button class="dropdown-item move" type="button">Move</button>
-                <button class="dropdown-item correct" type="button">Correct</button>
-                <button class="dropdown-item create" type="button">Create a Copy</button>
-                <button class="dropdown-item savetemplate" type="button">Save as Template</button>
-                <button class="dropdown-item void" type="button">Void</button>
-                <button class="dropdown-item history" type="button">History</button>
-                <button class="dropdown-item export" type="button">Export as CSV</button>
-                <button class="dropdown-item deletemanage" type="button">Delete</button>
-                </div>
-              </div></td >`
-                  allcontent += '</tr>'
-
-                  actionrequiredcontent += '<tr >'
-                    actionrequiredcontent += '<td><input  type="checkbox"></td>'
-                    actionrequiredcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">error</i></td>'
-                    actionrequiredcontent +=
-                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                      Request[index].DocumentName +
-                      '\nFrom: ' +
-                      data.FromEmail +
-                      '</span></td>'
-                    actionrequiredcontent +=
-                      '<td id="datastatus">' +
-                      Request[index].RecipientStatus +
-                      '</td>'
-                    actionrequiredcontent +=
-                      '<td id="datakey" hidden>' +
-                      Request[index].DocumentID +
-                      '</td>'
-                    actionrequiredcontent +=
-                      '<td id="datauid" hidden>' +
-                      Request[index].From +
-                      '</td>'
-                    actionrequiredcontent +=
-                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                    actionrequiredcontent +=
-                      '<td id="datarecep" hidden>' +
-                      Request[index].FromEmail +
-                      '</td>'
-                    actionrequiredcontent +=
-                      '<td >' + Request[index].RecipientDateStatus + '</td>'
-                    actionrequiredcontent +=
-                      `<td ><div class="btn-group">
-                  <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
-                      Request[index].DocumentID +
-                      `&type=db&u=` +
-                      Request[index].From +
-                      `">SIGN</a></button>
-                  <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
-                  <div class="dropdown-menu2" id="dropdown">
-                  <button class="dropdown-item move" type="button">Move</button>
-                  <button class="dropdown-item correct" type="button">Correct</button>
-                  <button class="dropdown-item create" type="button">Create a Copy</button>
-                  <button class="dropdown-item savetemplate" type="button">Save as Template</button>
-                  <button class="dropdown-item void" type="button">Void</button>
-                  <button class="dropdown-item history" type="button">History</button>
-                  <button class="dropdown-item export" type="button">Export as CSV</button>
-                  <button class="dropdown-item deletemanage" type="button">Delete</button>
-                  </div>
-                </div></td >`
-                    actionrequiredcontent += '</tr>'
                     }
                 }
                 
@@ -900,18 +779,11 @@ class Tables extends React.Component {
 
             })
                         
-            if(allcontent != ''){
-              $('#alltable tbody tr').remove()
-              $('#alltable').append(allcontent)
-            }
+           
             if(deletedcontent != ''){
               deletekey = true
               $('#deletedtable tbody tr').remove()
               $('#deletedtable').append(deletedcontent)
-            }
-            if(actionrequiredcontent != ''){
-              $('#actionrequiredtable tbody tr').remove()
-              $('#actionrequiredtable').append(actionrequiredcontent)
             }
             if(completedcontent != ''){
               completedkey = true
@@ -924,10 +796,16 @@ class Tables extends React.Component {
               $('#expiringtable').append(expiringcontent)
             }
 
-            if(sentcontent != ''){
-              sentkey = true
-              $('#senttable tbody tr').remove()
-              $('#senttable').append(sentcontent)
+            if(allcontent != ''){
+              inboxkey = true
+              $('#alltable tbody tr').remove()
+              $('#alltable').append(allcontent)
+            }
+
+            if(actionrequiredcontent != ''){
+              actionrequiredkey = true
+              $('#actionrequiredtable tbody tr').remove()
+              $('#actionrequiredtable').append(actionrequiredcontent)
             }
             
             
@@ -954,6 +832,7 @@ class Tables extends React.Component {
           if (response.data.Status === 'doc found') {
             var Documents = response.data.doc
             //console.log(Documents);
+            var allcontent = ''
             var sentcontent = ''
             var draftcontent = ''
             var deletedcontent = ''
@@ -961,6 +840,7 @@ class Tables extends React.Component {
             var waitingcontent = ''
             var authcontent = ''
             var expiringcontent = ''
+            var actionrequiredcontent = ''
 
             Documents.sort(function(a, b) {
               var keyA = new Date(a.DateStatus),
@@ -995,7 +875,7 @@ class Tables extends React.Component {
                 data.Status == 'Draft'
               ) {
 
-                if(admindocid == data.DocumentID && data.Status == 'Waiting for Others' || data.Status == 'Sent' ){
+                if(admindocid == data.DocumentID && data.Status == 'Waiting for Others'){
                     sentcontent += '<tr >'
                     sentcontent +=
                       '<td><input class="primary" type="checkbox"></td>'
@@ -1034,8 +914,87 @@ class Tables extends React.Component {
                 </div>
               </div></td >`
                     sentcontent += '</tr>'
+
+
+                    allcontent += '<tr >'
+                    allcontent +=
+                      '<td><input class="primary" type="checkbox"></td>'
+                      allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
+                    allcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      data.DocumentName +
+                      '\nTo: ' +
+                      reciverlist +
+                      '</span></td>'
+                    allcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
+                    allcontent += '<td >Need to Sign</td>'
+                    allcontent +=
+                      '<td id="datakey" hidden>' + data.DocumentID + '</td>'
+                    allcontent +=
+                      '<td id="datarecep" hidden>' + reciverlist + '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' + data.Owner + '</td>'
+                    allcontent += '<td >' + data.DateStatus + '</td>'
+                    allcontent += `<td ><div class="btn-group">
+                    <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
+                    data.DocumentID +
+                    `&type=db&u=` +
+                    data.Owner +
+                    `">SIGN</a></button>
+                <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+                <div class="dropdown-menu2" id="dropdown">
+                <button class="dropdown-item move" type="button">Move</button>
+                <button class="dropdown-item correct" type="button">Correct</button>
+                <button class="dropdown-item create" type="button">Create a Copy</button>
+                <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+                <button class="dropdown-item void" type="button">Void</button>
+                <button class="dropdown-item history" type="button">History</button>
+                <button class="dropdown-item export" type="button">Export as CSV</button>
+                <button class="dropdown-item deletemanage" type="button">Delete</button>
+                </div>
+              </div></td >`
+                    allcontent += '</tr>'
+
+                    actionrequiredcontent += '<tr >'
+                    actionrequiredcontent +=
+                      '<td><input class="primary" type="checkbox"></td>'
+                      actionrequiredcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
+                    actionrequiredcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      data.DocumentName +
+                      '\nTo: ' +
+                      reciverlist +
+                      '</span></td>'
+                    actionrequiredcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
+                    actionrequiredcontent += '<td >Need to Sign</td>'
+                    actionrequiredcontent +=
+                      '<td id="datakey" hidden>' + data.DocumentID + '</td>'
+                    actionrequiredcontent +=
+                      '<td id="datarecep" hidden>' + reciverlist + '</td>'
+                    actionrequiredcontent +=
+                      '<td id="datauid" hidden>' + data.Owner + '</td>'
+                    actionrequiredcontent += '<td >' + data.DateStatus + '</td>'
+                    actionrequiredcontent += `<td ><div class="btn-group">
+                    <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
+                    data.DocumentID +
+                    `&type=db&u=` +
+                    data.Owner +
+                    `">SIGN</a></button>
+                <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
+                <div class="dropdown-menu2" id="dropdown">
+                <button class="dropdown-item move" type="button">Move</button>
+                <button class="dropdown-item correct" type="button">Correct</button>
+                <button class="dropdown-item create" type="button">Create a Copy</button>
+                <button class="dropdown-item savetemplate" type="button">Save as Template</button>
+                <button class="dropdown-item void" type="button">Void</button>
+                <button class="dropdown-item history" type="button">History</button>
+                <button class="dropdown-item export" type="button">Export as CSV</button>
+                <button class="dropdown-item deletemanage" type="button">Delete</button>
+                </div>
+              </div></td >`
+                    actionrequiredcontent += '</tr>'
                 }
-                else if (admindocid != data.DocumentID && data.Status == 'Waiting for Others' || data.Status == 'Sent' ) {
+                else if (admindocid != data.DocumentID && data.Status == 'Waiting for Others') {
                   waitingcontent += '<tr >'
                   waitingcontent += '<td><input  type="checkbox"></td>'
                   waitingcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
@@ -1167,32 +1126,7 @@ class Tables extends React.Component {
             </div></td >`
                   sentcontent += '</tr>'
 
-                  deletedcontent += '<tr >'
-                deletedcontent += '<td><input  type="checkbox"></td>'
-                deletedcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">block</i></td>'
-                deletedcontent +=
-                  '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                  data.DocumentName +
-                  '\nTo: ' +
-                  reciverlist +
-                  '</span></td>'
-                deletedcontent += '<td id=datastatus>' + data.Status + '</td>'
-                deletedcontent +=
-                  '<td id="datakey" hidden>' + data.DocumentID + '</td>'
-                deletedcontent +=
-                  '<td id="datarecep" hidden>' + reciverlist + '</td>'
-                deletedcontent +=
-                  '<td id="datauid" hidden>' + data.Owner + '</td>'
-                deletedcontent += '<td >' + data.DateStatus + '</td>'
-                deletedcontent += `<td ><div class="btn-group">
-                <button type="button" class="btn btn-primary restore">RESTORE</button>
-                <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
-                <div class="dropdown-menu2" id="dropdown">
-                <button class="dropdown-item history" type="button">History</button>
-                <button class="dropdown-item savetemplate" type="button">Save as Template</button>
-                </div>
-                </div></td >`
-                deletedcontent += '</tr>'
+                  
                 
                 } else if (data.Status == 'Draft') {
                   draftcontent += '<tr >'
@@ -1494,15 +1428,32 @@ class Tables extends React.Component {
               }
               
             }
-            
-            if(sentcontent != ''){
-              if(sentkey == true){
-                $('#senttable').append(sentcontent)
+
+            if(allcontent != ''){
+              if(inboxkey == true){
+                $('#alltable').append(allcontent)
               }
               else{
-                $('#senttable tbody tr').remove()
-                $('#senttable').append(sentcontent)
+                $('#alltable tbody tr').remove()
+                $('#alltable').append(allcontent)
               }
+              
+            }
+
+            if(actionrequiredcontent != ''){
+              if(actionrequiredkey == true){
+                $('#actionrequiredtable').append(actionrequiredcontent)
+              }
+              else{
+                $('#actionrequiredtable tbody tr').remove()
+                $('#actionrequiredtable').append(actionrequiredcontent)
+              }
+              
+            }
+            
+            if(sentcontent != ''){
+              $('#senttable tbody tr').remove()
+                $('#senttable').append(sentcontent)
               
             }
 
@@ -2728,7 +2679,7 @@ class Tables extends React.Component {
           .parent()
           .children('#datastatus')[0].innerHTML
       }
-      var count = 0;
+      var count = false;
 
       axios
         .post('/getdocdata', {
@@ -2741,6 +2692,8 @@ class Tables extends React.Component {
             var Document = response.data.Document
             var DocName = Document.DocumentName;
             var dbpeople = []
+
+            var Reciever = Document.Reciever
             
             Document.Reciever.forEach(function (data, index) {
               var url =
@@ -2752,10 +2705,10 @@ class Tables extends React.Component {
                 '&key=' +
                 index +
                 ''
-              if(count === 0){
+              if(count === false){
                 if(data.RecipientStatus != 'Completed'){
                   if (data.RecipientStatus === 'Sent' || data.RecipientStatus === 'Need to Sign') {
-                    count = count + 1;
+                    count = true;
                     var dbpeople = []
                     dbpeople.push({
                       name: data.RecipientName,
@@ -2763,7 +2716,7 @@ class Tables extends React.Component {
                       option: data.RecipientOption,
                     })
                     //console.log(dbpeople);
-                    if(count === 1){
+                    if(count === true){
 
                     axios
                       .post('/sendmail', {
@@ -2788,7 +2741,7 @@ class Tables extends React.Component {
                   }
                 }
               }
-              
+             
             })
             
             modal[1].style.display = 'none'
