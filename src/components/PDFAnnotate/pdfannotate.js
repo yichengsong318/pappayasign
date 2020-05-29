@@ -178,6 +178,7 @@ toggleSignModal = () => {
       this.fabricObjects = []
       this.fabricObjectsData = []
       this.color = '#000'
+      this.scale = 0.3
       this.borderColor = '#000000'
       this.borderSize = 1
       this.font_size = 16
@@ -349,36 +350,12 @@ toggleSignModal = () => {
 
                   if (objcolor == RGB || owner == 'admin' || objid == email) {
                     // // // // // // // ////console.log('Object selected');
-                  if(fabricObj.findTarget(e).type !=  'i-text'){
-                    if(owner == 'admin'){
-                      formattingobject = fabricObj.findTarget(e);
-                      document.getElementById('formattingdiv').style.display = 'block'
-                      document.getElementById('fontdiv').style.display = 'none'
-                      document.getElementById('thumb-container').style.display = 'none'
-                      document.getElementById('input-scale-value').value = '100'
-                      formattingobjectbg = e.target.backgroundColor
-                      console.log(formattingobjectbg)
-                      if(formattingobjectbg === 'transparent'){
-                        $('#requiredcheck').prop('checked', false);
-                      }
-
-                      document.getElementById('input-pixels-left').value = parseInt(e.target.left)
-                      document.getElementById('input-pixels-top').value = parseInt(e.target.top)
-                    }
-                      e.target.lockMovementX = false
-                      e.target.lockMovementY = false
-                      var id = fabricObj.getObjects().indexOf(e.target)
-                      e.target.selectable = true
-                      fabricObj.setActiveObject(fabricObj.item(id))
-                      fabricObj.requestRenderAll()
-                      e.target.hasControls = true
-                      e.target.set('id', email)
-                    } else {
-                      // // // // // // // ////console.log('Object not selected');
+                  if(fabricObj.findTarget(e).type !=  'text'){
+                    if(fabricObj.findTarget(e).type !=  'i-text'){
                       if(owner == 'admin'){
                         formattingobject = fabricObj.findTarget(e);
                         document.getElementById('formattingdiv').style.display = 'block'
-                        document.getElementById('fontdiv').style.display = 'block'
+                        document.getElementById('fontdiv').style.display = 'none'
                         document.getElementById('thumb-container').style.display = 'none'
                         document.getElementById('input-scale-value').value = '100'
                         formattingobjectbg = e.target.backgroundColor
@@ -386,20 +363,47 @@ toggleSignModal = () => {
                         if(formattingobjectbg === 'transparent'){
                           $('#requiredcheck').prop('checked', false);
                         }
-
+  
                         document.getElementById('input-pixels-left').value = parseInt(e.target.left)
-                      document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                        document.getElementById('input-pixels-top').value = parseInt(e.target.top)
                       }
-                      
-                      e.target.lockMovementX = false
-                      e.target.lockMovementY = false
-                      var id = fabricObj.getObjects().indexOf(e.target)
-                      e.target.selectable = true
-                      fabricObj.setActiveObject(fabricObj.item(id))
-                      fabricObj.requestRenderAll()
-                      e.target.hasControls = true
-                      e.target.set('id', email)
-                    }
+                        e.target.lockMovementX = false
+                        e.target.lockMovementY = false
+                        var id = fabricObj.getObjects().indexOf(e.target)
+                        e.target.selectable = true
+                        fabricObj.setActiveObject(fabricObj.item(id))
+                        fabricObj.requestRenderAll()
+                        e.target.hasControls = true
+                        e.target.set('id', email)
+                      } else {
+                        // // // // // // // ////console.log('Object not selected');
+                        if(owner == 'admin'){
+                          formattingobject = fabricObj.findTarget(e);
+                          document.getElementById('formattingdiv').style.display = 'block'
+                          document.getElementById('fontdiv').style.display = 'block'
+                          document.getElementById('thumb-container').style.display = 'none'
+                          document.getElementById('input-scale-value').value = '100'
+                          formattingobjectbg = e.target.backgroundColor
+                          console.log(formattingobjectbg)
+                          if(formattingobjectbg === 'transparent'){
+                            $('#requiredcheck').prop('checked', false);
+                          }
+  
+                          document.getElementById('input-pixels-left').value = parseInt(e.target.left)
+                        document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                        }
+                        
+                        e.target.lockMovementX = false
+                        e.target.lockMovementY = false
+                        var id = fabricObj.getObjects().indexOf(e.target)
+                        e.target.selectable = true
+                        fabricObj.setActiveObject(fabricObj.item(id))
+                        fabricObj.requestRenderAll()
+                        e.target.hasControls = true
+                        e.target.set('id', email)
+                      }
+                  }
+                  
                     }
                     
                 } else {
@@ -447,7 +451,7 @@ toggleSignModal = () => {
                 const objcolor = fabricObj.findTarget(e).backgroundColor
                 const objid = fabricObj.findTarget(e).id
                 ////console.log(objType);
-                ////console.log(obj);
+                console.log(objcolor);
                 if (grabbedcolor != '') {
                   function hexToRgb(hex) {
                     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
@@ -469,9 +473,7 @@ toggleSignModal = () => {
                     ', ' +
                     hexToRgb(grabbedcolor).b
                   var RGB = 'rgb(' + rgbval + ')'
-                } else {
-                  var RGB = ''
-                }
+                } 
 
                 if (objcolor == RGB || owner == 'admin' || objid == email) {
                 if(fabricObj.findTarget(e).type !=  'text'){
@@ -482,67 +484,150 @@ toggleSignModal = () => {
                   obj.lockMovementY = false
                   obj.hasControls = true
                   fabricObj.requestRenderAll()
-
-                  if (objType === 'image') {
-                    //alert('double clicked on a image!');
-                    //doubleclickobj = fabricObj.findTarget(e)
-                    ////console.log(doubleclickobj);
-                    //this.toggleSignModal();
-                    global.doubleclickobj = fabricObj.findTarget(e);
-                    if(obj.width === obj.height){
-                      if(initialimage != '' && objcolor != 'transparent'){
-
-                        global.doubleclickobj.setSrc(initialimage);
-                        global.doubleclickobj.set(
-                            "backgroundColor",
-                            "transparent"
-                        );
-                        global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
-                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                        global.pdf.Reload();
+                  if(owner != 'admin'){
+                    if (objType === 'image') {
+                      //alert('double clicked on a image!');
+                      //doubleclickobj = fabricObj.findTarget(e)
+                      ////console.log(doubleclickobj);
+                      //this.toggleSignModal();
+                      global.doubleclickobj = fabricObj.findTarget(e);
+                      if(obj.width === obj.height){
+                        if(initialimage != '' && objcolor != 'transparent'){
+  
+                          global.doubleclickobj.setSrc(initialimage);
+                          global.doubleclickobj.set(
+                              "backgroundColor",
+                              "transparent"
+                          );
+                          global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                        }
+                        else {
+                          global.toggleInitialModal();
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                        }
                       }
-                      else {
-                        global.toggleInitialModal();
-                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                        //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                      else{
+                        if(signimage != ''  && objcolor != 'transparent'){
+  
+                          global.doubleclickobj.setSrc(signimage);
+                          global.doubleclickobj.set(
+                              "backgroundColor",
+                              "transparent"
+                          );
+                          global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                        }
+                        else {
+                          global.toggleSignModal();
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                        }
                       }
+                      
+                      obj.set('id', email)
+                    } else if (objType === 'i-text') {
+                      //console.log(obj.text);
+                      if(username != ''){
+                        if(obj.text === 'Name'){
+                          obj.set('text',username);
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                        }
+                        else if(obj.text === 'Title'){
+                          obj.set('text',usertitle);
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                        }
+                        else if(obj.text === 'Date Signed'){
+                          var today = new Date()
+                          var dd = String(today.getDate()).padStart(2, '0')
+                          var mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+                          var yyyy = today.getFullYear()
+
+                          today = mm + '/' + dd + '/' + yyyy
+                          obj.set('text',today);
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                        }
+                        
+                      }
+                      obj.set('backgroundColor', 'transparent')
+                      global.pdf.Reload()
+                      obj.set('id', email)
                     }
-                    else{
-                      if(signimage != ''  && objcolor != 'transparent'){
-
-                        global.doubleclickobj.setSrc(signimage);
-                        global.doubleclickobj.set(
-                            "backgroundColor",
-                            "transparent"
-                        );
-                        global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
-                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                        global.pdf.Reload();
-                      }
-                      else {
-                        global.toggleSignModal();
-                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                        //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                  }
+                  else if(owner == 'admin'){
+                    if(objcolor == 'transparent' || objcolor == 'rgb(189, 189, 189)'){
+                      if (objType === 'image') {
+                        //alert('double clicked on a image!');
+                        //doubleclickobj = fabricObj.findTarget(e)
+                        ////console.log(doubleclickobj);
+                        //this.toggleSignModal();
+                        global.doubleclickobj = fabricObj.findTarget(e);
+                        if(obj.width === obj.height){
+                          if(initialimage != '' && objcolor != 'transparent'){
+    
+                            global.doubleclickobj.setSrc(initialimage);
+                            global.doubleclickobj.set(
+                                "backgroundColor",
+                                "transparent"
+                            );
+                            global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                            global.pdf.Reload();
+                          }
+                          else {
+                            global.toggleInitialModal();
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                            //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                          }
+                        }
+                        else{
+                          if(signimage != ''  && objcolor != 'transparent'){
+    
+                            global.doubleclickobj.setSrc(signimage);
+                            global.doubleclickobj.set(
+                                "backgroundColor",
+                                "transparent"
+                            );
+                            global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                            global.pdf.Reload();
+                          }
+                          else {
+                            global.toggleSignModal();
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                            //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+                          }
+                        }
+                        
+                        obj.set('id', email)
+                      } else if (objType === 'i-text') {
+                        //console.log(obj.text);
+                        if(username != ''){
+                          if(obj.text === 'Name'){
+                            obj.set('text',username);
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          }
+                          else if(obj.text === 'Title'){
+                            obj.set('text',usertitle);
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          }
+                          else if(obj.text === 'Date Signed'){
+                            var today = new Date().toLocaleString().replace(',', '')
+                            obj.set('text',today);
+                            setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          }
+                        }
+                        obj.set('backgroundColor', 'transparent')
+                        global.pdf.Reload()
+                        obj.set('id', email)
                       }
                     }
                     
-                    obj.set('id', email)
-                  } else if (objType === 'i-text') {
-                    //console.log(obj.text);
-                    if(username != ''){
-                      if(obj.text === 'Name'){
-                        obj.set('text',username);
-                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                      }
-                      else if(obj.text === 'Title'){
-                        obj.set('text',usertitle);
-                        setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                      }
-                    }
-                    obj.set('backgroundColor', 'transparent')
-                    global.pdf.Reload()
-                    obj.set('id', email)
                   }
+                  
 
                 }
                 } else {
@@ -608,7 +693,7 @@ toggleSignModal = () => {
                 e.pointer.y -
                 fabricObj.upperCanvasEl.getBoundingClientRect().top +
                 250
-              oImg.scale(0.2)
+              oImg.scale(inst.scale)
               oImg.set({ left: l })
               oImg.set({ top: t })
               oImg.set({ id: inst.recipientemail })
@@ -711,7 +796,7 @@ toggleSignModal = () => {
                 event.clientY -
                 fabricObj.upperCanvasEl.getBoundingClientRect().top -
                 20
-              oImg.scale(0.3)
+              oImg.scale(inst.scale)
               oImg.set({ left: l })
               oImg.set({ top: t })
               oImg.set({ id: inst.recipientemail })
@@ -888,11 +973,13 @@ toggleSignModal = () => {
     PDFAnnotate.prototype.enableImage = function (
       url,
       recipientemail,
-      recipientcolor
+      recipientcolor,
+      scale
     ) {
       var inst = this
       inst.recipientemail = recipientemail
       inst.recipientcolor = recipientcolor
+      inst.scale = scale
       var fabricObj = inst.fabricObjects[inst.active_canvas]
       inst.active_tool = 4
       inst.imageurl = url
@@ -2252,9 +2339,16 @@ toggleSignModal = () => {
       recipientemail = select.options[select.selectedIndex].value
       recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
+      
       ////console.log(recipientemail);
       try {
-        global.pdf.enableAddText('Text', recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          global.pdf.enableAddText('Text', recipientemail, 'transparent')
+        }
+        else{
+          global.pdf.enableAddText('Text', recipientemail, recipientcolor)
+        }
+        
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
         
@@ -2281,7 +2375,18 @@ toggleSignModal = () => {
       recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       try {
-        global.pdf.enableAddText('Name', recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          if(username == '' || username == null){
+            global.pdf.enableAddText('Name', recipientemail, 'transparent')
+          }
+          else{
+            global.pdf.enableAddText(username, recipientemail, 'transparent')
+          }
+        }
+        else{
+          global.pdf.enableAddText('Name', recipientemail, recipientcolor)
+        }
+        
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -2307,7 +2412,12 @@ toggleSignModal = () => {
       recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       try {
-        global.pdf.enableAddText('Company', recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          global.pdf.enableAddText('Company', recipientemail, 'transparent')
+        }
+        else{
+          global.pdf.enableAddText('Company', recipientemail, recipientcolor)
+        }
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -2333,7 +2443,17 @@ toggleSignModal = () => {
       recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
       try {
-        global.pdf.enableAddText('Title', recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          if(usertitle == '' || usertitle == null){
+            global.pdf.enableAddText('Title', recipientemail, 'transparent')
+          }else{
+            global.pdf.enableAddText(usertitle, recipientemail, 'transparent')
+          }
+          
+        }
+        else{
+          global.pdf.enableAddText('Title', recipientemail, recipientcolor)
+        }
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -2358,9 +2478,20 @@ toggleSignModal = () => {
       recipientemail = select.options[select.selectedIndex].value
       recipientcolor =
         select.options[select.selectedIndex].style.backgroundColor
+      var today = new Date()
+      var dd = String(today.getDate()).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+      var yyyy = today.getFullYear()
+
+      today = mm + '/' + dd + '/' + yyyy
       
       try {
-        global.pdf.enableAddText('Date Signed', recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          global.pdf.enableAddText(today, recipientemail, 'transparent')
+        }
+        else{
+          global.pdf.enableAddText('Date Signed', recipientemail, recipientcolor)
+        }
         $('#dragabbleImageText').show()
         $('#dragabbleImageText').css("z-index", "9999999999999999999999999999999999999999999");
       } catch (error) {
@@ -2411,7 +2542,18 @@ toggleSignModal = () => {
       try {
         $('#dragabbleImageSign').show()
         $('#dragabbleImageSign').css("z-index", "9999999999999999999999999999999999999999999");
-        global.pdf.enableImage(dataUrl, recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          if(signimage == '' || signimage == null ){
+            global.pdf.enableImage(dataUrl, recipientemail, recipientcolor, 0.3)
+          }else{
+            global.pdf.enableImage(signimage, recipientemail, 'transparent', 0.6)
+          }
+          
+        }
+        else{
+          global.pdf.enableImage(dataUrl, recipientemail, recipientcolor, 0.3)
+        }
+        
       } catch (error) {
         alert('Add a Document')
         $('#dragabbleImageSign').hide()
@@ -2439,7 +2581,17 @@ toggleSignModal = () => {
       try {
         $('#dragabbleImageInitial').show()
         $('#dragabbleImageInitial').css("z-index", "9999999999999999999999999999999999999999999");
-        global.pdf.enableImage(dataUrl, recipientemail, recipientcolor)
+        if(recipientcolor == 'rgb(189, 189, 189)'){
+          if(initialimage == '' || initialimage == null){
+            global.pdf.enableImage(dataUrl, recipientemail, recipientcolor, 0.3)
+          }else{
+            global.pdf.enableImage(initialimage, recipientemail, 'transparent', 0.6)
+          }
+          
+        }
+        else{
+          global.pdf.enableImage(dataUrl, recipientemail, recipientcolor, 0.3)
+        }
       } catch (error) {
         alert('Add a Document')
         $('#dragabbleImageInitial').hide()
@@ -2752,6 +2904,7 @@ toggleSignModal = () => {
             if (DataVar.OnlySigner == true) {
               document.getElementById('getlinkbtn').style.display = 'none'
               document.getElementById('onlysignerfinishbtn').style.display = 'block'
+
             }
             var people = []
             people = DataVar.RecipientArray
@@ -2796,6 +2949,9 @@ toggleSignModal = () => {
           if (userid != useridother) {
             try {
               document.getElementById('openfilebtn').style.display = 'none'
+              document.getElementById('fieldsleftbar').style.display = 'none'
+              document.getElementById('fieldsrightbar').style.display = 'none'
+              $('#pdfcol').addClass('colfullwidth')
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
@@ -2959,7 +3115,7 @@ toggleSignModal = () => {
               
             document.getElementById('recieverfinishbtn').style.display = 'none'
             document.getElementById('moreoptions').style.display = 'none'
-            owner = 'admin'
+            owner = 'notadmin'
 
             axios
               .post('/getReciever', {
@@ -2989,6 +3145,9 @@ toggleSignModal = () => {
                       document.getElementById('moreoptions').style.display = 'block'
                       document.getElementById('getlinkbtn').style.display = 'none'
                       try {
+                        document.getElementById('fieldsleftbar').style.display = 'none'
+                        document.getElementById('fieldsrightbar').style.display = 'none'
+                        $('#pdfcol').addClass('colfullwidth')
                         document.getElementById('openfilebtn').style.display = 'none'
                         document.getElementById('penbtn').style.display = 'none'
                         document.getElementById('textbtn').style.display = 'none'
@@ -3218,6 +3377,9 @@ toggleSignModal = () => {
           if (userid != useridother) {
             try {
               document.getElementById('openfilebtn').style.display = 'none'
+              document.getElementById('fieldsleftbar').style.display = 'none'
+              document.getElementById('fieldsrightbar').style.display = 'none'
+              $('#pdfcol').addClass('colfullwidth')
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
@@ -3325,7 +3487,7 @@ toggleSignModal = () => {
               document.getElementById('moreoptions').style.display = 'none'
             } catch (error) {}
 
-            owner = 'admin'
+            owner = 'notadmin'
 
             axios
               .post('/getReciever', {
@@ -3564,12 +3726,6 @@ $(document).on('click','.actionsign', function() {
                 <button className="dropdown-item " type="button">
                   Print & Sign
                 </button>
-                <button className="dropdown-item " type="button">
-                  Void
-                </button>
-                <button className="dropdown-item " type="button">
-                  Correct
-                </button>
                 <div className="dropdown-divider"></div>
                 <button className="dropdown-item " type="button">
                   Help & Support
@@ -3582,9 +3738,6 @@ $(document).on('click','.actionsign', function() {
                 </button>
                 <button className="dropdown-item " type="button">
                   View Certificate(PDF)
-                </button>
-                <button className="dropdown-item " type="button">
-                  Session Information
                 </button>
               </div>
             </div>
@@ -3714,7 +3867,7 @@ $(document).on('click','.actionsign', function() {
 
           
 
-          <Col lg="2">
+          <Col lg="2" id="fieldsleftbar">
             <div id="toolbar" className="toolbar">
               
               <button id="openfilebtn" className="tool">
@@ -3791,7 +3944,7 @@ $(document).on('click','.actionsign', function() {
             </div>
           </Col>
 
-          <Col lg="8">
+          <Col lg="8" id="pdfcol">
             <Row>
               <Col lg="12"></Col>
             </Row>
@@ -3845,7 +3998,7 @@ $(document).on('click','.actionsign', function() {
                     onClose={this.toggleInitialModal} />
             </div>
           </Col>
-          <Col lg="2" >
+          <Col lg="2" id="fieldsrightbar" >
             <div id="recipientsbar" className="recipientsbar bg-light justify-content-start">
               <Row id="formattingdiv">
                 <Col lg="12">

@@ -105,6 +105,22 @@ class UploadSuccess extends React.Component {
       modal[0].style.display = 'none';
     });
 
+    $('#onlysignercheck').change(function () {
+      if (this.checked) {
+        document.getElementById('uploadsuccesssignbtn').style.display = 'block'
+        document.getElementById('uploadsuccessnextbtn').style.display = 'none'
+      } else {
+        document.getElementById('uploadsuccesssignbtn').style.display = 'none'
+        document.getElementById('uploadsuccessnextbtn').style.display = 'block'
+      }
+    })
+
+    var uploadsuccesssignbtn = document.getElementById('uploadsuccesssignbtn')
+    uploadsuccesssignbtn.addEventListener('click', function (event) {
+      DataVar.OnlySigner = true
+        window.location.hash = '#/admin/sign'
+    })
+
 
   }
   render() {
@@ -235,6 +251,13 @@ class UploadSuccess extends React.Component {
                         id="uploadsuccessnextbtn"
                       >
                         Next
+                      </Button>
+                      <Button
+                        className="float-right px-4"
+                        color="primary"
+                        id="uploadsuccesssignbtn"
+                      >
+                        Sign
                       </Button>
                       <div
                         id="checkdiv"

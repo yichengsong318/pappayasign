@@ -45,6 +45,10 @@
     margin-left:5px;
   }
 
+  #uploadsuccesssignbtn{
+    display: none;
+  }
+
   #fontselect{
     height:35px;
     padding: 0;
@@ -207,6 +211,13 @@ background-color: #626262;
     width:90%;
     height:30px;
     margin:5% !important;
+  }
+
+  .colfullwidth{
+    width:100% !important;
+    margin-left:15% !important;
+    margin-right:15% !important;
+    
   }
 
 .managebtncontainer{
@@ -915,8 +926,16 @@ button:focus {
   outline: 5px auto -webkit-focus-ring-color; }
 
 input{
- height:30px !important;
+ height:40px !important;
+ font-size: small !important;
 } 
+
+select{
+  height:40px !important;
+  font-size: small !important;
+  padding: 0;
+  margin: 0;
+ } 
 
 input,
 button,
