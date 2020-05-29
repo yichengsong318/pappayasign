@@ -109,6 +109,8 @@ toggleSignModal = () => {
     var username = ''
     var usertitle = ''
     var action = ''
+    var formattingobject = '';
+    var formattingobjectbg = '';
     var tpeople = []
     var Reciever = []
 
@@ -152,7 +154,21 @@ toggleSignModal = () => {
               //var scale = (container.clientWidth - 80) / viewport.width;
               var viewport = page.getViewport(scale)
               var canvas = document.createElement('canvas')
-              document.getElementById(inst.container_id).appendChild(canvas)
+              var thumbcanvas = document.createElement('canvas')
+
+              var btn = document.createElement("BUTTON");
+
+              btn.className = 'manage-pdf-download-btn'
+
+              btn.innerHTML='<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
+              try {
+                document.getElementById(inst.container_id).appendChild(canvas)
+                document.getElementById('thumb-pdf-container').appendChild(thumbcanvas)
+                document.getElementById('thumb-pdf-container').appendChild(btn)
+              } catch (error) {
+                
+              }
+              
               canvas.className = 'pdf-canvas'
               canvas.height = viewport.height
               canvas.width = viewport.width
@@ -170,6 +186,22 @@ toggleSignModal = () => {
                 inst.pages_rendered++
                 if (inst.pages_rendered == inst.number_of_pages)
                   inst.initFabric()
+              })
+
+              thumbcanvas.className = 'thumb-pdf-canvas'
+              thumbcanvas.height = viewport.height
+              thumbcanvas.width = viewport.width
+              var thumbcontext = thumbcanvas.getContext('2d')
+
+              var renderContextThumb = {
+                canvasContext: thumbcontext,
+                viewport: viewport,
+              }
+              var renderTaskThumb = page.render(renderContextThumb)
+              renderTaskThumb.then(function () {
+                $('.thumb-pdf-canvas').each(function (index, el) {
+                  $(el).attr('id', 'page-' + (index + 1) + '-canvas')
+                })
               })
             })
           }
@@ -234,82 +266,126 @@ toggleSignModal = () => {
               $('#templatedragabbleImageSign').hide()
               $('#templatedragabbleImageInitial').hide()
               //fabricMouseHandler(e, fabricObj);
-              if (e.target) {
-                //clicked on object
-                const objcolor = e.target.backgroundColor
-                const objid = e.target.id
-                if (grabbedcolor != '') {
-                  function hexToRgb(hex) {
-                    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
-                      hex
-                    )
-                    return result
-                      ? {
-                          r: parseInt(result[1], 16),
-                          g: parseInt(result[2], 16),
-                          b: parseInt(result[3], 16),
-                        }
-                      : null
+              try {
+                if (e.target) {
+                  
+                  //clicked on object
+                  const objcolor = e.target.backgroundColor
+                  const objid = e.target.id
+                  if (grabbedcolor != '') {
+                    function hexToRgb(hex) {
+                      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+                        hex
+                      )
+                      return result
+                        ? {
+                            r: parseInt(result[1], 16),
+                            g: parseInt(result[2], 16),
+                            b: parseInt(result[3], 16),
+                          }
+                        : null
+                    }
+
+                    ////console.log(e.target);
+
+                    var rgbval =
+                      hexToRgb(grabbedcolor).r +
+                      ', ' +
+                      hexToRgb(grabbedcolor).g +
+                      ', ' +
+                      hexToRgb(grabbedcolor).b
+                    var RGB = 'rgb(' + rgbval + ')'
+                  } else {
+                    var RGB = ''
                   }
 
-                  //console.log(e.target);
+                  if (objcolor == RGB || owner == 'admin' || objid == email) {
+                    // // // // // // // ////console.log('Object selected');
+                  if(fabricObj.findTarget(e).type !=  'i-text'){
+                    if(owner == 'admin'){
+                      formattingobject = fabricObj.findTarget(e);
+                      document.getElementById('formattingdiv').style.display = 'block'
+                      document.getElementById('fontdiv').style.display = 'none'
+                      document.getElementById('thumb-container').style.display = 'none'
+                      document.getElementById('input-scale-value').value = '100'
+                      formattingobjectbg = e.target.backgroundColor
+                      console.log(formattingobjectbg)
+                      if(formattingobjectbg === 'transparent'){
+                        $('#requiredcheck').prop('checked', false);
+                      }
 
-                  var rgbval =
-                    hexToRgb(grabbedcolor).r +
-                    ', ' +
-                    hexToRgb(grabbedcolor).g +
-                    ', ' +
-                    hexToRgb(grabbedcolor).b
-                  var RGB = 'rgb(' + rgbval + ')'
-                } else {
-                  var RGB = ''
-                }
+                      document.getElementById('input-pixels-left').value = parseInt(e.target.left)
+                      document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                    }
+                      e.target.lockMovementX = false
+                      e.target.lockMovementY = false
+                      var id = fabricObj.getObjects().indexOf(e.target)
+                      e.target.selectable = true
+                      fabricObj.setActiveObject(fabricObj.item(id))
+                      fabricObj.requestRenderAll()
+                      e.target.hasControls = true
+                      e.target.set('id', email)
+                    } else {
+                      // // // // // // // ////console.log('Object not selected');
+                      if(owner == 'admin'){
+                        formattingobject = fabricObj.findTarget(e);
+                        document.getElementById('formattingdiv').style.display = 'block'
+                        document.getElementById('fontdiv').style.display = 'block'
+                        document.getElementById('thumb-container').style.display = 'none'
+                        document.getElementById('input-scale-value').value = '100'
+                        formattingobjectbg = e.target.backgroundColor
+                        console.log(formattingobjectbg)
+                        if(formattingobjectbg === 'transparent'){
+                          $('#requiredcheck').prop('checked', false);
+                        }
 
-                if (objcolor == RGB || owner == 'admin' || objid == email) {
-                  //console.log('Object selected');
-                  e.target.lockMovementX = false
-                  e.target.lockMovementY = false
-                  var id = fabricObj.getObjects().indexOf(e.target)
-                  e.target.selectable = true
-                  fabricObj.setActiveObject(fabricObj.item(id))
-                  fabricObj.requestRenderAll()
-                  e.target.hasControls = true
-                  e.target.set('id', email)
+                        document.getElementById('input-pixels-left').value = parseInt(e.target.left)
+                      document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                      }
+                      
+                      e.target.lockMovementX = false
+                      e.target.lockMovementY = false
+                      var id = fabricObj.getObjects().indexOf(e.target)
+                      e.target.selectable = true
+                      fabricObj.setActiveObject(fabricObj.item(id))
+                      fabricObj.requestRenderAll()
+                      e.target.hasControls = true
+                      e.target.set('id', email)
+                    }
+                    }
+                    
                 } else {
-                  //console.log('Object not selected');
-                  e.target.selectable = false
-                  e.target.lockMovementX = true
-                  e.target.lockMovementY = true
-                  e.target.hasControls = false
+                  //add rectangle
+                  document.getElementById('formattingdiv').style.display = 'none'
+                  document.getElementById('fontdiv').style.display = 'none'
+                  document.getElementById('thumb-container').style.display = 'block'
+                  if (
+                    e.e.type == 'touchstart' ||
+                    e.e.type == 'touchmove' ||
+                    e.e.type == 'touchend' ||
+                    e.e.type == 'touchcancel'
+                  ) {
+                    var x = e.pointer.x
+                    var y = e.pointer.y
+                    inst.active_canvas = index
+                    fabricMouseHandler(e, fabricObj)
+                  } else if (
+                    e.e.type == 'mousedown' ||
+                    e.e.type == 'mouseup' ||
+                    e.e.type == 'mousemove' ||
+                    e.e.type == 'mouseover' ||
+                    e.e.type == 'mouseout' ||
+                    e.e.type == 'mouseenter' ||
+                    e.e.type == 'mouseleave'
+                  ) {
+                    var x = e.e.clientX
+                    var y = e.e.clientY
+                    var click = e.e
+                    inst.active_canvas = index
+                    inst.fabricClickHandler(click, fabricObj)
+                  }
                 }
-              } else {
-                //add rectangle
-                if (
-                  e.e.type == 'touchstart' ||
-                  e.e.type == 'touchmove' ||
-                  e.e.type == 'touchend' ||
-                  e.e.type == 'touchcancel'
-                ) {
-                  var x = e.pointer.x
-                  var y = e.pointer.y
-                  inst.active_canvas = index
-                  fabricMouseHandler(e, fabricObj)
-                } else if (
-                  e.e.type == 'mousedown' ||
-                  e.e.type == 'mouseup' ||
-                  e.e.type == 'mousemove' ||
-                  e.e.type == 'mouseover' ||
-                  e.e.type == 'mouseout' ||
-                  e.e.type == 'mouseenter' ||
-                  e.e.type == 'mouseleave'
-                ) {
-                  var x = e.e.clientX
-                  var y = e.e.clientY
-                  var click = e.e
-                  inst.active_canvas = index
-                  inst.fabricClickHandler(click, fabricObj)
-                }
-              }
+              } catch (error) {}
             },
           })
 
@@ -445,6 +521,7 @@ toggleSignModal = () => {
         if (inst.active_tool == 2) {
           var value = inst.Addtext
           var text = new fabric.IText(value, {
+            fontFamily: 'Arial',
             left:
               e.pointer.x -
               fabricObj.upperCanvasEl.getBoundingClientRect().left,
@@ -545,6 +622,7 @@ toggleSignModal = () => {
         if (inst.active_tool == 2) {
           var value = inst.Addtext
           var text = new fabric.IText(value, {
+            fontFamily: 'Arial',
             left:
               event.clientX -
               fabricObj.upperCanvasEl.getBoundingClientRect().left +
@@ -831,6 +909,32 @@ toggleSignModal = () => {
       })
       doc.save('pappayasign_template_' + inst.filename + '')
       modal[1].style.display = 'none'
+    }
+
+    TemplateAnnotate.prototype.printPdf = function () {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf printed')
+      window.open(doc.output('bloburl'), '_blank');
+      modal[1].style.display = 'none'
+    }
+
+    TemplateAnnotate.prototype.DownloadIndividual = function (fabricindex) {
+      var inst = this
+      var fabricObj = inst.fabricObjects[fabricindex];
+      var doc = new jsPDF()
+      doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      console.log('pdf saved')
+      doc.save('pappayasign_' + fabricindex + '')
+      modal[1].style.display = 'none'
+      
     }
 
     TemplateAnnotate.prototype.savetoCloudPdf = function () {
@@ -1361,7 +1465,26 @@ toggleSignModal = () => {
       $('.icon-color').removeClass('icon-color')
       modal[1].style.display = 'block'
       try {
-        global.pdf.savePdf()
+        setTimeout(function(){ 
+          global.pdf.savePdf()
+        }, 1000);
+      } catch (error) {
+        alert('Please add a document first!')
+        $('.tool-button.active').removeClass('active')
+        $('.icon-color').removeClass('icon-color')
+      }
+    })
+
+    var printbtn = document.getElementById('printbtn')
+    printbtn.addEventListener('click', function (event) {
+      $('.tool.active').removeClass('active')
+      $('.icon-color').removeClass('icon-color')
+      modal[1].style.display = 'block'
+      try {
+        setTimeout(function(){ 
+          global.pdf.printPdf()
+        }, 1000);
+        
       } catch (error) {
         alert('Please add a document first!')
         $('.tool-button.active').removeClass('active')
@@ -1660,6 +1783,8 @@ toggleSignModal = () => {
       myNode.innerHTML = ''
     }
 
+
+
     function clickFile() {
       $('.icon-color').removeClass('icon-color')
       var inputtag = document.createElement('span')
@@ -1937,6 +2062,141 @@ toggleSignModal = () => {
       }
     })
 
+    $(document).on('click', '.manage-pdf-download-btn', function () {
+      //console.log($(".manage-pdf-download-btn").index(this));
+      var index = $(".manage-pdf-download-btn").index(this);
+      modal[1].style.display = 'block'
+      setTimeout(function(){ 
+        global.pdf.DownloadIndividual(index);
+      }, 1000);
+    });
+
+
+    $('#requiredcheck').change(function () {
+      if (this.checked) {
+        var select = document.getElementById('recipientselect')
+      var bgcolor =
+        select.options[select.selectedIndex].style.backgroundColor
+        formattingobject.set(
+          "backgroundColor",
+          bgcolor
+      );
+      } else {
+        formattingobject.set(
+          "backgroundColor",
+          'transparent'
+      );
+      global.pdf.Reload();
+      }
+    })
+
+    $('#input-pixels-left').change(function() {
+      //console.log('left');
+      var left = document.getElementById('input-pixels-left').value;
+      formattingobject.set({ left: parseInt(left)});
+      global.pdf.Reload();
+    });
+
+    $('#input-pixels-top').change(function() {
+      //console.log('top');
+      var top = document.getElementById('input-pixels-top').value;
+      formattingobject.set({ top: parseInt(top)});
+      global.pdf.Reload();
+    });
+
+    $('#input-scale-value').change(function() {
+      //console.log('scale');
+      var scale = document.getElementById('input-scale-value').value
+      var scaleX = formattingobject.scaleX
+      var scaleY = formattingobject.scaleY
+      scaleX = (parseFloat(scale)*0.003)
+      scaleY = (parseFloat(scale)*0.003)
+      formattingobject.set({ scaleX: parseFloat(scaleX), scaleY: parseFloat(scaleY),})
+      global.pdf.Reload();
+    });
+
+    var boldbtn = document.getElementById('boldbtn')
+    boldbtn.addEventListener('click', function (event) {
+      dtEditText('bold');
+    });
+
+    var italicbtn = document.getElementById('italicbtn')
+    italicbtn.addEventListener('click', function (event) {
+      dtEditText('italic');
+    });
+
+    var underlinebtn = document.getElementById('underlinebtn')
+    underlinebtn.addEventListener('click', function (event) {
+      dtEditText('underline');
+    });
+   
+            // Functions
+        function dtEditText(action) {
+          console.log('opende')
+          var a = action;
+          var o = formattingobject
+          var t;
+
+          // If object selected, what type?
+          if (o) {
+              t = o.get('type');
+          }
+
+          if (o && t === 'i-text') {
+              switch(a) {
+                  case 'bold':				
+                      var isBold = dtGetStyle(o, 'fontWeight') === 'bold';
+                      dtSetStyle(o, 'fontWeight', isBold ? '' : 'bold');
+                  break;
+
+                  case 'italic':
+                      var isItalic = dtGetStyle(o, 'fontStyle') === 'italic';
+                      dtSetStyle(o, 'fontStyle', isItalic ? '' : 'italic');
+                  break;
+
+                  case 'underline':
+                      var isUnderline = o.underline;
+                      dtUnderlineStyle(o, 'underline', isUnderline ? false : true);
+                  break;
+                  global.pdf.Reload();
+              }
+          }
+        }
+
+        // Get the style
+        function dtGetStyle(object, styleName) {
+          return object[styleName];
+        }
+
+        // Set the style
+        function dtSetStyle(object, styleName, value) {
+          object[styleName] = value;
+          object.set({dirty: true});
+          global.pdf.Reload();
+        } 
+
+        function dtUnderlineStyle(object, styleName, value) {
+          object.underline = value;
+          object.set({dirty: true});
+          global.pdf.Reload();
+        } 
+           
+    var fonts = ["Arial", "Times New Roman", "Courier", "Verdana", "Palatino"];
+
+    var fontselect = document.getElementById("fontselect");
+    fonts.forEach(function(font) {
+    var option = document.createElement('option');
+    option.innerHTML = font;
+    option.value = font;
+    fontselect.appendChild(option);
+  });
+    
+    // Apply selected font on change
+    document.getElementById('fontselect').onchange = function() {
+        formattingobject.set("fontFamily", this.value);
+        global.pdf.Reload();
+    };
+
     
   }
 
@@ -1961,17 +2221,8 @@ toggleSignModal = () => {
           style={{zIndex: '99999999999999999999999999999999999999999'}}
           src={require('../../assets/img/icons/common/initialimg.png')}
         />
-        <Row>
-          <div id="teditortoolbar" className="editortoolbar">
-            <button id="tzoominbtn" color="neutral" className="toolzoom">
-              <i className="material-icons">zoom_in</i>
-            </button>
-            <button id="tzoomoutbtn" color="neutral" className="toolzoom">
-              <i className="material-icons">zoom_out</i>
-            </button>
-          </div>
 
-          <div className="modal">
+<div className="modal">
             <div className="modal-content">
               <div>
                 <p>Please wait while we set things up for you.</p>
@@ -2030,34 +2281,46 @@ toggleSignModal = () => {
             </div>
           </div>
 
-          <Col lg="2">
-            <div id="ttoolbar" className="toolbar">
-              <div className="divider" id="recipientscolumn">
-                <div className="col my-3 p-2">
-                  <h6 className="text-uppercase text-black ls-1 mb-1 float-left">
-                    Recipients
-                  </h6>
-                </div>
-                <hr className="my-1" />
-              </div>
-              <select
+        <Row>
+          <div id="teditortoolbar" className="editortoolbar">
+          <Row>
+            <Col lg="2">
+            <div className="float-left ml-4">
+            <select
                 id="trecipientselect"
                 className="form-control selectpicker form-control-sm"
               ></select>
-              <div className="divider">
-                <div className="col my-3 p-2">
-                  <h6 className="text-uppercase text-black ls-1 mb-1 float-left">
-                    File
-                  </h6>
-                </div>
-                <hr className="my-1" />
-              </div>
+            </div>
+            </Col>
+            <Col lg="8">
+            <button id="tzoominbtn" color="neutral" className="toolzoom">
+              <i className="material-icons">zoom_in</i>
+            </button>
+            <button id="tzoomoutbtn" color="neutral" className="toolzoom">
+              <i className="material-icons">zoom_out</i>
+            </button>
+            <button id="tsavebtn" color="neutral" className="toolzoom">
+                <i className="material-icons">get_app</i>Save
+              </button>
+            <button id="printbtn" color="neutral" className="toolzoom">
+                <i className="material-icons">print</i>
+              </button>
+            </Col>
+            <Col lg="2">
+            
+            </Col>
+            </Row>
+          </div>
+
+          
+
+          <Col lg="2">
+            <div id="ttoolbar" className="toolbar">
+              
               <button id="topenfilebtn" className="tool">
                 <i className="material-icons">insert_drive_file</i>Open
               </button>
-              <button id="tsavebtn" color="neutral" className="tool">
-                <i className="material-icons">get_app</i>Save
-              </button>
+              
               <div className="divider" id="fieldscolumn">
                 <div className="col my-3 p-2">
                   <h6 className="text-uppercase text-black ls-1 mb-1 float-left">
@@ -2087,19 +2350,21 @@ toggleSignModal = () => {
               <button id="trectanglebtn" color="neutral" className="tool">
                 <i className="material-icons">crop_din</i>Rectangle
               </button>
-              <div className="divider">
-                <div className="col my-3 p-2">
-                  <h6 className="text-uppercase text-black ls-1 mb-1 float-left">
-                    Tools
-                  </h6>
-                </div>
-                <hr className="my-1" />
-              </div>
+              <button id="tinitialbtn" color="neutral" className="tool">
+                <i className="material-icons">text_format</i>Initial
+              </button>
+              <button id="tnamebtn" color="neutral" className="tool">
+                <i className=" material-icons">person</i>Name
+              </button>
+              <button id="tcompanybtn" color="neutral" className="tool">
+                <i className=" material-icons">apartment</i>Company
+              </button>
+              <button id="ttitlebtn" color="neutral" className="tool">
+                <i className=" material-icons">work</i>Title
+              </button>
+              
               <button id="tselectbtn" color="neutral" className="tool">
                 <i className="material-icons">pan_tool</i>Select
-              </button>
-              <button id="tdeletebtn" color="neutral" className="tool">
-                <i className="material-icons">delete_forever</i>Delete
               </button>
               <button id="tclearbtn" color="neutral" className="tool">
                 <i className="material-icons">clear</i>Clear
@@ -2172,26 +2437,98 @@ toggleSignModal = () => {
           </div>
           <Col lg="2">
             <div id="trecipientsbar" className="recipientsbar">
-              <div className="divider" id="tcustomfieldscolumn">
+            <Row id="formattingdiv">
+                <Col lg="12">
+                <div className="divider">
                 <div className="col my-3 p-2">
                   <h6 className="text-uppercase text-black ls-1 mb-1 float-left">
-                    Custom Fields
+                    Formatting
                   </h6>
                 </div>
                 <hr className="my-1" />
               </div>
-              <button id="tinitialbtn" color="neutral" className="tool">
-                <i className="material-icons">text_format</i>Initial
-              </button>
-              <button id="tnamebtn" color="neutral" className="tool">
-                <i className=" material-icons">person</i>Name
-              </button>
-              <button id="tcompanybtn" color="neutral" className="tool">
-                <i className=" material-icons">apartment</i>Company
-              </button>
-              <button id="ttitlebtn" color="neutral" className="tool">
-                <i className=" material-icons">work</i>Title
-              </button>
+                <FormGroup className="my-1 mt-3">
+                      <div
+                        id="checkdiv"
+                        className="custom-control custom-checkbox  mx-1"
+                      >
+                        <input
+                          className="custom-control-input"
+                          id="requiredcheck"
+                          defaultChecked
+                          type="checkbox"
+                        />
+                        <label
+                          className="custom-control-label"
+                          htmlFor="requiredcheck"
+                        >
+                          Required Field
+                        </label>
+                      </div>
+                        </FormGroup>
+                    <FormGroup className="my-1">
+                          <span className="emaillabelspan py-2">
+                            <strong>Scale %</strong>
+                          </span>
+                          <Input
+                            id="input-scale-value"
+                            min="10" 
+                            max="100"
+                            type="number"
+                            defaultValue="100"
+                          />
+                        </FormGroup>
+                      <FormGroup className="my-1">
+                          <span className="emaillabelspan py-2">
+                            <strong>Pixels from Left</strong>
+                          </span>
+                          <Input
+                            id="input-pixels-left"
+                            type="number"
+                          />
+                        </FormGroup>
+                        <FormGroup className="my-1">
+                          <span className="emaillabelspan py-2">
+                          <strong>Pixels from top</strong>
+                          </span>
+                          <Input
+                            id="input-pixels-top"
+                            type="number"
+                          />
+                        </FormGroup>
+                        <FormGroup className="my-1" id="fontdiv">
+                          <span className="emaillabelspan py-2">
+                          <strong>Font Type</strong>
+                          </span>
+                          <select
+                            id="fontselect"
+                            className="form-control  form-control-md"
+                          >
+                          </select>
+                          <Row >
+                          <button id="boldbtn" color="neutral" className="tool inline">
+                            <i className="material-icons">format_bold</i>
+                          </button>
+                          <button id="italicbtn" color="neutral" className="tool inline">
+                            <i className="material-icons">format_italic</i>
+                          </button>
+                          <button id="underlinebtn" color="neutral" className="tool inline">
+                            <i className="material-icons">format_underlined</i>
+                          </button>
+                          </Row>
+                        </FormGroup>
+                        <FormGroup className="my-1">
+                          <Button id="tdeletebtn" color="primary" className="fullwidth">Delete</Button>
+                        </FormGroup>
+                        
+                </Col>
+              </Row>
+              
+              <div id="thumb-container">
+              <div id="thumb-pdf-container"></div>
+              <div id="thumb-toolbar"></div>
+              </div>
+              
             </div>
           </Col>
         </Row>

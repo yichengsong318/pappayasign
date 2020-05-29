@@ -54,10 +54,12 @@ canvas, .canvas-container {
 	justify-content: center;
 	margin: 0px auto;
 	position: relative;
-	
-	
-	
 }
+
+.pdf-canvas{
+	border: 2px solid #e9e9e9;
+}
+
 
 .recipientsbar{
 	width: 100%;
@@ -243,7 +245,7 @@ button:focus {
 	display:none;
 }
 
-#penbtn, #circlebtn, #rectanglebtn, #openfilebtn, #imagebtn, #fileinput, #addobjbtn, #imageinput{
+#penbtn, #circlebtn, #rectanglebtn, #selectbtn, #openfilebtn, #clearbtn, #imagebtn, #fileinput, #addobjbtn, #imageinput{
 	display:none;
 }
 
@@ -535,6 +537,10 @@ i.material-icons{
 	100% {
 	  transform: rotate(360deg);
 	}
+  }
+
+  #recipientselect{
+	  width:180px;
   }
   
   

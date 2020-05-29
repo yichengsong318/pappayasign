@@ -242,7 +242,7 @@ button:focus {
 	display:none;
 }
 
-#tpenbtn, #tcirclebtn, #trectanglebtn, #topenfilebtn, #timagebtn, #tfileinput, #taddobjbtn, #timageinput{
+#tpenbtn, #tcirclebtn, #trectanglebtn, #topenfilebtn, #tselectbtn, #tclearbtn, #timagebtn, #tfileinput, #taddobjbtn, #timageinput{
 	display:none;
 }
 
@@ -417,6 +417,10 @@ i.material-icons{
 	100% {
 	  transform: rotate(360deg);
 	}
+  }
+
+  #trecipientselect{
+	width:180px;
   }
   
   

@@ -40,6 +40,25 @@
 *::after {
   box-sizing: border-box; }
 
+  .inline{
+    width:30px !important;
+    margin-left:5px;
+  }
+
+  #fontselect{
+    height:35px;
+    padding: 0;
+    margin: 0;
+  }
+  
+
+  #formattingdiv{
+    display: none;
+  }
+
+  #fontdiv{
+    display: none;
+  }
 
 
 .profilepicupdatediv{
@@ -647,6 +666,42 @@ border-radius: 20px !important;
         cursor: default;
         pointer-events: none;
       }
+
+      #thumb-pdf-container{
+        transform: scale(0.16) !important;
+        width:20% !important;
+        padding:8px;
+         transform-origin: 0% 0% 0px;
+         height: 500px;
+      }
+    
+      .thumb-pdf-canvas{
+        margin-bottom:50px;
+        border: 10px solid #e9e9e9;
+      }
+
+      #thumb-toolbar{
+        display: none;
+      }
+
+      #thumb-container {
+        text-align: center;
+        border-radius: 2px;
+        top:20px;
+        margin:1%;
+        margin:1%;
+        width: 98%;
+        padding-left:10px;
+        padding-right:10px;
+        overflow: auto;
+        position: relative;
+      }
+
+      .recipientsbar{
+        align-items: flex-start !important;
+        text-align: left !important;
+        justify-content: left !important;
+      }
  
     
   @media screen and (max-width: 480px) {
@@ -858,6 +913,10 @@ button {
 button:focus {
   outline: 1px dotted;
   outline: 5px auto -webkit-focus-ring-color; }
+
+input{
+ height:30px !important;
+} 
 
 input,
 button,
@@ -5499,7 +5558,7 @@ button.bg-danger:focus {
   background-color: #ec0c38 !important; }
 
 .bg-light {
-  background-color: #adb5bd !important; }
+  background-color: rgba(0, 0, 0, 0.027) !important; }
 
 a.bg-light:hover, a.bg-light:focus,
 button.bg-light:hover,
@@ -9626,7 +9685,7 @@ button.bg-gray-dark:focus {
   background-color: #20203c !important; }
 
 .bg-light {
-  background-color: #ced4da !important; }
+  background-color: rgba(0, 0, 0, 0.027) !important; }
 
 a.bg-light:hover, a.bg-light:focus,
 button.bg-light:hover,
