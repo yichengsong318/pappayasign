@@ -22,6 +22,17 @@ require('jquery-ui/ui/widgets/sortable')
 require('jquery-ui/ui/disable-selection')
 
 class Recipients extends React.Component {
+  constructor(props) {
+		super(props);
+		this.state = {
+			isSigningOrder: false
+		}
+	}
+
+	handleSigningOrder = () => {
+		this.setState({isSigningOrder: !this.state.isSigningOrder});
+	}
+
   componentDidMount() {
     var wurl = ''
     var fileid = ''
@@ -58,9 +69,10 @@ class Recipients extends React.Component {
       var people = []
       people = DataVar.RecipientArray
       people.forEach(function (item, index) {
+        var recepientOrderLabel = '';
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="rcard"><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
+          '<div class="p-2 rcard" id="rcard">'+recepientOrderLabel+'<input class="form-control-alternative p-1 recipient-order-label" id="recipient-order" placeholder="'+(index + 1)+'" type="number" style="width:6%"/><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
           people[index].name +
           '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-email" placeholder="' +
           people[index].email +
@@ -79,6 +91,7 @@ class Recipients extends React.Component {
     })
 
     $('#append-btn').click(function () {
+      var recipientOrder = document.getElementById('recipient-input-order').value;
       var recipientName = document.getElementById('recipient-input-name').value
       var recipientEmail = document.getElementById('recipient-input-email')
         .value
@@ -87,12 +100,20 @@ class Recipients extends React.Component {
       )
       var recipientoption =
         recipientoptionselect.options[recipientoptionselect.selectedIndex].value
+      
+        if(recipientOrder == '') {
+          recipientOrder = '1';
+        }
+
+        
       if (recipientName == '' || recipientEmail == '') {
         alert('Please enter all details.')
       } else {
+        var checked = $('#signordercheck').is(':checked');
+        var recepientOrderLabel = '';
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="rcard"><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
+          '<div class="p-2 rcard" id="rcard">'+recepientOrderLabel+'<input class="form-control-alternative p-1 recipient-order-label" id="recipient-order" placeholder="'+recipientOrder+'" type="number" style="width:6%"/><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
           recipientName +
           '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-email" placeholder="' +
           recipientEmail +
@@ -100,8 +121,24 @@ class Recipients extends React.Component {
           recipientoption +
           '" type="text" disabled/><button class="buttonr delete">x</button></div>'
         $('#sortable').append(li)
-        document.getElementById('recipient-input-name').value = ''
-        document.getElementById('recipient-input-email').value = ''
+  
+        document.getElementById('recipient-input-order').value = '';
+				document.getElementById('recipient-input-name').value = '';
+				document.getElementById('recipient-input-email').value = '';
+				if(checked){
+					$('.recipient-order-label').show();
+				} else {
+					$('.recipient-order-label').hide();
+        }
+
+
+        var listItems = $("#sortable li");
+			if(listItems.length >=2 ){
+				$('#signordercheck').removeAttr('disabled');
+			}
+			$('#recipient-input-order').val(Number(listItems.length) + Number(1));
+
+
         var people = []
       var listItems = $('#sortable li')
       if (listItems.length == 0) {
@@ -136,6 +173,59 @@ class Recipients extends React.Component {
       //console.log($(this).parent().children('#recipient-name').attr("placeholder"));
     })
 
+    $('#signordercheck').attr('disabled', 'disabled');
+
+    $('#previous-btn').click(function(){
+			var url = "#/admin/uploadsuccess";
+			window.location.hash = url;
+		});
+
+		$('#signordercheck').change(function(){
+			var checked = $(this).is(':checked');
+			if(checked){
+				$('.recipient-order-label').show();
+			} else {
+				$('.recipient-order-label').hide();
+			}
+			var listItems = $("#sortable li");
+			$('#recipient-input-order').val(Number(listItems.length) + Number(1));
+    })
+    
+    $( "#sortable" ).sortable({
+          update: function( ) {
+              // do stuff
+              //console.log('update')
+              var people = []
+              var listItems = $("#sortable li");
+              listItems.each(function (index,li) {
+                //console.log(this)
+                $(this)
+                  .children('#rcard')
+                  .children('#recipient-order').attr('placeholder',index + 1);
+                var recipientN = $(this)
+                  .children('#rcard')
+                  .children('#recipient-name')
+                  .attr('placeholder')
+                console.log(recipientN)
+                var recipientE = $(this)
+                  .children('#rcard')
+                  .children('#recipient-email')
+                  .attr('placeholder')
+                var recipientO = $(this)
+                  .children('#rcard')
+                  .children('#recipient-option')
+                  .attr('placeholder')
+                people.pushWithReplace(
+                  { name: recipientN, email: recipientE, option: recipientO },
+                  'email'
+                )
+              })
+              DataVar.RecipientArray = people
+			        
+          }
+      });
+
+
     Array.prototype.pushWithReplace = function (o, k) {
       var fi = this.findIndex((f) => f[k] === o[k])
       fi != -1 ? this.splice(fi, 1, o) : this.push(o)
@@ -147,6 +237,31 @@ class Recipients extends React.Component {
       if (listItems.length == 0) {
         alert('There are no recepeints, Please add recipients')
       } else {
+        var people = []
+              listItems.each(function (index,li) {
+                //console.log(this)
+                $(this)
+                  .children('#rcard')
+                  .children('#recipient-order').attr('placeholder',index + 1);
+                var recipientN = $(this)
+                  .children('#rcard')
+                  .children('#recipient-name')
+                  .attr('placeholder')
+                console.log(recipientN)
+                var recipientE = $(this)
+                  .children('#rcard')
+                  .children('#recipient-email')
+                  .attr('placeholder')
+                var recipientO = $(this)
+                  .children('#rcard')
+                  .children('#recipient-option')
+                  .attr('placeholder')
+                people.pushWithReplace(
+                  { name: recipientN, email: recipientE, option: recipientO },
+                  'email'
+                )
+              })
+              DataVar.RecipientArray = people
         if (wurl === '') {
           if (document.getElementById('signordercheck').checked) {
             DataVar.SignOrder = true
@@ -251,74 +366,50 @@ class Recipients extends React.Component {
                       <h5>Enter Recipients: </h5>
                     </div>
                     <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <Input
-                            className="form-control-alternative"
-                            id="recipient-input-name"
-                            placeholder="Name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
+                        {this.state.isSigningOrder ? (<Col lg="1">
+                          <FormGroup><Input type="number" className="form-control-alternative" id="recipient-input-order" placeholder="#"/></FormGroup>
+                        </Col>) : (<Input type="hidden" className="form-control-alternative" id="recipient-input-order" placeholder="#"/>)}
+                        <Col lg={this.state.isSigningOrder ? '3': '4'}><FormGroup><Input className="form-control-alternative" id="recipient-input-name" placeholder="Name" type="text"/></FormGroup></Col>
+                          <Col lg="4">
+                          <FormGroup>
                           <Input
                             className="form-control-alternative"
                             id="recipient-input-email"
                             placeholder="Email Address"
                             type="email"
                           />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <select
-                            id="recipientoptionselect"
-                            className="form-control  form-control-md"
-                          >
+                          </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                          <FormGroup>
+                          <select id="recipientoptionselect" className="form-control  form-control-md" >
                             <option value="Needs to Sign">Needs to Sign</option>
                             <option value="Needs to View">Needs to View</option>
-                            <option value="Recieves a Copy">
-                              Recieves a Copy
-                            </option>
+                            <option value="Recieves a Copy">Recieves a Copy</option>
                           </select>
-                        </FormGroup>
-                      </Col>
-
-                      <Col lg="12">
-                        <div
-                          id="signordercheckdiv"
-                          className="custom-control custom-checkbox float-left mx-2 my-1"
-                        >
+                          </FormGroup>
+                          </Col>
+                          
+                          <Col lg="12">
+                          <div id="signordercheckdiv" className="custom-control custom-checkbox float-left mx-2 my-1">
                           <input
-                            className="custom-control-input"
-                            id="signordercheck"
-                            type="checkbox"
+                          className="custom-control-input"
+                          id="signordercheck"
+                          type="checkbox"
+                          onClick={this.handleSigningOrder}
+                          checked={this.state.isSigningOrder ? 'checked': ''}
                           />
-                          <label
-                            className="custom-control-label"
-                            htmlFor="signordercheck"
-                          >
+                          <label className="custom-control-label" htmlFor="signordercheck">
                             Set signing order
                           </label>
-                        </div>
-                        <Button
-                          id="s-btn"
-                          className="close-btn float-right m-2 px-5"
-                        >
-                          {' '}
-                          Next
-                        </Button>
-                        <Button
-                          id="append-btn"
-                          className="close-btn float-right m-2 px-5"
-                        >
-                          {' '}
-                          Add
-                        </Button>
-                      </Col>
-                    </Row>
+                          </div>
+                          <Button id="s-btn" className="close-btn float-right m-2 px-5" > Next</Button>
+                          <Button id="append-btn" className="close-btn float-right m-2 px-5" > Add</Button>
+                          <Button id="previous-btn" className="close-btn float-right m-2 px-5" > Back</Button>
+                          
+                          </Col>
+                          </Row>
+
                   </div>
                   <hr className="my-4" />
                   <div id="recipientdiv">

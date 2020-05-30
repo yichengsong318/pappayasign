@@ -207,6 +207,35 @@ app.post("/registerapi", function (req, res) {
 });
 
 
+app.post("/saveuserdata", function (req, res) {
+	//console.log(req.body);
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
+
+  client.connect((err) => {
+	var query = { UserID: req.body.UserID };
+    var newvalues = { $set: { 
+		UserFirstName: req.body.UserFirstName, 
+		UserLastName:req.body.UserLastName,
+		UserEmail:req.body.UserEmail,
+		UserNumber:req.body.UserNumber,
+	 } };
+    const collection = client.db("UsersDB").collection("Users");
+    //console.log(collection);
+    collection.updateOne(query, newvalues, function (err, result) {
+	  if (err) throw err;
+	  if(result){
+		res.send("settings saved");
+	  }
+      else{
+		res.send("settings not saved");
+	  }
+      client.close();
+    });
+  });
+
+});
+
+
 app.post("/resetpassword", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });

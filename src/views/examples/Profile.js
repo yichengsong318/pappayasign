@@ -1,6 +1,7 @@
 // core components
 import UserHeader from 'components/Headers/UserHeader.js'
 import React from 'react'
+import $ from 'jquery'
 // reactstrap components
 import {
   Button,
@@ -58,8 +59,10 @@ class Profile extends React.Component {
         .then(function (response) {
           console.log(response)
           if (response.data.Status === 'user found') {
-            document.getElementById('input-username').value =
+            document.getElementById('input-userfirstname').value =
               response.data.user.UserFirstName
+            document.getElementById('input-userlastname').value =
+              response.data.user.UserLastName
             document.getElementById('input-number').value =
               response.data.user.UserNumber
             document.getElementById('input-email').value =
@@ -154,6 +157,35 @@ class Profile extends React.Component {
       }
     })
 
+    $("#savesettingsbtn").on('click', function () {
+      modal[2].style.display = 'block'
+      var firstname = document.getElementById('input-userfirstname').value
+      var lastname = document.getElementById('input-userlastname').value
+      var email = document.getElementById('input-email').value
+      var number = document.getElementById('input-number').value
+
+      axios
+        .post('/saveuserdata', {
+          UserID: userid,
+          UserFirstName: firstname,
+          UserLastName: lastname,
+          UserEmail: email,
+          UserNumber: number
+        })
+        .then(function (response) {
+          console.log(response)
+          if (response.data === 'settings saved') {
+            modal[2].style.display = 'none'
+            window.location.reload(false)
+
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+          modal[2].style.display = 'none'
+        })
+    });
+
     function convertURIToImageData(URI) {
       return new Promise(function (resolve, reject) {
         if (URI == null) return reject()
@@ -234,6 +266,14 @@ class Profile extends React.Component {
               </Row>
             </div>
           </div>
+          <div className="modal">
+            <div className="modal-content">
+              <div>
+                <p>Please wait while we save your settings.</p>
+                <div className="lds-dual-ring"></div>
+              </div>
+            </div>
+          </div>
           <Row>
             <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
               <Card className="card-profile shadow">
@@ -304,19 +344,37 @@ class Profile extends React.Component {
                           <FormGroup>
                             <label
                               className="form-control-label"
-                              htmlFor="input-username"
+                              htmlFor="input-userfirstname"
                             >
-                              Username
+                              First Name
                             </label>
                             <Input
                               className="form-control-alternative"
-                              id="input-username"
-                              placeholder="Name"
+                              id="input-userfirstname"
+                              placeholder="First Name"
                               type="text"
                             />
                           </FormGroup>
                         </Col>
                         <Col lg="6">
+                        <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="input-userlastname"
+                            >
+                              Last Name
+                            </label>
+                            <Input
+                              className="form-control-alternative"
+                              id="input-userlastname"
+                              placeholder="Last Name"
+                              type="text"
+                            />
+                          </FormGroup>
+                         
+                        </Col>
+                        <Col lg="12">
+                        
                           <FormGroup>
                             <label
                               className="form-control-label"
@@ -360,6 +418,14 @@ class Profile extends React.Component {
                       </Row>
                     </div>
                   </Form>
+                  <Button
+                      className="mr-4 float-right px-4"
+                      color="primary"
+                      id="savesettingsbtn"
+                      size="sm"
+                    >
+                      Save
+                    </Button>
                 </CardBody>
               </Card>
             </Col>
