@@ -20,10 +20,48 @@ class Icons extends React.Component {
     }
 
     var userid = getCookie('uid')
+    var signfilename = ''
+    var signfileid = ''
+    var signtype = ''
+    var signuseridother = ''
+    var signkey = ''
 
     if (userid) {
       //console.log('user logged in');
       //console.log(userid);
+      try {
+        var mainurl = document.location.hash,
+          params = mainurl.split('?')[1].split('&'),
+          data = {},
+          tmp
+        for (var i = 0, l = params.length; i < l; i++) {
+          tmp = params[i].split('=')
+          data[tmp[0]] = tmp[1]
+        }
+        signfilename = data.id
+        signfileid = data.id
+        signtype = data.type
+        signuseridother = data.u
+        ////console.log(type);
+        ////console.log(userid);
+        ////console.log(useridother);
+        signfileid = data.id
+        signkey = data.key
+        // // // // // // // ////console.log('key:'+key);
+      } catch (error) {}
+
+      if (signfilename == '' || signuseridother == '') {
+
+      }else {
+        if (userid != signuseridother) {
+          document.getElementById('signtitle').innerHTML = 'Sign Document'
+          document.getElementById('headerstepwizard').style.display = 'none'
+        }else{
+          document.getElementById('signtitle').innerHTML = 'Prepare Document'
+          document.getElementById('headerstepwizard').style.display = 'block'
+        }
+      }
+
     } else {
       document.getElementById('headerstepwizard').style.display = 'none'
       // no user
@@ -101,7 +139,7 @@ class Icons extends React.Component {
 
           <Card className=" shadow mx-3">
             <CardHeader className=" bg-transparent">
-              <h3>Prepare Document</h3>
+              <h3 id="signtitle">Prepare Document</h3>
             </CardHeader>
             <CardBody>
               <PDFAnnotate />

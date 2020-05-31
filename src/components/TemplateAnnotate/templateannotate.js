@@ -318,6 +318,9 @@ toggleSignModal = () => {
     
                           document.getElementById('input-pixels-left').value = parseInt(e.target.left)
                           document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                          var select = document.getElementById('recipientselect')
+                        var recipientname = select.options[select.selectedIndex].innerHTML
+                        document.getElementById('formattingrecipientname').innerHTML = 'Currently Selected:\n'+recipientname
                         }
                           e.target.lockMovementX = false
                           e.target.lockMovementY = false
@@ -343,6 +346,9 @@ toggleSignModal = () => {
     
                             document.getElementById('input-pixels-left').value = parseInt(e.target.left)
                           document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                          var select = document.getElementById('recipientselect')
+                        var recipientname = select.options[select.selectedIndex].innerHTML
+                        document.getElementById('formattingrecipientname').innerHTML = 'Currently Selected:\n'+recipientname
                           }
                           
                           e.target.lockMovementX = false
@@ -2610,6 +2616,12 @@ toggleSignModal = () => {
                 </div>
                 <hr className="my-1" />
               </div>
+              <FormGroup className="my-1 mt-3">
+                      <div>
+                      <span id="formattingrecipientname" className="emaillabelspan py-2">
+                          </span>
+                      </div>
+                </FormGroup>
                 <FormGroup className="my-1 mt-3">
                       <div
                         id="checkdiv"

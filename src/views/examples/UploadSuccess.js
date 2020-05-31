@@ -30,8 +30,50 @@ const axios = require('axios').default
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
 class UploadSuccess extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.onFilesAdded = this.onFilesAdded.bind(this)
+  }
+
+  pdfset = 'not set';
+  pdf = null;
+
+  onFilesAdded(evt) {
+    if (this.props.disabled) return
+    const files = evt.target.files
+
+    console.log(files[0]);
+
+    var reader = new FileReader()
+    reader.readAsDataURL(files[0])
+
+    reader.onload = function () {
+      DataVar.DataURI = files[0]
+      DataVar.DataPath = reader.result
+      PreviewData.DataPath = reader.result
+      DataVar.DocName = files[0].name
+      var documentname = document.getElementById('documentname')
+      documentname.innerHTML = 'Document Name: ' + DataVar.DocName
+      global.pdfset = 'not set';
+      global.pdf = null;
+      //console.log(DataVar);
+      //$('<a href="'+url+'" target="blank"></a>')[0].click();
+    }
+
+    reader.onerror = function () {
+      //console.log(reader.error);
+      alert('Error Opening File')
+    }
+    if (this.props.onFilesAdded) {
+      const array = this.fileListToArray(files)
+      this.props.onFilesAdded(array)
+    }
+  }
+
+ 
+
   componentDidMount() {
-    var pdf = '';
     var global = this;
 
     var PDFFabric = function (
@@ -239,7 +281,7 @@ class UploadSuccess extends React.Component {
     var wdocname = ''
     var waction = ''
     var modal = document.querySelectorAll('.modal')
-    var pdfset = 'not set'
+
     
 
     try {
@@ -335,7 +377,7 @@ class UploadSuccess extends React.Component {
 
     $("#docreplacebtn").on('click', function () {
       $(".actionsign").click( function() {});
-      window.location.hash = '#/admin/startdrop'
+      document.getElementById('replaceinput').click()
     });
 
 
@@ -343,8 +385,8 @@ class UploadSuccess extends React.Component {
       modal[2].style.display = 'block'
       $(".actionsign").click( function() {});
       try {
-        if(pdfset === 'not set'){
-          pdfset = 'set';
+        if(global.pdfset === 'not set'){
+          global.pdfset = 'set';
                       global.pdf = await new PDFFabric(
                         'review-pdf-container',
                         'review-toolbar',
@@ -389,6 +431,8 @@ $(document).on('click','.actionsign', function() {
       $(this).parent().children('#dropdown')[0].style.display = 'none';
     }
   });
+
+  
 
 
   }
@@ -602,6 +646,15 @@ $(document).on('click','.actionsign', function() {
                       >
                         AddObj
                       </Button>
+                      <input
+                        ref={this.fileInputRef}
+                        className="replaceinput"
+                        id="replaceinput"
+                        type="file"
+                        hidden
+                        accept="application/pdf"
+                        onChange={this.onFilesAdded}
+                      />
                       <div
                         id="checkdiv"
                         className="custom-control custom-checkbox float-right mx-4 my-1"

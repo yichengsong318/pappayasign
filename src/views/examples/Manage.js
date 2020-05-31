@@ -690,7 +690,7 @@ class Tables extends React.Component {
                 } else if (Request[index].RecipientStatus === 'Expiring') {
                   allcontent += '<tr >'
                   allcontent += '<td><input  type="checkbox"></td>'
-                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">error</i></td>'
+                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">warning</i></td>'
                   allcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     Request[index].DocumentName +
@@ -794,8 +794,6 @@ class Tables extends React.Component {
                     if(Request[index].RecipientStatus === 'Need to Sign'){
                       admindocid = Request[index].DocumentID;
                       console.log('equal')
-                      
-
                     }
                 }
                 
@@ -1250,7 +1248,7 @@ class Tables extends React.Component {
                 } else if (data.Status == 'Expiring') {
                   expiringcontent += '<tr >'
                   expiringcontent += '<td><input  type="checkbox"></td>'
-                  expiringcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">error</i></td>'
+                  expiringcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">warning</i></td>'
                   expiringcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -1285,7 +1283,7 @@ class Tables extends React.Component {
                   sentcontent += '<tr >'
                   sentcontent +=
                     '<td><input class="primary" type="checkbox"></td>'
-                  sentcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">error</i></td>'
+                  sentcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">warning</i></td>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -1370,7 +1368,7 @@ class Tables extends React.Component {
               <button type="button" class="btn btn-primary move">Move</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
               <div class="dropdown-menu2" id="dropdown">
-              <button class="dropdown-item correct" type="button">Correct</button>
+              <button class="dropdown-item correct" type="button">Forward</button>
               <button class="dropdown-item create" type="button">Create a Copy</button>
               <button class="dropdown-item savetemplate" type="button">Save as Template</button>
               <button class="dropdown-item history" type="button">History</button>
@@ -3696,7 +3694,7 @@ class Tables extends React.Component {
                           id="expiringbtn"
                           outline
                         >
-                          <i className="material-icons">error</i>
+                          <i className="material-icons">warning</i>
                           Expiring Soon
                         </Button>
                         <Button

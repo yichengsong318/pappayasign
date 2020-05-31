@@ -368,6 +368,9 @@ toggleSignModal = () => {
   
                         document.getElementById('input-pixels-left').value = parseInt(e.target.left)
                         document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                        var select = document.getElementById('recipientselect')
+                        var recipientname = select.options[select.selectedIndex].innerHTML
+                        document.getElementById('formattingrecipientname').innerHTML = 'Currently Selected:\n'+recipientname
                       }
                         e.target.lockMovementX = false
                         e.target.lockMovementY = false
@@ -393,6 +396,9 @@ toggleSignModal = () => {
   
                           document.getElementById('input-pixels-left').value = parseInt(e.target.left)
                         document.getElementById('input-pixels-top').value = parseInt(e.target.top)
+                        var select = document.getElementById('recipientselect')
+                        var recipientname = select.options[select.selectedIndex].innerHTML
+                        document.getElementById('formattingrecipientname').innerHTML = 'Currently Selected:\n'+recipientname
                         }
                         
                         e.target.lockMovementX = false
@@ -995,16 +1001,21 @@ toggleSignModal = () => {
                             await ObjectArray.push({page:index,obj:targ})
                             //console.log(ObjectArray)
                             //console.log(ObjectArray.length)
+                            console.log(targ.type)
                             
-                            targ.selectable = true
-                            targ.hasControls = true
+                            
                             if(firstobjectkey===true){
                               firstobjectkey = false
-                              setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                              if(targ.type !=  'text'){
+                                targ.selectable = true
+                                targ.hasControls = true
+                                setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
                               global.pdf.Reload();
                               fabricObj.setActiveObject(targ);
                               $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
                               window.scrollTo(0, targ.top);
+                              }
+                              
                               
                             }
                             
@@ -2170,6 +2181,9 @@ toggleSignModal = () => {
         }
       })
 
+      
+
+
     document.addEventListener('mousemove', function (e) {
       $('#dragabbleImageSign').css({
         left: e.clientX - 200,
@@ -2204,7 +2218,22 @@ toggleSignModal = () => {
     $('#dragabbleImageText').hide()
     $('#dragabbleImageInitial').hide()
 
-    recipientcolor = '#bdbdbd'
+    try {
+      var people = []
+      people = DataVar.RecipientArray
+      if(people.length == 1){
+        if(people[0].email != email){
+          recipientcolor = '#E6EE9C'
+        }
+
+      }else{
+        recipientcolor = '#bdbdbd'
+      }
+    } catch (error) {
+      recipientcolor = '#bdbdbd'
+    }
+
+    //recipientcolor = '#bdbdbd'
 
     document.getElementById(
       'dragabbleImageSign'
@@ -2940,12 +2969,33 @@ toggleSignModal = () => {
           }
         ////console.log(userid);
         ////console.log(email);
+        try {
+          var people = []
+          people = DataVar.RecipientArray
+          if(people.length == 1){
+            if(people[0].email != email){
+              var optiondefault = document.createElement('option')
+              optiondefault.value = email
+              optiondefault.style.backgroundColor = '#bdbdbd'
+              optiondefault.innerHTML = 'Default(Me)'
+              $('#recipientselect').append(optiondefault)
+            }
 
-        var optiondefault = document.createElement('option')
-        optiondefault.value = email
-        optiondefault.style.backgroundColor = '#bdbdbd'
-        optiondefault.innerHTML = 'Default(Me)'
-        $('#recipientselect').append(optiondefault)
+          }else{
+            var optiondefault = document.createElement('option')
+            optiondefault.value = email
+            optiondefault.style.backgroundColor = '#bdbdbd'
+            optiondefault.innerHTML = 'Default(Me)'
+            $('#recipientselect').append(optiondefault)
+          }
+        } catch (error) {
+          var optiondefault = document.createElement('option')
+            optiondefault.value = email
+            optiondefault.style.backgroundColor = '#bdbdbd'
+            optiondefault.innerHTML = 'Default(Me)'
+            $('#recipientselect').append(optiondefault)
+        }
+        
 
         try {
           axios
@@ -3476,6 +3526,7 @@ toggleSignModal = () => {
           }
         } else {
           if (userid != useridother) {
+            console.log('userid not equal')
             try {
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
@@ -3498,11 +3549,10 @@ toggleSignModal = () => {
               document.getElementById('initialbtn').style.display = 'none'
               document.getElementById('recipientselect').style.display = 'none'
               document.getElementById('fieldscolumn').style.display = 'none'
-              document.getElementById('recipientscolumn').style.display = 'none'
-
+              console.log('key nahi hai')
               if (key != '') {
+                console.log('key hai')
                 var today = new Date().toLocaleString().replace(',', '')
-              
 
                 axios
                   .post('/getReciever', {
@@ -3534,6 +3584,7 @@ toggleSignModal = () => {
                       grabbedcolor = recievers[key].RecipientColor
                       remail = recievers[key].RecipientEmail
                       email = recievers[key].RecipientEmail
+                      console.log(grabbedcolor)
 
                       axios
                       .post('/posthistory', {
@@ -3574,6 +3625,7 @@ toggleSignModal = () => {
                         ', ' +
                         hexToRgb(grabbedcolor).b
                       recipientrgbval = 'rgb(' + rgbval + ')'
+                      console.log(recipientrgbval)
                     }
                   })
                   .catch(function (error) {
@@ -3588,9 +3640,10 @@ toggleSignModal = () => {
               document.getElementById('moreoptions').style.display = 'none'
             } catch (error) {}
 
-            owner = 'notadmin'
 
-            axios
+            owner = 'notadmin'
+            if (key != '') {
+              axios
               .post('/getReciever', {
                 DocumentID: fileid,
                 Owner: useridother
@@ -3609,6 +3662,8 @@ toggleSignModal = () => {
               .catch(function (error) {
                 console.log(error)
               })
+            }
+            
           }
 
           axios
@@ -3999,10 +4054,10 @@ $(document).on('click','.actionsign', function() {
                 </div>
                 <hr className="my-1" />
               </div>
-              <button id="signaturebtn" color="neutral" className="tool">
+              <button id="signaturebtn" color="neutral" className="tool dragabbleItem">
                 <i className="material-icons">gesture</i>Signature
               </button>
-              <button id="imagebtn" color="neutral" className="tool">
+              <button id="imagebtn" color="neutral" className="tool dragabbleItem">
                 <i className="material-icons">image</i>Image
               </button>
               <button id="datebtn" color="neutral" className="tool">
@@ -4020,7 +4075,7 @@ $(document).on('click','.actionsign', function() {
               <button id="rectanglebtn" color="neutral" className="tool">
                 <i className="material-icons">crop_din</i>Rectangle
               </button>
-              <button id="initialbtn" color="neutral" className="tool">
+              <button id="initialbtn" color="neutral" className="tool dragabbleItem">
                 <i className="material-icons">text_format</i>Initial
               </button>
               <button id="namebtn" color="neutral" className="tool">
@@ -4128,6 +4183,12 @@ $(document).on('click','.actionsign', function() {
                 </div>
                 <hr className="my-1" />
               </div>
+              <FormGroup className="my-1 mt-3">
+                      <div>
+                      <span id="formattingrecipientname" className="emaillabelspan py-2">
+                          </span>
+                      </div>
+                </FormGroup>
                 <FormGroup className="my-1 mt-3">
                       <div
                         id="checkdiv"
