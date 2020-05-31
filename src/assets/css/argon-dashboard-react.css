@@ -450,6 +450,35 @@ border-radius: 20px !important;
     background-color: #afafaf;
   }
 
+  .manage-pdf-open-btn{
+    height: 130px;
+    margin-left: 150px;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: rgb(93, 93, 93);
+    background-color: #dbdbdb;
+    position: absolute;
+    border-radius: 15px;
+    font-size: 40px !important;
+    margin-top: -150px !important;
+    border: 1px solid #dbdbdb;
+    box-shadow: 2px 4px;
+  }
+
+  .manage-pdf-open-btn .material-icons{
+    font-size: 60px !important;
+    color: rgb(93, 93, 93);
+  }
+
+  .manage-pdf-open-btn:hover .material-icons{
+    color: #000;
+  }
+
+
+  .manage-pdf-open-btn:hover{
+    background-color: #afafaf;
+  }
+
   #manage-container {
     text-align: center;
     border: 1px solid rgba(0, 0, 0, 0.1);

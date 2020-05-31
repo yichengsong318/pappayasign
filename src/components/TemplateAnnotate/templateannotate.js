@@ -2216,6 +2216,20 @@ toggleSignModal = () => {
       }, 1000);
     });
 
+    $(document).on('click', '.thumb-pdf-canvas', function () {
+      //console.log($(".manage-pdf-download-btn").index(this));
+      console.log('clicked')
+      var index = $(".thumb-pdf-canvas").index(this);
+      console.log(index)
+      //console.log($(".pdf-canvas").eq(index))
+      //console.log($(".pdf-canvas")[index])
+      //$(".pdf-canvas").eq(index).scrollTop();
+      //$('#pdf-container').scrollTo(500);
+      console.log($(".upper-canvas"))
+      $(".upper-canvas")[index].scrollIntoView();
+      
+    });
+
 
     $('#requiredcheck').change(function () {
       if (this.checked) {
@@ -2341,6 +2355,10 @@ toggleSignModal = () => {
         formattingobject.set("fontFamily", this.value);
         global.pdf.Reload();
     };
+
+    
+
+    
 
     
   }

@@ -160,9 +160,16 @@ class Tables extends React.Component {
               btn.className = 'manage-pdf-download-btn'
 
               btn.innerHTML='<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
+
+              var openbtn = document.createElement("BUTTON");
+
+              openbtn.className = 'manage-pdf-open-btn'
+
+              openbtn.innerHTML='<i class="material-icons manage-pdf-open-btn-icon">open_with</i>';
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
                 document.getElementById(inst.container_id).appendChild(btn)
+                document.getElementById(inst.container_id).appendChild(openbtn)
               } catch (error) {}
               canvas.className = 'manage-pdf-canvas'
               canvas.height = viewport.height
@@ -333,6 +340,24 @@ class Tables extends React.Component {
       })
       console.log('pdf printed')
       window.open(doc.output('bloburl'), '_blank');
+      //window.location.reload(false)
+      modal[0].style.display = 'none'
+      
+    }
+
+    PDFFabric.prototype.OpenIndividual = function (fabricindex) {
+      var inst = this
+      var doc = new jsPDF()
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        if (index != 0) {
+          doc.addPage()
+          doc.setPage(index + 1)
+        }
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      })
+      console.log('pdf printed')
+      var index = parseInt(fabricindex)+1
+      window.open(doc.output('bloburl') + '#page='+ index , '_blank');
       //window.location.reload(false)
       modal[0].style.display = 'none'
       
@@ -1477,6 +1502,20 @@ class Tables extends React.Component {
       setTimeout(function(){ 
         global.pdf.DownloadIndividual(index);
       }, 1000);
+    });
+
+    $(document).on('click', '.manage-pdf-open-btn', function () {
+      var index = $(".manage-pdf-open-btn").index(this);
+      try {
+        modal[0].style.display = 'block'
+        setTimeout(function(){ 
+          global.pdf.OpenIndividual(index);
+        }, 1000);
+      } catch (error) {
+        
+      }
+      
+      
     });
 
     $(document).on('click', '.rowselect', function () {

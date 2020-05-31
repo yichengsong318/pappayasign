@@ -160,9 +160,11 @@ toggleSignModal = () => {
     var initialimage = ''
     var username = ''
     var usertitle = ''
-    var ownerasreciever = false;
-    var formattingobject = '';
-    var formattingobjectbg = '';
+    var ownerasreciever = false
+    var formattingobject = ''
+    var formattingobjectbg = ''
+    var ObjectArray = []
+    var ObjectArrayIndex = 0
     modal[0].style.display = 'block'
 
     var PDFAnnotate = function (
@@ -502,10 +504,32 @@ toggleSignModal = () => {
                           global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
                           global.pdf.Reload();
+                          
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
+                          
                         }
                         else {
                           global.toggleInitialModal();
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
                           //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                         }
                       }
@@ -520,10 +544,30 @@ toggleSignModal = () => {
                           global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
                           global.pdf.Reload();
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
                         }
                         else {
                           global.toggleSignModal();
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
                           //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                         }
                       }
@@ -535,10 +579,30 @@ toggleSignModal = () => {
                         if(obj.text === 'Name'){
                           obj.set('text',username);
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
                         }
                         else if(obj.text === 'Title'){
                           obj.set('text',usertitle);
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
                         }
                         else if(obj.text === 'Date Signed'){
                           var today = new Date()
@@ -549,6 +613,16 @@ toggleSignModal = () => {
                           today = mm + '/' + dd + '/' + yyyy
                           obj.set('text',today);
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          if(ObjectArrayIndex < ObjectArray.length - 1){
+                            ObjectArrayIndex = ObjectArrayIndex + 1;
+                          var page = ObjectArray[ObjectArrayIndex].page
+                          var nextobj = ObjectArray[ObjectArrayIndex].obj
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                          global.pdf.Reload();
+                          inst.fabricObjects[page].setActiveObject(nextobj);
+                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                          window.scrollTo(0, nextobj.top);
+                          }
                         }
                         
                       }
@@ -901,20 +975,43 @@ toggleSignModal = () => {
                     signorderval = response.data.SignOrder;
                     console.log(signorderval);
                     var DocumentData = response.data.Data;
-                    $.each(inst.fabricObjects, function (index, fabricObj) {
+                    var firstobjectkey = true;
+                    $.each(inst.fabricObjects,async function (index, fabricObj) {
                       ////console.log(index);
                    
-                      fabricObj.loadFromJSON(DocumentData[index], function () {
+                      fabricObj.loadFromJSON(DocumentData[index],async function () {
                         fabricObj.renderAll()
                         fabricObj.trigger('mouse:up', {
                           pageX: 700,
                           pageY: 400,
                         })
-                        fabricObj.getObjects().forEach(function (targ) {
+                        await fabricObj.getObjects().forEach(async function (targ) {
                           ////console.log(targ);
                           
                           targ.selectable = false
                           targ.hasControls = false
+                          //console.log(targ)
+                          if (targ.backgroundColor === recipientrgbval) {
+                            await ObjectArray.push({page:index,obj:targ})
+                            //console.log(ObjectArray)
+                            //console.log(ObjectArray.length)
+                            
+                            targ.selectable = true
+                            targ.hasControls = true
+                            if(firstobjectkey===true){
+                              firstobjectkey = false
+                              setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
+                              global.pdf.Reload();
+                              fabricObj.setActiveObject(targ);
+                              $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
+                              window.scrollTo(0, targ.top);
+                              
+                            }
+                            
+                            //console.log(ObjectArray)
+                            ////console.log(count);
+                          }
+
                         })
                         modal[0].style.display = 'none'
                       })
@@ -3056,6 +3153,7 @@ toggleSignModal = () => {
 
             if (action === 'correct') {
               try {
+                owner = 'admin'
                 action = 'create'
                 var people = []
                 people = DataVar.RecipientArray
@@ -3071,6 +3169,7 @@ toggleSignModal = () => {
               } catch (error) {}
             } else if (action === 'create') {
               try {
+                owner = 'admin'
                 action = 'create'
                 document.getElementById('recieverfinishbtn').style.display =
                   'none'
@@ -3222,6 +3321,7 @@ toggleSignModal = () => {
 
             if (action === 'correct') {
               try {
+                owner = 'admin'
                 action = 'correct'
                 var people = []
                 people = DataVar.RecipientArray
@@ -3238,6 +3338,7 @@ toggleSignModal = () => {
               } catch (error) {}
             } else if (action === 'create') {
               try {
+                owner = 'admin'
                 action = 'create'
                 var people = []
                 people = DataVar.RecipientArray
@@ -3654,6 +3755,23 @@ toggleSignModal = () => {
         global.pdf.DownloadIndividual(index);
       }, 1000);
     });
+
+    $(document).on('click', '.thumb-pdf-canvas', function () {
+      //console.log($(".manage-pdf-download-btn").index(this));
+      //console.log('clicked')
+      var index = $(".thumb-pdf-canvas").index(this);
+      console.log(index)
+      //console.log($(".pdf-canvas").eq(index))
+      //console.log($(".pdf-canvas")[index])
+      //$(".pdf-canvas").eq(index).scrollTop();
+      //$('#pdf-container').scrollTo(500);
+      console.log($(".upper-canvas"))
+      $(".upper-canvas")[index].scrollIntoView();
+      
+    });
+
+
+    
 
     
 
