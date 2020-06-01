@@ -16,13 +16,14 @@ import {
 // reactstrap components
 import Dropzone from '../components/Dropzone/Dropzone'
 
+
 const axios = require('axios').default
 
 class Index extends React.Component {
   componentDidMount() {
     var ip ='';
     axios
-    .post('/getip', {
+        .post(''+'http://localhost:8080'+'/getip', {
     })
     .then(function (response) {
       console.log(response)
@@ -103,7 +104,7 @@ class Index extends React.Component {
 
       try {
         axios
-          .post('/getuserdata', {
+        .post(''+'http://localhost:8080'+'/getuserdata', {
             UserID: userid,
           })
           .then(function (response) {
@@ -123,8 +124,8 @@ class Index extends React.Component {
             console.log(error)
           })
 
-        axios
-          .post('/getmanagedocdata', {
+          axios
+          .post(''+'http://localhost:8080'+'/getmanagedocdata', {
             UserID: userid,
           })
           .then(function (response) {

@@ -47,7 +47,7 @@ class Templates extends React.Component {
 
       try {
         axios
-          .post('/getmanagetemplatedata', {
+        .post(''+'http://localhost:8080'+'/getmanagetemplatedata', {
             UserID: userid,
           })
           .then(function (response) {

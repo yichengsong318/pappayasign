@@ -225,7 +225,7 @@ toggleSignModal = () => {
 
           fabricObj.on('object:selected', function (e) {
             e.target.transparentCorners = false
-            e.target.borderColor = '#cccccc'
+            e.target.borderColor = '#626262'
             e.target.cornerColor = '#d35400'
             e.target.minScaleLimit = 2
             e.target.cornerStrokeColor = '#d35400'
@@ -847,7 +847,7 @@ toggleSignModal = () => {
               console.log(fileid)
               // // // // // // // ////console.log('file id found');
               axios
-                .post('/gettemplatedata', {
+        .post(''+'http://localhost:8080'+'/gettemplatedata', {
                   TemplateID: fileid,
                   Owner: useridother
                 })
@@ -1051,7 +1051,7 @@ toggleSignModal = () => {
       }
 
       axios
-        .post('/templateupload', {
+        .post(''+'http://localhost:8080'+'/templateupload', {
           UserID: userid,
           filename: filename,
           filedata: TemplateDataVar.TemplateDataPath,
@@ -1081,7 +1081,7 @@ toggleSignModal = () => {
             })
 
             axios
-              .post('/addtemplatedata', {
+        .post(''+'http://localhost:8080'+'/addtemplatedata', {
                 TemplateName: inst.filename,
                 TemplateID: filename,
                 OwnerEmail: email,
@@ -1128,7 +1128,7 @@ toggleSignModal = () => {
                   })
 
                   axios
-                    .post('/addtemplatereciever', {
+        .post(''+'http://localhost:8080'+'/addtemplatereciever', {
                       Status: 'Waiting for Others',
                       TemplateID: filename,
                       DateSent: today,
@@ -1188,7 +1188,7 @@ toggleSignModal = () => {
         
 
         axios
-          .post('/templateupload', {
+        .post(''+'http://localhost:8080'+'/templateupload', {
             UserID: userid,
             filename: filename,
             filedata: TemplateDataVar.TemplateDataPath,
@@ -1210,7 +1210,7 @@ toggleSignModal = () => {
               
 
               axios
-                .post('/addtemplatedata', {
+        .post(''+'http://localhost:8080'+'/addtemplatedata', {
                   TemplateName: TemplateDataVar.TemplateDocName,
                   TemplateID: filename,
                   OwnerEmail: email,
@@ -1259,7 +1259,7 @@ toggleSignModal = () => {
                   })
 
                   axios
-                    .post('/addtemplatereciever', {
+                  .post(''+'http://localhost:8080'+'/addtemplatereciever', {
                       Status: 'Waiting for Others',
                       TemplateID: filename,
                       DateSent: today,
@@ -2005,7 +2005,7 @@ toggleSignModal = () => {
 
         try {
           axios
-            .post('/getuserdata', {
+        .post(''+'http://localhost:8080'+'/getuserdata', {
               UserID: userid,
             })
             .then(function (response) {
@@ -2097,7 +2097,7 @@ toggleSignModal = () => {
           document.getElementById('saveastemplatebtn').style.display = 'block'
         } catch (error) {}
         axios
-            .post('/templatedownload', {
+        .post(''+'http://localhost:8080'+'/templatedownload', {
               UserID: useridother,
               filename: filename,
             })

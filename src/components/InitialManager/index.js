@@ -123,8 +123,8 @@ class InitialManager extends Component {
             var email = getCookie('useremail')
       
             try {
-              axios
-                .post('/getuserdata', {
+                axios
+                .post(''+'http://localhost:8080'+'/getuserdata', {
                   UserID: userid,
                 })
                 .then((response) => {

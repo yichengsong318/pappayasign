@@ -736,7 +736,7 @@ class Signature extends React.Component {
           var signid = randomString(20)
 
           axios
-            .post('/signature', {
+        .post(''+'http://localhost:8080'+'/signature', {
               SignID: signid,
               UserID: userid,
               SignImage: dataURL,

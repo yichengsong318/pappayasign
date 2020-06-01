@@ -26,7 +26,7 @@ class UserHeader extends React.Component {
       var email = getCookie('useremail')
 
       axios
-        .post('/getuserdata', {
+        .post(''+'http://localhost:8080'+'/getuserdata', {
           UserID: userid,
         })
         .then(function (response) {
