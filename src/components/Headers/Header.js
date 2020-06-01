@@ -59,7 +59,7 @@ class Header extends React.Component {
 
       try {
         axios
-          .post('/getuserdata', {
+          .post('/api/getuserdata', {
             UserID: userid,
           })
           .then((response) => {
@@ -124,7 +124,7 @@ onSave = async (result) => {
           signid.innerHTML = signidtext
       
           axios
-            .post('/signature', {
+            .post('/api/signature', {
               SignID: signidtext,
               UserID: user.UserID,
               SignImage: result.signature,

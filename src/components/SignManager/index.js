@@ -129,7 +129,7 @@ class SignManager extends Component {
       
             try {
               axios
-                .post('/getuserdata', {
+                .post('/api/getuserdata', {
                   UserID: userid,
                 })
                 .then((response) => {

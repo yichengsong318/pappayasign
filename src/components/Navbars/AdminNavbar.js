@@ -40,7 +40,7 @@ class AdminNavbar extends React.Component {
       var email = getCookie('useremail')
 
       axios
-        .post('/getuserdata', {
+        .post('/api/getuserdata', {
           UserID: userid,
         })
         .then(function (response) {

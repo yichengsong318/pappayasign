@@ -53,7 +53,7 @@ class Profile extends React.Component {
       }
 
       axios
-        .post('/getuserdata', {
+        .post('/api/getuserdata', {
           UserID: userid,
         })
         .then(function (response) {
@@ -143,7 +143,7 @@ class Profile extends React.Component {
         alert('No Image Selected')
       } else {
         axios
-          .post('/profilepic', {
+          .post('/api/profilepic', {
             UserID: userid,
             ProfileImage: URI,
           })
@@ -165,7 +165,7 @@ class Profile extends React.Component {
       var number = document.getElementById('input-number').value
 
       axios
-        .post('/saveuserdata', {
+        .post('/api/saveuserdata', {
           UserID: userid,
           UserFirstName: firstname,
           UserLastName: lastname,

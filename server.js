@@ -25,7 +25,26 @@ var down_name
 
 app.use(upload());
 
-app.use(cors());
+//app.use(cors());
+var enableCORS = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, token, Content-Length, X-Requested-With, *');
+  if ('OPTIONS' === req.method) {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+};
+app.all("/*", function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, token, Content-Length, X-Requested-With, *');
+  next();
+});
+app.use(enableCORS);
+
+
 
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
@@ -54,12 +73,12 @@ const uri =
 
 /////////////////////////////////////Common Functions//////////////////////////////////////////////
 
-app.post("/getip", function (req, res) {
+app.post("/api/getip", function (req, res) {
 	var ip = req.ip;
 	res.send(ip);
 });
 
-app.post('/upload',function(req,res){
+app.post('/api/upload',function(req,res){
 	//console.log(req.body.files);
 	if(req.body.files){
 		var First_name = 'default';
@@ -87,7 +106,7 @@ app.post('/upload',function(req,res){
   });
 
 
-app.post("/loginapi", function (req, res) {
+app.post("/api/loginapi", function (req, res) {
 
 
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
@@ -153,7 +172,7 @@ app.post("/loginapi", function (req, res) {
   });
 });
 
-app.post("/registerapi", function (req, res) {
+app.post("/api/registerapi", function (req, res) {
 	//console.log(req.body);
 	bcrypt.hash(req.body.UserPassword, salt, (bcrypterr, encrypted) => {
 		req.body.UserPassword = encrypted
@@ -207,7 +226,7 @@ app.post("/registerapi", function (req, res) {
 });
 
 
-app.post("/saveuserdata", function (req, res) {
+app.post("/api/saveuserdata", function (req, res) {
 	//console.log(req.body);
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
 
@@ -236,7 +255,7 @@ app.post("/saveuserdata", function (req, res) {
 });
 
 
-app.post("/resetpassword", function (req, res) {
+app.post("/api/resetpassword", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -257,7 +276,7 @@ app.post("/resetpassword", function (req, res) {
 	});
   });
 
-app.post("/activate", function (req, res) {
+app.post("/api/activate", function (req, res) {
   //console.log(req);
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
 
@@ -275,7 +294,7 @@ app.post("/activate", function (req, res) {
   });
 });
 
-app.post("/signature", function (req, res) {
+app.post("/api/signature", function (req, res) {
   //console.log(req);
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
 
@@ -304,7 +323,7 @@ app.post("/signature", function (req, res) {
   });
 });
 
-app.post("/profilepic", function (req, res) {
+app.post("/api/profilepic", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -330,7 +349,7 @@ app.post("/profilepic", function (req, res) {
 /////////////////////////////////////Document/Envelope Functions//////////////////////////////////////////////
 
 
-app.post("/adddocumentdata", function (req, res) {
+app.post("/api/adddocumentdata", function (req, res) {
 	//console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -403,7 +422,7 @@ app.post("/adddocumentdata", function (req, res) {
 });
 
 
-app.post("/updatedocumentdata", function (req, res) {
+app.post("/api/updatedocumentdata", function (req, res) {
 	//console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -435,7 +454,7 @@ app.post("/updatedocumentdata", function (req, res) {
   });
 });
 
-app.post("/updatedocumentstatus", function (req, res) {
+app.post("/api/updatedocumentstatus", function (req, res) {
 	//console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -465,7 +484,7 @@ app.post("/updatedocumentstatus", function (req, res) {
   });
 });
 
-app.post("/updaterecieverdata", function (req, res) {
+app.post("/api/updaterecieverdata", function (req, res) {
 	//console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -494,7 +513,7 @@ app.post("/updaterecieverdata", function (req, res) {
   });
 });
 
-app.post("/updaterequestdata", function (req, res) {
+app.post("/api/updaterequestdata", function (req, res) {
 	//console.log(req);
 	var query = { UserID: req.body.UserID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -523,7 +542,7 @@ app.post("/updaterequestdata", function (req, res) {
   });
 });
 
-app.post("/getdocdata", function (req, res) {
+app.post("/api/getdocdata", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -557,7 +576,7 @@ app.post("/getdocdata", function (req, res) {
 
 
 
-app.post("/addreciever", function (req, res) {
+app.post("/api/addreciever", function (req, res) {
 	//console.log(req);
 	var query = { DocumentID: req.body.DocumentID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -590,7 +609,7 @@ app.post("/addreciever", function (req, res) {
   });
 });
 
-app.post("/getReciever", function (req, res) {
+app.post("/api/getReciever", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -623,7 +642,7 @@ app.post("/getReciever", function (req, res) {
 	});
   });
 
-  app.post("/getRequests", function (req, res) {
+  app.post("/api/getRequests", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -653,7 +672,7 @@ app.post("/getReciever", function (req, res) {
   });
 
 
-app.post("/getrequestuser", function (req, res) {
+app.post("/api/getrequestuser", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -683,7 +702,7 @@ app.post("/getrequestuser", function (req, res) {
   });
 
 
-  app.post("/postrequest", function (req, res) {
+  app.post("/api/postrequest", function (req, res) {
 	//console.log(req);
 	var query = { 
 		UserID: req.body.UserID
@@ -744,7 +763,7 @@ app.post("/getrequestuser", function (req, res) {
 
 
 
-  app.post("/getuserdata", function (req, res) {
+  app.post("/api/getuserdata", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -773,7 +792,7 @@ app.post("/getrequestuser", function (req, res) {
 	});
   });
 
-  app.post("/getmanagedocdata", function (req, res) {
+  app.post("/api/getmanagedocdata", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -803,7 +822,7 @@ app.post("/getrequestuser", function (req, res) {
   });
 
 
-  app.post("/getmanagetemplatedata", function (req, res) {
+  app.post("/api/getmanagetemplatedata", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -834,7 +853,7 @@ app.post("/getrequestuser", function (req, res) {
 
 /////////////////////////////////////Template Functions//////////////////////////////////////////////
 
-  app.post("/addtemplatedata", function (req, res) {
+  app.post("/api/addtemplatedata", function (req, res) {
 	//console.log(req);
 	var query = { TemplateID: req.body.TemplateID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -902,7 +921,7 @@ app.post("/getrequestuser", function (req, res) {
 });
 
 
-  app.post("/gettemplatedata", function (req, res) {
+  app.post("/api/gettemplatedata", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   
@@ -932,7 +951,7 @@ app.post("/getrequestuser", function (req, res) {
   });
 
 
-  app.post("/addtemplatereciever", function (req, res) {
+  app.post("/api/addtemplatereciever", function (req, res) {
 	//console.log(req);
 	var query = { TemplateID: req.body.TemplateID };
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -970,7 +989,7 @@ app.post("/getrequestuser", function (req, res) {
 /////////////////////////////////////Mail/Nodemailer Functions//////////////////////////////////////////////
 
 
-app.post("/sendmail", function (req, res) {
+app.post("/api/sendmail", function (req, res) {
   //console.log("req.body.to is " + req.body.to);
   //console.log("req.body.subject is " + req.body.subject);
   // setup e-mail data with unicode symbols
@@ -991,7 +1010,7 @@ app.post("/sendmail", function (req, res) {
   });
 });
 
-app.post("/sendmailattachments", function (req, res) {
+app.post("/api/sendmailattachments", function (req, res) {
   //console.log("req.body.to is " + req.body.to);
   //console.log("req.body.subject is " + req.body.subject);
   // setup e-mail data with unicode symbols
@@ -1016,7 +1035,7 @@ app.post("/sendmailattachments", function (req, res) {
 
 /////////////////////////////////////S3 Storage Functions//////////////////////////////////////////////
 
-app.post("/docupload", function (req, res) {
+app.post("/api/docupload", function (req, res) {
 	//console.log(req);
 	var key = ''+req.body.UserID+'/Documents/'+req.body.filename+'.pdf';
 	try {
@@ -1047,7 +1066,7 @@ app.post("/docupload", function (req, res) {
   
 
 
-  app.post("/templateupload", function (req, res) {
+  app.post("/api/templateupload", function (req, res) {
 	//console.log(req);
 	var key = ''+req.body.UserID+'/Templates/'+req.body.filename+'.pdf';
 	try {
@@ -1076,7 +1095,7 @@ app.post("/docupload", function (req, res) {
 
 
 
-  app.post("/docdownload", function (req, res) {
+  app.post("/api/docdownload", function (req, res) {
 	//console.log(req);
 	var key = ''+req.body.UserID+'/Documents/'+req.body.filename+'.pdf';
 
@@ -1100,7 +1119,7 @@ app.post("/docupload", function (req, res) {
 	  });
   });
 
-  app.post("/templatedownload", function (req, res) {
+  app.post("/api/templatedownload", function (req, res) {
 	//console.log(req);
 	var key = ''+req.body.UserID+'/Templates/'+req.body.filename+'.pdf';
 
@@ -1194,7 +1213,7 @@ async function setExpiry(Reciever, UserID, DocumentID){
 				
   }
 
-app.post("/expiry", function (req, res) {
+app.post("/api/expiry", function (req, res) {
 	var day = parseInt(req.body.day);
 	var month = parseInt(req.body.month);
 	var year = parseInt(req.body.year);
@@ -1267,7 +1286,7 @@ app.post("/expiry", function (req, res) {
   }
 
 
-  app.post("/reminder", function (req, res) {
+  app.post("/api/reminder", function (req, res) {
 	  var date = parseInt(req.body.date);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  } );
 	client.connect((err) => {
@@ -1307,7 +1326,7 @@ app.post("/expiry", function (req, res) {
 
 ////////////////////////////////////////History Functions////////////////////////////////////////////////
 
-app.post("/posthistory", function (req, res) {
+app.post("/api/posthistory", function (req, res) {
 	//console.log(req);
 	var query = { 
 		DocumentID: req.body.DocumentID
@@ -1363,7 +1382,7 @@ app.post("/posthistory", function (req, res) {
 });
 
 
-app.post("/gethistory", function (req, res) {
+app.post("/api/gethistory", function (req, res) {
 	//console.log(req);
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
   

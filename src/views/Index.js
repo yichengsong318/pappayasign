@@ -22,7 +22,7 @@ class Index extends React.Component {
   componentDidMount() {
     var ip ='';
     axios
-    .post('/getip', {
+    .post('/api/getip', {
     })
     .then(function (response) {
       console.log(response)
@@ -103,7 +103,7 @@ class Index extends React.Component {
 
       try {
         axios
-          .post('/getuserdata', {
+          .post('/api/getuserdata', {
             UserID: userid,
           })
           .then(function (response) {
@@ -124,7 +124,7 @@ class Index extends React.Component {
           })
 
         axios
-          .post('/getmanagedocdata', {
+          .post('/api/getmanagedocdata', {
             UserID: userid,
           })
           .then(function (response) {

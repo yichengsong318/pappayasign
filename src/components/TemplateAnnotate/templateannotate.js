@@ -847,7 +847,7 @@ toggleSignModal = () => {
               console.log(fileid)
               // // // // // // // ////console.log('file id found');
               axios
-                .post('/gettemplatedata', {
+                .post('/api/gettemplatedata', {
                   TemplateID: fileid,
                   Owner: useridother
                 })
@@ -1051,7 +1051,7 @@ toggleSignModal = () => {
       }
 
       axios
-        .post('/templateupload', {
+        .post('/api/templateupload', {
           UserID: userid,
           filename: filename,
           filedata: TemplateDataVar.TemplateDataPath,
@@ -1081,7 +1081,7 @@ toggleSignModal = () => {
             })
 
             axios
-              .post('/addtemplatedata', {
+              .post('/api/addtemplatedata', {
                 TemplateName: inst.filename,
                 TemplateID: filename,
                 OwnerEmail: email,
@@ -1128,7 +1128,7 @@ toggleSignModal = () => {
                   })
 
                   axios
-                    .post('/addtemplatereciever', {
+                    .post('/api/addtemplatereciever', {
                       Status: 'Waiting for Others',
                       TemplateID: filename,
                       DateSent: today,
@@ -1188,7 +1188,7 @@ toggleSignModal = () => {
         
 
         axios
-          .post('/templateupload', {
+          .post('/api/templateupload', {
             UserID: userid,
             filename: filename,
             filedata: TemplateDataVar.TemplateDataPath,
@@ -1210,7 +1210,7 @@ toggleSignModal = () => {
               
 
               axios
-                .post('/addtemplatedata', {
+                .post('/api/addtemplatedata', {
                   TemplateName: TemplateDataVar.TemplateDocName,
                   TemplateID: filename,
                   OwnerEmail: email,
@@ -1259,7 +1259,7 @@ toggleSignModal = () => {
                   })
 
                   axios
-                    .post('/addtemplatereciever', {
+                    .post('/api/addtemplatereciever', {
                       Status: 'Waiting for Others',
                       TemplateID: filename,
                       DateSent: today,
@@ -2005,7 +2005,7 @@ toggleSignModal = () => {
 
         try {
           axios
-            .post('/getuserdata', {
+            .post('/api/getuserdata', {
               UserID: userid,
             })
             .then(function (response) {
@@ -2097,7 +2097,7 @@ toggleSignModal = () => {
           document.getElementById('saveastemplatebtn').style.display = 'block'
         } catch (error) {}
         axios
-            .post('/templatedownload', {
+            .post('/api/templatedownload', {
               UserID: useridother,
               filename: filename,
             })
