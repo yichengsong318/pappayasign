@@ -191,7 +191,7 @@ class Login extends React.Component {
       // [START authwithemail]
       document.getElementById('loginerrorspan').innerHTML = 'Please wait'
       axios
-        .post(''+'http://localhost:8080'+'/loginapi', {
+        .post('/loginapi', {
           UserEmail: email,
           UserPassword: password,
         })

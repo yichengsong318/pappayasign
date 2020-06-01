@@ -128,8 +128,8 @@ class SignManager extends Component {
             var email = getCookie('useremail')
       
             try {
-                axios
-                .post(''+'http://localhost:8080'+'/getuserdata', {
+              axios
+                .post('/getuserdata', {
                   UserID: userid,
                 })
                 .then((response) => {

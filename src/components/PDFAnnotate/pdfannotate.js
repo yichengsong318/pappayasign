@@ -102,7 +102,7 @@ toggleSignModal = () => {
 
     var ip ='';
     axios
-        .post(''+'http://localhost:8080'+'/getip', {
+    .post('/getip', {
     })
     .then(function (response) {
       console.log(response)
@@ -275,7 +275,7 @@ toggleSignModal = () => {
 
           fabricObj.on('object:selected', function (e) {
             e.target.transparentCorners = false
-            e.target.borderColor = '#626262'
+            e.target.borderColor = '#cccccc'
             e.target.cornerColor = '#d35400'
             e.target.minScaleLimit = 2
             e.target.cornerStrokeColor = '#d35400'
@@ -977,7 +977,7 @@ toggleSignModal = () => {
               
               // // // // // // // ////console.log('file id found');
               axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+                .post('/getdocdata', {
                   DocumentID: fileid,
                   Owner: useridother
                 })
@@ -1257,7 +1257,7 @@ toggleSignModal = () => {
           }
 
           axios
-        .post(''+'http://localhost:8080'+'/docupload', {
+            .post('/docupload', {
               UserID: userid,
               filename: filename,
               filedata: DataVar.DataPath,
@@ -1299,7 +1299,7 @@ toggleSignModal = () => {
                 setCookie('recents', recents_str, 10)
 
                 axios
-        .post(''+'http://localhost:8080'+'/adddocumentdata', {
+                  .post('/adddocumentdata', {
                     DocumentName: inst.filename,
                     DocumentID: filename,
                     OwnerEmail: email,
@@ -1320,7 +1320,7 @@ toggleSignModal = () => {
                     ) {
 
                       axios
-        .post(''+'http://localhost:8080'+'/updatedocumentdata', {
+                        .post('/updatedocumentdata', {
                           DocumentID: filename,
                           DateStatus: today,
                           Data: dataarray,
@@ -1352,7 +1352,7 @@ toggleSignModal = () => {
                         }
                       ]
                       axios
-        .post(''+'http://localhost:8080'+'/addreciever', {
+                    .post('/addreciever', {
                       Status: 'Completed',
                       DocumentID: filename,
                       SignOrder: false,
@@ -1369,8 +1369,8 @@ toggleSignModal = () => {
                       console.log(error)
                       alert(error)
                     })
-                    axios
-                    .post(''+'http://localhost:8080'+'/posthistory', {
+                      axios
+                      .post('/posthistory', {
                         DocumentID: filename,
                         HistoryTime: today,
                         HistoryUser: email + '\n['+ip+']',
@@ -1388,7 +1388,7 @@ toggleSignModal = () => {
                       })
 
                       axios
-        .post(''+'http://localhost:8080'+'/postrequest', {
+                      .post('/postrequest', {
                         UserID: userid,
                         DocumentName: inst.filename,
                         DocumentID: filename,
@@ -1408,7 +1408,7 @@ toggleSignModal = () => {
                       })
 
                       axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                      .post('/posthistory', {
                         DocumentID: filename,
                         HistoryTime: today,
                         HistoryUser: email + '\n['+ip+']',
@@ -1426,7 +1426,7 @@ toggleSignModal = () => {
                       })
 
                       axios
-        .post(''+'http://localhost:8080'+'/sendmailattachments', {
+                        .post('/sendmailattachments', {
                           to: email,
                           body:
                             '<div><p>Hello , Please find the signed document in the attachment.</p></div>',
@@ -1498,7 +1498,7 @@ toggleSignModal = () => {
           }
 
           axios
-        .post(''+'http://localhost:8080'+'/docupload', {
+            .post('/docupload', {
               UserID: userid,
               filename: filename,
               filedata: DataVar.DataPath,
@@ -1534,7 +1534,7 @@ toggleSignModal = () => {
                 setCookie('recents', recents_str, 10)
 
                 axios
-        .post(''+'http://localhost:8080'+'/adddocumentdata', {
+                  .post('/adddocumentdata', {
                     DocumentName: inst.filename,
                     DocumentID: filename,
                     OwnerEmail: email,
@@ -1554,7 +1554,7 @@ toggleSignModal = () => {
                       response.data === 'update done'
                     ) {
                       axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                      .post('/posthistory', {
                         DocumentID: filename,
                         HistoryTime: today,
                         HistoryUser: email + '\n['+ip+']',
@@ -1620,7 +1620,7 @@ toggleSignModal = () => {
           var arraybuffer = new Uint8Array(doc.output('arraybuffer'))
 
           axios
-        .post(''+'http://localhost:8080'+'/updatedocumentdata', {
+            .post('/updatedocumentdata', {
               DocumentID: filename,
               DateStatus: today,
               Data: dataarray,
@@ -1668,7 +1668,7 @@ toggleSignModal = () => {
           
 
           axios
-        .post(''+'http://localhost:8080'+'/updatedocumentdata', {
+            .post('/updatedocumentdata', {
               DocumentID: filename,
               DateStatus: today,
               Data: dataarray,
@@ -1682,7 +1682,7 @@ toggleSignModal = () => {
               ) {
 
                 axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                  .post('/posthistory', {
                     DocumentID: filename,
                     HistoryTime: today,
                     HistoryUser: email + '\n['+ip+']',
@@ -1704,7 +1704,7 @@ toggleSignModal = () => {
                 recievercount = 0
 
                 axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+                  .post('/getReciever', {
                     DocumentID: filename,
                     Owner: useridother
                   })
@@ -1732,7 +1732,7 @@ toggleSignModal = () => {
                           completedcount = completedcount + 1
 
                           axios
-        .post(''+'http://localhost:8080'+'/updaterecieverdata', {
+                            .post('/updaterecieverdata', {
                               Reciever: recievers,
                               DocumentID: filename,
                               Owner: useridother
@@ -1741,7 +1741,7 @@ toggleSignModal = () => {
                               console.log(response)
                               if (response.data === 'update reciever done') {
                                 axios
-        .post(''+'http://localhost:8080'+'/getRequests', {
+                                  .post('/getRequests', {
                                     UserID: userid,
                                   })
                                   .then(function (response) {
@@ -1765,7 +1765,7 @@ toggleSignModal = () => {
                                           ].RecipientDateStatus = today
 
                                           axios
-        .post(''+'http://localhost:8080'+'/updaterequestdata', {
+                                            .post('/updaterequestdata', {
                                               UserID: userid,
                                               Request: request,
                                             })
@@ -1814,7 +1814,7 @@ toggleSignModal = () => {
                             var dataURI = doc.output('datauristring')
 
                             axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                              .post('/posthistory', {
                                 DocumentID: filename,
                                 HistoryTime: today,
                                 HistoryUser: email + '\n['+ip+']',
@@ -1831,8 +1831,8 @@ toggleSignModal = () => {
                                 console.log(error)
                               })
 
-                              axios
-                              .post(''+'http://localhost:8080'+'/sendmailattachments', {
+                            axios
+                              .post('/sendmailattachments', {
                                 to: OwnerEmail,
                                 body:
                                   '<div><p>Hello , Please find the signed document in the attachment.</p></div>',
@@ -1862,7 +1862,7 @@ toggleSignModal = () => {
                               var recipientEmail = dbpeople[index].email
 
                               axios
-        .post(''+'http://localhost:8080'+'/sendmailattachments', {
+                                .post('/sendmailattachments', {
                                   to: recipientEmail,
                                   body:
                                     '<div><p>Hello ' +
@@ -1891,7 +1891,7 @@ toggleSignModal = () => {
                                 })
                             })
                             axios
-        .post(''+'http://localhost:8080'+'/updatedocumentstatus', {
+                              .post('/updatedocumentstatus', {
                                 DocumentID: filename,
                                 Status: 'Completed',
                                 Owner: useridother,
@@ -1936,15 +1936,15 @@ toggleSignModal = () => {
                                   nextuser +
                                   ''
 
-                                  axios
-                                  .post(''+'http://localhost:8080'+'/getrequestuser', {
+                                axios
+                                  .post('/getrequestuser', {
                                     UserEmail: nextuseremail,
                                   })
                                   .then(function (response) {
                                     console.log(response)
                                     if (response.data.Status === 'user found') {
                                       axios
-        .post(''+'http://localhost:8080'+'/postrequest', {
+                                        .post('/postrequest', {
                                           UserID: response.data.UserID,
                                           DocumentName: documentname,
                                           DocumentID: filename,
@@ -1969,8 +1969,8 @@ toggleSignModal = () => {
                                     console.log(error)
                                   })
 
-                                  axios
-                                  .post(''+'http://localhost:8080'+'/sendmail', {
+                                axios
+                                  .post('/sendmail', {
                                     to: nextuseremail,
                                     body:
                                       `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
@@ -2014,7 +2014,7 @@ toggleSignModal = () => {
         // // // // // // // ////console.log('filename:'+filename);
 
         axios
-        .post(''+'http://localhost:8080'+'/docupload', {
+          .post('/docupload', {
             UserID: userid,
             filename: filename,
             filedata: DataVar.DataPath,
@@ -2034,7 +2034,7 @@ toggleSignModal = () => {
               })
 
               axios
-        .post(''+'http://localhost:8080'+'/adddocumentdata', {
+                .post('/adddocumentdata', {
                   DocumentName: inst.filename,
                   DocumentID: filename,
                   OwnerEmail: email,
@@ -3010,7 +3010,7 @@ toggleSignModal = () => {
 
         try {
           axios
-        .post(''+'http://localhost:8080'+'/getuserdata', {
+            .post('/getuserdata', {
               UserID: userid,
             })
             .then(function (response) {
@@ -3135,7 +3135,7 @@ toggleSignModal = () => {
            
 
             axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+              .post('/getReciever', {
                 DocumentID: fileid,
                 Owner:useridother
               })
@@ -3188,7 +3188,7 @@ toggleSignModal = () => {
                       recipientrgbval = 'rgb(' + rgbval + ')'
 
                       axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                      .post('/posthistory', {
                         DocumentID: filename,
                         HistoryTime: today,
                         HistoryUser: email + '\n['+ip+']',
@@ -3278,7 +3278,7 @@ toggleSignModal = () => {
             owner = 'notadmin'
 
             axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+              .post('/getReciever', {
                 DocumentID: fileid,
                 Owner: useridother
               })
@@ -3356,7 +3356,7 @@ toggleSignModal = () => {
                       recipientrgbval = 'rgb(' + rgbval + ')'
 
                       axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                      .post('/posthistory', {
                         DocumentID: filename,
                         HistoryTime: today,
                         HistoryUser: email + '\n['+ip+']',
@@ -3418,7 +3418,7 @@ toggleSignModal = () => {
           }
 
           axios
-        .post(''+'http://localhost:8080'+'/docdownload', {
+            .post('/docdownload', {
               UserID: useridother,
               filename: filename,
             })
@@ -3566,7 +3566,7 @@ toggleSignModal = () => {
                 var today = new Date().toLocaleString().replace(',', '')
 
                 axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+                  .post('/getReciever', {
                     DocumentID: fileid,
                     Owner: useridother
                   })
@@ -3598,7 +3598,7 @@ toggleSignModal = () => {
                       console.log(grabbedcolor)
 
                       axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+                      .post('/posthistory', {
                         DocumentID: filename,
                         HistoryTime: today,
                         HistoryUser: email + '\n['+ip+']',
@@ -3655,7 +3655,7 @@ toggleSignModal = () => {
             owner = 'notadmin'
             if (key != '') {
               axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+              .post('/getReciever', {
                 DocumentID: fileid,
                 Owner: useridother
               })
@@ -3678,7 +3678,7 @@ toggleSignModal = () => {
           }
 
           axios
-        .post(''+'http://localhost:8080'+'/docdownload', {
+            .post('/docdownload', {
               UserID: useridother,
               filename: filename,
             })
@@ -3760,7 +3760,7 @@ toggleSignModal = () => {
     recieverdeclinebtn.addEventListener('click', function (event) {
       var today = new Date().toLocaleString().replace(',', '')
       axios
-        .post(''+'http://localhost:8080'+'/updatedocumentstatus', {
+        .post('/updatedocumentstatus', {
           DocumentID: filename,
           Status: 'Declined',
           Owner: useridother
@@ -3772,7 +3772,7 @@ toggleSignModal = () => {
             response.data === 'update done'
           ) {
             axios
-        .post(''+'http://localhost:8080'+'/posthistory', {
+          .post('/posthistory', {
             DocumentID: filename,
             HistoryTime: today,
             HistoryUser: email + '\n['+ip+']',

@@ -177,7 +177,7 @@ class SaveAsTemplate extends React.Component {
       //console.log('started adding objects')
               // // // // // // // ////console.log('file id found');
               axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: TemplateDataVar.TemplateID,
           Owner: useridother
         })
@@ -302,7 +302,7 @@ class SaveAsTemplate extends React.Component {
       try {
         modal[1].style.display = 'block'
         axios
-        .post(''+'http://localhost:8080'+'/docdownload', {
+                .post('/docdownload', {
                   UserID: useridother,
                   filename: TemplateDataVar.TemplateID,
                 })
@@ -493,7 +493,7 @@ class SaveAsTemplate extends React.Component {
           var newtemplateid = randomString(13)
 
           axios
-        .post(''+'http://localhost:8080'+'/docdownload', {
+            .post('/docdownload', {
               UserID: useridother,
               filename: docid,
             })
@@ -505,7 +505,7 @@ class SaveAsTemplate extends React.Component {
                 //console.log(doc);
 
                 axios
-        .post(''+'http://localhost:8080'+'/templateupload', {
+                  .post('/templateupload', {
                     UserID: userid,
                     filename: newtemplateid,
                     filedata: doc,
@@ -516,7 +516,7 @@ class SaveAsTemplate extends React.Component {
                       //console.log('completed');
 
                       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+                        .post('/getdocdata', {
                           DocumentID: docid,
                           Owner: useridother
                         })
@@ -526,7 +526,7 @@ class SaveAsTemplate extends React.Component {
                             var Document = response.data.Document
 
                             axios
-        .post(''+'http://localhost:8080'+'/addtemplatedata', {
+                              .post('/addtemplatedata', {
                                 TemplateName: recipienttemplatename,
                                 TemplateID: newtemplateid,
                                 OwnerEmail: Document.OwnerEmail,
@@ -571,7 +571,7 @@ class SaveAsTemplate extends React.Component {
                                   })
 
                                   axios
-        .post(''+'http://localhost:8080'+'/addtemplatereciever', {
+                                    .post('/addtemplatereciever', {
                                       Status: 'Waiting for Others',
                                       TemplateID: newtemplateid,
                                       DateSent: today,
@@ -634,8 +634,8 @@ class SaveAsTemplate extends React.Component {
         var newtemplateid = randomString(13)
 
 
-        axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+      axios
+        .post('/getdocdata', {
           DocumentID: docid,
           Owner: useridother
         })
@@ -658,7 +658,7 @@ class SaveAsTemplate extends React.Component {
             PreviewData.Data = Document.Data;
 
             axios
-        .post(''+'http://localhost:8080'+'/addtemplatedata', {
+              .post('/addtemplatedata', {
                 TemplateName: recipienttemplatename,
                 TemplateID: newtemplateid,
                 OwnerEmail: Document.OwnerEmail,
@@ -679,7 +679,7 @@ class SaveAsTemplate extends React.Component {
                 ) {
                   
                   axios
-        .post(''+'http://localhost:8080'+'/docdownload', {
+                    .post('/docdownload', {
                       UserID: userid,
                       filename: TemplateDataVar.TemplateID,
                     })
@@ -689,7 +689,7 @@ class SaveAsTemplate extends React.Component {
                         var doc = response.data.data
       
                         axios
-        .post(''+'http://localhost:8080'+'/templateupload', {
+                      .post('/templateupload', {
                         UserID: userid,
                         filename: newtemplateid,
                         filedata: doc,

@@ -424,7 +424,7 @@ class Tables extends React.Component {
       
 
       await axios
-      .post(''+'http://localhost:8080'+'/getuserdata', {
+        .post('/getuserdata', {
           UserID: userid,
         })
         .then(function (response) {
@@ -847,7 +847,7 @@ class Tables extends React.Component {
       modal[0].style.display = 'block'
       
       await axios
-      .post(''+'http://localhost:8080'+'/getmanagedocdata', {
+        .post('/getmanagedocdata', {
           UserID: userid,
         })
         .then(function (response) {
@@ -1538,7 +1538,7 @@ class Tables extends React.Component {
       downloadfileid = rowselectfileid;
 
       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: rowselectfileid,
           Owner: rowselectuserid
         })
@@ -1662,7 +1662,7 @@ class Tables extends React.Component {
                 Document.DateStatus
 
                 await axios
-                .post(''+'http://localhost:8080'+'/docdownload', {
+                .post('/docdownload', {
                   UserID: rowselectuserid,
                   filename: rowselectfileid,
                 })
@@ -1802,7 +1802,7 @@ class Tables extends React.Component {
       var managevoidmessage = document.getElementById('managevoidmessage').value
       if (managevoidmessage !== '') {
         axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+          .post('/getReciever', {
             DocumentID: voidfileid,
             Owner: voiduserid
           })
@@ -1823,7 +1823,7 @@ class Tables extends React.Component {
                 recievers[index].RecipientDateStatus = today
 
                 axios
-        .post(''+'http://localhost:8080'+'/updaterecieverdata', {
+                  .post('/updaterecieverdata', {
                     Reciever: recievers,
                     Owner: voiduserid
                   })
@@ -1837,8 +1837,8 @@ class Tables extends React.Component {
 
                 
 
-                  axios
-                  .post(''+'http://localhost:8080'+'/sendmail', {
+                axios
+                  .post('/sendmail', {
                     to: item.RecipientEmail,
                     body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+OwnerEmail+` has voided the document: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: `+managevoidmessage+`</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the PappayaSign Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
                     subject: 'PappayaSign: Document Voided',
@@ -1853,7 +1853,7 @@ class Tables extends React.Component {
               })
 
               axios
-        .post(''+'http://localhost:8080'+'/getRequests', {
+                  .post('/getRequests', {
                     UserID: voiduserid,
                   })
                   .then(function (response) {
@@ -1870,7 +1870,7 @@ class Tables extends React.Component {
                           request[index].RecipientDateStatus = today
 
                           axios
-        .post(''+'http://localhost:8080'+'/updaterequestdata', {
+                            .post('/updaterequestdata', {
                               UserID: userid,
                               Request: request,
                             })
@@ -1890,8 +1890,8 @@ class Tables extends React.Component {
                     modal[2].style.display = 'none'
                   })
 
-                  axios
-                  .post(''+'http://localhost:8080'+'/updatedocumentstatus', {
+              axios
+                .post('/updatedocumentstatus', {
                   DocumentID: voidfileid,
                   Status: 'Void',
                   Owner: voiduserid
@@ -1985,7 +1985,7 @@ class Tables extends React.Component {
       var today = new Date().toLocaleString().replace(',', '')
 
       axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+        .post('/getReciever', {
           DocumentID: deletefileid,
           Owner: deleteuserid
         })
@@ -2006,7 +2006,7 @@ class Tables extends React.Component {
               recievers[index].RecipientDateStatus = today
 
               axios
-        .post(''+'http://localhost:8080'+'/sendmail', {
+                  .post('/sendmail', {
                     to: item.RecipientEmail,
                     body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+OwnerEmail+` has voided the document: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: User deleted the file.</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the PappayaSign Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
                     subject: 'PappayaSign: Document Voided',
@@ -2019,8 +2019,8 @@ class Tables extends React.Component {
                     modal[2].style.display = 'none'
                   })
 
-                  axios
-                  .post(''+'http://localhost:8080'+'/updaterecieverdata', {
+              axios
+                .post('/updaterecieverdata', {
                   Reciever: recievers,
                   Owner: deleteuserid
                 })
@@ -2032,8 +2032,8 @@ class Tables extends React.Component {
                   modal[2].style.display = 'none'
                 })
 
-                axios
-                .post(''+'http://localhost:8080'+'/getRequests', {
+              axios
+                .post('/getRequests', {
                   UserID: deleteuserid,
                 })
                 .then(function (response) {
@@ -2050,7 +2050,7 @@ class Tables extends React.Component {
                         request[index].RecipientDateStatus = today
 
                         axios
-        .post(''+'http://localhost:8080'+'/updaterequestdata', {
+                          .post('/updaterequestdata', {
                             UserID: userid,
                             Request: request,
                           })
@@ -2072,7 +2072,7 @@ class Tables extends React.Component {
             })
 
             axios
-        .post(''+'http://localhost:8080'+'/updatedocumentstatus', {
+              .post('/updatedocumentstatus', {
                 DocumentID: deletefileid,
                 Status: 'Deleted',
                 Owner: deleteuserid
@@ -2137,8 +2137,8 @@ class Tables extends React.Component {
         .parent()
         .children('#datarecep')[0].innerHTML
 
-        axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+      axios
+        .post('/getdocdata', {
           DocumentID: fileid,
           Owner: exportuserid
         })
@@ -2210,8 +2210,8 @@ class Tables extends React.Component {
         .children('#datarecep')[0].innerHTML
 
       historyfileid = fileid;
-      axios
-      .post(''+'http://localhost:8080'+'/getdocdata', {
+        axios
+        .post('/getdocdata', {
           DocumentID: fileid,
           Owner: historyuserid
         })
@@ -2257,8 +2257,8 @@ class Tables extends React.Component {
           console.log(error)
         })
 
-        axios
-        .post(''+'http://localhost:8080'+'/gethistory', {
+      axios
+        .post('/gethistory', {
           DocumentID: fileid,
           Owner: historyuserid
         })
@@ -2376,7 +2376,7 @@ class Tables extends React.Component {
       var dbpeople = []
 
       axios
-        .post(''+'http://localhost:8080'+'/getReciever', {
+        .post('/getReciever', {
           DocumentID: fileid,
           Owner: correctuserid
         })
@@ -2401,7 +2401,7 @@ class Tables extends React.Component {
               recievers[index].RecipientDateStatus = today
 
               axios
-        .post(''+'http://localhost:8080'+'/updaterecieverdata', {
+                .post('/updaterecieverdata', {
                   Reciever: recievers,
                   Owner: correctuserid
                 })
@@ -2413,8 +2413,8 @@ class Tables extends React.Component {
                   modal[2].style.display = 'none'
                 })
 
-                axios
-                .post(''+'http://localhost:8080'+'/getRequests', {
+              axios
+                .post('/getRequests', {
                   UserID: correctuserid,
                 })
                 .then(function (response) {
@@ -2431,7 +2431,7 @@ class Tables extends React.Component {
                         request[index].RecipientDateStatus = today
 
                         axios
-        .post(''+'http://localhost:8080'+'/updaterequestdata', {
+                          .post('/updaterequestdata', {
                             UserID: correctuserid,
                             Request: request,
                           })
@@ -2453,7 +2453,7 @@ class Tables extends React.Component {
             })
 
             axios
-        .post(''+'http://localhost:8080'+'/updatedocumentstatus', {
+              .post('/updatedocumentstatus', {
                 DocumentID: correctuserid,
                 Status: 'Correcting',
                 Owner: correctuserid
@@ -2538,7 +2538,7 @@ class Tables extends React.Component {
       var docname = ''
 
       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: fileid,
           Owner: createuserid
         })
@@ -2561,7 +2561,7 @@ class Tables extends React.Component {
             var newdocid = randomString(13)
 
             axios
-        .post(''+'http://localhost:8080'+'/docdownload', {
+              .post('/docdownload', {
                 UserID: createuserid,
                 filename: fileid,
               })
@@ -2645,7 +2645,7 @@ class Tables extends React.Component {
       console.log(templateuserid)
 
       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: fileid,
           Owner: templateuserid
         })
@@ -2719,7 +2719,7 @@ class Tables extends React.Component {
       var count = false;
 
       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: fileid,
           Owner: resenduserid
         })
@@ -2755,8 +2755,8 @@ class Tables extends React.Component {
                     //console.log(dbpeople);
                     if(count === true){
 
-                      axios
-                      .post(''+'http://localhost:8080'+'/sendmail', {
+                    axios
+                      .post('/sendmail', {
                         to: data.RecipientEmail,
                         body:
                           `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
@@ -2821,7 +2821,7 @@ class Tables extends React.Component {
       modal[5].style.display = 'none'
       var Pages = 0
       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: historyfileid,
           Owner: historyuserid
         })
@@ -2832,7 +2832,7 @@ class Tables extends React.Component {
             Pages = Document.Data.length;
 
             axios
-        .post(''+'http://localhost:8080'+'/gethistory', {
+        .post('/gethistory', {
           DocumentID: historyfileid,
         })
         .then(function (response) {
@@ -3023,7 +3023,7 @@ class Tables extends React.Component {
       modal[5].style.display = 'none'
 
       axios
-        .post(''+'http://localhost:8080'+'/getdocdata', {
+        .post('/getdocdata', {
           DocumentID: historyfileid,
           Owner: historyuserid
         })
@@ -3033,7 +3033,7 @@ class Tables extends React.Component {
             var Document = response.data.Document
 
             axios
-        .post(''+'http://localhost:8080'+'/gethistory', {
+        .post('/gethistory', {
           DocumentID: historyfileid,
         })
         .then(function (response) {
