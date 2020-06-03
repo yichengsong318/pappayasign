@@ -126,7 +126,10 @@ class Login extends React.Component {
           .then(function (response) {
             if (response.data === 'reset') {
               document.getElementById('forgot1enterspan').innerHTML =
-                'Password reset, Login to Continue.'
+                'Password reset, Login to Continue.';
+                setTimeout(function(){
+                  document.getElementById('forgotenterbtnclose').click();
+                }, 2000);
             }
           })
           .catch(function (error) {})
@@ -164,7 +167,10 @@ class Login extends React.Component {
           .then(function (response) {
             console.log(response)
             document.getElementById('forgot1errorspan').innerHTML =
-              'Passowrd reset link has been sent to your email address.'
+              'Passowrd reset link has been sent to your email address.';
+              setTimeout(function(){
+                document.getElementById('forgotbtnclose').click();
+              }, 2000);
             //window.location.hash = "#/auth/login";
           })
           .catch(function (error) {
