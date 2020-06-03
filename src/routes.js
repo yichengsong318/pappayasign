@@ -14,6 +14,7 @@ import TemplateRecipients from 'views/examples/TemplateRecipients.js'
 import SelectTemplateRecipients from 'views/examples/SelectTemplateRecipients.js'
 import Sign from 'views/examples/Sign.js'
 import SendSuccess from 'views/examples/SendSuccess'
+import CompleteSuccess from 'views/examples/CompleteSuccess'
 import Review from 'views/examples/Review'
 import UploadSuccess from 'views/examples/UploadSuccess'
 import SaveAsTemplate from 'views/examples/SaveAsTemplate'
@@ -132,6 +133,13 @@ var routes = [
     name: 'SendSuccess',
     icon: 'ni ni-key-25 text-info',
     component: SendSuccess,
+    layout: '/admin',
+  },
+  {
+    path: '/completesuccess',
+    name: 'CompleteSuccess',
+    icon: 'ni ni-key-25 text-info',
+    component: CompleteSuccess,
     layout: '/admin',
   },
   {

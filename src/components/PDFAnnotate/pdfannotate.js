@@ -26,9 +26,11 @@ import InitialManager from "../InitialManager";
 
 const axios = require('axios').default
 var PDFJS = require('pdfjs-dist')
+PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 //var fabric = require("fabric-webpack");
 //var jsPDF = require("jspdf-react");
-const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
+//const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
 
 class PDFAnnotate extends React.Component {
   state = {
@@ -126,11 +128,7 @@ toggleSignModal = () => {
       document.cookie = name + '=' + (value || '') + expires + '; path=/'
     }
 
-    Array.prototype.pushWithReplace = function (o, k) {
-      var fi = this.findIndex((f) => f[k] === o[k])
-      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
-      return this
-    }
+    
 
     var recents = [];
 
@@ -165,6 +163,7 @@ toggleSignModal = () => {
     var formattingobjectbg = ''
     var ObjectArray = []
     var ObjectArrayIndex = 0
+    var ObjectCursorIndex = 0
     modal[0].style.display = 'block'
 
     var PDFAnnotate = function (
@@ -206,7 +205,7 @@ toggleSignModal = () => {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport(scale)
+              var viewport = page.getViewport({scale:scale})
               var canvas = document.createElement('canvas')
               var thumbcanvas = document.createElement('canvas')
 
@@ -230,7 +229,7 @@ toggleSignModal = () => {
                 viewport: viewport,
               }
               var renderTask = page.render(renderContext)
-              renderTask.then(function () {
+              renderTask.promise.then(function () {
                 $('.pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
@@ -249,7 +248,7 @@ toggleSignModal = () => {
                 viewport: viewport,
               }
               var renderTaskThumb = page.render(renderContextThumb)
-              renderTaskThumb.then(function () {
+              renderTaskThumb.promise.then(function () {
                 $('.thumb-pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
@@ -453,6 +452,9 @@ toggleSignModal = () => {
             },
           })
 
+          
+          
+
           fabric.util.addListener(
             fabricObj.upperCanvasEl,
             'dblclick',
@@ -512,32 +514,15 @@ toggleSignModal = () => {
                           global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
                           global.pdf.Reload();
+                          $("#movecursorbtn").html('Next');
+
+
                           
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
-                          
-                        }
+                  }
                         else {
                           global.toggleInitialModal();
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
+                          $("#movecursorbtn").html('Next');
                           //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                         }
                       }
@@ -552,65 +537,30 @@ toggleSignModal = () => {
                           global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
                           global.pdf.Reload();
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
+                          $("#movecursorbtn").html('Next');
                         }
                         else {
                           global.toggleSignModal();
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
+                          $("#movecursorbtn").html('Next');
                           //global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
                         }
                       }
                       
                       obj.set('id', email)
                     } else if (objType === 'i-text') {
+                      $("#movecursorbtn").html('Next');
                       //console.log(obj.text);
                       if(username != ''){
                         if(obj.text === 'Name'){
                           obj.set('text',username);
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
+                          
                         }
                         else if(obj.text === 'Title'){
                           obj.set('text',usertitle);
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
+                          
                         }
                         else if(obj.text === 'Date Signed'){
                           var today = new Date()
@@ -621,22 +571,51 @@ toggleSignModal = () => {
                           today = mm + '/' + dd + '/' + yyyy
                           obj.set('text',today);
                           setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
-                          if(ObjectArrayIndex < ObjectArray.length - 1){
-                            ObjectArrayIndex = ObjectArrayIndex + 1;
-                          var page = ObjectArray[ObjectArrayIndex].page
-                          var nextobj = ObjectArray[ObjectArrayIndex].obj
-                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
-                          global.pdf.Reload();
-                          inst.fabricObjects[page].setActiveObject(nextobj);
-                          $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                          window.scrollTo(0, nextobj.top);
-                          }
+                          
                         }
                         
+                      }else{
+                        if(obj.text === 'Date Signed'){
+                          var today = new Date()
+                          var dd = String(today.getDate()).padStart(2, '0')
+                          var mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+                          var yyyy = today.getFullYear()
+
+                          today = mm + '/' + dd + '/' + yyyy
+                          obj.set('text',today);
+                          setTimeout(function(){fabricObj.requestRenderAll(); }, 10);
+                          
+                        }
                       }
                       obj.set('backgroundColor', 'transparent')
                       global.pdf.Reload()
                       obj.set('id', email)
+
+                      var count = 0
+                           $.each(inst.fabricObjects, function (index, fabricObj) {
+                              fabricObj.getObjects().forEach(function (targ) {
+                                ////console.log(targ);
+                                targ.selectable = false
+                                targ.hasControls = false
+                                if (targ.backgroundColor === recipientrgbval) {
+                                  count = count + 1
+                                  ////console.log(count);
+                                }
+                              })
+                            })
+                            if (count === 0) {
+                              ObjectCursorIndex = 0
+                              ObjectArrayIndex = 0
+                              document.getElementById('movecursorbtn').style.display="none";
+                              var page = ObjectArray[ObjectArrayIndex].page
+                              var nextobj = ObjectArray[ObjectArrayIndex].obj
+                              $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                              //document.getElementById('recieverfinishbtn').style.display = "block";
+                              var recieverfinishbtn = document.getElementById('recieverfinishbtn');
+                              recieverfinishbtn.scrollIntoView();
+                            } else {
+                              $("#movecursorbtn").html('Next');
+                            }
                     }
                   }
                   else if(owner == 'admin'){
@@ -946,7 +925,108 @@ toggleSignModal = () => {
       $('#pdf-container').css("z-index", "0");
       $('#container').css("z-index", "0");
       $('.canvas').css("z-index", "0");
+
+      $('#movecursorbtn').click(function () {
+        if(ObjectCursorIndex === ObjectArray.length){
+                  var count = 0
+                  ObjectCursorIndex = 0
+                  ObjectArrayIndex = 0
+                    $.each(inst.fabricObjects, function (index, fabricObj) {
+                      fabricObj.getObjects().forEach(function (targ) {
+                        ////console.log(targ);
+                        targ.selectable = false
+                        targ.hasControls = false
+                        if (targ.backgroundColor === recipientrgbval) {
+                          count = count + 1
+                          ////console.log(count);
+                        }
+                      })
+                    })
+                    if (count === 0) {
+                      document.getElementById('movecursorbtn').style.display="none";
+                      var page = ObjectArray[ObjectArrayIndex].page
+                      var nextobj = ObjectArray[ObjectArrayIndex].obj
+                      $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                      var recieverfinishbtn = document.getElementById('recieverfinishbtn');
+                      recieverfinishbtn.scrollIntoView();
+                    } else {
+                      
+                      var page = ObjectArray[ObjectArrayIndex].page
+                      var nextobj = ObjectArray[ObjectArrayIndex].obj
+                      if(nextobj.type === 'image'){
+                        $("#movecursorbtn").html('Sign');
+                      }else if(nextobj.type === 'i-text'){
+                        $("#movecursorbtn").html('Add');
+                      }else{
+                        $("#movecursorbtn").html('Next');
+                      }
+                      global.pdf.Reload();
+                      inst.fabricObjects[page].setActiveObject(nextobj);
+                      $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                      $("#movecursorbtn").css({"top": nextobj.top});
+                      ObjectCursorIndex = ObjectCursorIndex + 1;
+                    }
+                  
+                
+        }
+        else if(ObjectCursorIndex < ObjectArray.length){
+          if(ObjectCursorIndex === 0){
+                        var page = ObjectArray[0].page
+                      var nextobj = ObjectArray[0].obj
+                      if(nextobj.type === 'image'){
+                        $("#movecursorbtn").html('Sign');
+                      }else if(nextobj.type === 'i-text'){
+                        $("#movecursorbtn").html('Add');
+                      }else{
+                        $("#movecursorbtn").html('Next');
+                      }
+                      global.pdf.Reload();
+                      inst.fabricObjects[page].setActiveObject(nextobj);
+                      $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
+                      window.scrollTo(0, nextobj.top);
+                      //console.log(nextobj.top)
+                      $("#movecursorbtn").css({"top": nextobj.top});
+                      //console.log('button position')
+                      //console.log($("#movecursorbtn").position().top)
+                      var movecursorbtn = document.getElementById('movecursorbtn');
+                      movecursorbtn.scrollIntoView();
+                      ObjectCursorIndex = ObjectCursorIndex + 1;
+          }
+          else{
+                      ObjectArrayIndex = ObjectArrayIndex + 1;
+                      var page = ObjectArray[ObjectArrayIndex].page
+                      var nextobj = ObjectArray[ObjectArrayIndex].obj
+                      if(nextobj.type === 'image'){
+                        $("#movecursorbtn").html('Sign');
+                      }else if(nextobj.type === 'i-text'){
+                        $("#movecursorbtn").html('Add');
+                      }else{
+                        $("#movecursorbtn").html('Next');
+                      }
+                      global.pdf.Reload();
+                      inst.fabricObjects[page].setActiveObject(nextobj);
+                      $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
+                      if(parseInt(ObjectArray[ObjectArrayIndex].page)  === 0){
+                        $("#movecursorbtn").css({"top": nextobj.top});
+                        var movecursorbtn = document.getElementById('movecursorbtn');
+                        movecursorbtn.scrollIntoView();
+                      }
+                      else{
+                        var pageheight = ((parseFloat($(".upper-canvas").eq(ObjectArray[ObjectArrayIndex].page).height())) * (parseInt(ObjectArray[ObjectArrayIndex].page))) + parseInt(nextobj.top)
+                        $("#movecursorbtn").css({"top": pageheight});
+                        var movecursorbtn = document.getElementById('movecursorbtn');
+                        movecursorbtn.scrollIntoView();
+                      }
+                      ObjectCursorIndex = ObjectCursorIndex + 1;
+          }
+          
+        }
+        
+      });
     }
+
+
+    
 
     PDFAnnotate.prototype.AddObj = function () {
       var inst = this
@@ -1006,10 +1086,15 @@ toggleSignModal = () => {
                           targ.lockMovementY = true
                           //console.log(targ)
                           if (targ.backgroundColor === recipientrgbval) {
+                            if(targ.type !=  'text'){
                             await ObjectArray.push({page:index,obj:targ})
                             //console.log(ObjectArray)
+                            ObjectArray.sort(function(a, b) {
+                              return a.page - b.page;
+                          });
+                          }
                             //console.log(ObjectArray.length)
-                            console.log(targ.type)
+                            //console.log(targ.type)
                             
                             
                             if(firstobjectkey===true){
@@ -1022,9 +1107,7 @@ toggleSignModal = () => {
                                 targ.hasControls = false;
                                 setTimeout(function(){fabricObj.requestRenderAll(); }, 10); 
                               global.pdf.Reload();
-                              fabricObj.setActiveObject(targ);
-                              $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
-                              window.scrollTo(0, targ.top);
+                              
                               }
                               
                               
@@ -1290,10 +1373,8 @@ toggleSignModal = () => {
                   var removefirst = recents.shift();
                 }
                 
-                recents.pushWithReplace(
-                  { DocumentName: inst.filename, DocumentID: filename, Status: 'Completed', Timestamp: today },
-                  'DocumentID'
-                )
+                recents.push(
+                  { DocumentName: inst.filename, DocumentID: filename, Status: 'Completed', Timestamp: today })
                 var recents_str = JSON.stringify(recents)
     
                 setCookie('recents', recents_str, 10)
@@ -1431,7 +1512,7 @@ toggleSignModal = () => {
                           body:
                             '<div><p>Hello , Please find the signed document in the attachment.</p></div>',
                           subject:
-                            'PappayaSign: ' +
+                            'GEMS: ' +
                             inst.filename +
                             ' :Completed Document',
                           attachments: {
@@ -1451,7 +1532,7 @@ toggleSignModal = () => {
                           modal[1].style.display = 'none'
                         })
 
-                        window.location.hash = '#/admin/sendsuccess'
+                        window.location.hash = '#/admin/completesuccess'
                       url =
                         process.env.REACT_APP_BASE_URL +
                         '/#/admin/sign?id=' +
@@ -1525,10 +1606,8 @@ toggleSignModal = () => {
                   var removefirst = recents.shift();
                 }
                 
-                recents.pushWithReplace(
-                  { DocumentName: inst.filename, DocumentID: filename, Status: 'Draft', Timestamp: today },
-                  'DocumentID'
-                )
+                recents.push(
+                  { DocumentName: inst.filename, DocumentID: filename, Status: 'Draft', Timestamp: today })
                 var recents_str = JSON.stringify(recents)
     
                 setCookie('recents', recents_str, 10)
@@ -1837,7 +1916,7 @@ toggleSignModal = () => {
                                 body:
                                   '<div><p>Hello , Please find the signed document in the attachment.</p></div>',
                                 subject:
-                                  'PappayaSign: ' +
+                                  'GEMS: ' +
                                   documentname +
                                   ' :Completed Document',
                                 attachments: {
@@ -1869,7 +1948,7 @@ toggleSignModal = () => {
                                     recipientName +
                                     ', Please find the signed document in the attachment.</p></div>',
                                   subject:
-                                    'PappayaSign: ' +
+                                    'GEMS: ' +
                                     documentname +
                                     ' :Completed Document',
                                   attachments: {
@@ -1902,7 +1981,7 @@ toggleSignModal = () => {
                                   response.data === 'insert done' ||
                                   response.data === 'update done'
                                 ) {
-                                  window.location.hash = '#/admin/sendsuccess'
+                                  window.location.hash = '#/admin/completesuccess'
                                 }
                               })
                               .catch(function (error) {
@@ -1973,16 +2052,16 @@ toggleSignModal = () => {
                                   .post('/api/sendmail', {
                                     to: nextuseremail,
                                     body:
-                                      `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>PappayaSign Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">PappayaSign.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
+                                      `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
                                       nextusername +
                                       `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. </p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
                                       nextuserurl +
-                                      `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to PappayaSign, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About PappayaSign</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- PappayaSign provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
-                                    subject: 'PappayaSign: Sign Request',
+                                      `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
+                                    subject: 'GEMS: Sign Request',
                                   })
                                   .then(function (response) {
                                     console.log(response)
-                                    window.location.hash = '#/admin/sendsuccess'
+                                    window.location.hash = '#/admin/completesuccess'
                                     // // // // // // // ////console.log('doc sent to next user');
                                   })
                                   .catch(function (error) {})
@@ -1997,7 +2076,7 @@ toggleSignModal = () => {
                       })
                     }
                     modal[1].style.display = 'none'
-                    window.location.hash = '#/admin/sendsuccess'
+                    window.location.hash = '#/admin/completesuccess'
                   })
                   .catch(function (error) {
                     console.log(error)
@@ -3058,6 +3137,7 @@ toggleSignModal = () => {
           // // // // // // // ////console.log('No file in url');
           modal[0].style.display = 'none'
           owner = 'admin'
+          
           try {
             if (DataVar.OnlySigner == true) {
               document.getElementById('getlinkbtn').style.display = 'none'
@@ -3106,6 +3186,7 @@ toggleSignModal = () => {
           else {
           if (userid != useridother) {
             try {
+              document.getElementById('movecursorbtn').style.display="block";
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
               document.getElementById('fieldsrightbar').style.display = 'none'
@@ -3301,6 +3382,7 @@ toggleSignModal = () => {
                       option: recievers[index].RecipientOption,
                     })
                     if (item.RecipientEmail === email) {
+                      document.getElementById('movecursorbtn').style.display="block";
                       document.getElementById('recieverfinishbtn').style.display = 'block'
                       document.getElementById('moreoptions').style.display = 'block'
                       document.getElementById('getlinkbtn').style.display = 'none'
@@ -3537,8 +3619,9 @@ toggleSignModal = () => {
           }
         } else {
           if (userid != useridother) {
-            console.log('userid not equal')
+            //console.log('userid not equal')
             try {
+              document.getElementById('movecursorbtn').style.display="block";
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
               document.getElementById('fieldsrightbar').style.display = 'none'
@@ -3560,9 +3643,8 @@ toggleSignModal = () => {
               document.getElementById('initialbtn').style.display = 'none'
               document.getElementById('recipientselect').style.display = 'none'
               document.getElementById('fieldscolumn').style.display = 'none'
-              console.log('key nahi hai')
+              
               if (key != '') {
-                console.log('key hai')
                 var today = new Date().toLocaleString().replace(',', '')
 
                 axios
@@ -3653,6 +3735,7 @@ toggleSignModal = () => {
 
 
             owner = 'notadmin'
+            
             if (key != '') {
               axios
               .post('/api/getReciever', {
@@ -3762,7 +3845,7 @@ toggleSignModal = () => {
       axios
         .post('/api/updatedocumentstatus', {
           DocumentID: filename,
-          Status: 'Declined',
+          Status: 'Void',
           Owner: useridother
         })
         .then(function (response) {
@@ -3789,6 +3872,105 @@ toggleSignModal = () => {
           .catch(function (error) {
             console.log(error)
           })
+
+
+          axios
+          .post('/api/getReciever', {
+            DocumentID: filename,
+            Owner: useridother
+          })
+          .then(function (response) {
+            console.log(response)
+            if (response.data.Status === 'got recievers') {
+              var recievers = response.data.Reciever
+              var status = response.data.DocStatus
+              var DocID = filename;
+              var managevoidmessage = 'One or more recepients have declined the document';
+              var OwnerEmail=response.data.OwnerEmail;
+              var DocumentName='';
+
+              recievers.forEach(function (item, index) {
+                var recipient_index = index
+                DocumentName = item.DocumentName
+                //console.log(recipient_index);
+
+                recievers[index].RecipientStatus = 'Void'
+                recievers[index].RecipientDateStatus = today
+
+                axios
+                  .post('/api/updaterecieverdata', {
+                    Reciever: recievers,
+                    Owner: filename
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                    modal[2].style.display = 'none'
+                  })
+
+                  axios
+                  .post('/api/getRequests', {
+                    UserID: useridother,
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                    if (response.data.Status === 'got request') {
+                      var request = response.data.Request
+                      var status = response.data.DocStatus
+
+                      request.forEach(function (item, index) {
+                        if (request[index].DocumentID === filename) {
+                          var recipient_index = index
+                          //console.log(recipient_index);
+                          request[index].RecipientStatus = 'Void'
+                          request[index].RecipientDateStatus = today
+
+                          axios
+                            .post('/api/updaterequestdata', {
+                              UserID: userid,
+                              Request: request,
+                            })
+                            .then(function (response) {
+                              console.log(response)
+                            })
+                            .catch(function (error) {
+                              console.log(error)
+                              modal[2].style.display = 'none'
+                            })
+                        }
+                      })
+                    }
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                    modal[2].style.display = 'none'
+                  })
+
+                
+
+                axios
+                  .post('/api/sendmail', {
+                    to: item.RecipientEmail,
+                    body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+email+` has declined the document, Therefore the document is voided: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: `+managevoidmessage+`</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a proffesional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the GEMS Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
+                    subject: 'GEMS: Document Voided',
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                  })
+                  .catch(function (error) {
+                    //console.log('no data');
+                    modal[2].style.display = 'none'
+                  })
+              })
+            }
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+
+
 
             alert('Document Declined')
             window.location.hash = '#/admin/index'
@@ -3836,7 +4018,7 @@ toggleSignModal = () => {
       
     });
 
-
+    
     
 
     
@@ -3976,13 +4158,15 @@ $(document).on('click','.actionsign', function() {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="review-act-modal-content">
               <div>
-                <div className="mb-4 mb-xl-0">
-                  <h5>Please Review and Act on These Documents: </h5>
-                </div>
-                <Row>
+              <Row className="m-3">
                   <Col xs="12">
+                <div className="mb-4 mb-xl-0 float-left">
+                  <h3>Please Review and Act on These Documents: </h3>
+                </div>
+                </Col>
+                <Col xs="12" className="py-3">
                     <div className="custom-control custom-control-alternative custom-checkbox">
                       <input
                         className="custom-control-input"
@@ -4002,13 +4186,12 @@ $(document).on('click','.actionsign', function() {
                       </label>
                     </div>
                   </Col>
-                  <Col lg="12" className="justify-content-center p-2 py-3">
-                    <Button id="startnouserbtn" className="close-btn px-4 ">
+                  
+                </Row>
+                <Button id="startnouserbtn" className="close-btn float-right px-4 mx-4 ">
                       {' '}
                       Continue
                     </Button>
-                  </Col>
-                </Row>
               </div>
             </div>
           </div>
@@ -4133,13 +4316,25 @@ $(document).on('click','.actionsign', function() {
               <Col lg="12"></Col>
             </Row>
             <Row>
+            
               <div id="container">
+              
                 <div
                   id="pdf-container"
                   style={{
                     height: '550px',
                   }}
-                ></div>
+                >
+                  <Button
+                  id="movecursorbtn"
+                  className="m-2 float-left px-4"
+                  style={{zIndex: '99999999999999999999999999999999999999999'}}
+                  color="primary"
+                  type="button"
+                >
+                  Start
+                </Button>
+                </div>
               </div>
             </Row>
 

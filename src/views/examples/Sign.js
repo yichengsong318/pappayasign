@@ -5,6 +5,7 @@ import $ from 'jquery'
 // reactstrap components
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap'
 import PDFAnnotate from '../../components/PDFAnnotate/pdfannotate'
+import DataVar from '../../variables/data'
 
 class Icons extends React.Component {
   componentDidMount() {
@@ -53,7 +54,7 @@ class Icons extends React.Component {
       if (signfilename == '' || signuseridother == '') {
 
       }else {
-        if (userid != signuseridother) {
+        if (userid != signuseridother || DataVar.OnlySigner == true) {
           document.getElementById('signtitle').innerHTML = 'Sign Document'
           document.getElementById('headerstepwizard').style.display = 'none'
         }else{

@@ -158,10 +158,8 @@ class Recipients extends React.Component {
             .children('#rcard')
             .children('#recipient-option')
             .attr('placeholder')
-          people.pushWithReplace(
-            { name: recipientN, email: recipientE, option: recipientO },
-            'email'
-          )
+          people.push(
+            { name: recipientN, email: recipientE, option: recipientO })
         })
         DataVar.RecipientArray = people
       }
@@ -215,10 +213,8 @@ class Recipients extends React.Component {
                   .children('#rcard')
                   .children('#recipient-option')
                   .attr('placeholder')
-                people.pushWithReplace(
-                  { name: recipientN, email: recipientE, option: recipientO },
-                  'email'
-                )
+                people.push(
+                  { name: recipientN, email: recipientE, option: recipientO })
               })
               DataVar.RecipientArray = people
 			        
@@ -226,11 +222,7 @@ class Recipients extends React.Component {
       });
 
 
-    Array.prototype.pushWithReplace = function (o, k) {
-      var fi = this.findIndex((f) => f[k] === o[k])
-      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
-      return this
-    }
+    
 
     $('#s-btn').click(function () {
       var listItems = $('#sortable li')
@@ -256,10 +248,8 @@ class Recipients extends React.Component {
                   .children('#rcard')
                   .children('#recipient-option')
                   .attr('placeholder')
-                people.pushWithReplace(
-                  { name: recipientN, email: recipientE, option: recipientO },
-                  'email'
-                )
+                people.push(
+                  { name: recipientN, email: recipientE, option: recipientO })
               })
               DataVar.RecipientArray = people
         if (wurl === '') {

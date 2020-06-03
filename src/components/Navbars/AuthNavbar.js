@@ -13,7 +13,7 @@ class AdminNavbar extends React.Component {
         >
           <Container className="px-4" fluid>
             <img
-              alt="PappayaSign"
+              alt="GEMS"
               style={{ maxWidth: '200px' }}
               src="./pappayasign_white.png"
             />
@@ -23,7 +23,7 @@ class AdminNavbar extends React.Component {
                 <Row>
                   <Col className="collapse-brand" xs="6">
                     <Link to="/">
-                      <img alt="PappayaSign" src="./argon-react.png" />
+                      <img alt="GEMS" src="./argon-react.png" />
                     </Link>
                   </Col>
                   <Col className="collapse-close" xs="6">

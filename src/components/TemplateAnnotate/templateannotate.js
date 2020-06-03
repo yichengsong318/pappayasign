@@ -12,7 +12,9 @@ import InitialManager from "../InitialManager";
 
 const axios = require('axios').default
 var PDFJS = require('pdfjs-dist')
-const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
+PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+//const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
 
 
 class TemplateAnnotate extends React.Component {
@@ -153,7 +155,7 @@ toggleSignModal = () => {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport(scale)
+              var viewport = page.getViewport({scale:scale})
               var canvas = document.createElement('canvas')
               var thumbcanvas = document.createElement('canvas')
 
@@ -180,7 +182,7 @@ toggleSignModal = () => {
                 viewport: viewport,
               }
               var renderTask = page.render(renderContext)
-              renderTask.then(function () {
+              renderTask.promise.then(function () {
                 $('.pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
@@ -199,7 +201,7 @@ toggleSignModal = () => {
                 viewport: viewport,
               }
               var renderTaskThumb = page.render(renderContextThumb)
-              renderTaskThumb.then(function () {
+              renderTaskThumb.promise.then(function () {
                 $('.thumb-pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })

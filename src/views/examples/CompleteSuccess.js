@@ -17,10 +17,10 @@ import UncontrolledLottie from '../../components/UncontrolledLottie/Uncontrolled
 
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
-class SendSuccess extends React.Component {
+class CompleteSuccess extends React.Component {
   componentDidMount() {
-    var sendsuccessnextbtn = document.getElementById('sendsuccessnextbtn')
-    sendsuccessnextbtn.addEventListener('click', function (event) {
+    var completesuccessnextbtn = document.getElementById('completesuccessnextbtn')
+    completesuccessnextbtn.addEventListener('click', function (event) {
       window.location.hash = '#/admin/index'
     })
   }
@@ -34,16 +34,16 @@ class SendSuccess extends React.Component {
             <div className="col  pb-2">
               <Card className="shadow border-0">
                 <CardHeader className=" bg-transparent">
-                  <h4>Envelope Sent Successfully!</h4>
+                  <h4>Envelope Signing Complete!</h4>
                 </CardHeader>
                 <CardBody>
                   <Row>
                     <Col lg="12">
-                    <img
+                      <img
                           alt="..."
                           className="rounded-circle"
                           id="completepic"
-                          src="./sentpic.png"
+                          src="./completepic.png"
                         />
                     </Col>
                   </Row>
@@ -54,7 +54,7 @@ class SendSuccess extends React.Component {
                       <Button
                         className="float-right px-4"
                         color="primary"
-                        id="sendsuccessnextbtn"
+                        id="completesuccessnextbtn"
                       >
                         Next
                       </Button>
@@ -70,4 +70,4 @@ class SendSuccess extends React.Component {
   }
 }
 
-export default SendSuccess
+export default CompleteSuccess

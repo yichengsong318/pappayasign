@@ -124,10 +124,8 @@ class TemplateRecipients extends React.Component {
             .children('#trcard')
             .children('#trecipient-option')
             .attr('placeholder')
-          people.pushWithReplace(
-            { name: recipientN, email: recipientE, option: recipientO },
-            'email'
-          )
+          people.push(
+            { name: recipientN, email: recipientE, option: recipientO })
         })
         TemplateDataVar.TemplateRecipientArray = people
       }
@@ -139,11 +137,7 @@ class TemplateRecipients extends React.Component {
       //console.log($(this).parent().children('#trecipient-name').attr("placeholder"));
     })
 
-    Array.prototype.pushWithReplace = function (o, k) {
-      var fi = this.findIndex((f) => f[k] === o[k])
-      fi != -1 ? this.splice(fi, 1, o) : this.push(o)
-      return this
-    }
+    
 
     $('#ts-btn').click(function () {
       var listItems = $('#tsortable li')

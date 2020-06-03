@@ -26,6 +26,8 @@ require('jquery-ui/ui/disable-selection')
 
 const axios = require('axios').default
 var PDFJS = require('pdfjs-dist')
+PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 
 class SaveAsTemplate extends React.Component {
  
@@ -78,7 +80,7 @@ class SaveAsTemplate extends React.Component {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport(scale)
+              var viewport = page.getViewport({scale:scale})
               var canvas = document.createElement('canvas')
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
@@ -93,7 +95,7 @@ class SaveAsTemplate extends React.Component {
                 viewport: viewport,
               }
               var renderTask = page.render(renderContext)
-              renderTask.then(function () {
+              renderTask.promise.then(function () {
                 $('.review-pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
@@ -428,11 +430,7 @@ class SaveAsTemplate extends React.Component {
         //console.log($(this).parent().children('#satrecipient-name').attr("placeholder"));
       })
 
-      Array.prototype.pushWithReplace = function (o, k) {
-        var fi = this.findIndex((f) => f[k] === o[k])
-        fi != -1 ? this.splice(fi, 1, o) : this.push(o)
-        return this
-      }
+      
 
       var randomString = function (len, bits) {
         bits = bits || 36
@@ -480,10 +478,8 @@ class SaveAsTemplate extends React.Component {
                 .children('#satrcard')
                 .children('#satrecipient-option')
                 .attr('placeholder')
-              people.pushWithReplace(
-                { name: recipientN, email: recipientE, option: recipientO },
-                'email'
-              )
+              people.push(
+                { name: recipientN, email: recipientE, option: recipientO })
             })
             //console.log(people);
             TemplateDataVar.TemplateRecipientArray = people

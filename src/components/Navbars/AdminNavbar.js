@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import DataVar from '../../variables/data'
 // reactstrap components
 import {
   Col,
@@ -33,11 +34,19 @@ class AdminNavbar extends React.Component {
     }
 
     var userid = getCookie('uid')
+    var navfilename = ''
+    var navfileid = ''
+    var navtype = ''
+    var navuseridother = ''
+    var navkey = ''
 
     if (userid) {
       //console.log('user logged in');
       //console.log(userid);
       var email = getCookie('useremail')
+      
+
+      
 
       axios
         .post('/api/getuserdata', {

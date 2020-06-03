@@ -24,6 +24,8 @@ import PreviewData from '../../variables/preview'
 import './uploadsuccess.css'
 
 var PDFJS = require('pdfjs-dist')
+PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 var moment = require('moment');
 const axios = require('axios').default
 
@@ -116,7 +118,7 @@ class UploadSuccess extends React.Component {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport(scale)
+              var viewport = page.getViewport({scale:scale})
               var canvas = document.createElement('canvas')
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
@@ -131,7 +133,7 @@ class UploadSuccess extends React.Component {
                 viewport: viewport,
               }
               var renderTask = page.render(renderContext)
-              renderTask.then(function () {
+              renderTask.promise.then(function () {
                 $('.review-pdf-canvas').each(function (index, el) {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
