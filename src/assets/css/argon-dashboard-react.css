@@ -90,6 +90,15 @@
 background-color: #626262;
 }
 
+#completepic{
+  height: 320px;
+  text-align: center !important;
+  justify-content: center !important;
+  margin: auto;
+  padding: inherit;
+  display: flex;
+}
+
 
   .profilepicmodal{
     height: 20rem;
@@ -583,6 +592,17 @@ border-radius: 20px !important;
   justify-content: left;
   -webkit-animation: fadeinout 0.25s linear forwards;
   animation: fadeinout 0.25s linear forwards;
+}
+
+.review-act-modal-content{
+  position: relative; 
+  background-color: white;
+  padding-top: 3%;
+  padding-bottom: 5%;
+  top:-5%;
+  width: 100%;  
+  -webkit-animation: fadeinout 0.25s linear forwards;
+    animation: fadeinout 0.25s linear forwards;  
 }
 
 
