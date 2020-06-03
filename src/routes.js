@@ -20,6 +20,7 @@ import UploadSuccess from 'views/examples/UploadSuccess'
 import SaveAsTemplate from 'views/examples/SaveAsTemplate'
 import StartDrop from 'views/examples/StartDrop'
 import SignManagerPageSample from "./views/examples/SignManagerPageSample";
+import Activate from 'views/examples/Activate'
 
 
 var routes = [
@@ -168,6 +169,13 @@ var routes = [
     name: 'Register',
     icon: 'ni ni-circle-08 text-pink',
     component: Register,
+    layout: '/auth',
+  },
+  {
+    path: '/activate',
+    name: 'Active',
+    icon: 'ni ni-circle-08 text-pink',
+    component: Activate,
     layout: '/auth',
   },
   {
