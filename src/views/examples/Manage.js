@@ -28,6 +28,7 @@ var PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 
+
 const axios = require('axios').default
 
 class Tables extends React.Component {

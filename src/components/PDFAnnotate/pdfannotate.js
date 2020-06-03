@@ -1518,7 +1518,7 @@ toggleSignModal = () => {
                           attachments: {
                             // utf-8 string as an attachment
                             filename:
-                              'PappayaSign_Completed' +
+                              'GEMS_Completed' +
                               inst.filename +
                               '.pdf',
                             path: dataURI,
@@ -1922,7 +1922,7 @@ toggleSignModal = () => {
                                 attachments: {
                                   // utf-8 string as an attachment
                                   filename:
-                                    'PappayaSign_Completed' +
+                                    'GEMS_Completed' +
                                     documentname +
                                     '.pdf',
                                   path: dataURI,
@@ -1954,7 +1954,7 @@ toggleSignModal = () => {
                                   attachments: {
                                     // utf-8 string as an attachment
                                     filename:
-                                      'PappayaSign_Completed' +
+                                      'GEMS_Completed' +
                                       documentname +
                                       '.pdf',
                                     path: dataURI,

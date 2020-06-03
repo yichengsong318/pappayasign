@@ -28,6 +28,8 @@ require('jquery-ui/ui/disable-selection')
 
 const axios = require('axios').default
 var PDFJS = require('pdfjs-dist')
+PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 
 
 
@@ -433,6 +435,8 @@ class SelectTemplateRecipients extends React.Component {
         }
         return outStr.toUpperCase()
       }
+
+     
 
       $('#sts-btn').click(function () {
         modal[0].style.display = 'block'

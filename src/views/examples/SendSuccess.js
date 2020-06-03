@@ -29,7 +29,7 @@ class SendSuccess extends React.Component {
       <>
         <HeaderDefault />
         {/* Page content */}
-        <Container className="mt--9 pb-8">
+        <Container className="mt--7 pb-8">
           <Row>
             <div className="col  pb-2">
               <Card className="shadow border-0">
@@ -39,12 +39,7 @@ class SendSuccess extends React.Component {
                 <CardBody>
                   <Row>
                     <Col lg="12">
-                    <img
-                          alt="..."
-                          className="rounded-circle"
-                          id="completepic"
-                          src="./sentpic.png"
-                        />
+                      <UncontrolledLottie />
                     </Col>
                   </Row>
                 </CardBody>

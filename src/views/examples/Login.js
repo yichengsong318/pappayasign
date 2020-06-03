@@ -4,7 +4,6 @@ import {
   GoogleReCaptchaProvider,
 } from 'react-google-recaptcha-v3'
 import { Link, NavLink } from 'react-router-dom'
-import $ from 'jquery'
 // reactstrap components
 import {
   Button,
@@ -209,8 +208,6 @@ class Login extends React.Component {
               'sign id required'
             setCookie('uid', response.data.UserID, 1)
             setCookie('useremail', response.data.UserEmail, 1)
-            var recents_str = ''
-            setCookie('recents', recents_str, 10)
             window.location.hash = '#/admin/index'
           } else if (response.data.Status === 'activate account') {
             document.getElementById('loginerrorspan').innerHTML =
@@ -248,15 +245,6 @@ class Login extends React.Component {
       }
       return null
     }
-
-    $('#forgotenterbtnclose').click(function () {
-      modal[1].style.display = 'none';
-    });
-
-    $('#forgotbtnclose').click(function () {
-      modal[0].style.display = 'none';
-    });
-
   }
 
   render() {
@@ -305,14 +293,6 @@ class Login extends React.Component {
                       type="button"
                     >
                       Next
-                    </Button>
-                    <Button
-                      id="forgotbtnclose"
-                      className="mt-3 px-4"
-                      color="neutral"
-                      type="button"
-                    >
-                      CLose
                     </Button>
                   </div>
                 </Form>
@@ -380,14 +360,6 @@ class Login extends React.Component {
                       type="button"
                     >
                       Reset
-                    </Button>
-                    <Button
-                      id="forgotenterbtnclose"
-                      className="mt-3 px-4"
-                      color="neutral"
-                      type="button"
-                    >
-                      Close
                     </Button>
                   </div>
                 </Form>

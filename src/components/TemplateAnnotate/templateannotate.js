@@ -14,7 +14,6 @@ const axios = require('axios').default
 var PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
-//const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
 
 
 class TemplateAnnotate extends React.Component {

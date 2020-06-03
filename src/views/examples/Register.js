@@ -930,7 +930,7 @@ class Register extends React.Component {
                 </Row>
                 <Row className="px-2">
                   <div className="text-left text-muted mb-3 mt-2 px-3">
-                    <span>I'm trying to use Pappayasign because?</span>
+                    <span>I'm trying to use GEMS because?</span>
                   </div>
                   <Col lg="12" md="8" className="p-2">
                     <FormGroup className="mb-2">
@@ -1008,7 +1008,7 @@ class Register extends React.Component {
                       >
                         <span className="text-muted">
                           I agree to receive marketing communications and
-                          promotional offers from Pappayasign
+                          promotional offers from GEMS
                         </span>
                       </label>
                     </div>

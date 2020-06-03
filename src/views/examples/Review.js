@@ -39,6 +39,7 @@ import HeaderDefault from 'components/Headers/HeaderDefault.js'
 var PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+
 var moment = require('moment');
 const axios = require('axios').default
 
@@ -1307,7 +1308,7 @@ class Review extends React.Component {
                         
                         <FormGroup className="my-4">
                           <span className="emaillabelspan py-2">
-                            <strong>Email Subject</strong>
+                            <strong>Email Subject*</strong>
                           </span>
                           <Input
                             id="input-email-subject"
@@ -1322,7 +1323,7 @@ class Review extends React.Component {
                       <Col lg="12">
                         <FormGroup className="">
                           <span className="emaillabelspan  py-2">
-                            <strong>Email Body</strong>
+                            <strong>Email Body*</strong>
                           </span>
                           <Input
                             id="input-email-message"
