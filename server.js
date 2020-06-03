@@ -1,4 +1,3 @@
-
 const express = require("express");
 const favicon = require("express-favicon");
 const bcrypt = require("bcrypt")
@@ -56,7 +55,7 @@ let transporter = nodemailer.createTransport({
   port: 465,
   secure: true, // true for 465, false for other ports
   auth: {
-    user: "devsign@pappaya.com",
+    user: "noreply@pappayasign.com",
     pass: "Pappaya@2020",
   },
 });
