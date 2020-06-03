@@ -58,13 +58,12 @@ class UserHeader extends React.Component {
           {/* Header container */}
           <Container className="d-flex align-items-center" fluid>
             <Row>
-              <Col lg="7" md="10">
+              <Col lg="10" md="10">
                 <h1 className="display-2 text-white" id="headername">
                   Hello!
                 </h1>
                 <p className="text-white mt-0 mb-4">
-                  This is your profile page. You can see the progress you've
-                  made with your work and manage your projects or assigned tasks
+                  This is your profile page. You can edit all your information here.
                 </p>
               </Col>
             </Row>

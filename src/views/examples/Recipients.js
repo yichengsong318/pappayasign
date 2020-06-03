@@ -248,7 +248,8 @@ class Recipients extends React.Component {
                   .children('#rcard')
                   .children('#recipient-option')
                   .attr('placeholder')
-                people.push({ name: recipientN, email: recipientE, option: recipientO })
+                people.push(
+                  { name: recipientN, email: recipientE, option: recipientO })
               })
               DataVar.RecipientArray = people
         if (wurl === '') {
