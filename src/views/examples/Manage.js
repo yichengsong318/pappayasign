@@ -23,7 +23,7 @@ import {
 } from 'reactstrap'
 import DataVar from '../../variables/data'
 import TemplateDataVar from '../../variables/templatedata'
-import { signRequestEMail } from 'components/PDFAnnotate/utils'
+import { SignReviewAndRequest } from 'components/Emails/SignReviewAndRequest'
 
 var PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
@@ -45,7 +45,7 @@ class Tables extends React.Component {
   pdf = null;
 
   componentDidMount() {
-    
+
     function setCookie(name, value, days) {
       var expires = ''
       if (days) {
@@ -56,13 +56,13 @@ class Tables extends React.Component {
       document.cookie = name + '=' + (value || '') + expires + '; path=/'
     }
 
-    
+
 
     var recents = [];
     var Signatures = 0
-    
+
     var pdf = '';
-    var docuserid=''
+    var docuserid = ''
 
     var global = this;
     try {
@@ -89,7 +89,7 @@ class Tables extends React.Component {
         var completedbtn = document.getElementById('completedbtn')
         completedbtn.click()
       }
-    } catch (error) {}
+    } catch (error) { }
 
     var modal = document.querySelectorAll('.modal')
     modal[0].style.display = 'block'
@@ -152,24 +152,24 @@ class Tables extends React.Component {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport({scale:scale})
+              var viewport = page.getViewport({ scale: scale })
               var canvas = document.createElement('canvas')
               var btn = document.createElement("BUTTON");
 
               btn.className = 'manage-pdf-download-btn'
 
-              btn.innerHTML='<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
+              btn.innerHTML = '<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
 
               var openbtn = document.createElement("BUTTON");
 
               openbtn.className = 'manage-pdf-open-btn'
 
-              openbtn.innerHTML='<i class="material-icons manage-pdf-open-btn-icon">open_with</i>';
+              openbtn.innerHTML = '<i class="material-icons manage-pdf-open-btn-icon">open_with</i>';
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
                 document.getElementById(inst.container_id).appendChild(btn)
                 document.getElementById(inst.container_id).appendChild(openbtn)
-              } catch (error) {}
+              } catch (error) { }
               canvas.className = 'manage-pdf-canvas'
               canvas.height = viewport.height
               canvas.width = viewport.width
@@ -228,7 +228,7 @@ class Tables extends React.Component {
             e.hasControls = false
           })
           inst.fabricObjects.push(fabricObj)
-          
+
           fabricObj.setBackgroundImage(
             background,
             fabricObj.renderAll.bind(fabricObj)
@@ -238,9 +238,9 @@ class Tables extends React.Component {
             fabricObj.off('after:render')
           })
 
-          
 
-          
+
+
         })
 
         try {
@@ -251,63 +251,63 @@ class Tables extends React.Component {
             //console.log('adding objects')
           })
           addobjbtn.click()
-        } catch (error) {}
+        } catch (error) { }
       }
 
-      
 
-      
+
+
     }
 
     PDFFabric.prototype.AddObj = function () {
       var inst = this
       //console.log('started adding objects')
-              // // // // // // // ////console.log('file id found');
-              $.each(inst.fabricObjects, function (index, fabricObj) {
-                ////console.log(index);
-                if(checkvoid == true){
-                  fabricObj.loadFromJSON(RowSelectData[index], function () {
+      // // // // // // // ////console.log('file id found');
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        ////console.log(index);
+        if (checkvoid == true) {
+          fabricObj.loadFromJSON(RowSelectData[index], function () {
 
-                    var text = new fabric.Text('VOIDED', {
-                      left:fabricObj.width/2 - 210,
-                      top:fabricObj.height/2 - 50,
-                      fill: '#7f7f7f36',
-                      backgroundColor: '#e5e5e53a',
-                      fontSize: 110,
-                      selectable: false,
-                      lockMovementX: true,
-                      lockMovementY: true,
-                      hasControls: false,
-                    })
-                    fabricObj.add(text)
-                    fabricObj.renderAll()
-                    fabricObj.getObjects().forEach(function (targ) {
-                      ////console.log(targ);
-                      targ.selectable = false
-                      targ.hasControls = false
-                    })
-                    
-                    
-                  })
-                  
-                }
-                else{
-                  fabricObj.loadFromJSON(RowSelectData[index], function () {
-                  
-                    fabricObj.renderAll()
-                    fabricObj.getObjects().forEach(function (targ) {
-                      ////console.log(targ);
-                      targ.selectable = false
-                      targ.hasControls = false
-                    })
-                    
-                    
-                  })
-                }
+            var text = new fabric.Text('VOIDED', {
+              left: fabricObj.width / 2 - 210,
+              top: fabricObj.height / 2 - 50,
+              fill: '#7f7f7f36',
+              backgroundColor: '#e5e5e53a',
+              fontSize: 110,
+              selectable: false,
+              lockMovementX: true,
+              lockMovementY: true,
+              hasControls: false,
+            })
+            fabricObj.add(text)
+            fabricObj.renderAll()
+            fabricObj.getObjects().forEach(function (targ) {
+              ////console.log(targ);
+              targ.selectable = false
+              targ.hasControls = false
+            })
 
-                
-              })
-              //console.log('pdf done')
+
+          })
+
+        }
+        else {
+          fabricObj.loadFromJSON(RowSelectData[index], function () {
+
+            fabricObj.renderAll()
+            fabricObj.getObjects().forEach(function (targ) {
+              ////console.log(targ);
+              targ.selectable = false
+              targ.hasControls = false
+            })
+
+
+          })
+        }
+
+
+      })
+      //console.log('pdf done')
     }
 
     PDFFabric.prototype.savePdf = function () {
@@ -318,13 +318,13 @@ class Tables extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf saved')
       doc.save('pappayasign_' + inst.filename + '')
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.printPdf = function () {
@@ -335,13 +335,13 @@ class Tables extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf printed')
       window.open(doc.output('bloburl'), '_blank');
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.OpenIndividual = function (fabricindex) {
@@ -352,36 +352,36 @@ class Tables extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf printed')
-      var index = parseInt(fabricindex)+1
-      window.open(doc.output('bloburl') + '#page='+ index , '_blank');
+      var index = parseInt(fabricindex) + 1
+      window.open(doc.output('bloburl') + '#page=' + index, '_blank');
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.DownloadIndividual = function (fabricindex) {
       var inst = this
       var fabricObj = inst.fabricObjects[fabricindex];
       var doc = new jsPDF()
-      doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+      doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       console.log('pdf saved')
       doc.save('pappayasign_' + fabricindex + '')
       modal[0].style.display = 'none'
-      
+
     }
 
-    
+
 
     PDFFabric.prototype.Clear = function () {
       var inst = this
       $.each(inst.fabricObjects, function (index, fabricObj) {
-        inst.fabricObjects.slice(index,1);
+        inst.fabricObjects.slice(index, 1);
       })
       modal[0].style.display = 'none'
-      
+
     }
 
     function getCookie(name) {
@@ -397,7 +397,7 @@ class Tables extends React.Component {
 
     var userid = getCookie('uid')
     var deletekey = false
-    var completedkey  = false
+    var completedkey = false
     var expirykey = false
     var inboxkey = false
     var actionrequiredkey = false
@@ -408,7 +408,7 @@ class Tables extends React.Component {
       //console.log(userid);
       var email = getCookie('useremail')
       var cookierecents = getCookie('recents');
-      if(cookierecents){
+      if (cookierecents) {
         recents = JSON.parse(cookierecents);
       }
       inboxfunc()
@@ -420,7 +420,7 @@ class Tables extends React.Component {
 
     async function inboxfunc() {
       modal[0].style.display = 'block'
-      
+
 
       await axios
         .post('/api/getuserdata', {
@@ -437,7 +437,7 @@ class Tables extends React.Component {
             var actionrequiredcontent = ''
             var sentcontent = ''
 
-            Request.sort(function(a, b) {
+            Request.sort(function (a, b) {
               var keyA = new Date(a.RecipientDateStatus),
                 keyB = new Date(b.RecipientDateStatus);
               // Compare the 2 dates
@@ -456,45 +456,45 @@ class Tables extends React.Component {
                 Request[index].RecipientStatus == 'Completed' ||
                 Request[index].RecipientStatus == 'Correcting'
               ) {
-                if(Request[index].FromEmail != email){
+                if (Request[index].FromEmail != email) {
                   console.log('not equal')
                   if (Request[index].RecipientStatus === 'Need to Sign') {
                     allcontent += '<tr >'
-                  allcontent += '<td><input  type="checkbox"></td>'
-                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">inbox</i></td>'
-                  allcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  allcontent +=
-                    '<td id="datastatus">' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  allcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  allcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  allcontent +=
-                    `<td ><div class="btn-group">
+                    allcontent += '<td><input  type="checkbox"></td>'
+                    allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">inbox</i></td>'
+                    allcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      Request[index].DocumentName +
+                      '\nFrom: ' +
+                      Request[index].FromEmail +
+                      '</span></td>'
+                    allcontent +=
+                      '<td id="datastatus">' +
+                      Request[index].RecipientStatus +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datakey" hidden>' +
+                      Request[index].DocumentID +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' +
+                      Request[index].From +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                    allcontent +=
+                      '<td id="datarecep" hidden>' +
+                      Request[index].FromEmail +
+                      '</td>'
+                    allcontent +=
+                      '<td >' + Request[index].RecipientDateStatus + '</td>'
+                    allcontent +=
+                      `<td ><div class="btn-group">
                 <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
-                    Request[index].DocumentID +
-                    `&type=db&u=` +
-                    Request[index].From +
-                    `">SIGN</a></button>
+                      Request[index].DocumentID +
+                      `&type=db&u=` +
+                      Request[index].From +
+                      `">SIGN</a></button>
                 <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                 <div class="dropdown-menu2" id="dropdown">
                 <button class="dropdown-item move" type="button">Move</button>
@@ -507,8 +507,8 @@ class Tables extends React.Component {
                 <button class="dropdown-item deletemanage" type="button">Delete</button>
                 </div>
               </div></td >`
-                  allcontent += '</tr>'
-  
+                    allcontent += '</tr>'
+
                     actionrequiredcontent += '<tr >'
                     actionrequiredcontent += '<td><input  type="checkbox"></td>'
                     actionrequiredcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">error</i></td>'
@@ -559,77 +559,77 @@ class Tables extends React.Component {
                 </div></td >`
                     actionrequiredcontent += '</tr>'
                   }
-                 else if (Request[index].RecipientStatus === 'Deleted') {
-  
-                  deletedcontent += '<tr >'
-                  deletedcontent += '<td><input  type="checkbox"></td>'
-                  deletedcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">delete</i></td>'
-                  deletedcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  deletedcontent +=
-                    '<td id=datastatus>' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  deletedcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  deletedcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  deletedcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  deletedcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  deletedcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  deletedcontent += `<td ><div class="btn-group">
+                  else if (Request[index].RecipientStatus === 'Deleted') {
+
+                    deletedcontent += '<tr >'
+                    deletedcontent += '<td><input  type="checkbox"></td>'
+                    deletedcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">delete</i></td>'
+                    deletedcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      Request[index].DocumentName +
+                      '\nFrom: ' +
+                      Request[index].FromEmail +
+                      '</span></td>'
+                    deletedcontent +=
+                      '<td id=datastatus>' +
+                      Request[index].RecipientStatus +
+                      '</td>'
+                    deletedcontent +=
+                      '<td id="datakey" hidden>' +
+                      Request[index].DocumentID +
+                      '</td>'
+                    deletedcontent +=
+                      '<td id="datauid" hidden>' +
+                      Request[index].From +
+                      '</td>'
+                    deletedcontent +=
+                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                    deletedcontent +=
+                      '<td id="datarecep" hidden>' +
+                      Request[index].FromEmail +
+                      '</td>'
+                    deletedcontent +=
+                      '<td >' + Request[index].RecipientDateStatus + '</td>'
+                    deletedcontent += `<td ><div class="btn-group">
                 <button type="button" class="btn btn-primary correct">CONTINUE</button>
                 <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                 <div class="dropdown-menu2" id="dropdown">
                 <button class="dropdown-item savetemplate" type="button">Save as Template</button>
                 </div>
                 </div></td >`
-                  deletedcontent += '</tr>'
-                } else if (Request[index].RecipientStatus === 'Completed') {
-                  allcontent += '<tr >'
-                  allcontent += '<td><input  type="checkbox"></td>'
-                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">done</i></td>'
-                  allcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  allcontent +=
-                    '<td id="datastatus">' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  allcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  allcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  allcontent +=
-                    `<td ><div class="btn-group">
+                    deletedcontent += '</tr>'
+                  } else if (Request[index].RecipientStatus === 'Completed') {
+                    allcontent += '<tr >'
+                    allcontent += '<td><input  type="checkbox"></td>'
+                    allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">done</i></td>'
+                    allcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      Request[index].DocumentName +
+                      '\nFrom: ' +
+                      Request[index].FromEmail +
+                      '</span></td>'
+                    allcontent +=
+                      '<td id="datastatus">' +
+                      Request[index].RecipientStatus +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datakey" hidden>' +
+                      Request[index].DocumentID +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' +
+                      Request[index].From +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                    allcontent +=
+                      '<td id="datarecep" hidden>' +
+                      Request[index].FromEmail +
+                      '</td>'
+                    allcontent +=
+                      '<td >' + Request[index].RecipientDateStatus + '</td>'
+                    allcontent +=
+                      `<td ><div class="btn-group">
                 
                     <button type="button" class="btn btn-primary move">MOVE</button>
                     <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
@@ -642,38 +642,38 @@ class Tables extends React.Component {
                     <button class="dropdown-item deletemanage" type="button">Delete</button>
                 </div>
               </div></td >`
-                  allcontent += '</tr>'
-  
-                  completedcontent += '<tr >'
-                  completedcontent += '<td><input  type="checkbox"></td>'
-                  completedcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">done</i></td>'
-                  completedcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  completedcontent +=
-                    '<td id="datastatus">' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  completedcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  completedcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  completedcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  completedcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  completedcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  completedcontent += `<td ><div class="btn-group">
+                    allcontent += '</tr>'
+
+                    completedcontent += '<tr >'
+                    completedcontent += '<td><input  type="checkbox"></td>'
+                    completedcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">done</i></td>'
+                    completedcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      Request[index].DocumentName +
+                      '\nFrom: ' +
+                      Request[index].FromEmail +
+                      '</span></td>'
+                    completedcontent +=
+                      '<td id="datastatus">' +
+                      Request[index].RecipientStatus +
+                      '</td>'
+                    completedcontent +=
+                      '<td id="datakey" hidden>' +
+                      Request[index].DocumentID +
+                      '</td>'
+                    completedcontent +=
+                      '<td id="datauid" hidden>' +
+                      Request[index].From +
+                      '</td>'
+                    completedcontent +=
+                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                    completedcontent +=
+                      '<td id="datarecep" hidden>' +
+                      Request[index].FromEmail +
+                      '</td>'
+                    completedcontent +=
+                      '<td >' + Request[index].RecipientDateStatus + '</td>'
+                    completedcontent += `<td ><div class="btn-group">
               <button type="button" class="btn btn-primary move">MOVE</button>
               <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
               <div class="dropdown-menu2" id="dropdown">
@@ -685,44 +685,44 @@ class Tables extends React.Component {
               <button class="dropdown-item deletemanage" type="button">Delete</button>
               </div>
             </div></td >`
-                  completedcontent += '</tr>'
-                } else if (Request[index].RecipientStatus === 'Expiring') {
-                  allcontent += '<tr >'
-                  allcontent += '<td><input  type="checkbox"></td>'
-                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">warning</i></td>'
-                  allcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  allcontent +=
-                    '<td id="datastatus">' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  allcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  allcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  allcontent +=
-                    `<td ><div class="btn-group">
+                    completedcontent += '</tr>'
+                  } else if (Request[index].RecipientStatus === 'Expiring') {
+                    allcontent += '<tr >'
+                    allcontent += '<td><input  type="checkbox"></td>'
+                    allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">warning</i></td>'
+                    allcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      Request[index].DocumentName +
+                      '\nFrom: ' +
+                      Request[index].FromEmail +
+                      '</span></td>'
+                    allcontent +=
+                      '<td id="datastatus">' +
+                      Request[index].RecipientStatus +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datakey" hidden>' +
+                      Request[index].DocumentID +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' +
+                      Request[index].From +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                    allcontent +=
+                      '<td id="datarecep" hidden>' +
+                      Request[index].FromEmail +
+                      '</td>'
+                    allcontent +=
+                      '<td >' + Request[index].RecipientDateStatus + '</td>'
+                    allcontent +=
+                      `<td ><div class="btn-group">
                 <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
-                    Request[index].DocumentID +
-                    `&type=db&u=` +
-                    Request[index].From +
-                    `">SIGN</a></button>
+                      Request[index].DocumentID +
+                      `&type=db&u=` +
+                      Request[index].From +
+                      `">SIGN</a></button>
                 <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                 <div class="dropdown-menu2" id="dropdown">
                 <button class="dropdown-item move" type="button">Move</button>
@@ -735,43 +735,43 @@ class Tables extends React.Component {
                 <button class="dropdown-item deletemanage" type="button">Delete</button>
                 </div>
               </div></td >`
-                  allcontent += '</tr>'
-  
-                  
-                }
-  
-                else if (Request[index].RecipientStatus === 'Void'){
-                  allcontent += '<tr >'
-                  allcontent += '<td><input  type="checkbox"></td>'
-                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">block</i></td>'
-                  allcontent +=
-                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                    Request[index].DocumentName +
-                    '\nFrom: ' +
-                    Request[index].FromEmail +
-                    '</span></td>'
-                  allcontent +=
-                    '<td id="datastatus">' +
-                    Request[index].RecipientStatus +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datakey" hidden>' +
-                    Request[index].DocumentID +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' +
-                    Request[index].From +
-                    '</td>'
-                  allcontent +=
-                    '<td id="datauid" hidden>' + Request[index].From + '</td>'
-                  allcontent +=
-                    '<td id="datarecep" hidden>' +
-                    Request[index].FromEmail +
-                    '</td>'
-                  allcontent +=
-                    '<td >' + Request[index].RecipientDateStatus + '</td>'
-                  allcontent +=
-                    `<td ><div class="btn-group">
+                    allcontent += '</tr>'
+
+
+                  }
+
+                  else if (Request[index].RecipientStatus === 'Void') {
+                    allcontent += '<tr >'
+                    allcontent += '<td><input  type="checkbox"></td>'
+                    allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">block</i></td>'
+                    allcontent +=
+                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                      Request[index].DocumentName +
+                      '\nFrom: ' +
+                      Request[index].FromEmail +
+                      '</span></td>'
+                    allcontent +=
+                      '<td id="datastatus">' +
+                      Request[index].RecipientStatus +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datakey" hidden>' +
+                      Request[index].DocumentID +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' +
+                      Request[index].From +
+                      '</td>'
+                    allcontent +=
+                      '<td id="datauid" hidden>' + Request[index].From + '</td>'
+                    allcontent +=
+                      '<td id="datarecep" hidden>' +
+                      Request[index].FromEmail +
+                      '</td>'
+                    allcontent +=
+                      '<td >' + Request[index].RecipientDateStatus + '</td>'
+                    allcontent +=
+                      `<td ><div class="btn-group">
                     <button type="button" class="btn btn-primary move">MOVE</button>
                     <button type="button" class="btn btn-primary action dropdown-toggle dropdown-toggle-split"></button>
                     <div class="dropdown-menu2" id="dropdown">
@@ -782,59 +782,59 @@ class Tables extends React.Component {
                     <button class="dropdown-item delete" type="button">Delete</button>
                 </div>
               </div></td >`
-                  allcontent += '</tr>' 
+                    allcontent += '</tr>'
 
-  
-              
-                }
-                }
-                else if(Request[index].FromEmail == email){
 
-                    if(Request[index].RecipientStatus === 'Need to Sign'){
-                      admindocid = Request[index].DocumentID;
-                      console.log('equal')
-                    }
+
+                  }
                 }
-                
-                
-            }
+                else if (Request[index].FromEmail == email) {
+
+                  if (Request[index].RecipientStatus === 'Need to Sign') {
+                    admindocid = Request[index].DocumentID;
+                    console.log('equal')
+                  }
+                }
+
+
+              }
 
             })
-                        
-           
-            if(deletedcontent != ''){
+
+
+            if (deletedcontent != '') {
               deletekey = true
               $('#deletedtable tbody tr').remove()
               $('#deletedtable').append(deletedcontent)
             }
-            if(completedcontent != ''){
+            if (completedcontent != '') {
               completedkey = true
               $('#completedtable tbody tr').remove()
               $('#completedtable').append(completedcontent)
             }
-            if(expiringcontent != ''){
+            if (expiringcontent != '') {
               expirykey = true
               $('#expiringtable tbody tr').remove()
               $('#expiringtable').append(expiringcontent)
             }
 
-            if(allcontent != ''){
+            if (allcontent != '') {
               inboxkey = true
               $('#alltable tbody tr').remove()
               $('#alltable').append(allcontent)
             }
 
-            if(actionrequiredcontent != ''){
+            if (actionrequiredcontent != '') {
               actionrequiredkey = true
               $('#actionrequiredtable tbody tr').remove()
               $('#actionrequiredtable').append(actionrequiredcontent)
             }
-            
-            
-            
+
+
+
           }
 
-          
+
         })
         .catch(function (error) {
           console.log(error)
@@ -844,7 +844,7 @@ class Tables extends React.Component {
 
     async function datafunc() {
       modal[0].style.display = 'block'
-      
+
       await axios
         .post('/api/getmanagedocdata', {
           UserID: userid,
@@ -864,7 +864,7 @@ class Tables extends React.Component {
             var expiringcontent = ''
             var actionrequiredcontent = ''
 
-            Documents.sort(function(a, b) {
+            Documents.sort(function (a, b) {
               var keyA = new Date(a.DateStatus),
                 keyB = new Date(b.DateStatus);
               // Compare the 2 dates
@@ -883,7 +883,7 @@ class Tables extends React.Component {
                   reciverlist =
                     reciverlist + ' ' + reciever.RecipientEmail + '\n'
                 })
-              } catch (error) {}
+              } catch (error) { }
 
               if (
                 data.Status == 'Sent' ||
@@ -897,27 +897,27 @@ class Tables extends React.Component {
                 data.Status == 'Draft'
               ) {
 
-                if(admindocid == data.DocumentID && data.Status == 'Waiting for Others'){
-                    sentcontent += '<tr >'
-                    sentcontent +=
-                      '<td><input class="primary" type="checkbox"></td>'
-                      sentcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
-                    sentcontent +=
-                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                      data.DocumentName +
-                      '\nTo: ' +
-                      reciverlist +
-                      '</span></td>'
-                    sentcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
-                    sentcontent += '<td >Need to Sign</td>'
-                    sentcontent +=
-                      '<td id="datakey" hidden>' + data.DocumentID + '</td>'
-                    sentcontent +=
-                      '<td id="datarecep" hidden>' + reciverlist + '</td>'
-                    sentcontent +=
-                      '<td id="datauid" hidden>' + data.Owner + '</td>'
-                    sentcontent += '<td >' + data.DateStatus + '</td>'
-                    sentcontent += `<td ><div class="btn-group">
+                if (admindocid == data.DocumentID && data.Status == 'Waiting for Others') {
+                  sentcontent += '<tr >'
+                  sentcontent +=
+                    '<td><input class="primary" type="checkbox"></td>'
+                  sentcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
+                  sentcontent +=
+                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                    data.DocumentName +
+                    '\nTo: ' +
+                    reciverlist +
+                    '</span></td>'
+                  sentcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
+                  sentcontent += '<td >Need to Sign</td>'
+                  sentcontent +=
+                    '<td id="datakey" hidden>' + data.DocumentID + '</td>'
+                  sentcontent +=
+                    '<td id="datarecep" hidden>' + reciverlist + '</td>'
+                  sentcontent +=
+                    '<td id="datauid" hidden>' + data.Owner + '</td>'
+                  sentcontent += '<td >' + data.DateStatus + '</td>'
+                  sentcontent += `<td ><div class="btn-group">
                     <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
                     data.DocumentID +
                     `&type=db&u=` +
@@ -935,29 +935,29 @@ class Tables extends React.Component {
                 <button class="dropdown-item deletemanage" type="button">Delete</button>
                 </div>
               </div></td >`
-                    sentcontent += '</tr>'
+                  sentcontent += '</tr>'
 
 
-                    allcontent += '<tr >'
-                    allcontent +=
-                      '<td><input class="primary" type="checkbox"></td>'
-                      allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
-                    allcontent +=
-                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                      data.DocumentName +
-                      '\nTo: ' +
-                      reciverlist +
-                      '</span></td>'
-                    allcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
-                    allcontent += '<td >Need to Sign</td>'
-                    allcontent +=
-                      '<td id="datakey" hidden>' + data.DocumentID + '</td>'
-                    allcontent +=
-                      '<td id="datarecep" hidden>' + reciverlist + '</td>'
-                    allcontent +=
-                      '<td id="datauid" hidden>' + data.Owner + '</td>'
-                    allcontent += '<td >' + data.DateStatus + '</td>'
-                    allcontent += `<td ><div class="btn-group">
+                  allcontent += '<tr >'
+                  allcontent +=
+                    '<td><input class="primary" type="checkbox"></td>'
+                  allcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
+                  allcontent +=
+                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                    data.DocumentName +
+                    '\nTo: ' +
+                    reciverlist +
+                    '</span></td>'
+                  allcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
+                  allcontent += '<td >Need to Sign</td>'
+                  allcontent +=
+                    '<td id="datakey" hidden>' + data.DocumentID + '</td>'
+                  allcontent +=
+                    '<td id="datarecep" hidden>' + reciverlist + '</td>'
+                  allcontent +=
+                    '<td id="datauid" hidden>' + data.Owner + '</td>'
+                  allcontent += '<td >' + data.DateStatus + '</td>'
+                  allcontent += `<td ><div class="btn-group">
                     <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
                     data.DocumentID +
                     `&type=db&u=` +
@@ -975,28 +975,28 @@ class Tables extends React.Component {
                 <button class="dropdown-item deletemanage" type="button">Delete</button>
                 </div>
               </div></td >`
-                    allcontent += '</tr>'
+                  allcontent += '</tr>'
 
-                    actionrequiredcontent += '<tr >'
-                    actionrequiredcontent +=
-                      '<td><input class="primary" type="checkbox"></td>'
-                      actionrequiredcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
-                    actionrequiredcontent +=
-                      '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
-                      data.DocumentName +
-                      '\nTo: ' +
-                      reciverlist +
-                      '</span></td>'
-                    actionrequiredcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
-                    actionrequiredcontent += '<td >Need to Sign</td>'
-                    actionrequiredcontent +=
-                      '<td id="datakey" hidden>' + data.DocumentID + '</td>'
-                    actionrequiredcontent +=
-                      '<td id="datarecep" hidden>' + reciverlist + '</td>'
-                    actionrequiredcontent +=
-                      '<td id="datauid" hidden>' + data.Owner + '</td>'
-                    actionrequiredcontent += '<td >' + data.DateStatus + '</td>'
-                    actionrequiredcontent += `<td ><div class="btn-group">
+                  actionrequiredcontent += '<tr >'
+                  actionrequiredcontent +=
+                    '<td><input class="primary" type="checkbox"></td>'
+                  actionrequiredcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
+                  actionrequiredcontent +=
+                    '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
+                    data.DocumentName +
+                    '\nTo: ' +
+                    reciverlist +
+                    '</span></td>'
+                  actionrequiredcontent += '<td id="datastatus" hidden>' + data.Status + '</td>'
+                  actionrequiredcontent += '<td >Need to Sign</td>'
+                  actionrequiredcontent +=
+                    '<td id="datakey" hidden>' + data.DocumentID + '</td>'
+                  actionrequiredcontent +=
+                    '<td id="datarecep" hidden>' + reciverlist + '</td>'
+                  actionrequiredcontent +=
+                    '<td id="datauid" hidden>' + data.Owner + '</td>'
+                  actionrequiredcontent += '<td >' + data.DateStatus + '</td>'
+                  actionrequiredcontent += `<td ><div class="btn-group">
                     <button type="button" class="btn btn-primary"><a href="#/admin/sign?id=` +
                     data.DocumentID +
                     `&type=db&u=` +
@@ -1014,7 +1014,7 @@ class Tables extends React.Component {
                 <button class="dropdown-item deletemanage" type="button">Delete</button>
                 </div>
               </div></td >`
-                    actionrequiredcontent += '</tr>'
+                  actionrequiredcontent += '</tr>'
                 }
                 else if (admindocid != data.DocumentID && data.Status == 'Waiting for Others') {
                   waitingcontent += '<tr >'
@@ -1055,7 +1055,7 @@ class Tables extends React.Component {
                   sentcontent += '<tr >'
                   sentcontent +=
                     '<td><input class="primary" type="checkbox"></td>'
-                    sentcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
+                  sentcontent += '<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>'
                   sentcontent +=
                     '<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
                     data.DocumentName +
@@ -1148,8 +1148,8 @@ class Tables extends React.Component {
             </div></td >`
                   sentcontent += '</tr>'
 
-                  
-                
+
+
                 } else if (data.Status == 'Draft') {
                   draftcontent += '<tr >'
                   draftcontent += '<td><input  type="checkbox"></td>'
@@ -1405,82 +1405,82 @@ class Tables extends React.Component {
                 deletedcontent += '</tr>'
               }
             })
-                      
 
-            
-            if(authcontent != ''){
+
+
+            if (authcontent != '') {
               $('#authtable tbody tr').remove()
               $('#authtable').append(authcontent)
             }
-            if(waitingcontent != ''){
+            if (waitingcontent != '') {
               $('#waitingtable tbody tr').remove()
               $('#waitingtable').append(waitingcontent)
             }
-            if(draftcontent != ''){
+            if (draftcontent != '') {
               $('#draftstable tbody tr').remove()
               $('#draftstable').append(draftcontent)
             }
-            if(deletedcontent != ''){
-              if(deletekey == true){
+            if (deletedcontent != '') {
+              if (deletekey == true) {
                 $('#deletedtable').append(deletedcontent)
               }
-              else{
+              else {
                 $('#deletedtable tbody tr').remove()
                 $('#deletedtable').append(deletedcontent)
               }
-              
+
             }
-            if(completedcontent != ''){
-              if(completedkey == true){
+            if (completedcontent != '') {
+              if (completedkey == true) {
                 $('#completedtable').append(completedcontent)
               }
-              else{
+              else {
                 $('#completedtable tbody tr').remove()
                 $('#completedtable').append(completedcontent)
               }
-              
+
             }
-            if(expiringcontent != ''){
-              if(expirykey == true){
+            if (expiringcontent != '') {
+              if (expirykey == true) {
                 $('#expiringtable').append(expiringcontent)
               }
-              else{
+              else {
                 $('#expiringtable tbody tr').remove()
                 $('#expiringtable').append(expiringcontent)
               }
-              
+
             }
 
-            if(allcontent != ''){
-              if(inboxkey == true){
+            if (allcontent != '') {
+              if (inboxkey == true) {
                 $('#alltable').append(allcontent)
               }
-              else{
+              else {
                 $('#alltable tbody tr').remove()
                 $('#alltable').append(allcontent)
               }
-              
+
             }
 
-            if(actionrequiredcontent != ''){
-              if(actionrequiredkey == true){
+            if (actionrequiredcontent != '') {
+              if (actionrequiredkey == true) {
                 $('#actionrequiredtable').append(actionrequiredcontent)
               }
-              else{
+              else {
                 $('#actionrequiredtable tbody tr').remove()
                 $('#actionrequiredtable').append(actionrequiredcontent)
               }
-              
-            }
-            
-            if(sentcontent != ''){
-              $('#senttable tbody tr').remove()
-                $('#senttable').append(sentcontent)
-              
+
             }
 
-            
-  
+            if (sentcontent != '') {
+              $('#senttable tbody tr').remove()
+              $('#senttable').append(sentcontent)
+
+            }
+
+
+
             modal[0].style.display = 'none'
           }
         })
@@ -1490,13 +1490,13 @@ class Tables extends React.Component {
         })
     }
 
-    
-    
+
+
     $(document).on('click', '.manage-pdf-download-btn', function () {
       //console.log($(".manage-pdf-download-btn").index(this));
       var index = $(".manage-pdf-download-btn").index(this);
       modal[0].style.display = 'block'
-      setTimeout(function(){ 
+      setTimeout(function () {
         global.pdf.DownloadIndividual(index);
       }, 1000);
     });
@@ -1505,14 +1505,14 @@ class Tables extends React.Component {
       var index = $(".manage-pdf-open-btn").index(this);
       try {
         modal[0].style.display = 'block'
-        setTimeout(function(){ 
+        setTimeout(function () {
           global.pdf.OpenIndividual(index);
         }, 1000);
       } catch (error) {
-        
+
       }
-      
-      
+
+
     });
 
     $(document).on('click', '.rowselect', function () {
@@ -1547,32 +1547,32 @@ class Tables extends React.Component {
             var Document = response.data.Document
             RowSelectData = response.data.Data
             Pages = RowSelectData.length;
-            if(Document.Status == 'Void'){
+            if (Document.Status == 'Void') {
               checkvoid = true;
             }
 
-            if(recents.length >= 5){
+            if (recents.length >= 5) {
               var removefirst = recents.shift();
             }
-            
+
             recents.push(
               { DocumentName: Document.DocumentName, DocumentID: Document.DocumentID, Status: Document.Status, Timestamp: Document.DateStatus })
             var recents_str = JSON.stringify(recents)
 
             setCookie('recents', recents_str, 10)
-            
+
             //console.log(Document.Reciever);
             var liStart = document.createElement('li')
-                  liStart.innerHTML =
-                    `<div class="rcardflow ">
+            liStart.innerHTML =
+              `<div class="rcardflow ">
                   <div class="flowlabelspan">
                   <strong><span  id="summary-recipient-name">Sent By: </span></strong>
                   </div>
                   <div class="flowlabelspan vertical-line-start">
-                  <span  id="summary-recipient-name">`+Document.OwnerEmail.substr(0, 1).toUpperCase() +Document.OwnerEmail.substr(0, 1).toUpperCase() +`</span>
+                  <span  id="summary-recipient-name">`+ Document.OwnerEmail.substr(0, 1).toUpperCase() + Document.OwnerEmail.substr(0, 1).toUpperCase() + `</span>
                   </div>
                   </div>`
-                  $('#recipientflowtable').append(liStart)
+            $('#recipientflowtable').append(liStart)
 
             var reciverlistrow = ''
             try {
@@ -1581,26 +1581,26 @@ class Tables extends React.Component {
                 reciverlistrow =
                   reciverlistrow + ' ' + reciever.RecipientEmail + ','
 
-                  
-                  //console.log(Document.Reciever);
-                  
 
-                  
-                  var flowli = document.createElement('li')
-                  flowli.innerHTML =
-                    `<div class="rcardmanage">
+                //console.log(Document.Reciever);
+
+
+
+                var flowli = document.createElement('li')
+                flowli.innerHTML =
+                  `<div class="rcardmanage">
                   <div class="flowlabelspan">
                   <strong><span  id="summary-recipient-name">` +
                   id +
-                    `</span></strong>
+                  `</span></strong>
                   </div>
                   <div class="flowlabelspan vertical-line">
                   <span  id="summary-recipient-name">` +
-                    reciever.RecipientName.substr(0, 1).toUpperCase()  + reciever.RecipientName.substr(0, 1).toUpperCase()  +
-                    `</span>
+                  reciever.RecipientName.substr(0, 1).toUpperCase() + reciever.RecipientName.substr(0, 1).toUpperCase() +
+                  `</span>
                   </div>
                   </div>`
-                  $('#recipientflowtable').append(flowli)
+                $('#recipientflowtable').append(flowli)
 
                 var li = document.createElement('li')
                 li.innerHTML =
@@ -1630,16 +1630,16 @@ class Tables extends React.Component {
               })
 
               var liEnd = document.createElement('li')
-                  liEnd.innerHTML =
-                    `<div class="rcardflow">
+              liEnd.innerHTML =
+                `<div class="rcardflow">
                   <div class="flowlabelspan">
                   <strong><span  id="summary-recipient-name">Status: </span></strong>
                   </div>
                   <div class="flowlabelend">
-                  <span  id="summary-recipient-name">`+Document.Status +`</span>
+                  <span  id="summary-recipient-name">`+ Document.Status + `</span>
                   </div>
                   </div>`
-                  $('#recipientflowtable').append(liEnd)
+              $('#recipientflowtable').append(liEnd)
 
               document.getElementById('detailsubject').innerHTML =
                 Document.DocumentName
@@ -1658,7 +1658,7 @@ class Tables extends React.Component {
               document.getElementById('detailstatusdate').innerHTML =
                 Document.DateStatus
 
-                await axios
+              await axios
                 .post('/api/docdownload', {
                   UserID: rowselectuserid,
                   filename: rowselectfileid,
@@ -1677,7 +1677,7 @@ class Tables extends React.Component {
                       rowselectfileid,
                       {
                         onPageUpdated: (page, oldData, newData) => {
-                          
+
                           //modal[0].style.display = "block";
                           ////console.log(page, oldData, newData);
                         },
@@ -1724,20 +1724,20 @@ class Tables extends React.Component {
 
     $('#detaildownloadbtn').click(function () {
       modal[0].style.display = 'block'
-      setTimeout(function(){ 
+      setTimeout(function () {
         global.pdf.savePdf();
       }, 1000);
-      
-      
-      
+
+
+
     })
 
     $('#detailprintbtn').click(function () {
       modal[0].style.display = 'block'
-      setTimeout(function(){ 
+      setTimeout(function () {
         global.pdf.printPdf();
       }, 1000);
-      
+
     })
 
     $('.flow-close').click(function () {
@@ -1809,7 +1809,7 @@ class Tables extends React.Component {
               var recievers = response.data.Reciever
               var status = response.data.DocStatus
               var DocID = voidfileid;
-              var OwnerEmail=response.data.OwnerEmail;
+              var OwnerEmail = response.data.OwnerEmail;
 
               recievers.forEach(function (item, index) {
                 var recipient_index = index
@@ -1832,12 +1832,12 @@ class Tables extends React.Component {
                     modal[2].style.display = 'none'
                   })
 
-                
+
 
                 axios
                   .post('/api/sendmail', {
                     to: item.RecipientEmail,
-                    body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+OwnerEmail+` has voided the document: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: `+managevoidmessage+`</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the GEMS Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
+                    body: `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">` + OwnerEmail + ` has voided the document: ` + item.DocumentName + `</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: ` + managevoidmessage + `</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: ` + DocID + `</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by ` + OwnerEmail + ` who is using the GEMS Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
                     subject: 'GEMS: Document Voided',
                   })
                   .then(function (response) {
@@ -1850,42 +1850,42 @@ class Tables extends React.Component {
               })
 
               axios
-                  .post('/api/getRequests', {
-                    UserID: voiduserid,
-                  })
-                  .then(function (response) {
-                    console.log(response)
-                    if (response.data.Status === 'got request') {
-                      var request = response.data.Request
-                      var status = response.data.DocStatus
+                .post('/api/getRequests', {
+                  UserID: voiduserid,
+                })
+                .then(function (response) {
+                  console.log(response)
+                  if (response.data.Status === 'got request') {
+                    var request = response.data.Request
+                    var status = response.data.DocStatus
 
-                      request.forEach(function (item, index) {
-                        if (request[index].DocumentID === voidfileid) {
-                          var recipient_index = index
-                          //console.log(recipient_index);
-                          request[index].RecipientStatus = 'Void'
-                          request[index].RecipientDateStatus = today
+                    request.forEach(function (item, index) {
+                      if (request[index].DocumentID === voidfileid) {
+                        var recipient_index = index
+                        //console.log(recipient_index);
+                        request[index].RecipientStatus = 'Void'
+                        request[index].RecipientDateStatus = today
 
-                          axios
-                            .post('/api/updaterequestdata', {
-                              UserID: userid,
-                              Request: request,
-                            })
-                            .then(function (response) {
-                              console.log(response)
-                            })
-                            .catch(function (error) {
-                              console.log(error)
-                              modal[2].style.display = 'none'
-                            })
-                        }
-                      })
-                    }
-                  })
-                  .catch(function (error) {
-                    console.log(error)
-                    modal[2].style.display = 'none'
-                  })
+                        axios
+                          .post('/api/updaterequestdata', {
+                            UserID: userid,
+                            Request: request,
+                          })
+                          .then(function (response) {
+                            console.log(response)
+                          })
+                          .catch(function (error) {
+                            console.log(error)
+                            modal[2].style.display = 'none'
+                          })
+                      }
+                    })
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                  modal[2].style.display = 'none'
+                })
 
               axios
                 .post('/api/updatedocumentstatus', {
@@ -1899,10 +1899,10 @@ class Tables extends React.Component {
                     response.data === 'insert done' ||
                     response.data === 'update done'
                   ) {
-                    alert('Document '+DodumentName+' has been voided successfully')
+                    alert('Document ' + DodumentName + ' has been voided successfully')
                     inboxfunc()
                     datafunc()
-                    
+
                     modal[2].style.display = 'none'
                   }
                 })
@@ -1992,7 +1992,7 @@ class Tables extends React.Component {
             var recievers = response.data.Reciever
             var status = response.data.DocStatus
             var DocID = deletefileid;
-              var OwnerEmail=response.data.OwnerEmail;
+            var OwnerEmail = response.data.OwnerEmail;
 
             recievers.forEach(function (item, index) {
               var recipient_index = index
@@ -2003,18 +2003,18 @@ class Tables extends React.Component {
               recievers[index].RecipientDateStatus = today
 
               axios
-                  .post('/api/sendmail', {
-                    to: item.RecipientEmail,
-                    body:`<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">`+OwnerEmail+` has voided the document: `+item.DocumentName+`</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: User deleted the file.</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: `+DocID+`</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by `+OwnerEmail+` who is using the GEMS Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
-                    subject: 'GEMS: Document Voided',
-                  })
-                  .then(function (response) {
-                    console.log(response)
-                  })
-                  .catch(function (error) {
-                    //console.log('no data');
-                    modal[2].style.display = 'none'
-                  })
+                .post('/api/sendmail', {
+                  to: item.RecipientEmail,
+                  body: `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Document Voided</title> <style>@media only screen and (max-width: 620px){table[class=body] h1{font-size: 28px !important; margin-bottom: 10px !important;}table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a{font-size: 16px !important;}table[class=body] .wrapper, table[class=body] .article{padding: 10px !important;}table[class=body] .content{padding: 0 !important;}table[class=body] .container{padding: 0 !important; width: 100% !important;}table[class=body] .main{border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important;}table[class=body] .btn table{width: 100% !important;}table[class=body] .btn a{width: 100% !important;}table[class=body] .img-responsive{height: auto !important; max-width: 100% !important; width: auto !important;}}/* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all{.ExternalClass{width: 100%;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.apple-link a{color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important;}#MessageViewBody a{color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit;}.btn-primary table td:hover{background-color: #626262 !important;}.btn-primary a:hover{background-color: #626262 !important; border-color: #626262 !important;}}</style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td><td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS Document Voided.</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">` + OwnerEmail + ` has voided the document: ` + item.DocumentName + `</p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Reason: User deleted the file.</p></p><p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><p>Envelope ID: ` + DocID + `</p></p><table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> </tbody> </table> </td></tr></tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This message was sent to you by ` + OwnerEmail + ` who is using the GEMS Electronic Signature Service. If you would rather not receive email from this sender you may contact the sender with your request.</p></td></tr></table> </td></tr></table> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td></tr></table> </div></div></td><td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td></tr></table> </body></html>`,
+                  subject: 'GEMS: Document Voided',
+                })
+                .then(function (response) {
+                  console.log(response)
+                })
+                .catch(function (error) {
+                  //console.log('no data');
+                  modal[2].style.display = 'none'
+                })
 
               axios
                 .post('/api/updaterecieverdata', {
@@ -2080,7 +2080,7 @@ class Tables extends React.Component {
                   response.data === 'insert done' ||
                   response.data === 'update done'
                 ) {
-                  alert('Document '+DocumentName+' has been deleted successfully, you can find it in the deleted folder before it is permanantly deleted')
+                  alert('Document ' + DocumentName + ' has been deleted successfully, you can find it in the deleted folder before it is permanantly deleted')
                   inboxfunc()
                   datafunc()
                   modal[2].style.display = 'none'
@@ -2149,7 +2149,7 @@ class Tables extends React.Component {
             datarray.push({
               EnvelopeName: Document.DocumentName,
               EnvelopeID: Document.DocumentID,
-              Subject: 'Please Sign: '+ Document.DocumentName +'',
+              Subject: 'Please Sign: ' + Document.DocumentName + '',
               Status: Document.Status,
               EnvelopeOriginator: Document.Owner,
               OriginatorEmail: Document.OwnerEmail,
@@ -2160,9 +2160,9 @@ class Tables extends React.Component {
               DateSent: Document.DateSent,
               LastChange: Document.DateStatus,
               TimeZone: '(UTC+05:30) (Asia/Kolkata)',
-              
+
             })
-            
+
 
             //console.log(CSV(datarray, fileid));
             CSV(datarray, fileid);
@@ -2207,7 +2207,7 @@ class Tables extends React.Component {
         .children('#datarecep')[0].innerHTML
 
       historyfileid = fileid;
-        axios
+      axios
         .post('/api/getdocdata', {
           DocumentID: fileid,
           Owner: historyuserid
@@ -2222,13 +2222,13 @@ class Tables extends React.Component {
               var id = index + 1
               reciverlistrow =
                 reciverlistrow + ' ' + reciever.RecipientEmail + ','
-              });
-            
+            });
+
             //console.log(Document.Reciever);
 
-            
+
             try {
-              
+
               document.getElementById('historysubject').innerHTML =
                 Document.DocumentName
               document.getElementById('historyid').innerHTML = fileid
@@ -2271,20 +2271,20 @@ class Tables extends React.Component {
 
             History.forEach(function (item, index) {
               historycontent += '<tr >'
-              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryTime+'</th>'
-              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryUser+'</th>'
-              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryAction+'</th>'
-              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryActivity+'</th>'
-              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>'+item.HistoryStatus+'</th>'
-            historycontent += '</tr>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>' + item.HistoryTime + '</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>' + item.HistoryUser + '</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>' + item.HistoryAction + '</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>' + item.HistoryActivity + '</th>'
+              historycontent += '<th scope="row"><span className="mb-0 text-sm"></span>' + item.HistoryStatus + '</th>'
+              historycontent += '</tr>'
             });
             $('#historytable').append(historycontent);
 
-            
+
             //console.log(datarray);
 
             //console.log(CSV(datarray, fileid));
-            
+
           }
         })
         .catch(function (error) {
@@ -2728,7 +2728,7 @@ class Tables extends React.Component {
             var dbpeople = []
 
             var Reciever = Document.Reciever
-            
+
             Document.Reciever.forEach(function (data, index) {
               var url =
                 process.env.REACT_APP_BASE_URL +
@@ -2739,8 +2739,8 @@ class Tables extends React.Component {
                 '&key=' +
                 index +
                 ''
-              if(count === false){
-                if(data.RecipientStatus != 'Completed'){
+              if (count === false) {
+                if (data.RecipientStatus != 'Completed') {
                   if (data.RecipientStatus === 'Sent' || data.RecipientStatus === 'Need to Sign') {
                     count = true;
                     var dbpeople = []
@@ -2750,39 +2750,39 @@ class Tables extends React.Component {
                       option: data.RecipientOption,
                     })
                     //console.log(dbpeople);
-                    if(count === true){
+                    if (count === true) {
 
-                    axios
-                      .post('/api/sendmail', {
-                        to: data.RecipientEmail,
-                        // body:
-                        //   `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
-                        //   data.RecipientName +
-                        //   `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. </p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
-                        //   url +
-                        //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
-                        body: signRequestEMail({Name: data.RecipientName, DocumentName: DocName, URL: url}),
-                        subject: 'GEMS: Sign Request',
-                      })
-                      .then(function (response) {
-                        console.log(response)
-                        
-                        //firebase.database().ref(voiduserid + '/Documents/'+voidfileid+'/Reciever/'+childdata.key+'/').child('RecipientStatus').set('Void');
-                      })
-                      .catch(function (error) {
-                        //console.log('message could not be sent');
-                      })
+                      axios
+                        .post('/api/sendmail', {
+                          to: data.RecipientEmail,
+                          // body:
+                          //   `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Sign Request</title> <style> @media only screen and (max-width: 620px) { table[class=body] h1 { font-size: 28px !important; margin-bottom: 10px !important; } table[class=body] p, table[class=body] ul, table[class=body] ol, table[class=body] td, table[class=body] span, table[class=body] a { font-size: 16px !important; } table[class=body] .wrapper, table[class=body] .article { padding: 10px !important; } table[class=body] .content { padding: 0 !important; } table[class=body] .container { padding: 0 !important; width: 100% !important; } table[class=body] .main { border-left-width: 0 !important; border-radius: 0 !important; border-right-width: 0 !important; } table[class=body] .btn table { width: 100% !important; } table[class=body] .btn a { width: 100% !important; } table[class=body] .img-responsive { height: auto !important; max-width: 100% !important; width: auto !important; } } /* ------------------------------------- PRESERVE THESE STYLES IN THE HEAD ------------------------------------- */ @media all { .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } .apple-link a { color: inherit !important; font-family: inherit !important; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; text-decoration: none !important; } #MessageViewBody a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; } .btn-primary table td:hover { background-color: #626262 !important; } .btn-primary a:hover { background-color: #626262 !important; border-color: #626262 !important; } } </style> </head> <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"> <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;"> <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;"> <!-- START CENTERED WHITE CONTAINER --> <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">GEMS</span> <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"> <!-- START MAIN CONTENT AREA --> <tr> <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hello, ` +
+                          //   data.RecipientName +
+                          //   `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. </p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
+                          //   url +
+                          //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
+                          body: SignReviewAndRequest({ Name: data.RecipientName, DocumentName: DocName, URL: url }),
+                          subject: 'GEMS: Sign Request',
+                        })
+                        .then(function (response) {
+                          console.log(response)
+
+                          //firebase.database().ref(voiduserid + '/Documents/'+voidfileid+'/Reciever/'+childdata.key+'/').child('RecipientStatus').set('Void');
+                        })
+                        .catch(function (error) {
+                          //console.log('message could not be sent');
+                        })
                     }
                   }
                 }
               }
-             
+
             })
-            
+
             modal[1].style.display = 'none'
-            alert('Document '+DocName+' has been successfully resent')
+            alert('Document ' + DocName + ' has been successfully resent')
             //console.log('Document Resent');
-            
+
           }
         })
         .catch(function (error) {
@@ -2830,77 +2830,77 @@ class Tables extends React.Component {
             Pages = Document.Data.length;
 
             axios
-        .post('/api/gethistory', {
-          DocumentID: historyfileid,
-        })
-        .then(function (response) {
+              .post('/api/gethistory', {
+                DocumentID: historyfileid,
+              })
+              .then(function (response) {
 
-          console.log(response)
-          if (response.data.Status === 'history found') {
-            var signers = response.data.history
-            
-            var signerslist = '';
+                console.log(response)
+                if (response.data.Status === 'history found') {
+                  var signers = response.data.history
 
-            signers.forEach(function (item, index) {
-              var HistoryUser = item.HistoryUser.replace(/\n/g, " ");
-              signerslist += `
-              User: `+HistoryUser+`\tTime: `+item.HistoryTime+`\tStatus: `+item.HistoryStatus+`
-              Action: `+item.HistoryAction+`\n
+                  var signerslist = '';
+
+                  signers.forEach(function (item, index) {
+                    var HistoryUser = item.HistoryUser.replace(/\n/g, " ");
+                    signerslist += `
+              User: `+ HistoryUser + `\tTime: ` + item.HistoryTime + `\tStatus: ` + item.HistoryStatus + `
+              Action: `+ item.HistoryAction + `\n
               `});
 
-            var doc = new jsPDF();
-            doc.setFontSize(9);
+                  var doc = new jsPDF();
+                  doc.setFontSize(9);
 
-            var logo = 'data:image/jpeg;base64,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H92c5fwA6Y7upV78HWK5niODXaBlthk2tD9x9oiIko5HFgtpSslJ6gbpG2/f1qT6UpqilpntnaW5ORnjwUG1/W0dfXRyUkgeQ3BxvHHdv81pOLTQnK8/uVszLCLd9IS2I/sUyKlaUuKQFFSFp5iAduZQI7+6tbU9lnrntqKYZIGCPkVu6F1NS2uN9HWu2Wk7QPLPAg48ArK4cMSyrB9KLbjuYRUxZzDr60shwLLba1lSQojpv1PQGuxYKWejoWw1Aw4Z3dxKjerq+luV1fUUZy0gb+GSBhbnV7S2zat4e/jV0IZkJPbQZfLuqO+B0V6g9xHiD8K2LrbY7pTmF+48j0P+cVp2G9zWKrFTFvHBw6j/ADglV0d4ftWsM1rsky64w4iBaphcfnpcSY6muVQ5kq33O+/dtv5ioRarHX0lyY57Pdad55YVpX/VNpuFllZFL7zxubvznI4/5hNxqfcTatPMin9u6x2Vue3dbb7RTYKSCsJ3G+2++247qsSd2zE49yoG8S9hQTSZxhp34zjvx3JBbVpsvI7nFt+K5PaLsuW8hpLQdMeR1OxPZuhO5A67JKu6o22DbIDCCqMgtBq5Gx0sjX5OMZwfg7HpldFrRbI9mtMK0REhLEGO3HbA8EoSEj+QqTtaGgNHJfoCCFtPE2JnBoA+CzK+llRREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURQLN9ZMbwu+MYqm3XW932Q12ybdao3bOpb/aV1AArWlqWRO2MEnoFw7jf6e3zCm2XPkIzstGTjvWThGrWJZxAuMyM8/bHrMvkuUW5IEd2IevVYJ2A6Hrv4V9RVDJQSN2OOVkt18pbjG97SWln5g7cW+KzbrNx/PcLvUSyXiDco0uFIiqcjPpdSFKbI2JSTsetfTi2aMhpys80kFzo5GwvDgWkbiDxCqPhj0FThkFvO8siJN8mN7xGFjf2NlQ7/vqH4Dp4mtKgpOyHaP4/JRTR+mv2ewVtUP3juA/pH3PoEwddJTxFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURVtlukMu6Z0zqPiGXyMevXYJiyyIyZDUplJHuqSojY7ADceQrVkpi6TtWOwVHq6xPmrRcKSUxyYwdwII8Cofm/DZcsv1InZGjLEw8fvhjru8FtKg6+WgPcBHTYlIO5O43PQ1gloTJKXbXuniFybjpKSuuLqgS4ifjbaOJxy81I3OG3T0Xl64292622BL7P2q0QpZZhyCge7zoA3I8xv13PnWX2KLayMgdOS6B0lQCYyRlzWnGWNOGnHUfqrTaabYaQyy2lDbaQlCUjYJA6AAVucFJmgNGBwXui9RREURf//Z';
+                  var logo = 'data:image/jpeg;base64,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H92c5fwA6Y7upV78HWK5niODXaBlthk2tD9x9oiIko5HFgtpSslJ6gbpG2/f1qT6UpqilpntnaW5ORnjwUG1/W0dfXRyUkgeQ3BxvHHdv81pOLTQnK8/uVszLCLd9IS2I/sUyKlaUuKQFFSFp5iAduZQI7+6tbU9lnrntqKYZIGCPkVu6F1NS2uN9HWu2Wk7QPLPAg48ArK4cMSyrB9KLbjuYRUxZzDr60shwLLba1lSQojpv1PQGuxYKWejoWw1Aw4Z3dxKjerq+luV1fUUZy0gb+GSBhbnV7S2zat4e/jV0IZkJPbQZfLuqO+B0V6g9xHiD8K2LrbY7pTmF+48j0P+cVp2G9zWKrFTFvHBw6j/ADglV0d4ftWsM1rsky64w4iBaphcfnpcSY6muVQ5kq33O+/dtv5ioRarHX0lyY57Pdad55YVpX/VNpuFllZFL7zxubvznI4/5hNxqfcTatPMin9u6x2Vue3dbb7RTYKSCsJ3G+2++247qsSd2zE49yoG8S9hQTSZxhp34zjvx3JBbVpsvI7nFt+K5PaLsuW8hpLQdMeR1OxPZuhO5A67JKu6o22DbIDCCqMgtBq5Gx0sjX5OMZwfg7HpldFrRbI9mtMK0REhLEGO3HbA8EoSEj+QqTtaGgNHJfoCCFtPE2JnBoA+CzK+llRREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURQLN9ZMbwu+MYqm3XW932Q12ybdao3bOpb/aV1AArWlqWRO2MEnoFw7jf6e3zCm2XPkIzstGTjvWThGrWJZxAuMyM8/bHrMvkuUW5IEd2IevVYJ2A6Hrv4V9RVDJQSN2OOVkt18pbjG97SWln5g7cW+KzbrNx/PcLvUSyXiDco0uFIiqcjPpdSFKbI2JSTsetfTi2aMhpys80kFzo5GwvDgWkbiDxCqPhj0FThkFvO8siJN8mN7xGFjf2NlQ7/vqH4Dp4mtKgpOyHaP4/JRTR+mv2ewVtUP3juA/pH3PoEwddJTxFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURVtlukMu6Z0zqPiGXyMevXYJiyyIyZDUplJHuqSojY7ADceQrVkpi6TtWOwVHq6xPmrRcKSUxyYwdwII8Cofm/DZcsv1InZGjLEw8fvhjru8FtKg6+WgPcBHTYlIO5O43PQ1gloTJKXbXuniFybjpKSuuLqgS4ifjbaOJxy81I3OG3T0Xl64292622BL7P2q0QpZZhyCge7zoA3I8xv13PnWX2KLayMgdOS6B0lQCYyRlzWnGWNOGnHUfqrTaabYaQyy2lDbaQlCUjYJA6AAVucFJmgNGBwXui9RREURf//Z';
 
-            doc.addImage(logo, 'JPEG', 160, 10, 40, 7);
+                  doc.addImage(logo, 'JPEG', 160, 10, 40, 7);
 
-            doc.setFillColor(211,211,211);
-            doc.rect(10, 20, 190, 9, 'F');
+                  doc.setFillColor(211, 211, 211);
+                  doc.rect(10, 20, 190, 9, 'F');
 
-            doc.setTextColor(0, 0, 0);
-            doc.text(11,25, 'GEMS Certificate');
+                  doc.setTextColor(0, 0, 0);
+                  doc.text(11, 25, 'GEMS Certificate');
 
-            doc.text(10, 27, 
-            ` \n
-            EnvelopeID:`+Document.DocumentID+`
-            Subject: Please Sign: `+Document.DocumentName+`
-            Envelope Orginator: `+Document.OwnerEmail+`
-            Status: `+Document.Status+`
-            Envelope Pages: `+Pages+`
-            Signatures: `+Signatures+`
+                  doc.text(10, 27,
+                    ` \n
+            EnvelopeID:`+ Document.DocumentID + `
+            Subject: Please Sign: `+ Document.DocumentName + `
+            Envelope Orginator: `+ Document.OwnerEmail + `
+            Status: `+ Document.Status + `
+            Envelope Pages: `+ Pages + `
+            Signatures: `+ Signatures + `
             Time Zone:  (UTC+05:30) (Asia/Kolkata)
             `);
 
-            doc.setFillColor(211,211,211);
-            doc.rect(10, 60, 190, 9, 'F');
+                  doc.setFillColor(211, 211, 211);
+                  doc.rect(10, 60, 190, 9, 'F');
 
-            doc.setTextColor(0, 0, 0);
-            doc.text(11,65, 'Record Tracking');
+                  doc.setTextColor(0, 0, 0);
+                  doc.text(11, 65, 'Record Tracking');
 
-            doc.text(10, 70, 
-              ` \n
+                  doc.text(10, 70,
+                    ` \n
               Status:Original
-              Date Created: `+Document.DateCreated+`
-              Holder: `+Document.OwnerEmail+`
-              Holder Email: `+Document.OwnerEmail+`
+              Date Created: `+ Document.DateCreated + `
+              Holder: `+ Document.OwnerEmail + `
+              Holder Email: `+ Document.OwnerEmail + `
               `);
 
-            doc.setFillColor(211,211,211);
-            doc.rect(10, 95, 190, 9, 'F');
+                  doc.setFillColor(211, 211, 211);
+                  doc.rect(10, 95, 190, 9, 'F');
 
-            doc.setTextColor(0, 0, 0);
-            doc.text(11,100, 'Envelope Events');
+                  doc.setTextColor(0, 0, 0);
+                  doc.text(11, 100, 'Envelope Events');
 
-            doc.text(10, 105, 
-              ` 
-              `+signerslist+`
+                  doc.text(10, 105,
+                    ` 
+              `+ signerslist + `
               `);
-            
 
-            doc.addPage()
-            doc.setPage(2)
-            doc.text(10, 10, `  \n
+
+                  doc.addPage()
+                  doc.setPage(2)
+                  doc.text(10, 10, `  \n
             ELECTRONIC RECORD AND SIGNATURE DISCLOSURE\n
             From time to time, envelope holder (we, us or Company) may be required by law to provide to you certain written notices
             or disclosures. Described below are the terms and conditions for providing to you such notices and disclosures
@@ -2929,8 +2929,8 @@ class Tables extends React.Component {
             GEMS system to receive required notices and consents electronically from us or to sign electronically
             documents from us.\n
             All notices and disclosures will be sent to you electronically\n
-            Electronic Record and Signature Disclosure created on: `+Document.DateCreated+` Parties agreed to:\n
-            `+Document.OwnerEmail+`\n 
+            Electronic Record and Signature Disclosure created on: `+ Document.DateCreated + ` Parties agreed to:\n
+            `+ Document.OwnerEmail + `\n 
             Unless you tell us otherwise in accordance with the procedures described herein, we will provide electronically to 
             you through the GEMS system all required notices, disclosures, authorizations, acknowledgements, and other 
             documents that are required to be provided or made available to you during the course of our relationship with you.
@@ -2943,27 +2943,27 @@ class Tables extends React.Component {
             How to contact envelope holder:\n
             You may contact us to let us know of your changes as to how we may contact you electronically, to request paper
             copies of certain information from us, and to withdraw your prior consent to receive notices and disclosures
-            electronically as follows: To contact us by email send messages to: `+Document.OwnerEmail+`
+            electronically as follows: To contact us by email send messages to: `+ Document.OwnerEmail + `
             To advise envelope holder of your new email address\n
             To let us know of a change in your email address where we should send notices and disclosures electronically to
-            you, you must send an email message to us at `+Document.OwnerEmail+` and in the body of such request you
+            you, you must send an email message to us at `+ Document.OwnerEmail + ` and in the body of such request you
             must state: your previous email address, your new email address. We do not require any other information from
             you to change your email address. If you created a GEMS account, you may update it with your new email
             address through your account preferences.\n
             To request paper copies from envelope holder\n
             To request delivery from us of paper copies of the notices and disclosures previously provided by us to you
-            electronically, you must send us an email to `+Document.OwnerEmail+` and in the body of such request you
+            electronically, you must send us an email to `+ Document.OwnerEmail + ` and in the body of such request you
             must state your email address, full name, mailing address, and telephone number. We will bill you for any fees at
             that time, if any.\n
             `)
-            doc.addPage()
-            doc.setPage(3)
-            doc.text(10,10, `  \n
+                  doc.addPage()
+                  doc.setPage(3)
+                  doc.text(10, 10, `  \n
             To withdraw your consent with envelope holder\n
             To inform us that you no longer wish to receive future notices and disclosures in electronic format you may:\n
               i.  decline to sign a document from within your signing session, and on the subsequent page, select the check-box
                   indicating you wish to withdraw your consent, or you may;\n
-              ii. send us an email to `+Document.OwnerEmail+` and in the body of such request you must state your email,
+              ii. send us an email to `+ Document.OwnerEmail + ` and in the body of such request you must state your email,
                   full name, mailing address, and telephone number. We do not need any other information from you to withdraw
                   consent. The consequences of your withdrawing consent for online documents will be that transactions may take a
                   longer time to process.\n
@@ -2987,23 +2987,23 @@ class Tables extends React.Component {
             `)
 
 
-            doc.save('certificate.pdf');
-            modal[2].style.display = 'none'
-            modal[5].style.display = 'block'
+                  doc.save('certificate.pdf');
+                  modal[2].style.display = 'none'
+                  modal[5].style.display = 'block'
 
-            
-            //console.log(datarray);
 
-            //console.log(CSV(datarray, fileid));
-            
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+                  //console.log(datarray);
 
-            
-            
+                  //console.log(CSV(datarray, fileid));
+
+                }
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
+
+
+
           }
         })
         .catch(function (error) {
@@ -3012,7 +3012,7 @@ class Tables extends React.Component {
           modal[5].style.display = 'block'
         })
 
-      
+
     })
 
 
@@ -3031,74 +3031,74 @@ class Tables extends React.Component {
             var Document = response.data.Document
 
             axios
-        .post('/api/gethistory', {
-          DocumentID: historyfileid,
-        })
-        .then(function (response) {
+              .post('/api/gethistory', {
+                DocumentID: historyfileid,
+              })
+              .then(function (response) {
 
-          console.log(response)
-          if (response.data.Status === 'history found') {
-            var signers = response.data.history
-            var signerslist = '';
+                console.log(response)
+                if (response.data.Status === 'history found') {
+                  var signers = response.data.history
+                  var signerslist = '';
 
-            signers.forEach(function (item, index) {
-              var HistoryUser = item.HistoryUser.replace(/\n/g, " ");
-              signerslist += `
-              User: `+HistoryUser+`\tTime: `+item.HistoryTime+`\tStatus: `+item.HistoryStatus+`
-              Action: `+item.HistoryAction+`\n
+                  signers.forEach(function (item, index) {
+                    var HistoryUser = item.HistoryUser.replace(/\n/g, " ");
+                    signerslist += `
+              User: `+ HistoryUser + `\tTime: ` + item.HistoryTime + `\tStatus: ` + item.HistoryStatus + `
+              Action: `+ item.HistoryAction + `\n
               `});
 
-            var doc = new jsPDF();
-            doc.setFontSize(9);
+                  var doc = new jsPDF();
+                  doc.setFontSize(9);
 
-            var logo = 'data:image/jpeg;base64,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H92c5fwA6Y7upV78HWK5niODXaBlthk2tD9x9oiIko5HFgtpSslJ6gbpG2/f1qT6UpqilpntnaW5ORnjwUG1/W0dfXRyUkgeQ3BxvHHdv81pOLTQnK8/uVszLCLd9IS2I/sUyKlaUuKQFFSFp5iAduZQI7+6tbU9lnrntqKYZIGCPkVu6F1NS2uN9HWu2Wk7QPLPAg48ArK4cMSyrB9KLbjuYRUxZzDr60shwLLba1lSQojpv1PQGuxYKWejoWw1Aw4Z3dxKjerq+luV1fUUZy0gb+GSBhbnV7S2zat4e/jV0IZkJPbQZfLuqO+B0V6g9xHiD8K2LrbY7pTmF+48j0P+cVp2G9zWKrFTFvHBw6j/ADglV0d4ftWsM1rsky64w4iBaphcfnpcSY6muVQ5kq33O+/dtv5ioRarHX0lyY57Pdad55YVpX/VNpuFllZFL7zxubvznI4/5hNxqfcTatPMin9u6x2Vue3dbb7RTYKSCsJ3G+2++247qsSd2zE49yoG8S9hQTSZxhp34zjvx3JBbVpsvI7nFt+K5PaLsuW8hpLQdMeR1OxPZuhO5A67JKu6o22DbIDCCqMgtBq5Gx0sjX5OMZwfg7HpldFrRbI9mtMK0REhLEGO3HbA8EoSEj+QqTtaGgNHJfoCCFtPE2JnBoA+CzK+llRREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURQLN9ZMbwu+MYqm3XW932Q12ybdao3bOpb/aV1AArWlqWRO2MEnoFw7jf6e3zCm2XPkIzstGTjvWThGrWJZxAuMyM8/bHrMvkuUW5IEd2IevVYJ2A6Hrv4V9RVDJQSN2OOVkt18pbjG97SWln5g7cW+KzbrNx/PcLvUSyXiDco0uFIiqcjPpdSFKbI2JSTsetfTi2aMhpys80kFzo5GwvDgWkbiDxCqPhj0FThkFvO8siJN8mN7xGFjf2NlQ7/vqH4Dp4mtKgpOyHaP4/JRTR+mv2ewVtUP3juA/pH3PoEwddJTxFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURVtlukMu6Z0zqPiGXyMevXYJiyyIyZDUplJHuqSojY7ADceQrVkpi6TtWOwVHq6xPmrRcKSUxyYwdwII8Cofm/DZcsv1InZGjLEw8fvhjru8FtKg6+WgPcBHTYlIO5O43PQ1gloTJKXbXuniFybjpKSuuLqgS4ifjbaOJxy81I3OG3T0Xl64292622BL7P2q0QpZZhyCge7zoA3I8xv13PnWX2KLayMgdOS6B0lQCYyRlzWnGWNOGnHUfqrTaabYaQyy2lDbaQlCUjYJA6AAVucFJmgNGBwXui9RREURf//Z';
+                  var logo = 'data:image/jpeg;base64,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H92c5fwA6Y7upV78HWK5niODXaBlthk2tD9x9oiIko5HFgtpSslJ6gbpG2/f1qT6UpqilpntnaW5ORnjwUG1/W0dfXRyUkgeQ3BxvHHdv81pOLTQnK8/uVszLCLd9IS2I/sUyKlaUuKQFFSFp5iAduZQI7+6tbU9lnrntqKYZIGCPkVu6F1NS2uN9HWu2Wk7QPLPAg48ArK4cMSyrB9KLbjuYRUxZzDr60shwLLba1lSQojpv1PQGuxYKWejoWw1Aw4Z3dxKjerq+luV1fUUZy0gb+GSBhbnV7S2zat4e/jV0IZkJPbQZfLuqO+B0V6g9xHiD8K2LrbY7pTmF+48j0P+cVp2G9zWKrFTFvHBw6j/ADglV0d4ftWsM1rsky64w4iBaphcfnpcSY6muVQ5kq33O+/dtv5ioRarHX0lyY57Pdad55YVpX/VNpuFllZFL7zxubvznI4/5hNxqfcTatPMin9u6x2Vue3dbb7RTYKSCsJ3G+2++247qsSd2zE49yoG8S9hQTSZxhp34zjvx3JBbVpsvI7nFt+K5PaLsuW8hpLQdMeR1OxPZuhO5A67JKu6o22DbIDCCqMgtBq5Gx0sjX5OMZwfg7HpldFrRbI9mtMK0REhLEGO3HbA8EoSEj+QqTtaGgNHJfoCCFtPE2JnBoA+CzK+llRREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURQLN9ZMbwu+MYqm3XW932Q12ybdao3bOpb/aV1AArWlqWRO2MEnoFw7jf6e3zCm2XPkIzstGTjvWThGrWJZxAuMyM8/bHrMvkuUW5IEd2IevVYJ2A6Hrv4V9RVDJQSN2OOVkt18pbjG97SWln5g7cW+KzbrNx/PcLvUSyXiDco0uFIiqcjPpdSFKbI2JSTsetfTi2aMhpys80kFzo5GwvDgWkbiDxCqPhj0FThkFvO8siJN8mN7xGFjf2NlQ7/vqH4Dp4mtKgpOyHaP4/JRTR+mv2ewVtUP3juA/pH3PoEwddJTxFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURFERREURVtlukMu6Z0zqPiGXyMevXYJiyyIyZDUplJHuqSojY7ADceQrVkpi6TtWOwVHq6xPmrRcKSUxyYwdwII8Cofm/DZcsv1InZGjLEw8fvhjru8FtKg6+WgPcBHTYlIO5O43PQ1gloTJKXbXuniFybjpKSuuLqgS4ifjbaOJxy81I3OG3T0Xl64292622BL7P2q0QpZZhyCge7zoA3I8xv13PnWX2KLayMgdOS6B0lQCYyRlzWnGWNOGnHUfqrTaabYaQyy2lDbaQlCUjYJA6AAVucFJmgNGBwXui9RREURf//Z';
 
-            doc.addImage(logo, 'JPEG', 160, 10, 40, 7);
+                  doc.addImage(logo, 'JPEG', 160, 10, 40, 7);
 
-            doc.setFillColor(211,211,211);
-            doc.rect(10, 20, 190, 9, 'F');
+                  doc.setFillColor(211, 211, 211);
+                  doc.rect(10, 20, 190, 9, 'F');
 
-            doc.setTextColor(0, 0, 0);
-            doc.text(11,25, 'GEMS Certificate');
+                  doc.setTextColor(0, 0, 0);
+                  doc.text(11, 25, 'GEMS Certificate');
 
-            doc.text(10, 30, 
-            ` \n
-            EnvelopeID:`+Document.DocumentID+`
-            Subject: Please Sign: `+Document.DocumentName+`
-            Status: `+Document.Status+`
-            Envelope Orginator: `+Document.OwnerEmail+`
+                  doc.text(10, 30,
+                    ` \n
+            EnvelopeID:`+ Document.DocumentID + `
+            Subject: Please Sign: `+ Document.DocumentName + `
+            Status: `+ Document.Status + `
+            Envelope Orginator: `+ Document.OwnerEmail + `
             Time Zone:  (UTC+05:30) (Asia/Kolkata)
             `);
 
-            doc.setFillColor(211,211,211);
-            doc.rect(10, 60, 190, 9, 'F');
+                  doc.setFillColor(211, 211, 211);
+                  doc.rect(10, 60, 190, 9, 'F');
 
-            doc.setTextColor(0, 0, 0);
-            doc.text(11,65, 'Record Tracking');
+                  doc.setTextColor(0, 0, 0);
+                  doc.text(11, 65, 'Record Tracking');
 
-            doc.text(10, 70, 
-              ` \n
+                  doc.text(10, 70,
+                    ` \n
               Status:Original
-              Date Created: `+Document.DateCreated+`
-              Holder: `+Document.OwnerEmail+`
-              Holder Email: `+Document.OwnerEmail+`
+              Date Created: `+ Document.DateCreated + `
+              Holder: `+ Document.OwnerEmail + `
+              Holder Email: `+ Document.OwnerEmail + `
               `);
 
-            doc.setFillColor(211,211,211);
-            doc.rect(10, 95, 190, 9, 'F');
+                  doc.setFillColor(211, 211, 211);
+                  doc.rect(10, 95, 190, 9, 'F');
 
-            doc.setTextColor(0, 0, 0);
-            doc.text(11,100, 'Envelope Events');
+                  doc.setTextColor(0, 0, 0);
+                  doc.text(11, 100, 'Envelope Events');
 
-            doc.text(10, 105, 
-              ` 
-              `+signerslist+`
+                  doc.text(10, 105,
+                    ` 
+              `+ signerslist + `
               `);
-            
 
-            doc.addPage()
-            doc.setPage(2)
-            doc.text(10, 10, `  \n
+
+                  doc.addPage()
+                  doc.setPage(2)
+                  doc.text(10, 10, `  \n
             ELECTRONIC RECORD AND SIGNATURE DISCLOSURE\n
             From time to time, envelope holder (we, us or Company) may be required by law to provide to you certain written notices
             or disclosures. Described below are the terms and conditions for providing to you such notices and disclosures
@@ -3127,8 +3127,8 @@ class Tables extends React.Component {
             GEMS system to receive required notices and consents electronically from us or to sign electronically
             documents from us.\n
             All notices and disclosures will be sent to you electronically\n
-            Electronic Record and Signature Disclosure created on: `+Document.DateCreated+` Parties agreed to:\n
-            `+Document.OwnerEmail+`\n 
+            Electronic Record and Signature Disclosure created on: `+ Document.DateCreated + ` Parties agreed to:\n
+            `+ Document.OwnerEmail + `\n 
             Unless you tell us otherwise in accordance with the procedures described herein, we will provide electronically to 
             you through the GEMS system all required notices, disclosures, authorizations, acknowledgements, and other 
             documents that are required to be provided or made available to you during the course of our relationship with you.
@@ -3141,27 +3141,27 @@ class Tables extends React.Component {
             How to contact envelope holder:\n
             You may contact us to let us know of your changes as to how we may contact you electronically, to request paper
             copies of certain information from us, and to withdraw your prior consent to receive notices and disclosures
-            electronically as follows: To contact us by email send messages to: `+Document.OwnerEmail+`
+            electronically as follows: To contact us by email send messages to: `+ Document.OwnerEmail + `
             To advise envelope holder of your new email address\n
             To let us know of a change in your email address where we should send notices and disclosures electronically to
-            you, you must send an email message to us at `+Document.OwnerEmail+` and in the body of such request you
+            you, you must send an email message to us at `+ Document.OwnerEmail + ` and in the body of such request you
             must state: your previous email address, your new email address. We do not require any other information from
             you to change your email address. If you created a GEMS account, you may update it with your new email
             address through your account preferences.\n
             To request paper copies from envelope holder\n
             To request delivery from us of paper copies of the notices and disclosures previously provided by us to you
-            electronically, you must send us an email to `+Document.OwnerEmail+` and in the body of such request you
+            electronically, you must send us an email to `+ Document.OwnerEmail + ` and in the body of such request you
             must state your email address, full name, mailing address, and telephone number. We will bill you for any fees at
             that time, if any.\n
             `)
-            doc.addPage()
-            doc.setPage(3)
-            doc.text(10,10, `  \n
+                  doc.addPage()
+                  doc.setPage(3)
+                  doc.text(10, 10, `  \n
             To withdraw your consent with envelope holder\n
             To inform us that you no longer wish to receive future notices and disclosures in electronic format you may:\n
               i.  decline to sign a document from within your signing session, and on the subsequent page, select the check-box
                   indicating you wish to withdraw your consent, or you may;\n
-              ii. send us an email to `+Document.OwnerEmail+` and in the body of such request you must state your email,
+              ii. send us an email to `+ Document.OwnerEmail + ` and in the body of such request you must state your email,
                   full name, mailing address, and telephone number. We do not need any other information from you to withdraw
                   consent. The consequences of your withdrawing consent for online documents will be that transactions may take a
                   longer time to process.\n
@@ -3185,24 +3185,24 @@ class Tables extends React.Component {
             `)
 
 
-            doc.autoPrint();
-            doc.output('dataurlnewwindow');
-            modal[2].style.display = 'none'
-            modal[5].style.display = 'block'
+                  doc.autoPrint();
+                  doc.output('dataurlnewwindow');
+                  modal[2].style.display = 'none'
+                  modal[5].style.display = 'block'
 
-            
-            //console.log(datarray);
 
-            //console.log(CSV(datarray, fileid));
-            
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+                  //console.log(datarray);
 
-            
-            
+                  //console.log(CSV(datarray, fileid));
+
+                }
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
+
+
+
           }
         })
         .catch(function (error) {
@@ -3211,21 +3211,21 @@ class Tables extends React.Component {
           modal[5].style.display = 'block'
         })
 
-      
+
     })
 
     $(document).on('input', '#managevoidmessage', function () {
-      if($('#managevoidmessage').val() == ''){
-        $("#managevoidapprovebtn").attr("disabled",true);
+      if ($('#managevoidmessage').val() == '') {
+        $("#managevoidapprovebtn").attr("disabled", true);
       }
-      else{
-        $("#managevoidapprovebtn").attr("disabled",false);
+      else {
+        $("#managevoidapprovebtn").attr("disabled", false);
       }
-      
+
 
     });
 
-    $("#managevoidapprovebtn").attr("disabled",true);
+    $("#managevoidapprovebtn").attr("disabled", true);
   }
   render() {
     return (
@@ -3349,14 +3349,14 @@ class Tables extends React.Component {
           <div className="modal">
             <div className="modal-content-history">
               <div>
-              <Row>
-              <Col lg="12">
-                  <h4 className="py-4 px-3" color="dark">
-                    Envelope History:
+                <Row>
+                  <Col lg="12">
+                    <h4 className="py-4 px-3" color="dark">
+                      Envelope History:
                   </h4>
-                  <hr className="my-1" />
-                </Col>
-                <Col lg='12' className="history-fixed">
+                    <hr className="my-1" />
+                  </Col>
+                  <Col lg='12' className="history-fixed">
                     <Col lg="12">
                       <h5 className="py-3 px-3" color="dark">
                         Details:
@@ -3444,80 +3444,80 @@ class Tables extends React.Component {
                         Actions:
                       </h5>
                     </Col>
-                    
-                  <Col lg="12">
-                  <Table
-                    className="align-items-center table-flush"
-                    id="historytable"
-                  >
-                    <thead className="thead-primary">
-                      <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">User</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">Activity</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </Table>
-                  </Col>
+
+                    <Col lg="12">
+                      <Table
+                        className="align-items-center table-flush"
+                        id="historytable"
+                      >
+                        <thead className="thead-primary">
+                          <tr>
+                            <th scope="col">Time</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Activity</th>
+                            <th scope="col">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </Table>
+                    </Col>
                   </Col>
                   <Col lg="12" className="my-2">
-                  <hr className="my-1" />
-                      <Button
-                        color="dark"
-                        size="sm"
-                        type="button"
-                        className="float-left mx-4 my-2 px-4"
-                        id="historycertificatebtn"
-                      >
-                        Download Certificate
+                    <hr className="my-1" />
+                    <Button
+                      color="dark"
+                      size="sm"
+                      type="button"
+                      className="float-left mx-4 my-2 px-4"
+                      id="historycertificatebtn"
+                    >
+                      Download Certificate
                       </Button>
-                      <Button
-                        color="dark"
-                        size="sm"
-                        type="button"
-                        className="float-left my-2 px-4"
-                        id="historyprintbtn"
-                      >
-                        Print
+                    <Button
+                      color="dark"
+                      size="sm"
+                      type="button"
+                      className="float-left my-2 px-4"
+                      id="historyprintbtn"
+                    >
+                      Print
                       </Button>
-                    </Col>
-                  
+                  </Col>
+
                 </Row>
               </div>
             </div>
           </div>
 
-          
+
           <div className="modal">
-          <div className="flow-modal-content">
-            <Card className="shadow border-0 mx-3">
+            <div className="flow-modal-content">
+              <Card className="shadow border-0 mx-3">
                 <CardHeader className=" bg-transparent">
-                <div className="review-manager-title">
-                        <span>Sign Flow</span>
-                        <i className="ni ni-fat-remove flow-close" />
-                    </div>
+                  <div className="review-manager-title">
+                    <span>Sign Flow</span>
+                    <i className="ni ni-fat-remove flow-close" />
+                  </div>
                 </CardHeader>
                 <CardBody>
-                <Row>
-                        <Col lg="12">
-                        <div className="recipientflowtable">
-                            <ul id="recipientflowtable"></ul>
-                          </div>
-                        </Col>
-                </Row>  
-            </CardBody>
-            <CardFooter className=" bg-transparent">
-            
-            </CardFooter> 
-            </Card>     
+                  <Row>
+                    <Col lg="12">
+                      <div className="recipientflowtable">
+                        <ul id="recipientflowtable"></ul>
+                      </div>
+                    </Col>
+                  </Row>
+                </CardBody>
+                <CardFooter className=" bg-transparent">
+
+                </CardFooter>
+              </Card>
             </div>
           </div>
 
 
-          
+
 
           {/* Table */}
           <Row>
@@ -3735,7 +3735,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3762,7 +3762,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3790,7 +3790,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3818,7 +3818,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3845,7 +3845,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3873,7 +3873,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3900,7 +3900,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3927,7 +3927,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -3954,7 +3954,7 @@ class Tables extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td scope="col"></td>
                                 <td scope="col"><i className="material-icons manage-pdf-download-btn-icon">sync_problem</i></td>
                                 <td scope="col">You have no documents</td>
@@ -4010,124 +4010,124 @@ class Tables extends React.Component {
                         AddObj
                       </Button>
                     </Col>
-                    
+
                     <Col lg="12">
-                    <Row>
-                      <Col lg="9">
-                      <Col lg="12">
-                      <h4 className="py-4 px-3" color="dark">
-                        Details:
+                      <Row>
+                        <Col lg="9">
+                          <Col lg="12">
+                            <h4 className="py-4 px-3" color="dark">
+                              Details:
                       </h4>
-                    </Col>
-                    <Col lg="6">
-                      <Col lg="12">
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Subject:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailsubject"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Envelope ID:</strong>
-                          </span>
-                          <span className="emaillabelspan" id="detailid"></span>
-                        </FormGroup>
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Date Sent:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailsent"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Date Created:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailcreate"
-                          ></span>
-                        </FormGroup>
-                      </Col>
-                    </Col>
-                    <Col lg="6">
-                      <Col lg="12">
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Holder:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailholder"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Envelope Recipients:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailrecipients"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Status:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailstatus"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
-                          <span className="emaillabelspan">
-                            <strong>Status Date:</strong>
-                          </span>
-                          <span
-                            className="emaillabelspan"
-                            id="detailstatusdate"
-                          ></span>
-                        </FormGroup>
-                      </Col>
-                    </Col>
-                    
-                      </Col>
-                      <Col lg="3">
-                        <div id="manage-container">
-                        <div id="manage-pdf-container"></div>
-                        <div id="manage-toolbar"></div>
-                        </div>
-                      
-                      </Col>
+                          </Col>
+                          <Col lg="6">
+                            <Col lg="12">
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Subject:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailsubject"
+                                ></span>
+                              </FormGroup>
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Envelope ID:</strong>
+                                </span>
+                                <span className="emaillabelspan" id="detailid"></span>
+                              </FormGroup>
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Date Sent:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailsent"
+                                ></span>
+                              </FormGroup>
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Date Created:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailcreate"
+                                ></span>
+                              </FormGroup>
+                            </Col>
+                          </Col>
+                          <Col lg="6">
+                            <Col lg="12">
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Holder:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailholder"
+                                ></span>
+                              </FormGroup>
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Envelope Recipients:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailrecipients"
+                                ></span>
+                              </FormGroup>
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Status:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailstatus"
+                                ></span>
+                              </FormGroup>
+                              <FormGroup>
+                                <span className="emaillabelspan">
+                                  <strong>Status Date:</strong>
+                                </span>
+                                <span
+                                  className="emaillabelspan"
+                                  id="detailstatusdate"
+                                ></span>
+                              </FormGroup>
+                            </Col>
+                          </Col>
+
+                        </Col>
+                        <Col lg="3">
+                          <div id="manage-container">
+                            <div id="manage-pdf-container"></div>
+                            <div id="manage-toolbar"></div>
+                          </div>
+
+                        </Col>
                       </Row>
                     </Col>
                     <Col lg="12">
-                    <Button
-                          className="float-right px-4"
-                          color="primary"
-                          size="sm"
-                          type="button"
-                          id="signflowbtn"
-                          outline
-                        >
-                          <i className="material-icons">device_hub</i>
+                      <Button
+                        className="float-right px-4"
+                        color="primary"
+                        size="sm"
+                        type="button"
+                        id="signflowbtn"
+                        outline
+                      >
+                        <i className="material-icons">device_hub</i>
                           Flow Diagram
                         </Button>
                       <h4 className="py-4 px-3" color="dark">
                         Recipients:
                       </h4>
-                      
+
                       <div className="managerecipientstable">
                         <ul id="managerecipientstable"></ul>
                       </div>
                     </Col>
-                   
+
                   </Row>
                 </CardBody>
               </Card>
