@@ -42,7 +42,7 @@ export const signRequestEMail = (data) => {
                             <tbody>
                                 <tr>
                                     <td style="background: #ffffff;" bgcolor="#ffffff" width="620">
-                                    <img src="" alt="" width="280px" height="40px" />
+                                    <img src="`+logoImg+`" alt="" width="280px" height="40px" />
                                     </td>
                                 </tr>
                                 <tr>
