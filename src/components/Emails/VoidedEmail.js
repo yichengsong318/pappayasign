@@ -1,8 +1,8 @@
-export const SignReviewAndRequest = (data) => {
+export const VoidedEmail = (data) => {
     const logoImg = process.env.REACT_APP_BASE_URL + '/logo.png';
-    const editImg = process.env.REACT_APP_BASE_URL + '/edit.png';
+    const editImg = process.env.REACT_APP_BASE_URL + '/edit-ban.png';
 
-    const html = `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Request</title></head><body><p class="western" lang="en">&nbsp;</p>
+    const html = `<!doctype html><html> <head> <meta name="viewport" content="width=device-width"> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>GEMS Document Voided</title></head><body><p class="western" lang="en">&nbsp;</p>
     <center>
         <table width="100%" cellspacing="0" cellpadding="0">
             <tbody>
@@ -36,42 +36,10 @@ export const SignReviewAndRequest = (data) => {
                                                                                     <span
                                                                                         style="color: #ffffff;"><span
                                                                                             style="font-family: Helvetica, serif;"><span
-                                                                                                style="font-size: medium;">GEMS sent you a document to review and sign
+                                                                                                style="font-size: medium;">
+                                                                                                `+ data.UserName + ` voided ` + data.DocumentName + `
                                                                                             </span></span></span></p>
                                                                                             
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                                <table width="100%" cellspacing="0" cellpadding="30">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td width="100%">
-                                                                                <center>
-                                                                                    <table width="292" cellspacing="0"
-                                                                                        cellpadding="0">
-                                                                                        <tbody>
-                                                                                            <tr>
-                                                                                                <td>
-                                                                                                    <a href="`+ data.URL + `"
-                                                                                                    style="text-decoration:none; color: #000; background: #ffc423;width:292px; height:44px; display: flex; justify-content: center; align-items: center;"
-                                                                                                    bgcolor="#ffc423;"
-                                                                                                    class="western"
-                                                                                                        align="center">
-                                                                                                        <span style="font-family: Helvetica, serif;display: flex;
-                                                                                                        margin-top:10px;
-                                                                                                        margin-left: 25%;">
-                                                                                                            <span style="font-size: medium;">
-                                                                                                                <strong>REVIEW DOCUMENT </strong>
-                                                                                                            </span>
-                                                                                                        </span>
-                                                                                                    </a>
-                                                                                                </td> 
-                                                                                            </tr>
-                                                                                            </tr>
-                                                                                        </tbody>
-                                                                                    </table>
-                                                                                </center>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -87,17 +55,11 @@ export const SignReviewAndRequest = (data) => {
                                 <tr>
                                     <td style="background: #ffffff;" bgcolor="#ffffff" width="620">
                                         <p><span style="color: #333333;"><span style="font-family: Helvetica, serif;"><span
-                                                        style="font-size: medium;">Dear `+ data.Name + `,</p>
+                                                        style="font-size: medium;"><b>` + data.RecipientName + `</b> <br /> ` + data.RecipientEmail + `</p>
     
                                         <p><span style="color: #333333;"><span style="font-family: Helvetica, serif;"><span
-                                            style="font-size: medium;">Please Sign `+ data.DocumentName + `
-                                            </p>
-                                        <p class="western"><span style="color: #333333;"><span
-                                                    style="font-family: Helvetica, serif;"><span
-                                                        style="font-size: medium;"><br /> Thank You</span></span></span></p>
-                                        <p class="western"><span style="color: #333333;"><span
-                                                    style="font-family: Helvetica, serif;"><span
-                                                        style="font-size: medium;"><strong>GEMS</strong></span></span></span>
+                                            style="font-size: medium;">
+                                            ` + data.DocumentName + ` has been voided for the following reason: <br/> `+ data.ValidReason + ` 
                                         </p>
                                         
                                     </td>
