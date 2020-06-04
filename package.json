@@ -15,7 +15,7 @@
   "author": "Prashanth",
   "license": "MIT",
   "scripts": {
-    "app": "react-scripts start && node server.js",
+    "app": "react-scripts start",
     "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
