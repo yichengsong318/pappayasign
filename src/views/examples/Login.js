@@ -34,7 +34,7 @@ class Login extends React.Component {
     // Here you will get the final recaptchaToken!!!
     try {
       document.getElementById('loginerrorspan').innerHTML = ''
-    } catch (error) {}
+    } catch (error) { }
   }
 
   componentDidMount() {
@@ -64,10 +64,28 @@ class Login extends React.Component {
       //console.log(type);
       //console.log(useremail);
 
-      if (useremail) {
-        modal[1].style.display = 'block'
+      if (data.activatelink) {
+        var useridother = data.u
+        axios
+          .post('/api/activate', {
+            UserActivated: true,
+            UserID: useridother,
+          })
+          .then(function (response) {
+            if (response.data === 'activated') {
+              alert('Email has been verified successfully.');
+              //window.location.hash = '#/admin/login';
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        if (useremail) {
+          modal[1].style.display = 'block'
+        }
       }
-    } catch (error) {}
+    } catch (error) { }
     //modal[1].style.display = "block";
 
     window.onclick = function (e) {
@@ -127,12 +145,12 @@ class Login extends React.Component {
             if (response.data === 'reset') {
               document.getElementById('forgot1enterspan').innerHTML =
                 'Password reset, Login to Continue.';
-                setTimeout(function(){
-                  document.getElementById('forgotenterbtnclose').click();
-                }, 2000);
+              setTimeout(function () {
+                document.getElementById('forgotenterbtnclose').click();
+              }, 2000);
             }
           })
-          .catch(function (error) {})
+          .catch(function (error) { })
       }
     })
 
@@ -168,9 +186,9 @@ class Login extends React.Component {
             console.log(response)
             document.getElementById('forgot1errorspan').innerHTML =
               'Passowrd reset link has been sent to your email address.';
-              setTimeout(function(){
-                document.getElementById('forgotbtnclose').click();
-              }, 2000);
+            setTimeout(function () {
+              document.getElementById('forgotbtnclose').click();
+            }, 2000);
             //window.location.hash = "#/auth/login";
           })
           .catch(function (error) {
@@ -318,7 +336,7 @@ class Login extends React.Component {
                       color="neutral"
                       type="button"
                     >
-                      CLose
+                      Close
                     </Button>
                   </div>
                 </Form>
