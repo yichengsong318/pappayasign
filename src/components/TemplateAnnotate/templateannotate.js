@@ -1004,7 +1004,8 @@ toggleSignModal = () => {
         }
         doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
       })
-      doc.save('pappayasign_template_' + inst.filename + '')
+      // doc.save('pappayasign_template_' + inst.filename + '')
+      doc.save(`pappayasign_template_${inst.filename}.pdf`);
       modal[1].style.display = 'none'
     }
 
