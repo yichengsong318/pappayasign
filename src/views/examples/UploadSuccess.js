@@ -245,7 +245,8 @@ class UploadSuccess extends React.Component {
         doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
       })
       console.log('pdf saved')
-      doc.save('pappayasign_' + inst.filename + '')
+      // doc.save('pappayasign_' + inst.filename + '')
+      doc.save(`pappayasign_${inst.filename}.pdf`);
       //window.location.reload(false)
       modal[2].style.display = 'none'
       

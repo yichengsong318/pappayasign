@@ -1263,7 +1263,8 @@ toggleSignModal = () => {
         }
         doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
       })
-      doc.save('pappayasign_' + inst.filename + '')
+      // doc.save('pappayasign_' + inst.filename + '')
+      doc.save(`pappayasign_${inst.filename}.pdf`);
       modal[1].style.display = 'none'
     }
 
