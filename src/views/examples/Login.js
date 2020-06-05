@@ -22,6 +22,7 @@ import {
   Row,
 } from 'reactstrap'
 import { ResetPassword } from 'components/Emails/ResetPassword'
+import { PasswordChanged } from 'components/Emails/PasswordChanged'
 
 const axios = require('axios').default
 
@@ -146,6 +147,14 @@ class Login extends React.Component {
             if (response.data === 'reset') {
               document.getElementById('forgot1enterspan').innerHTML =
                 'Password reset, Login to Continue.';
+
+              axios
+                .post('/api/sendmail', {
+                  to: useremail,
+                  body: PasswordChanged(),
+                  subject: 'GEMS: Password Changed',
+                });
+
               setTimeout(function () {
                 document.getElementById('forgotenterbtnclose').click();
               }, 2000);
