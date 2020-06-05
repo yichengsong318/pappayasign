@@ -55,9 +55,6 @@ export const VoidedEmail = (data) => {
                                 <tr>
                                     <td style="background: #ffffff;" bgcolor="#ffffff" width="620">
                                         <p><span style="color: #333333;"><span style="font-family: Helvetica, serif;"><span
-                                                        style="font-size: medium;"><b>` + data.RecipientName + `</b> <br /> ` + data.RecipientEmail + `</p>
-    
-                                        <p><span style="color: #333333;"><span style="font-family: Helvetica, serif;"><span
                                             style="font-size: medium;">
                                             ` + data.DocumentName + ` has been voided for the following reason: <br/> `+ data.ValidReason + ` 
                                         </p>

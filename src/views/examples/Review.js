@@ -100,11 +100,11 @@ class Review extends React.Component {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport({scale:scale})
+              var viewport = page.getViewport({ scale: scale })
               var canvas = document.createElement('canvas')
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
-              } catch (error) {}
+              } catch (error) { }
               canvas.className = 'review-pdf-canvas'
               canvas.height = viewport.height
               canvas.width = viewport.width
@@ -163,7 +163,7 @@ class Review extends React.Component {
             e.hasControls = false
           })
           inst.fabricObjects.push(fabricObj)
-          
+
           fabricObj.setBackgroundImage(
             background,
             fabricObj.renderAll.bind(fabricObj)
@@ -173,9 +173,9 @@ class Review extends React.Component {
             fabricObj.off('after:render')
           })
 
-          
 
-          
+
+
         })
 
         try {
@@ -186,33 +186,33 @@ class Review extends React.Component {
             //console.log('adding objects')
           })
           addobjbtn.click()
-        } catch (error) {}
+        } catch (error) { }
       }
 
-      
 
-      
+
+
     }
 
     PDFFabric.prototype.AddObj = function () {
       var inst = this
       //console.log('started adding objects')
-              // // // // // // // ////console.log('file id found');
-              $.each(inst.fabricObjects, function (index, fabricObj) {
-                ////console.log(index);
+      // // // // // // // ////console.log('file id found');
+      $.each(inst.fabricObjects, function (index, fabricObj) {
+        ////console.log(index);
 
-                fabricObj.loadFromJSON(PreviewData.Data[index], function () {
-                  fabricObj.renderAll()
-                  fabricObj.getObjects().forEach(function (targ) {
-                    ////console.log(targ);
-                    targ.selectable = false
-                    targ.hasControls = false
-                  })
-                  
-                  
-                })
-              })
-              //console.log('pdf done')
+        fabricObj.loadFromJSON(PreviewData.Data[index], function () {
+          fabricObj.renderAll()
+          fabricObj.getObjects().forEach(function (targ) {
+            ////console.log(targ);
+            targ.selectable = false
+            targ.hasControls = false
+          })
+
+
+        })
+      })
+      //console.log('pdf done')
     }
 
     PDFFabric.prototype.savePdf = function () {
@@ -223,13 +223,13 @@ class Review extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf saved')
       doc.save('pappayasign_' + inst.filename + '')
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.printPdf = function () {
@@ -240,38 +240,38 @@ class Review extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf printed')
       window.open(doc.output('bloburl'), '_blank');
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.Clear = function () {
       var inst = this
       $.each(inst.fabricObjects, function (index, fabricObj) {
-        inst.fabricObjects.slice(index,1);
+        inst.fabricObjects.slice(index, 1);
       })
       modal[0].style.display = 'none'
-      
+
     }
 
-    var ip ='';
+    var ip = '';
     axios
-    .post('/api/getip', {
-    })
-    .then(function (response) {
-      console.log(response)
-      var remoteAddress = response.data;
-      const array = remoteAddress.split(':')
-      ip = array[array.length - 1]
-      //console.log(ip);
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+      .post('/api/getip', {
+      })
+      .then(function (response) {
+        console.log(response)
+        var remoteAddress = response.data;
+        const array = remoteAddress.split(':')
+        ip = array[array.length - 1]
+        //console.log(ip);
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
 
 
     var colorArray = [
@@ -313,7 +313,7 @@ class Review extends React.Component {
       document.cookie = name + '=' + (value || '') + expires + '; path=/'
     }
 
-    
+
 
     var recents = [];
 
@@ -328,7 +328,9 @@ class Review extends React.Component {
       return null
     }
 
-    userid = getCookie('uid')
+    userid = getCookie('uid');
+
+
 
     if (userid) {
       //console.log('user logged in');
@@ -336,10 +338,10 @@ class Review extends React.Component {
       email = getCookie('useremail')
 
       var cookierecents = getCookie('recents');
-      if(cookierecents){
+      if (cookierecents) {
         recents = JSON.parse(cookierecents);
       }
-      
+
       try {
         var mainurl = document.location.hash,
           params = mainurl.split('?')[1].split('&'),
@@ -352,7 +354,7 @@ class Review extends React.Component {
         filenamemain = data.id
         try {
           action = data.action
-        } catch (error) {}
+        } catch (error) { }
 
         docname = DataVar.DocName
         document.getElementById('input-docnameedit-message').value = docname;
@@ -361,7 +363,7 @@ class Review extends React.Component {
         //console.log(userid);
         //console.log(filename);
 
-        
+
 
         var people = []
         people = DataVar.RecipientArray
@@ -408,35 +410,35 @@ class Review extends React.Component {
     });
 
 
-      $('#reviewpreviewbtn').click(async function () {
+    $('#reviewpreviewbtn').click(async function () {
       modal[2].style.display = 'block'
       try {
-        if(pdfset === 'not set'){
+        if (pdfset === 'not set') {
           pdfset = 'set';
-                      global.pdf = await new PDFFabric(
-                        'review-pdf-container',
-                        'review-toolbar',
-                        PreviewData.DataPath,
-                        'Default',
-                        {
-                          onPageUpdated: (page, oldData, newData) => {
-                            
-                            //modal[0].style.display = "block";
-                            ////console.log(page, oldData, newData);
-                          },
-                        }
-                      )
-                      modal[2].style.display = 'none'
-                      modal[3].style.display = 'block'
+          global.pdf = await new PDFFabric(
+            'review-pdf-container',
+            'review-toolbar',
+            PreviewData.DataPath,
+            'Default',
+            {
+              onPageUpdated: (page, oldData, newData) => {
+
+                //modal[0].style.display = "block";
+                ////console.log(page, oldData, newData);
+              },
+            }
+          )
+          modal[2].style.display = 'none'
+          modal[3].style.display = 'block'
         }
-        else{
+        else {
           modal[2].style.display = 'none'
           modal[3].style.display = 'block'
         }
       } catch (error) {
-        
+
       }
-                  
+
     })
 
     $('#reviewautoremindercheck').change(function () {
@@ -447,21 +449,21 @@ class Review extends React.Component {
       }
     })
 
-    
-    
+
+
 
     var dateCurrent = moment().format('YYYY-MM-DD');
-    var dateFrom = moment().subtract(12,'d').format('YYYY-MM-DD');
-    var dateTo = moment().add(120,'d').format('YYYY-MM-DD');
+    var dateFrom = moment().subtract(12, 'd').format('YYYY-MM-DD');
+    var dateTo = moment().add(120, 'd').format('YYYY-MM-DD');
 
     var day, month, year, trigger = '';
 
-    day = moment().add(120,'d').format('DD');
-    month = moment().add(120,'d').format('MM');
-    year = moment().add(120,'d').format('YYYY'); 
+    day = moment().add(120, 'd').format('DD');
+    month = moment().add(120, 'd').format('MM');
+    year = moment().add(120, 'd').format('YYYY');
     trigger = 'not today';
 
-    console.log(dateCurrent+''+dateFrom);
+    console.log(dateCurrent + '' + dateFrom);
 
     $(document).ready(function () {
       $('#input-expiry-date').val(dateTo)
@@ -470,32 +472,32 @@ class Review extends React.Component {
 
     var inputDate = document.querySelector('input#input-expiry-date');
 
-    inputDate.addEventListener('input', function() {  
-        var current = this.value; 
-        var thirddayfromnow = moment().add(3,'d').format('YYYY-MM-DD');        
-        var today = moment().format('YYYY-MM-DD');        
-        if (current < thirddayfromnow){
-            document.getElementById('input-expiry-date').value = today; 
-            var nextdate = moment(today).format('YYYY-MM-DD');
-            day = moment(today).format('DD');
-            month = moment(today).format('MM');
-            year = moment(today).format('YYYY');
-            trigger='today';   
-        }
-        else if(current > thirddayfromnow){
-          var nextdate = moment(current).subtract(3,'d').format('YYYY-MM-DD'); 
-          day = moment(current).subtract(3,'d').format('DD');
-          month = moment(current).subtract(3,'d').format('MM');
-          year = moment(current).subtract(3,'d').format('YYYY');
-          trigger = 'not today';
-        } 
-        else if(current == thirddayfromnow){
-          var nextdate = moment().format('YYYY-MM-DD'); 
-          day = moment(today).format('DD');
-          month = moment(today).format('MM');
-          year = moment(today).format('YYYY');
-          trigger='today'; 
-        }    
+    inputDate.addEventListener('input', function () {
+      var current = this.value;
+      var thirddayfromnow = moment().add(3, 'd').format('YYYY-MM-DD');
+      var today = moment().format('YYYY-MM-DD');
+      if (current < thirddayfromnow) {
+        document.getElementById('input-expiry-date').value = today;
+        var nextdate = moment(today).format('YYYY-MM-DD');
+        day = moment(today).format('DD');
+        month = moment(today).format('MM');
+        year = moment(today).format('YYYY');
+        trigger = 'today';
+      }
+      else if (current > thirddayfromnow) {
+        var nextdate = moment(current).subtract(3, 'd').format('YYYY-MM-DD');
+        day = moment(current).subtract(3, 'd').format('DD');
+        month = moment(current).subtract(3, 'd').format('MM');
+        year = moment(current).subtract(3, 'd').format('YYYY');
+        trigger = 'not today';
+      }
+      else if (current == thirddayfromnow) {
+        var nextdate = moment().format('YYYY-MM-DD');
+        day = moment(today).format('DD');
+        month = moment(today).format('MM');
+        year = moment(today).format('YYYY');
+        trigger = 'today';
+      }
     });
 
     $(document).on('click', '.preview-close', function () {
@@ -510,152 +512,152 @@ class Review extends React.Component {
       modal[4].style.display = 'none';
     });
 
-    
+
 
     var selecteditem = '';
     $("#privaterecipientselect").on('focus', function () {
       selecteditem = this.value;
-      var privatemessage =  document.getElementById('input-private-message').value;
-      changePrivate ( selecteditem, privatemessage );
+      var privatemessage = document.getElementById('input-private-message').value;
+      changePrivate(selecteditem, privatemessage);
       console.log(people);
-      
-  })
 
-    $('#privaterecipientselect').on('change', function() {
-      console.log( this.value );
-        getPrivate ( this.value );
-        console.log(people);
+    })
+
+    $('#privaterecipientselect').on('change', function () {
+      console.log(this.value);
+      getPrivate(this.value);
+      console.log(people);
     });
 
-    function changePrivate( value, privatemessage ) {
+    function changePrivate(value, privatemessage) {
       for (var i in people) {
         if (people[i].email == value) {
           people[i].privatemessage = privatemessage;
-           break; //Stop this loop, we found it!
+          break; //Stop this loop, we found it!
         }
       }
-   }
+    }
 
-   function getPrivate( value ) {
-     try {
-      for (var i in people) {
-        if (people[i].email == value) {
-          if(people[i].privatemessage){
-           document.getElementById('input-private-message').value = people[i].privatemessage
+    function getPrivate(value) {
+      try {
+        for (var i in people) {
+          if (people[i].email == value) {
+            if (people[i].privatemessage) {
+              document.getElementById('input-private-message').value = people[i].privatemessage
+            }
+            else {
+              document.getElementById('input-private-message').value = ''
+            }
+            break; //Stop this loop, we found it!
           }
-          else{
-            document.getElementById('input-private-message').value = ''
-          }
-           break; //Stop this loop, we found it!
         }
+      } catch (error) {
+
       }
-     } catch (error) {
-       
-     }
-    
- }
 
- var privatemessagekey = false;
- $("#privatesavebtn").on('click', function () {
-  privatemessagekey = true;
-  var select = document.getElementById('privaterecipientselect')
-  var recipientemail = select.options[select.selectedIndex].value
-  var privatemessage =  document.getElementById('input-private-message').value;
-  changePrivate ( recipientemail, privatemessage );
-  $("#reviewrecipientstable").html("");
-  people.forEach(function (item, index) {
+    }
 
-    if (item.privatemessage){
-      if(item.privatemessage != ''){
-        var li = document.createElement('li')
-        li.innerHTML =
-          `<div>
+    var privatemessagekey = false;
+    $("#privatesavebtn").on('click', function () {
+      privatemessagekey = true;
+      var select = document.getElementById('privaterecipientselect')
+      var recipientemail = select.options[select.selectedIndex].value
+      var privatemessage = document.getElementById('input-private-message').value;
+      changePrivate(recipientemail, privatemessage);
+      $("#reviewrecipientstable").html("");
+      people.forEach(function (item, index) {
+
+        if (item.privatemessage) {
+          if (item.privatemessage != '') {
+            var li = document.createElement('li')
+            li.innerHTML =
+              `<div>
       <div>
       <strong><span class="summarylabelspan" id="summary-recipient-name">` +
-          people[index].name +
-          `</span></strong>
+              people[index].name +
+              `</span></strong>
       </div>
       <div>
       <span class="summarylabelspan" id="summary-recipient-name">` +
-          people[index].email +
-          `</span>
+              people[index].email +
+              `</span>
       </div>
       <div>
       <span class="summarylabelspan" id="summary-recipient-name">` +
-          people[index].option +
-          `</span>
+              people[index].option +
+              `</span>
       </div>
       <div>
       <span class="summarylabelspan" id="summary-recipient-name">Private Message</span>
       </div>
       </div>`
-        $('#reviewrecipientstable').append(li)
-      }
-      else{
-        var li = document.createElement('li')
-        li.innerHTML =
-          `<div>
+            $('#reviewrecipientstable').append(li)
+          }
+          else {
+            var li = document.createElement('li')
+            li.innerHTML =
+              `<div>
       <div>
       <strong><span class="summarylabelspan" id="summary-recipient-name">` +
-          people[index].name +
-          `</span></strong>
+              people[index].name +
+              `</span></strong>
       </div>
       <div>
       <span class="summarylabelspan" id="summary-recipient-name">` +
-          people[index].email +
-          `</span>
+              people[index].email +
+              `</span>
       </div>
       <div>
       <span class="summarylabelspan" id="summary-recipient-name">` +
-          people[index].option +
-          `</span>
+              people[index].option +
+              `</span>
       </div>
       
       </div>`
-        $('#reviewrecipientstable').append(li)
-      }
- 
-    }
-    else{
-      var li = document.createElement('li')
-    li.innerHTML =
-      `<div>
+            $('#reviewrecipientstable').append(li)
+          }
+
+        }
+        else {
+          var li = document.createElement('li')
+          li.innerHTML =
+            `<div>
   <div>
   <strong><span class="summarylabelspan" id="summary-recipient-name">` +
-      people[index].name +
-      `</span></strong>
+            people[index].name +
+            `</span></strong>
   </div>
   <div>
   <span class="summarylabelspan" id="summary-recipient-name">` +
-      people[index].email +
-      `</span>
+            people[index].email +
+            `</span>
   </div>
   <div>
   <span class="summarylabelspan" id="summary-recipient-name">` +
-      people[index].option +
-      `</span>
+            people[index].option +
+            `</span>
   </div>
   
   </div>`
-    $('#reviewrecipientstable').append(li)
-    }
+          $('#reviewrecipientstable').append(li)
+        }
 
-  })
-  modal[4].style.display = 'none';
-});
+      })
+      modal[4].style.display = 'none';
+    });
 
 
     $('#reviewnextbtn').click(function () {
       modal[1].style.display = 'block'
 
-      
+
 
       var today = new Date().toLocaleString().replace(',', '')
 
-      if(recents.length >= 5){
+      if (recents.length >= 5) {
         var removefirst = recents.shift();
       }
-      
+
       recents.push(
         { DocumentName: docname, DocumentID: filenamemain, Status: 'Sent', Timestamp: today })
       var recents_str = JSON.stringify(recents)
@@ -672,10 +674,11 @@ class Review extends React.Component {
       if (DataVar.SignOrder === true) {
 
         var firstRecipientPrivateMessage = ''
-        if(privatemessagekey){
+        if (privatemessagekey) {
           firstRecipientPrivateMessage = people[0].privatemessage
         }
-        var firstRecipientEmail = people[0].email
+        var firstRecipientEmail = people[0].email;
+        var firstRecipientEmail = people[0].name;
         var url =
           process.env.REACT_APP_BASE_URL +
           '/#/admin/sign?id=' +
@@ -693,15 +696,15 @@ class Review extends React.Component {
             .post('/api/posthistory', {
               DocumentID: filenamemain,
               HistoryTime: today,
-              HistoryUser: people[0].email + '\n['+ip+']',
+              HistoryUser: people[0].email + '\n[' + ip + ']',
               HistoryAction: 'Sent Invitations',
-              HistoryActivity: 'Envelope host sent an invitation to '+people[0].name+' ['+people[0].email+']',
+              HistoryActivity: 'Envelope host sent an invitation to ' + people[0].name + ' [' + people[0].email + ']',
               HistoryStatus: 'Sent',
               Owner: userid
             })
             .then(function (response) {
               console.log(response)
-              
+
             })
             .catch(function (error) {
               console.log(error)
@@ -740,6 +743,8 @@ class Review extends React.Component {
               console.log(error)
             })
         }
+        var loginUserName = document.getElementById('navbarname').innerHTML;
+
         axios
           .post('/api/sendmail', {
             to: firstRecipientEmail,
@@ -751,7 +756,12 @@ class Review extends React.Component {
             //   `</p></p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
             //   url +
             //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
-            body: SignReviewAndRequest({Name: firstRecipientEmail, DocumentName: docname, URL: url}),
+            body: SignReviewAndRequest({ 
+              SenderName: loginUserName,
+              RecipientName: firstRecipientEmail, 
+              DocumentName: docname, 
+              URL: url 
+            }),
             subject: 'GEMS: ' + subject + '',
           })
           .then(function (response) {
@@ -784,22 +794,22 @@ class Review extends React.Component {
             Reciever.push(user)
 
             axios
-            .post('/api/posthistory', {
-              DocumentID: filenamemain,
-              HistoryTime: today,
-              HistoryUser: email + '\n['+ip+']',
-              HistoryAction: 'Sent Invitations',
-              HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
-              HistoryStatus: 'Sent',
-              Owner: userid
-            })
-            .then(function (response) {
-              console.log(response)
-              
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
+              .post('/api/posthistory', {
+                DocumentID: filenamemain,
+                HistoryTime: today,
+                HistoryUser: email + '\n[' + ip + ']',
+                HistoryAction: 'Sent Invitations',
+                HistoryActivity: 'Envelope host sent an invitation to ' + recipientName + ' [' + recipientEmail + ']',
+                HistoryStatus: 'Sent',
+                Owner: userid
+              })
+              .then(function (response) {
+                console.log(response)
+
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
             //console.log(Reciever);
           }
         })
@@ -818,30 +828,13 @@ class Review extends React.Component {
             if (response.data === 'reciever done') {
               modal[1].style.display = 'none'
               axios
-              .post('/api/expiry', {
-                UserID:userid,
-                DocumentID:filenamemain,
-                day:day,
-                month:month,
-                year:year,
-                trigger:trigger
-              })
-              .then(function (response) {
-                console.log(response)
-              })
-              .catch(function (error) {
-                console.log(error)
-              })
-
-              if (document.getElementById('reviewautoremindercheck').checked) {
-                var select = document.getElementById('autoreminderselect')
-                    var date = select.options[select.selectedIndex].value
-                console.log(date);
-                  axios
-                .post('/api/reminder', {
-                  DocumentID:filenamemain,
-                  date:date,
-                  Owner: userid
+                .post('/api/expiry', {
+                  UserID: userid,
+                  DocumentID: filenamemain,
+                  day: day,
+                  month: month,
+                  year: year,
+                  trigger: trigger
                 })
                 .then(function (response) {
                   console.log(response)
@@ -849,6 +842,23 @@ class Review extends React.Component {
                 .catch(function (error) {
                   console.log(error)
                 })
+
+              if (document.getElementById('reviewautoremindercheck').checked) {
+                var select = document.getElementById('autoreminderselect')
+                var date = select.options[select.selectedIndex].value
+                console.log(date);
+                axios
+                  .post('/api/reminder', {
+                    DocumentID: filenamemain,
+                    date: date,
+                    Owner: userid
+                  })
+                  .then(function (response) {
+                    console.log(response)
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                  })
               }
               window.location.hash = '#/admin/sendsuccess'
               DataVar.RecipientArray = [];
@@ -863,9 +873,9 @@ class Review extends React.Component {
         people.forEach(function (item, index) {
 
           var RecipientPrivateMessage = ''
-        if(privatemessagekey){
-          RecipientPrivateMessage = people[index].privatemessage
-        }
+          if (privatemessagekey) {
+            RecipientPrivateMessage = people[index].privatemessage
+          }
           var recipientName = people[index].name
           var recipientEmail = people[index].email
           var recipientOption = people[index].option
@@ -922,6 +932,7 @@ class Review extends React.Component {
                   console.log(error)
                 })
             }
+            var loginUserName = document.getElementById('navbarname').innerHTML;
 
             axios
               .post('/api/sendmail', {
@@ -934,7 +945,12 @@ class Review extends React.Component {
                 //   `</p></p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
                 //   url +
                 //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
-                body: SignReviewAndRequest({Name: recipientName, DocumentName: docname, URL: url}),
+                body: SignReviewAndRequest({ 
+                  SenderName: loginUserName,
+                  RecipientName: recipientName, 
+                  DocumentName: docname, 
+                  URL: url 
+                }),
                 subject: 'GEMS: ' + subject + '',
               })
               .then(function (response) {
@@ -956,22 +972,22 @@ class Review extends React.Component {
             Reciever.push(user)
 
             axios
-            .post('/api/posthistory', {
-              DocumentID: filenamemain,
-              HistoryTime: today,
-              HistoryUser: email + '\n['+ip+']',
-              HistoryAction: 'Sent Invitations',
-              HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
-              HistoryStatus: 'Sent',
-              Owner: userid
-            })
-            .then(function (response) {
-              console.log(response)
-              
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
+              .post('/api/posthistory', {
+                DocumentID: filenamemain,
+                HistoryTime: today,
+                HistoryUser: email + '\n[' + ip + ']',
+                HistoryAction: 'Sent Invitations',
+                HistoryActivity: 'Envelope host sent an invitation to ' + recipientName + ' [' + recipientEmail + ']',
+                HistoryStatus: 'Sent',
+                Owner: userid
+              })
+              .then(function (response) {
+                console.log(response)
+
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
             //console.log(Reciever);
           }
         })
@@ -991,11 +1007,11 @@ class Review extends React.Component {
               modal[1].style.display = 'none'
               axios
                 .post('/api/expiry', {
-                  UserID:userid,
-                  DocumentID:filenamemain,
-                  day:day,
-                  month:month,
-                  year:year,
+                  UserID: userid,
+                  DocumentID: filenamemain,
+                  day: day,
+                  month: month,
+                  year: year,
                   trigger: trigger
                 })
                 .then(function (response) {
@@ -1005,23 +1021,23 @@ class Review extends React.Component {
                   console.log(error)
                 })
 
-                if (document.getElementById('reviewautoremindercheck').checked) {
-                  var select = document.getElementById('autoreminderselect')
-                      var date = select.options[select.selectedIndex].value
-                  console.log(date);
-                  var url =
+              if (document.getElementById('reviewautoremindercheck').checked) {
+                var select = document.getElementById('autoreminderselect')
+                var date = select.options[select.selectedIndex].value
+                console.log(date);
+                var url =
                   process.env.REACT_APP_BASE_URL +
                   '/#/admin/sign?id=' +
                   filenamemain +
                   '&type=db&u=' +
                   userid +
                   '&key='
-                    axios
+                axios
                   .post('/api/reminder', {
-                    DocumentID:filenamemain,
-                    date:date,
-                    url:url,
-                    Owner:userid
+                    DocumentID: filenamemain,
+                    date: date,
+                    url: url,
+                    Owner: userid
                   })
                   .then(function (response) {
                     console.log(response)
@@ -1029,7 +1045,7 @@ class Review extends React.Component {
                   .catch(function (error) {
                     console.log(error)
                   })
-                }
+              }
               window.location.hash = '#/admin/sendsuccess'
               DataVar.RecipientArray = [];
             }
@@ -1057,13 +1073,13 @@ class Review extends React.Component {
     $("#docnameeditsavebtn").on('click', function () {
       docname = document.getElementById('input-docnameedit-message').value
       document.getElementById('input-docnameedit-message').value = '';
-        document.getElementById('document-name').innerHTML = '';
+      document.getElementById('document-name').innerHTML = '';
       document.getElementById('input-docnameedit-message').value = docname;
       document.getElementById('document-name').innerHTML = docname;
       modal[5].style.display = 'none';
     });
 
-    
+
     $('#stepaddbtn').click(function () {
       window.location.hash = '#/admin/uploadsuccess'
     });
@@ -1076,7 +1092,7 @@ class Review extends React.Component {
       window.location.hash = '#/admin/sign'
     });
 
-   
+
   }
   render() {
     return (
@@ -1164,84 +1180,84 @@ class Review extends React.Component {
 
           <div className="modal">
             <div className="review-modal-content">
-            <Card className="shadow border-0 mx-3">
+              <Card className="shadow border-0 mx-3">
                 <CardHeader className=" bg-transparent">
-                <div className="review-manager-title">
-                        <span>Preview</span>
-                        <i className="ni ni-fat-remove preview-close" />
-                    </div>
+                  <div className="review-manager-title">
+                    <span>Preview</span>
+                    <i className="ni ni-fat-remove preview-close" />
+                  </div>
                 </CardHeader>
                 <CardBody>
 
-                
-            <Row>
+
+                  <Row>
                     <Col lg="12">
-                    <div id="review-container">
-                    <div id="review-pdf-container"></div>
-                    <div id="review-toolbar"></div>
-                    </div>
+                      <div id="review-container">
+                        <div id="review-pdf-container"></div>
+                        <div id="review-toolbar"></div>
+                      </div>
                     </Col>
-            </Row>  
-            </CardBody>
-            <CardFooter className=" bg-transparent">
-            
-            </CardFooter> 
-            </Card>     
+                  </Row>
+                </CardBody>
+                <CardFooter className=" bg-transparent">
+
+                </CardFooter>
+              </Card>
             </div>
           </div>
 
           <div className="modal">
             <div className="private-modal-content">
               <div>
-              <Card className="shadow border-0 mx-3 p-3">
-              <CardHeader className=" bg-transparent">
-                <div className="review-manager-title">
-                        <span>Private Message</span>
-                        <i className="ni ni-fat-remove private-close" />
+                <Card className="shadow border-0 mx-3 p-3">
+                  <CardHeader className=" bg-transparent">
+                    <div className="review-manager-title">
+                      <span>Private Message</span>
+                      <i className="ni ni-fat-remove private-close" />
                     </div>
-                </CardHeader>
-                <Row>
-                  <Col lg='12'>
-                  <FormGroup className="my-4">
-                    <span className="emaillabelspan py-2">
-                      <strong>Select Recipient:</strong>
+                  </CardHeader>
+                  <Row>
+                    <Col lg='12'>
+                      <FormGroup className="my-4">
+                        <span className="emaillabelspan py-2">
+                          <strong>Select Recipient:</strong>
+                        </span>
+                        <select
+                          id="privaterecipientselect"
+                          className="form-control selectpicker form-control-sm"
+                        ></select>
+                      </FormGroup>
+                      <FormGroup className="">
+                        <span className="emaillabelspan  py-2">
+                          <strong>Message:</strong>
+                        </span>
+                        <Input
+                          id="input-private-message"
+                          placeholder="Enter message here ..."
+                          rows="3"
+                          type="textarea"
+                        />
+                        <span className="emaillabelspan">
+                          Max Characters: 10000
                     </span>
-                    <select
-                      id="privaterecipientselect"
-                      className="form-control selectpicker form-control-sm"
-                    ></select>
-                  </FormGroup>
-                  <FormGroup className="">
-                    <span className="emaillabelspan  py-2">
-                      <strong>Message:</strong>
-                    </span>
-                    <Input
-                      id="input-private-message"
-                      placeholder="Enter message here ..."
-                      rows="3"
-                      type="textarea"
-                    />
-                    <span className="emaillabelspan">
-                      Max Characters: 10000
-                    </span>
-                  </FormGroup>
-                  <Button
-                    className="mx-2 float-right px-4"
-                    color="neutral"
-                    id="privatecancelbtn"
-                  >
-                    Cancel
+                      </FormGroup>
+                      <Button
+                        className="mx-2 float-right px-4"
+                        color="neutral"
+                        id="privatecancelbtn"
+                      >
+                        Cancel
                   </Button>
-                  <Button
+                      <Button
                         className="float-right px-4 mx-2"
                         color="primary"
                         id="privatesavebtn"
                       >
                         Save
                       </Button>
-                  
-                  </Col>
-                </Row>
+
+                    </Col>
+                  </Row>
                 </Card>
               </div>
             </div>
@@ -1250,43 +1266,43 @@ class Review extends React.Component {
           <div className="modal">
             <div className="private-modal-content">
               <div>
-              <Card className="shadow border-0 mx-3 p-3">
-              <CardHeader className=" bg-transparent">
-                <div className="review-manager-title">
-                    <span>Change Document Name:</span>
-                        <i className="ni ni-fat-remove docnameedit-close" />
+                <Card className="shadow border-0 mx-3 p-3">
+                  <CardHeader className=" bg-transparent">
+                    <div className="review-manager-title">
+                      <span>Change Document Name:</span>
+                      <i className="ni ni-fat-remove docnameedit-close" />
                     </div>
-                </CardHeader>
-                <Row>
-                  <Col lg='12'>
-                  <FormGroup className=" p-3">
-                    <Input
-                      id="input-docnameedit-message"
-                      placeholder="Enter Document Name"
-                      type="text"
-                    />
-                  </FormGroup>
-                  <Button
-                    className="mx-2 float-right px-4"
-                    color="neutral"
-                    id="docnameeditcancelbtn"
-                  >
-                    Cancel
+                  </CardHeader>
+                  <Row>
+                    <Col lg='12'>
+                      <FormGroup className=" p-3">
+                        <Input
+                          id="input-docnameedit-message"
+                          placeholder="Enter Document Name"
+                          type="text"
+                        />
+                      </FormGroup>
+                      <Button
+                        className="mx-2 float-right px-4"
+                        color="neutral"
+                        id="docnameeditcancelbtn"
+                      >
+                        Cancel
                   </Button>
-                  <Button
+                      <Button
                         className="float-right px-4 mx-2"
                         color="primary"
                         id="docnameeditsavebtn"
                       >
                         Save
                       </Button>
-                  </Col>
-                </Row>
+                    </Col>
+                  </Row>
                 </Card>
               </div>
             </div>
           </div>
-          
+
 
           <Row>
             <div className="col  pb-2">
@@ -1298,15 +1314,15 @@ class Review extends React.Component {
                   <Row>
                     <Col lg="6" className="my-3">
                       <Col lg="12">
-                      <Button
-                        className="float-right px-3 mx-1"
-                        color="dark"
-                        id="reviewprivatebtn"
-                      >
-                        Private Message
+                        <Button
+                          className="float-right px-3 mx-1"
+                          color="dark"
+                          id="reviewprivatebtn"
+                        >
+                          Private Message
                       </Button>
                         <h4 className="">Message to Recipients!</h4>
-                        
+
                         <FormGroup className="my-4">
                           <span className="emaillabelspan py-2">
                             <strong>Email Subject</strong>
@@ -1419,14 +1435,14 @@ class Review extends React.Component {
                                   <strong>Documents:</strong>
                                 </span>
                               </strong>
-                              
+
                               <span id="document-name" className="summarylabelspan"></span>
                               <Button
-                              className="mx-3 px-4"
-                              color="neutral"
-                              id="docnameeditbtn"
-                            >
-                              Edit
+                                className="mx-3 px-4"
+                                color="neutral"
+                                id="docnameeditbtn"
+                              >
+                                Edit
                             </Button>
                               <hr className="my-3" />
                               <strong>
@@ -1441,7 +1457,7 @@ class Review extends React.Component {
                               </div>
                               <hr className="my-2" />
                               <span className="summarylabelspan">Once the envelope is completed, all recipients will receive a copy of the completed envelope.</span>
-                              
+
                             </Col>
                           </Row>
                         </TabPane>
@@ -1471,7 +1487,7 @@ class Review extends React.Component {
                 <CardFooter>
                   <Row>
                     <Col lg="12">
-                    
+
                       <Button
                         className="float-right px-4 mx-2"
                         color="primary"

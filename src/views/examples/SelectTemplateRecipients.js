@@ -51,7 +51,7 @@ class SelectTemplateRecipients extends React.Component {
 
     var userid = getCookie('uid')
     var docid = TemplateDataVar.TemplateID
-    
+
     var pdf = '';
     var global = this;
 
@@ -95,11 +95,11 @@ class SelectTemplateRecipients extends React.Component {
               var container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport({scale:scale})
+              var viewport = page.getViewport({ scale: scale })
               var canvas = document.createElement('canvas')
               try {
                 document.getElementById(inst.container_id).appendChild(canvas)
-              } catch (error) {}
+              } catch (error) { }
               canvas.className = 'review-pdf-canvas'
               canvas.height = viewport.height
               canvas.width = viewport.width
@@ -158,7 +158,7 @@ class SelectTemplateRecipients extends React.Component {
             e.hasControls = false
           })
           inst.fabricObjects.push(fabricObj)
-          
+
           fabricObj.setBackgroundImage(
             background,
             fabricObj.renderAll.bind(fabricObj)
@@ -168,9 +168,9 @@ class SelectTemplateRecipients extends React.Component {
             fabricObj.off('after:render')
           })
 
-          
 
-          
+
+
         })
 
         try {
@@ -181,19 +181,19 @@ class SelectTemplateRecipients extends React.Component {
             //console.log('adding objects')
           })
           addobjbtn.click()
-        } catch (error) {}
+        } catch (error) { }
       }
 
-      
 
-      
+
+
     }
 
     PDFFabric.prototype.AddObj = function () {
       var inst = this
       //console.log('started adding objects')
-              // // // // // // // ////console.log('file id found');
-              axios
+      // // // // // // // ////console.log('file id found');
+      axios
         .post('/api/gettemplatedata', {
           TemplateID: TemplateDataVar.TemplateID,
           Owner: userid
@@ -214,8 +214,8 @@ class SelectTemplateRecipients extends React.Component {
                   targ.selectable = false
                   targ.hasControls = false
                 })
-                
-                
+
+
               })
             })
             modal[1].style.display = 'none'
@@ -224,9 +224,9 @@ class SelectTemplateRecipients extends React.Component {
         .catch(function (error) {
           console.log(error)
         })
-              
-              
-              //console.log('pdf done')
+
+
+      //console.log('pdf done')
     }
 
     PDFFabric.prototype.savePdf = function () {
@@ -237,13 +237,13 @@ class SelectTemplateRecipients extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf saved')
       doc.save('pappayasign_' + inst.filename + '')
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.printPdf = function () {
@@ -254,42 +254,42 @@ class SelectTemplateRecipients extends React.Component {
           doc.addPage()
           doc.setPage(index + 1)
         }
-        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
+        doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined, 'FAST')
       })
       console.log('pdf printed')
       window.open(doc.output('bloburl'), '_blank');
       //window.location.reload(false)
       modal[0].style.display = 'none'
-      
+
     }
 
     PDFFabric.prototype.Clear = function () {
       var inst = this
       $.each(inst.fabricObjects, function (index, fabricObj) {
-        inst.fabricObjects.slice(index,1);
+        inst.fabricObjects.slice(index, 1);
       })
       modal[0].style.display = 'none'
-      
+
     }
 
-    var ip ='';
+    var ip = '';
     axios
-    .post('/api/getip', {
-    })
-    .then(function (response) {
-      console.log(response)
-      var remoteAddress = response.data;
-      const array = remoteAddress.split(':')
-      ip = array[array.length - 1]
-      //console.log(ip);
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+      .post('/api/getip', {
+      })
+      .then(function (response) {
+        console.log(response)
+        var remoteAddress = response.data;
+        const array = remoteAddress.split(':')
+        ip = array[array.length - 1]
+        //console.log(ip);
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
 
     var modal = document.querySelectorAll('.modal')
 
-    
+
     var email = ''
     if (userid) {
       //console.log('user logged in');
@@ -297,8 +297,8 @@ class SelectTemplateRecipients extends React.Component {
       email = getCookie('useremail')
       var count = 0
       var url = ''
-      
-      
+
+
       var docname = ''
       var people = []
       var colorArray = [
@@ -325,39 +325,39 @@ class SelectTemplateRecipients extends React.Component {
       try {
         modal[1].style.display = 'block'
         axios
-                .post('/api/templatedownload', {
-                  UserID: userid,
-                  filename: TemplateDataVar.TemplateID,
-                })
-                .then(async function (response) {
-                  console.log(response)
-                  if (response.data.Status === 'doc found') {
-                    var doc = response.data.data
-                    console.log(doc);
-                    //modal[0].style.display = 'block'
-                    PreviewData.DataPath = doc;
-                    global.pdf = await new PDFFabric(
-                      'template-pdf-container',
-                      'template-toolbar',
-                      doc,
-                      TemplateDataVar.TemplateID,
-                      {
-                        onPageUpdated: (page, oldData, newData) => {
-                          
-                          //modal[0].style.display = "block";
-                          ////console.log(page, oldData, newData);
-                        },
-                      }
-                    )
-                    console.log(global.pdf)
-                  }
-                })
-                .catch(function (error) {
-                  console.log(error)
-                  modal[1].style.display = 'none'
-                })
-        
-        
+          .post('/api/templatedownload', {
+            UserID: userid,
+            filename: TemplateDataVar.TemplateID,
+          })
+          .then(async function (response) {
+            console.log(response)
+            if (response.data.Status === 'doc found') {
+              var doc = response.data.data
+              console.log(doc);
+              //modal[0].style.display = 'block'
+              PreviewData.DataPath = doc;
+              global.pdf = await new PDFFabric(
+                'template-pdf-container',
+                'template-toolbar',
+                doc,
+                TemplateDataVar.TemplateID,
+                {
+                  onPageUpdated: (page, oldData, newData) => {
+
+                    //modal[0].style.display = "block";
+                    ////console.log(page, oldData, newData);
+                  },
+                }
+              )
+              console.log(global.pdf)
+            }
+          })
+          .catch(function (error) {
+            console.log(error)
+            modal[1].style.display = 'none'
+          })
+
+
       } catch (error) {
         modal[1].style.display = 'none'
       }
@@ -480,7 +480,7 @@ class SelectTemplateRecipients extends React.Component {
               //console.log(doc);
               PreviewData.DataPath = doc;
 
-              
+
 
               axios
                 .post('/api/docupload', {
@@ -526,22 +526,22 @@ class SelectTemplateRecipients extends React.Component {
                               ) {
 
                                 axios
-                                .post('/api/posthistory', {
-                                  DocumentID: newdocid,
-                                  HistoryTime: today,
-                                  HistoryUser: email + '\n['+ip+']',
-                                  HistoryAction: 'Registered',
-                                  HistoryActivity: 'The envelope was created by '+email+'',
-                                  HistoryStatus: 'Created',
-                                  Owner: userid
-                                })
-                                .then(function (response) {
-                                  console.log(response)
-                                  
-                                })
-                                .catch(function (error) {
-                                  console.log(error)
-                                })
+                                  .post('/api/posthistory', {
+                                    DocumentID: newdocid,
+                                    HistoryTime: today,
+                                    HistoryUser: email + '\n[' + ip + ']',
+                                    HistoryAction: 'Registered',
+                                    HistoryActivity: 'The envelope was created by ' + email + '',
+                                    HistoryStatus: 'Created',
+                                    Owner: userid
+                                  })
+                                  .then(function (response) {
+                                    console.log(response)
+
+                                  })
+                                  .catch(function (error) {
+                                    console.log(error)
+                                  })
 
                                 var Reciever = []
 
@@ -576,22 +576,22 @@ class SelectTemplateRecipients extends React.Component {
                                     Reciever.push(user)
 
                                     axios
-                                    .post('/api/posthistory', {
-                                      DocumentID: newdocid,
-                                      HistoryTime: today,
-                                      HistoryUser: recipientEmail + '\n['+ip+']',
-                                      HistoryAction: 'Sent Invitations',
-                                      HistoryActivity: 'Envelope host sent an invitation to '+recipientName+' ['+recipientEmail+']',
-                                      HistoryStatus: 'Sent',
-                                      Owner: userid
-                                    })
-                                    .then(function (response) {
-                                      console.log(response)
-                                      
-                                    })
-                                    .catch(function (error) {
-                                      console.log(error)
-                                    })
+                                      .post('/api/posthistory', {
+                                        DocumentID: newdocid,
+                                        HistoryTime: today,
+                                        HistoryUser: recipientEmail + '\n[' + ip + ']',
+                                        HistoryAction: 'Sent Invitations',
+                                        HistoryActivity: 'Envelope host sent an invitation to ' + recipientName + ' [' + recipientEmail + ']',
+                                        HistoryStatus: 'Sent',
+                                        Owner: userid
+                                      })
+                                      .then(function (response) {
+                                        console.log(response)
+
+                                      })
+                                      .catch(function (error) {
+                                        console.log(error)
+                                      })
                                     //console.log(Reciever);
 
                                     axios
@@ -607,7 +607,7 @@ class SelectTemplateRecipients extends React.Component {
                                             .post('/api/postrequest', {
                                               UserID: response.data.UserID,
                                               DocumentName:
-                                              Template.TemplateName,
+                                                Template.TemplateName,
                                               DocumentID: newdocid,
                                               From: userid,
                                               FromEmail: Template.OwnerEmail,
@@ -632,6 +632,8 @@ class SelectTemplateRecipients extends React.Component {
                                         console.log(error)
                                       })
 
+                                    var loginUserName = document.getElementById('navbarname').innerHTML;
+
                                     axios
                                       .post('/api/sendmail', {
                                         to: recipientEmail,
@@ -641,7 +643,13 @@ class SelectTemplateRecipients extends React.Component {
                                         //   `</p> <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">We have a sign request for you. </p> <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;"> <tbody> <tr> <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;"> <tbody> <tr> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="` +
                                         //   url +
                                         //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
-                                        body: SignReviewAndRequest({Name: recipientName, DocumentName: Template.TemplateName, URL: url}),
+                                        body: SignReviewAndRequest({
+                                          SenderName: loginUserName,
+                                          RecipientName: recipientName,
+                                          DocumentName:
+                                            Template.TemplateName,
+                                          URL: url
+                                        }),
                                         subject: 'GEMS: Sign Request',
                                       })
                                       .then(function (response) {
@@ -709,111 +717,111 @@ class SelectTemplateRecipients extends React.Component {
         var newdocid = randomString(13)
 
 
-      axios
-        .post('/api/gettemplatedata', {
-          TemplateID: TemplateDataVar.TemplateID,
-          Owner: userid
-        })
-        .then(function (response) {
-          console.log(response)
-          if (response.data.Status === 'template found') {
-            var Document = response.data.Template
-            var dbpeople = []
-            Document.Reciever.forEach(function (data, index) {
-              dbpeople.push({
-                name: data.RecipientName,
-                email: data.RecipientEmail,
-                option: data.RecipientOption,
+        axios
+          .post('/api/gettemplatedata', {
+            TemplateID: TemplateDataVar.TemplateID,
+            Owner: userid
+          })
+          .then(function (response) {
+            console.log(response)
+            if (response.data.Status === 'template found') {
+              var Document = response.data.Template
+              var dbpeople = []
+              Document.Reciever.forEach(function (data, index) {
+                dbpeople.push({
+                  name: data.RecipientName,
+                  email: data.RecipientEmail,
+                  option: data.RecipientOption,
+                })
+                //console.log(dbpeople);
               })
-              //console.log(dbpeople);
-            })
-            DataVar.RecipientArray = dbpeople
-            docname = Document.TemplateName
+              DataVar.RecipientArray = dbpeople
+              docname = Document.TemplateName
 
-            PreviewData.Data = Document.Data;
+              PreviewData.Data = Document.Data;
 
-            axios
-              .post('/api/adddocumentdata', {
-                DocumentName: Document.TemplateName,
-                DocumentID: newdocid,
-                OwnerEmail: Document.OwnerEmail,
-                DateCreated: today,
-                DateStatus: today,
-                DateSent: '',
-                Owner: userid,
-                Status: 'Draft',
-                SignOrder: false,
-                Data: Document.Data,
-                Reciever: Document.Reciever,
-              })
-              .then(function (response) {
-                console.log(response)
-                if (
-                  response.data === 'insert done' ||
-                  response.data === 'update done'
-                ) {
-                  
-                  axios
-                    .post('/api/templatedownload', {
-                      UserID: userid,
-                      filename: TemplateDataVar.TemplateID,
-                    })
-                    .then(function (response) {
-                      console.log(response)
-                      if (response.data.Status === 'doc found') {
-                        var doc = response.data.data
-      
-                        axios
-                      .post('/api/docupload', {
+              axios
+                .post('/api/adddocumentdata', {
+                  DocumentName: Document.TemplateName,
+                  DocumentID: newdocid,
+                  OwnerEmail: Document.OwnerEmail,
+                  DateCreated: today,
+                  DateStatus: today,
+                  DateSent: '',
+                  Owner: userid,
+                  Status: 'Draft',
+                  SignOrder: false,
+                  Data: Document.Data,
+                  Reciever: Document.Reciever,
+                })
+                .then(function (response) {
+                  console.log(response)
+                  if (
+                    response.data === 'insert done' ||
+                    response.data === 'update done'
+                  ) {
+
+                    axios
+                      .post('/api/templatedownload', {
                         UserID: userid,
-                        filename: newdocid,
-                        filedata: doc,
+                        filename: TemplateDataVar.TemplateID,
                       })
                       .then(function (response) {
                         console.log(response)
-                        if (response.data === 'document upload success') {
-                          DataVar.DocName = docname
-                          DataVar.DataURI = doc
-                          DataVar.DataPath = doc
-                          modal[2].style.display = 'none'
-                          var wurl =
-                            '#/admin/uploadsuccess?id=' +
-                            newdocid +
-                            '&u=' +
-                            userid +
-                            '&docname=' +
-                            docname +
-                            '&action=create'
-                          window.location.hash = wurl
-      
+                        if (response.data.Status === 'doc found') {
+                          var doc = response.data.data
+
+                          axios
+                            .post('/api/docupload', {
+                              UserID: userid,
+                              filename: newdocid,
+                              filedata: doc,
+                            })
+                            .then(function (response) {
+                              console.log(response)
+                              if (response.data === 'document upload success') {
+                                DataVar.DocName = docname
+                                DataVar.DataURI = doc
+                                DataVar.DataPath = doc
+                                modal[2].style.display = 'none'
+                                var wurl =
+                                  '#/admin/uploadsuccess?id=' +
+                                  newdocid +
+                                  '&u=' +
+                                  userid +
+                                  '&docname=' +
+                                  docname +
+                                  '&action=create'
+                                window.location.hash = wurl
+
+                              }
+
+                            })
+                            .catch(function (error) {
+                              console.log(error)
+                              modal[2].style.display = 'none'
+                            })
+
                         }
-      
-                        })
-                        .catch(function (error) {
-                          console.log(error)
-                          modal[2].style.display = 'none'
-                        })
-      
-                      }
-                    })
-                    .catch(function (error) {
-                      console.log(error)
-                      modal[2].style.display = 'none'
-                    })
-                }
+                      })
+                      .catch(function (error) {
+                        console.log(error)
+                        modal[2].style.display = 'none'
+                      })
+                  }
                 })
                 .catch(function (error) {
                   console.log(error)
                   modal[0].style.display = 'none'
                 })
 
-            
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-      
+
+            }
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+
       });
     } else {
       //window.location.hash = "#/auth/login";
@@ -856,112 +864,112 @@ class SelectTemplateRecipients extends React.Component {
           <Row>
             <div className="col">
               <Card className="shadow">
-              <CardHeader className="border-0">
+                <CardHeader className="border-0">
                   <h3 className="mb-0">Add Recipients</h3>
                 </CardHeader>
                 <CardBody>
                   <Row>
-                <Col lg="6">
-                <div>
-                    <div className="mb-4 mb-xl-0">
-                      <h5>Enter Recipients: </h5>
-                    </div>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <Input
-                            className="form-control-alternative"
-                            id="strecipient-input-name"
-                            placeholder="Name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <Input
-                            className="form-control-alternative"
-                            id="strecipient-input-email"
-                            placeholder="Email Address"
-                            type="email"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <select
-                            id="strecipientoptionselect"
-                            className="form-control  form-control-md"
-                          >
-                            <option value="Needs to Sign">Needs to Sign</option>
-                            <option value="Needs to View">Needs to View</option>
-                            <option value="Recieves a Copy">
-                              Recieves a Copy
+                    <Col lg="6">
+                      <div>
+                        <div className="mb-4 mb-xl-0">
+                          <h5>Enter Recipients: </h5>
+                        </div>
+                        <Row>
+                          <Col lg="4">
+                            <FormGroup>
+                              <Input
+                                className="form-control-alternative"
+                                id="strecipient-input-name"
+                                placeholder="Name"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                            <FormGroup>
+                              <Input
+                                className="form-control-alternative"
+                                id="strecipient-input-email"
+                                placeholder="Email Address"
+                                type="email"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                            <FormGroup>
+                              <select
+                                id="strecipientoptionselect"
+                                className="form-control  form-control-md"
+                              >
+                                <option value="Needs to Sign">Needs to Sign</option>
+                                <option value="Needs to View">Needs to View</option>
+                                <option value="Recieves a Copy">
+                                  Recieves a Copy
                             </option>
-                          </select>
-                        </FormGroup>
-                      </Col>
+                              </select>
+                            </FormGroup>
+                          </Col>
 
-                      <Col lg="12">
-                      <Button
-                          id="edittemplate-btn"
-                          className="close-btn float-right m-2 px-5"
-                          color="neutral"
-                          outline
-                        >
-                          {' '}
+                          <Col lg="12">
+                            <Button
+                              id="edittemplate-btn"
+                              className="close-btn float-right m-2 px-5"
+                              color="neutral"
+                              outline
+                            >
+                              {' '}
                           Edit
                         </Button>
-                        <Button
-                          id="sts-btn"
-                          className="close-btn float-right m-2 px-5"
-                        >
-                          {' '}
+                            <Button
+                              id="sts-btn"
+                              className="close-btn float-right m-2 px-5"
+                            >
+                              {' '}
                           Finish
                         </Button>
-                        <Button
-                          id="stappend-btn"
-                          className="close-btn float-right m-2 px-5"
-                        >
-                          {' '}
+                            <Button
+                              id="stappend-btn"
+                              className="close-btn float-right m-2 px-5"
+                            >
+                              {' '}
                           Add
                         </Button>
-                      </Col>
+                          </Col>
+                          <Col lg="12">
+                            <hr className="my-4" />
+                            <div id="strecipientdiv">
+                              <ul id="stsortable"></ul>
+                            </div>
+                          </Col>
+
+                        </Row>
+                      </div>
+                    </Col>
+                    <Col lg="6">
+                      <div className="mb-4 mb-xl-0 pl-4">
+                        <h5>Preview: </h5>
+                      </div>
                       <Col lg="12">
-                      <hr className="my-4" />
-                        <div id="strecipientdiv">
-                          <ul id="stsortable"></ul>
+                        <div id="template-container">
+                          <div id="template-pdf-container"></div>
+                          <div id="template-toolbar"></div>
                         </div>
                       </Col>
-                     
-                    </Row>
-                  </div>
-                </Col>
-                <Col lg="6">
-                <div className="mb-4 mb-xl-0 pl-4">
-                      <h5>Preview: </h5>
-                    </div>
-                  <Col lg="12">
-                    <div id="template-container">
-                    <div id="template-pdf-container"></div>
-                    <div id="template-toolbar"></div>
-                    </div>
                     </Col>
-                </Col>
-                </Row>
-                  
+                  </Row>
+
                 </CardBody>
                 <CardFooter className="border-0">
                 </CardFooter>
               </Card>
               <Button
-                        color="primary"
-                        size="sm"
-                        type="button"
-                        className="float-right"
-                        id="manageaddobjbtn"
-                      >
-                        AddObj
+                color="primary"
+                size="sm"
+                type="button"
+                className="float-right"
+                id="manageaddobjbtn"
+              >
+                AddObj
                       </Button>
             </div>
           </Row>
