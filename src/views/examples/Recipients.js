@@ -380,8 +380,8 @@ class Recipients extends React.Component {
                           </FormGroup>
                           </Col>
                           
-                          <Col lg="12">
-                          <div id="signordercheckdiv" className="custom-control custom-checkbox float-left mx-2 my-1">
+                          <Col lg="12" className="d-flex justify-content-between flex-column flex-md-row">
+                            <div id="signordercheckdiv" className="custom-control custom-checkbox float-left mx-2 my-1">
                           <input
                           className="custom-control-input"
                           id="signordercheck"
@@ -393,9 +393,11 @@ class Recipients extends React.Component {
                             Set signing order
                           </label>
                           </div>
-                          <Button id="s-btn" className="close-btn float-right m-2 px-5" > Next</Button>
-                          <Button id="append-btn" className="close-btn float-right m-2 px-5" > Add</Button>
-                          <Button id="previous-btn" className="close-btn float-right m-2 px-5" > Back</Button>
+                            <div className="d-flex flex-column flex-md-row">
+                              <Button id="s-btn" className="close-btn float-right m-2 px-5" > Next</Button>
+                              <Button id="append-btn" className="close-btn float-right m-2 px-5" > Add</Button>
+                              <Button id="previous-btn" className="close-btn float-right m-2 px-5" > Back</Button>
+                            </div>
                           
                           </Col>
                           </Row>

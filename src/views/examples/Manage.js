@@ -2849,6 +2849,7 @@ class Tables extends React.Component {
             axios
               .post('/api/gethistory', {
                 DocumentID: historyfileid,
+                Owner: historyuserid
               })
               .then(function (response) {
 
@@ -3050,6 +3051,7 @@ class Tables extends React.Component {
             axios
               .post('/api/gethistory', {
                 DocumentID: historyfileid,
+                Owner: historyuserid
               })
               .then(function (response) {
 
@@ -3244,6 +3246,14 @@ class Tables extends React.Component {
 
     $("#managevoidapprovebtn").attr("disabled", true);
   }
+
+  closeAllModal = () => {
+    const modal = document.querySelectorAll('.modal')
+    modal.forEach(_ => {
+      _.style.display = 'none';
+    })
+  }
+
   render() {
     return (
       <>
@@ -3251,7 +3261,7 @@ class Tables extends React.Component {
         {/* Page content */}
         <div className="mt--8 mx-4">
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we fetch your details.</p>
                 <div className="lds-dual-ring"></div>
@@ -3260,7 +3270,7 @@ class Tables extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Sending.</p>
                 <div className="lds-dual-ring"></div>
@@ -3269,7 +3279,7 @@ class Tables extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait.</p>
                 <div className="lds-dual-ring"></div>
@@ -3278,7 +3288,7 @@ class Tables extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <div className="mb-4 mb-xl-0">
                   <h5>
@@ -3328,7 +3338,7 @@ class Tables extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <div className="mb-4 mb-xl-0">
                   <h5>
@@ -3364,152 +3374,151 @@ class Tables extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content-history">
-              <div>
-                <Row>
+            <div className="modal-content-history modal-dialog modal-lg">
+              <Row>
+                <Col lg="12">
+                  <div className="mb-3 py-2 px-3 d-flex align-items-center justify-content-between">
+                    <h4 color="dark">
+                      Envelope History
+                    </h4>
+                    <a href="#/admin/manage">
+                      <i onClick={this.closeAllModal} className="fa fa-times" />
+                    </a>
+                  </div>
+                  <hr className="mt-1 mb-2" />
+                </Col>
+                <Col lg='12'>
                   <Col lg="12">
-                    <h4 className="py-4 px-3" color="dark">
-                      Envelope History:
-                  </h4>
-                    <hr className="my-1" />
+                    <h5 color="dark">
+                      Details:
+                    </h5>
                   </Col>
-                  <Col lg='12' className="history-fixed">
-                    <Col lg="12">
-                      <h5 className="py-3 px-3" color="dark">
-                        Details:
-                      </h5>
-                    </Col>
-                    <Col lg="6" className="float-left justify-content-left">
-                      <Col lg="12" className="float-left justify-content-left">
-                        <FormGroup>
+                  <Col lg="6" className="float-left justify-content-left">
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Subject:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historysubject"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
+                      <span
+                          className="emaillabelspan"
+                          id="historysubject"
+                      ></span>
+                    </FormGroup>
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Envelope ID:</strong>
                           </span>
-                          <span className="emaillabelspan" id="historyid"></span>
-                        </FormGroup>
-                        <FormGroup>
+                      <span className="emaillabelspan" id="historyid"></span>
+                    </FormGroup>
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Date Sent:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historysent"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
+                      <span
+                          className="emaillabelspan"
+                          id="historysent"
+                      ></span>
+                    </FormGroup>
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Date Created:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historycreate"
-                          ></span>
-                        </FormGroup>
-                      </Col>
-                    </Col>
-                    <Col lg="6" className="float-left justify-content-left">
-                      <Col lg="12" className="float-left justify-content-left">
-                        <FormGroup>
+                      <span
+                          className="emaillabelspan"
+                          id="historycreate"
+                      ></span>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="6" className="float-left justify-content-left">
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Holder:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historyholder"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
+                      <span
+                          className="emaillabelspan"
+                          id="historyholder"
+                      ></span>
+                    </FormGroup>
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Envelope Recipients:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historyrecipients"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
+                      <span
+                          className="emaillabelspan"
+                          id="historyrecipients"
+                      ></span>
+                    </FormGroup>
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Status:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historystatus"
-                          ></span>
-                        </FormGroup>
-                        <FormGroup>
+                      <span
+                          className="emaillabelspan"
+                          id="historystatus"
+                      ></span>
+                    </FormGroup>
+                    <FormGroup>
                           <span className="emaillabelspan">
                             <strong>Status Date:</strong>
                           </span>
-                          <span
-                            className="emaillabelspan"
-                            id="historystatusdate"
-                          ></span>
-                        </FormGroup>
-                      </Col>
-                    </Col>
-                    <Col lg="12">
-                      <h5 className="py-3 px-3" color="dark">
-                        Actions:
-                      </h5>
-                    </Col>
+                      <span
+                          className="emaillabelspan"
+                          id="historystatusdate"
+                      ></span>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="12">
+                    <h5 color="dark">
+                      Actions:
+                    </h5>
+                  </Col>
 
-                    <Col lg="12">
-                      <Table
+                  <Col lg="12">
+                    <Table
                         className="align-items-center table-flush"
                         id="historytable"
-                      >
-                        <thead className="thead-primary">
-                          <tr>
-                            <th scope="col">Time</th>
-                            <th scope="col">User</th>
-                            <th scope="col">Action</th>
-                            <th scope="col">Activity</th>
-                            <th scope="col">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody></tbody>
-                      </Table>
-                    </Col>
+                    >
+                      <thead className="thead-primary">
+                      <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Activity</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </Table>
                   </Col>
-                  <Col lg="12" className="my-2">
-                    <hr className="my-1" />
-                    <Button
+                </Col>
+                <Col lg="12" className="my-2">
+                  <hr className="mb-3 mt-2" />
+                  <Button
                       color="dark"
                       size="sm"
                       type="button"
                       className="float-left mx-4 my-2 px-4"
                       id="historycertificatebtn"
-                    >
-                      Download Certificate
-                      </Button>
-                    <Button
+                  >
+                    Download Certificate
+                  </Button>
+                  <Button
                       color="dark"
                       size="sm"
                       type="button"
                       className="float-left my-2 px-4"
                       id="historyprintbtn"
-                    >
-                      Print
-                      </Button>
-                  </Col>
+                  >
+                    Print
+                  </Button>
+                </Col>
 
-                </Row>
-              </div>
+              </Row>
             </div>
           </div>
 
 
           <div className="modal">
-            <div className="flow-modal-content">
+            <div className="flow-modal-content modal-dialog">
               <Card className="shadow border-0 mx-3">
                 <CardHeader className=" bg-transparent">
                   <div className="review-manager-title">

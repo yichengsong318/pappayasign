@@ -512,7 +512,7 @@ $(document).on('click','.actionsign', function() {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we fetch your details.</p>
                 <div className="lds-dual-ring"></div>

@@ -300,7 +300,7 @@ class Login extends React.Component {
     return (
       <>
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <Col lg="12" md="8" className="p-2 pb-2">
               <CardBody className="px-lg-3 py-lg-3">
                 <div className="text-center text-muted mb-3 mt-2">
@@ -359,7 +359,7 @@ class Login extends React.Component {
         </div>
 
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <Col lg="12" md="8" className="p-2 pb-2">
               <CardBody className="px-lg-3 py-lg-3">
                 <div className="text-center text-muted mb-3 mt-2">
@@ -535,10 +535,6 @@ class Login extends React.Component {
             </Col>
           </Row>
         </Col>
-
-        <Row>
-          <Col></Col>
-        </Row>
       </>
     )
   }

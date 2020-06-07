@@ -2395,7 +2395,7 @@ toggleSignModal = () => {
         />
 
 <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we set things up for you.</p>
                 <div className="lds-dual-ring"></div>
@@ -2404,7 +2404,7 @@ toggleSignModal = () => {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we save the changes you have made.</p>
                 <div className="lds-dual-ring"></div>
@@ -2413,7 +2413,7 @@ toggleSignModal = () => {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <div className="mb-4 mb-xl-0">
                   <h5>Please enter your Initials: </h5>

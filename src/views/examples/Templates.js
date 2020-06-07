@@ -112,7 +112,7 @@ class Templates extends React.Component {
         {/* Page content */}
         <div className="mt--7 mx-6">
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we fetch your details.</p>
                 <div className="lds-dual-ring"></div>

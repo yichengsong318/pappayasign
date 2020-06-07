@@ -158,7 +158,7 @@ if (files) {
     return (
       <>
       <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we set things up for you.</p>
                 <div className="lds-dual-ring"></div>
@@ -167,7 +167,7 @@ if (files) {
           </div>
 
       <div
-        className={`Dropzone ${this.state.hightlight ? 'Highlight' : ''}`}
+        className={`Dropzone text-center ${this.state.hightlight ? 'Highlight' : ''}`}
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
         onDrop={this.onDrop}
@@ -175,7 +175,7 @@ if (files) {
         style={{ cursor: this.props.disabled ? 'default' : 'pointer' }}
       >
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>please wait while we fetch the document for you.</p>
               <div className="lds-dual-ring"></div>

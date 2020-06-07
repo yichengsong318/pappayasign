@@ -387,7 +387,7 @@ class Register extends React.Component {
   render() {
     return (
       <>
-        <Col lg="7" md="8" className="p-2 pb-8">
+        <Col lg="8" md="7" className="p-5 pb-8">
           <Card className="bg-secondary shadow border-0 pb-2">
             <CardBody className="px-lg-3 py-lg-3">
               <div className="text-center text-muted mb-3 mt-2">
@@ -885,7 +885,7 @@ class Register extends React.Component {
         </Col>
 
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <CardBody className="px-lg-3 py-lg-3">
               <div className="text-center text-muted mb-3 mt-2">
                 <span>
@@ -1035,7 +1035,7 @@ class Register extends React.Component {
         </div>
 
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <CardBody className="px-lg-3 py-lg-3">
               <Form role="form">
                 <Row className="px-2">

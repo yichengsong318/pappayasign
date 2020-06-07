@@ -172,7 +172,7 @@ class Index extends React.Component {
         <Header></Header>
         {/* Page content */}
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>Please wait while we fetch your details.</p>
               <div className="lds-dual-ring"></div>

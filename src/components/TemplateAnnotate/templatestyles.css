@@ -268,12 +268,11 @@ i.material-icons{
 
 .modal {
 	display: none;
-	position: fixed; 
-	padding-top: 15%;
-	left: 0; 
+	position: fixed;
+	left: 0;
 	top: 0;
 	width: 100%;
-	height: 100%; 
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.527);
   }
   .modal-content {
@@ -285,7 +284,6 @@ i.material-icons{
 	justify-content: center;
 	align-items: center;
 	display: flex;
-	width: 40%;  
 	-webkit-animation: fadeinout 0.25s linear forwards;
     animation: fadeinout 0.25s linear forwards;
   }

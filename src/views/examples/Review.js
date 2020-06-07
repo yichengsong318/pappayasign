@@ -1153,7 +1153,7 @@ class Review extends React.Component {
             </CardBody>
           </Card>
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we fetch your details.</p>
                 <div className="lds-dual-ring"></div>
@@ -1162,7 +1162,7 @@ class Review extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Sending.</p>
                 <div className="lds-dual-ring"></div>
@@ -1171,7 +1171,7 @@ class Review extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait.</p>
                 <div className="lds-dual-ring"></div>
