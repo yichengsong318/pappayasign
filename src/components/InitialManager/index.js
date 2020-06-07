@@ -156,7 +156,7 @@ class InitialManager extends Component {
 
         return (
             <div className="modal initial-manager-modal">
-                <div className="modal-content">
+                <div className="modal-content modal-dialog">
                     <div className="sign-manager-title">
                         <span>{title || 'Create Your Initials'}</span>
                         <i onClick={this.onClose} className="ni ni-fat-remove" />

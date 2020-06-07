@@ -213,7 +213,7 @@ class Profile extends React.Component {
         {/* Page content */}
         <Container className="mt--7" fluid>
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we fetch your details.</p>
                 <div className="lds-dual-ring"></div>
@@ -221,7 +221,7 @@ class Profile extends React.Component {
             </div>
           </div>
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <img
                 crossOrigin="anonymous"
                 id="profilepicmodal"
@@ -267,7 +267,7 @@ class Profile extends React.Component {
             </div>
           </div>
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we save your settings.</p>
                 <div className="lds-dual-ring"></div>

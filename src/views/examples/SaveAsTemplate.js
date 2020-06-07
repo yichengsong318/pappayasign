@@ -753,7 +753,7 @@ class SaveAsTemplate extends React.Component {
         <HeaderDefault />
         {/* Page content */}
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>Please wait while we send your document.</p>
               <div className="lds-dual-ring"></div>
@@ -762,7 +762,7 @@ class SaveAsTemplate extends React.Component {
         </div>
 
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>Please wait while we fetch your details.</p>
               <div className="lds-dual-ring"></div>

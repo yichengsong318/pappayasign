@@ -834,7 +834,7 @@ class SelectTemplateRecipients extends React.Component {
         <HeaderDefault />
         {/* Page content */}
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>Please wait while we send your document.</p>
               <div className="lds-dual-ring"></div>
@@ -843,7 +843,7 @@ class SelectTemplateRecipients extends React.Component {
         </div>
 
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>Please wait we fetch your document.</p>
               <div className="lds-dual-ring"></div>
@@ -852,7 +852,7 @@ class SelectTemplateRecipients extends React.Component {
         </div>
 
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content modal-dialog">
             <div>
               <p>Please wait.</p>
               <div className="lds-dual-ring"></div>

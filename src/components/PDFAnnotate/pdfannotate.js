@@ -4133,7 +4133,7 @@ $(document).on('click','.actionsign', function() {
 
 
         <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we set things up for you.</p>
                 <div className="lds-dual-ring"></div>
@@ -4142,7 +4142,7 @@ $(document).on('click','.actionsign', function() {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please wait while we save the changes you have made.</p>
                 <div className="lds-dual-ring"></div>
@@ -4151,7 +4151,7 @@ $(document).on('click','.actionsign', function() {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>
                   Sending Email, This dialog will automatically close after
@@ -4163,7 +4163,7 @@ $(document).on('click','.actionsign', function() {
           </div>
 
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content modal-dialog">
               <div>
                 <p>Please Wait.</p>
                 <div className="lds-dual-ring"></div>
@@ -4172,7 +4172,7 @@ $(document).on('click','.actionsign', function() {
           </div>
 
           <div className="modal">
-            <div className="review-act-modal-content">
+            <div className="review-act-modal-content modal-content modal-dialog">
               <div>
               <Row className="m-3">
                   <Col xs="12">
