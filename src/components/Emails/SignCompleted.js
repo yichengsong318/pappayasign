@@ -33,7 +33,7 @@ export const SignCompleted = (data) => {
                                                                             <td width="100%">
                                                                                 <p class="western" align="center">
                                                                                     <img src="`+ editImg + `" alt="" width="64px" height="64px" />
-                                                                                    <br />
+                                                                                    <br /><br />
                                                                                     <span
                                                                                         style="color: #ffffff;"><span
                                                                                             style="font-family: Helvetica, serif;"><span
@@ -60,9 +60,7 @@ export const SignCompleted = (data) => {
                                                                                                     bgcolor="#ffc423;"
                                                                                                     class="western"
                                                                                                         align="center">
-                                                                                                        <span style="font-family: Helvetica, serif;display: flex;
-                                                                                                        margin-top:10px;
-                                                                                                        margin-left: 2%;">
+                                                                                                        <span style="font-family: Helvetica, serif;display: flex;">
                                                                                                             <span style="font-size: medium;">
                                                                                                                 <strong>COMPLETED DOCUMENT </strong>
                                                                                                             </span>
