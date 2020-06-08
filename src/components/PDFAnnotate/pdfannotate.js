@@ -949,9 +949,6 @@ toggleSignModal = () => {
                     })
                     if (count === 0) {
                       document.getElementById('movecursorbtn').style.display="none";
-                      var page = ObjectArray[ObjectArrayIndex].page
-                      var nextobj = ObjectArray[ObjectArrayIndex].obj
-                      $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
                       var recieverfinishbtn = document.getElementById('recieverfinishbtn');
                       recieverfinishbtn.scrollIntoView();
                     } else {
@@ -3208,7 +3205,6 @@ toggleSignModal = () => {
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
               document.getElementById('fieldsrightbar').style.display = 'none'
-              $('#pdfcol').addClass('colfullwidth')
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
@@ -3407,7 +3403,6 @@ toggleSignModal = () => {
                       try {
                         document.getElementById('fieldsleftbar').style.display = 'none'
                         document.getElementById('fieldsrightbar').style.display = 'none'
-                        $('#pdfcol').addClass('colfullwidth')
                         document.getElementById('openfilebtn').style.display = 'none'
                         document.getElementById('penbtn').style.display = 'none'
                         document.getElementById('textbtn').style.display = 'none'
@@ -3643,7 +3638,6 @@ toggleSignModal = () => {
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
               document.getElementById('fieldsrightbar').style.display = 'none'
-              $('#pdfcol').addClass('colfullwidth')
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
@@ -4088,8 +4082,8 @@ $(document).on('click','.actionsign', function() {
         />
 
         <Row>
-          <Col lg="12" className="py-3">
-            <div id="moreoptions" className="btn-group float-right m-2 px-4">
+          <Col lg="12" className="py-3 d-flex justify-content-between">
+            <div id="moreoptions" className="btn-group">
               <button type="button" className="btn btn-neutral actionsign ">
                 Other Actions
               </button>
@@ -4220,44 +4214,34 @@ $(document).on('click','.actionsign', function() {
             </div>
           </div>
 
+        <Row className="mb-3">
+          <Col lg={12} id="editortoolbar" className="editortoolbar">
+            <Row>
+              <Col lg="2">
+                <select
+                    id="recipientselect"
+                    className="form-control selectpicker form-control-sm"
+                ></select>
+              </Col>
+              <Col lg="8">
+                <button id="zoominbtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">zoom_in</i>
+                </button>
+                <button id="zoomoutbtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">zoom_out</i>
+                </button>
+                <button id="savebtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">get_app</i>
+                </button>
+                <button id="printbtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">print</i>
+                </button>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
         <Row>
-          <div id="editortoolbar" className="editortoolbar">
-            <Row>
-            <Col lg="2">
-            <div className="float-left ml-4">
-            <select
-                id="recipientselect"
-                className="form-control selectpicker form-control-sm"
-              ></select>
-            </div>
-            </Col>
-            <Col lg="8">
-            <button id="zoominbtn" color="neutral" className="toolzoom">
-              <i className="material-icons">zoom_in</i>
-            </button>
-            <button id="zoomoutbtn" color="neutral" className="toolzoom">
-              <i className="material-icons">zoom_out</i>
-            </button>
-            <button id="savebtn" color="neutral" className="toolzoom">
-                <i className="material-icons">get_app</i>
-              </button>
-            <button id="printbtn" color="neutral" className="toolzoom">
-                <i className="material-icons">print</i>
-              </button>
-            </Col>
-            <Col lg="2">
-            
-            </Col>
-            </Row>
-          </div>
-
-          
-
-          
-
-          
-
           <Col lg="2" id="fieldsleftbar">
             <div id="toolbar" className="toolbar">
               
@@ -4339,67 +4323,61 @@ $(document).on('click','.actionsign', function() {
             <Row>
               <Col lg="12"></Col>
             </Row>
-            <Row>
-            
-              <div id="container">
-              
-                <div
+            <div id="container">
+
+              <div
                   id="pdf-container"
                   style={{
                     height: '550px',
                   }}
-                >
-                  <Button
-                  id="movecursorbtn"
-                  className="m-2 float-left px-4"
-                  style={{zIndex: '99999999999999999999999999999999999999999'}}
-                  color="primary"
-                  type="button"
+              >
+                <Button
+                    id="movecursorbtn"
+                    className="m-2 float-left px-4"
+                    style={{zIndex: '99999999999999999999999999999999999999999'}}
+                    color="primary"
+                    type="button"
                 >
                   Start
                 </Button>
-                </div>
               </div>
-            </Row>
+            </div>
 
-            <Col lg="12" className="py-3">
+            <div lg="12" className="py-3">
               <Button
-                id="getlinkbtn"
-                className="m-2 float-left px-4"
-                color="primary"
-                type="button"
+                  id="getlinkbtn"
+                  className="m-2 float-left px-4"
+                  color="primary"
+                  type="button"
               >
                 Save
               </Button>
               <Button
-                id="onlysignerfinishbtn"
-                className="m-2 float-left px-4"
-                color="primary"
-                type="button"
+                  id="onlysignerfinishbtn"
+                  className="m-2 float-left px-4"
+                  color="primary"
+                  type="button"
               >
                 Finish
               </Button>
-              <div lg="6" id="emailbtncontainer">
+              <span id="emailbtncontainer">
                 <Button
-                  id="sendemailbtn"
-                  className="m-2 float-right px-4"
-                  color="primary"
-                  type="button"
+                    id="sendemailbtn"
+                    className="m-2 float-right px-4"
+                    color="primary"
+                    type="button"
                 >
                   Next
                 </Button>
-              </div>
-            </Col>
-
-            <div>
+              </span>
+            </div>
 
             <SignManager visible={showSignModal}
-                    onSave={this.saveSign}
-                    onClose={this.toggleSignModal} />
-              <InitialManager visible={showInitialModal}
-                    onSave={this.saveInitial}
-                    onClose={this.toggleInitialModal} />
-            </div>
+                         onSave={this.saveSign}
+                         onClose={this.toggleSignModal} />
+            <InitialManager visible={showInitialModal}
+                            onSave={this.saveInitial}
+                            onClose={this.toggleInitialModal} />
           </Col>
           <Col lg="2" id="fieldsrightbar" >
             <div id="recipientsbar" className="recipientsbar bg-light justify-content-start">
