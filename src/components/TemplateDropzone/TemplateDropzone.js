@@ -31,7 +31,7 @@ class TemplateDropzone extends Component {
             var img = new Image()
             img.src = e.target.result;
 
-            var doc = new jsPDF('p', 'mm', 'a4');
+            var doc = new jsPDF('p', 'mm', 'a4', true);
             doc.addImage(img, 0, 0);
             var modal = document.querySelectorAll('.modal')
             modal[0].style.display = 'none'

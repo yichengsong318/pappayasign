@@ -1259,7 +1259,7 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.savePdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -1274,7 +1274,7 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.printPdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -1290,7 +1290,7 @@ toggleSignModal = () => {
     PDFAnnotate.prototype.DownloadIndividual = function (fabricindex) {
       var inst = this
       var fabricObj = inst.fabricObjects[fabricindex];
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
       console.log('pdf saved')
       doc.save('pappayasign_' + fabricindex + '')
@@ -1329,7 +1329,7 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.OnlySignerSave = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       var today = new Date().toLocaleString().replace(',', '')
       // // // // // // // ////console.log('action:'+action);
 
@@ -1366,7 +1366,7 @@ toggleSignModal = () => {
                     doc.addPage()
                     doc.setPage(index + 1)
                   }
-                  doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+                  doc.addImage(fabricObj.toDataURL(), 'png', 0, 0, 0, 0, '', 'FAST')
                   ////console.log(jsonData[index]);
                   ////console.log(JSON.stringify(jsonData[index]));
                   dataarray.push(JSON.stringify(jsonData[index]))
@@ -1687,7 +1687,7 @@ toggleSignModal = () => {
         } else if (userid == useridother && ownerasreciever == false) {
           var jsonData = []
           var dataarray = []
-          var doc = new jsPDF()
+          var doc = new jsPDF('p', 'pt', 'a4', true)
 
           $.each(inst.fabricObjects, function (index, fabricObj) {
             //////console.log(fabricObj.toJSON());
@@ -1701,7 +1701,7 @@ toggleSignModal = () => {
               doc.addPage()
               doc.setPage(index + 1)
             }
-            doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+            doc.addImage(fabricObj.toDataURL(), 'png', 0, 0, 0, 0, '', 'FAST')
           })
           var dataURI = doc.output('datauristring')
           var arraybuffer = new Uint8Array(doc.output('arraybuffer'))
@@ -1740,7 +1740,7 @@ toggleSignModal = () => {
           var totalcount = 0
           var jsonData = []
           var dataarray = []
-          var doc = new jsPDF()
+          var doc = new jsPDF('p', 'pt', 'a4', true)
 
           $.each(inst.fabricObjects, function (index, fabricObj) {
             //////console.log(fabricObj.toJSON());
@@ -1896,7 +1896,7 @@ toggleSignModal = () => {
                                 doc.addPage()
                                 doc.setPage(index + 1)
                               }
-                              doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+                              doc.addImage(fabricObj.toDataURL(), 'png', 0, 0, 0, 0, '', 'FAST')
                             })
                             var dataURI = doc.output('datauristring')
 

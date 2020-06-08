@@ -231,7 +231,7 @@ class SelectTemplateRecipients extends React.Component {
 
     PDFFabric.prototype.savePdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -249,7 +249,7 @@ class SelectTemplateRecipients extends React.Component {
 
     PDFFabric.prototype.printPdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
