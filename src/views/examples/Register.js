@@ -359,7 +359,7 @@ class Register extends React.Component {
                   body: AccountActivation({
                     URL: process.env.REACT_APP_BASE_URL + `/#/auth/login?activatelink=86hjw4ius&type=mail&u=` + userid
                   }),
-                  subject: 'GEMS: Activation',
+                  subject: 'GEMS: Account Activation',
                 })
                 .then(function (response) {
                   console.log(response)
