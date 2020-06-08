@@ -152,7 +152,7 @@ class Login extends React.Component {
                 .post('/api/sendmail', {
                   to: useremail,
                   body: PasswordChanged(),
-                  subject: 'GEMS: Password Changed',
+                  subject: 'Your GEMS password has been changed',
                 });
 
               setTimeout(function () {
