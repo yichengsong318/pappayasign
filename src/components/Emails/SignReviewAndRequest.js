@@ -58,9 +58,7 @@ export const SignReviewAndRequest = (data) => {
                                                                                                     bgcolor="#ffc423;"
                                                                                                     class="western"
                                                                                                         align="center">
-                                                                                                        <span style="font-family: Helvetica, serif;display: flex;
-                                                                                                        margin-top:10px;
-                                                                                                        margin-left: 25%;">
+                                                                                                        <span style="font-family: Helvetica, serif;display: flex;">
                                                                                                             <span style="font-size: medium;">
                                                                                                                 <strong>REVIEW DOCUMENT </strong>
                                                                                                             </span>
