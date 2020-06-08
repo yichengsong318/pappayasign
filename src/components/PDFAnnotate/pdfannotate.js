@@ -989,7 +989,7 @@ toggleSignModal = () => {
                       //console.log(nextobj.top)
                       $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
                       $('#container').animate({
-                          scrollTop: (page + 1) * 1000 + nextobj.top
+                          scrollTop: page * 1000 + nextobj.top
                       }, 2000);
                       //console.log('button position')
                       //console.log($("#movecursorbtn").position().top)
@@ -4320,7 +4320,7 @@ $(document).on('click','.actionsign', function() {
           </Col>
 
           <Col lg="8" id="pdfcol">
-            <Row>
+            <Row className="justify-content-md-center">
               <Col lg="12"></Col>
             </Row>
             <div id="container">
