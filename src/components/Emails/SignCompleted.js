@@ -56,16 +56,16 @@ export const SignCompleted = (data) => {
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <a href="`+ data.URL + `"
-                                                                                                    style="text-decoration:none; color: #000; background: #ffc423;width:292px; height:44px; display: flex; justify-content: center; align-items: center;"
-                                                                                                    bgcolor="#ffc423;"
-                                                                                                    class="western"
-                                                                                                        align="center">
-                                                                                                        <span style="font-family: Helvetica, serif;display: flex;">
-                                                                                                            <span style="font-size: medium;">
-                                                                                                                <strong>VIEW COMPLETED DOCUMENT </strong>
-                                                                                                            </span>
+                                                                                                style="text-decoration:none; color: #000; background: #ffc423;width:300px; padding:20px;"
+                                                                                                bgcolor="#ffc423;"
+                                                                                                class="western"
+                                                                                                    align="center">
+                                                                                                    <span style="font-family: Helvetica, serif;">
+                                                                                                        <span style="font-size: medium;">
+                                                                                                            <strong>VIEW COMPLETED DOCUMENT</strong>
                                                                                                         </span>
-                                                                                                    </a>
+                                                                                                    </span>
+                                                                                                </a>
                                                                                                 </td> 
                                                                                             </tr>
                                                                                         </tbody>
