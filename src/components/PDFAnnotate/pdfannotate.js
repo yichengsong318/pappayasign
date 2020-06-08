@@ -4195,7 +4195,7 @@ $(document).on('click','.actionsign', function() {
                         <span className="text-muted">
                           I agree to use electronic records, signature and{' '}
                           <a href="#" onClick={(e) => e.preventDefault()}>
-                            Electronic Record and Signature Discolsure
+                            Electronic Record and Signature Disclosure
                           </a>
                         </span>
                       </label>
