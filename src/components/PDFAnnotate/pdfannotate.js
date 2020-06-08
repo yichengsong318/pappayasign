@@ -28,6 +28,8 @@ import { SignReviewAndRequest } from 'components/Emails/SignReviewAndRequest';
 import { VoidedEmail } from 'components/Emails/VoidedEmail'
 
 const axios = require('axios').default
+// axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
 var PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
@@ -966,7 +968,7 @@ toggleSignModal = () => {
                       global.pdf.Reload();
                       inst.fabricObjects[page].setActiveObject(nextobj);
                       $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                      $("#movecursorbtn").css({"top": nextobj.top});
+                      $("#movecursorbtn").css({"top": page * 1025 + nextobj.top + 20});
                       ObjectCursorIndex = ObjectCursorIndex + 1;
                     }
                   
@@ -985,10 +987,13 @@ toggleSignModal = () => {
                       }
                       global.pdf.Reload();
                       inst.fabricObjects[page].setActiveObject(nextobj);
-                      $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
+                      // $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
                       window.scrollTo(0, nextobj.top);
                       //console.log(nextobj.top)
-                      $("#movecursorbtn").css({"top": nextobj.top});
+                      $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
+                      $('#container').animate({
+                          scrollTop: (page + 1) * 1000 + nextobj.top
+                      }, 2000);
                       //console.log('button position')
                       //console.log($("#movecursorbtn").position().top)
                       var movecursorbtn = document.getElementById('movecursorbtn');
@@ -1010,15 +1015,17 @@ toggleSignModal = () => {
                       inst.fabricObjects[page].setActiveObject(nextobj);
                       $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
                       if(parseInt(ObjectArray[ObjectArrayIndex].page)  === 0){
-                        $("#movecursorbtn").css({"top": nextobj.top});
-                        var movecursorbtn = document.getElementById('movecursorbtn');
-                        movecursorbtn.scrollIntoView();
+                         $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
+                          $('#container').animate({
+                              scrollTop: page * 1000 + nextobj.top
+                          }, 2000);
                       }
                       else{
                         var pageheight = ((parseFloat($(".upper-canvas").eq(ObjectArray[ObjectArrayIndex].page).height())) * (parseInt(ObjectArray[ObjectArrayIndex].page))) + parseInt(nextobj.top)
-                        $("#movecursorbtn").css({"top": pageheight});
-                        var movecursorbtn = document.getElementById('movecursorbtn');
-                        movecursorbtn.scrollIntoView();
+                        $("#movecursorbtn").css({ top: pageheight });
+                        $('#container').animate({
+                            scrollTop: pageheight
+                        }, 2000);
                       }
                       ObjectCursorIndex = ObjectCursorIndex + 1;
           }
