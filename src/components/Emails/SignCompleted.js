@@ -62,7 +62,7 @@ export const SignCompleted = (data) => {
                                                                                                         align="center">
                                                                                                         <span style="font-family: Helvetica, serif;display: flex;">
                                                                                                             <span style="font-size: medium;">
-                                                                                                                <strong>COMPLETED DOCUMENT </strong>
+                                                                                                                <strong>VIEW COMPLETED DOCUMENT </strong>
                                                                                                             </span>
                                                                                                         </span>
                                                                                                     </a>
