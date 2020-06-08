@@ -42,7 +42,6 @@ input[disabled]{
 	  color:#fff;
 	  border-radius: 5px;
 	  border: 0;
-
   }
 
   .buttonr:hover{
@@ -71,3 +70,30 @@ input[disabled]{
   #sortable li:nth-child(12) {border-left: 10px solid #00B8D4;}
   #sortable li:nth-child(13) {border-left: 10px solid #00BFA5;}
 
+@media screen and (max-width: 480px) {
+    #recipientsbar {
+        height: 190px;
+        margin-bottom: 10px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+    #recipientsbar #thumb-container {
+        height: 180px;
+        overflow-y: hidden;
+    }
+    #recipientdiv li {
+        margin-bottom: 10px;
+    }
+    .rcard {
+        display: flex;
+        flex-direction: column;
+    }
+    .rcard input {
+        width: 100% !important;
+    }
+
+    .buttonr {
+        margin-top: 10px;
+        width: 100%;
+    }
+}

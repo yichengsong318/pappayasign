@@ -394,9 +394,9 @@ class Recipients extends React.Component {
                           </label>
                           </div>
                             <div className="d-flex flex-column flex-md-row">
-                              <Button id="s-btn" className="close-btn float-right m-2 px-5" > Next</Button>
                               <Button id="append-btn" className="close-btn float-right m-2 px-5" > Add</Button>
                               <Button id="previous-btn" className="close-btn float-right m-2 px-5" > Back</Button>
+                              <Button id="s-btn" className="close-btn float-right m-2 px-5" > Next</Button>
                             </div>
                           
                           </Col>
