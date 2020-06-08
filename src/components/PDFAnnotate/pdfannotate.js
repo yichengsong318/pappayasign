@@ -1509,12 +1509,12 @@ toggleSignModal = () => {
                       .catch(function (error) {
                         console.log(error)
                       })
-
+                      var url = process.env.REACT_APP_BASE_URL +'/#/admin/sign?id=' +fileid +'&type=db&u=' +userid +'&key=0';
                       axios
                         .post('/api/sendmailattachments', {
                           to: email,
                           //body:'<div><p>Hello , Please find the signed document in the attachment.</p></div>',
-                          body: SignCompleted({DocumentName: inst.filename + '.pdf', URL: '#'}),
+                          body: SignCompleted({DocumentName: inst.filename + '.pdf', URL: url}),
                           subject:
                             'GEMS: ' +
                             inst.filename +
@@ -1914,11 +1914,12 @@ toggleSignModal = () => {
                                 console.log(error)
                               })
 
+                              var url = process.env.REACT_APP_BASE_URL +'/#/admin/sign?id=' +fileid +'&type=db&u=' +userid +'&key=0';
                             axios
                               .post('/api/sendmailattachments', {
                                 to: OwnerEmail,
                                 //body:'<div><p>Hello , Please find the signed document in the attachment.</p></div>',
-                                body: SignCompleted({DocumentName: documentname, URL: '#'}),
+                                body: SignCompleted({DocumentName: documentname, URL: url}),
                                 subject:
                                   'GEMS: ' +
                                   documentname +
@@ -1944,11 +1945,12 @@ toggleSignModal = () => {
                               var recipientName = dbpeople[index].name
                               var recipientEmail = dbpeople[index].email
 
+                      var url = process.env.REACT_APP_BASE_URL +'/#/admin/sign?id=' +fileid +'&type=db&u=' +userid +'&key=0';
                               axios
                                 .post('/api/sendmailattachments', {
                                   to: recipientEmail,
                                   //body:'<div><p>Hello ' +recipientName +', Please find the signed document in the attachment.</p></div>',
-                                  body: SignCompleted({DocumentName: documentname, URL: '#'}),
+                                  body: SignCompleted({DocumentName: documentname, URL: url}),
                                   subject:
                                     'GEMS: ' +
                                     documentname +
