@@ -651,7 +651,8 @@ class SelectTemplateRecipients extends React.Component {
                                             Template.TemplateName,
                                           URL: url
                                         }),
-                                        subject: 'GEMS: Sign Request',
+                                        subject: 'GEMS: Please Sign - '+Template.TemplateName,
+                                        //subject: 'GEMS: Sign Request',
                                       })
                                       .then(function (response) {
                                         console.log(response)
