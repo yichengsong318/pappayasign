@@ -2066,7 +2066,7 @@ toggleSignModal = () => {
                                       DocumentName: documentname, 
                                       URL: nextuserurl
                                     }),
-                                    subject: 'GEMS: Sign Request',
+                                    subject: 'GEMS: Please Sign - '+documentname,
                                   })
                                   .then(function (response) {
                                     console.log(response)

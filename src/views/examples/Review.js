@@ -763,7 +763,8 @@ class Review extends React.Component {
               DocumentName: docname, 
               URL: url 
             }),
-            subject: 'GEMS: ' + subject + '',
+            subject: 'GEMS: Please Sign - '+docname,
+            //subject: 'GEMS: ' + subject + '',
           })
           .then(function (response) {
             console.log(response)
@@ -952,7 +953,8 @@ class Review extends React.Component {
                   DocumentName: docname, 
                   URL: url 
                 }),
-                subject: 'GEMS: ' + subject + '',
+                subject: 'GEMS: Please Sign - '+docname,
+                //subject: 'GEMS: ' + subject + '',
               })
               .then(function (response) {
                 console.log(response)

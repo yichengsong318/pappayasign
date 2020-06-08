@@ -2781,7 +2781,7 @@ class Tables extends React.Component {
                             DocumentName: DocName, 
                             URL: url
                           }),
-                          subject: 'GEMS: Sign Request',
+                          subject: 'GEMS: Please Sign - '+DocName,
                         })
                         .then(function (response) {
                           console.log(response)
