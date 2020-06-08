@@ -3957,7 +3957,8 @@ toggleSignModal = () => {
                     modal[2].style.display = 'none'
                   })
 
-                
+                                  var loginUserName = document.getElementById('navbarname').innerHTML;
+
 
                 axios
                   .post('/api/sendmail', {
@@ -3966,9 +3967,9 @@ toggleSignModal = () => {
                     body: VoidedEmail({
                       DocumentName: DocumentName,
                       ValidReason: managevoidmessage,
-                      UserName: OwnerEmail,
+                      UserName: loginUserName,
                     }),
-                    subject: 'GEMS: Document Voided',
+                    subject: 'GEMS: Voided - '+DocumentName,
                   })
                   .then(function (response) {
                     console.log(response)

@@ -1834,6 +1834,7 @@ class Tables extends React.Component {
                     modal[2].style.display = 'none'
                   })
 
+                  var loginUserName = document.getElementById('navbarname').innerHTML;
 
 
                 axios
@@ -1843,9 +1844,9 @@ class Tables extends React.Component {
                     body: VoidedEmail({
                       DocumentName: DodumentName,
                       ValidReason: managevoidmessage,
-                      UserName: OwnerEmail,
+                      UserName: loginUserName,
                     }),
-                    subject: 'GEMS: Document Voided',
+                    subject: `GEMS: Voided - ${DodumentName}`,
                   })
                   .then(function (response) {
                     console.log(response)
@@ -2008,6 +2009,7 @@ class Tables extends React.Component {
 
               recievers[index].RecipientStatus = 'Deleted'
               recievers[index].RecipientDateStatus = today
+              var loginUserName = document.getElementById('navbarname').innerHTML;
 
               axios
                 .post('/api/sendmail', {
@@ -2016,9 +2018,9 @@ class Tables extends React.Component {
                   body: VoidedEmail({
                     DocumentName: DocumentName,
                     ValidReason: '',
-                    UserName: OwnerEmail,
+                    UserName: loginUserName,
                   }),
-                  subject: 'GEMS: Document Voided',
+                  subject: `GEMS: Voided - ${DocumentName}`,
                 })
                 .then(function (response) {
                   console.log(response)
