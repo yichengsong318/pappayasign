@@ -95,21 +95,6 @@ export const ResetPassword = (data) => {
                                 </tr>
                                 <tr>
                                     <td style="background: #ffffff;" bgcolor="#ffffff" width="620">
-                                        <p><span style="color: #333333;"><span style="font-family: Helvetica, serif;"><span
-                                                        style="font-size: medium;">Please click the 'Activate' button to finish your account activation.
-                                                    </span></span></span><span style="color: #333333;"><span
-                                                    style="font-family: Helvetica, serif;"></span></p>
-                                        <p class="western"><span style="color: #333333;"><span
-                                                    style="font-family: Helvetica, serif;"><span
-                                                        style="font-size: medium;"><br /> Thank you for choosing GEMS.</span></span></span></p>
-                                        <p class="western"><span style="color: #333333;"><span
-                                                    style="font-family: Helvetica, serif;"></span></span>
-                                        </p>
-    
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background: #ffffff;" bgcolor="#ffffff" width="620">
     
                                     </td>
                                 </tr>
