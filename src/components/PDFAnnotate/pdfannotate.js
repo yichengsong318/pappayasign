@@ -965,7 +965,7 @@ toggleSignModal = () => {
                       global.pdf.Reload();
                       inst.fabricObjects[page].setActiveObject(nextobj);
                       $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                      $("#movecursorbtn").css({"top": page * 1025 + nextobj.top + 20});
+                      $("#movecursorbtn").css({"top": page * 1095 + nextobj.top + 20});
                       ObjectCursorIndex = ObjectCursorIndex + 1;
                     }
                   
@@ -987,9 +987,9 @@ toggleSignModal = () => {
                       // $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
                       window.scrollTo(0, nextobj.top);
                       //console.log(nextobj.top)
-                      $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
+                      $("#movecursorbtn").css({ top: page * 1095 + nextobj.top + 20 });
                       $('#container').animate({
-                          scrollTop: page * 1000 + nextobj.top
+                          scrollTop: page * 1095 + nextobj.top
                       }, 2000);
                       //console.log('button position')
                       //console.log($("#movecursorbtn").position().top)
@@ -1012,9 +1012,9 @@ toggleSignModal = () => {
                       inst.fabricObjects[page].setActiveObject(nextobj);
                       $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
                       if(parseInt(ObjectArray[ObjectArrayIndex].page)  === 0){
-                         $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
+                         $("#movecursorbtn").css({ top: page * 1095 + nextobj.top + 20 });
                           $('#container').animate({
-                              scrollTop: page * 1000 + nextobj.top
+                              scrollTop: page * 1095 + nextobj.top
                           }, 2000);
                       }
                       else{
