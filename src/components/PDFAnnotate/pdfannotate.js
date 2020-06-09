@@ -3627,7 +3627,6 @@ toggleSignModal = () => {
               document.getElementById('movecursorbtn').style.display="block";
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
-              document.getElementById('fieldsrightbar').style.display = 'none'
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
