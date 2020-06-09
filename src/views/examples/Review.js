@@ -679,7 +679,7 @@ class Review extends React.Component {
           firstRecipientPrivateMessage = people[0].privatemessage
         }
         var firstRecipientEmail = people[0].email;
-        var firstRecipientEmail = people[0].name;
+        var firstRecipientName = people[0].name;
         var url =
           process.env.REACT_APP_BASE_URL +
           '/#/admin/sign?id=' +
