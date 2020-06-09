@@ -240,12 +240,14 @@ class Login extends React.Component {
               'Login Successful'
             setCookie('uid', response.data.UserID, 1)
             setCookie('useremail', response.data.UserEmail, 1)
+            setCookie('UserFullName', response.data.UserFullName, 1)
             window.location.hash = '#/admin/index'
           } else if (response.data.Status === 'sign id required') {
             document.getElementById('loginerrorspan').innerHTML =
               'sign id required'
             setCookie('uid', response.data.UserID, 1)
             setCookie('useremail', response.data.UserEmail, 1)
+            setCookie('UserFullName', response.data.UserFullName, 1)
             var recents_str = ''
             setCookie('recents', recents_str, 10)
             window.location.hash = '#/admin/index'
