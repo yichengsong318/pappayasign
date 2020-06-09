@@ -1519,10 +1519,7 @@ toggleSignModal = () => {
                           to: email,
                           //body:'<div><p>Hello , Please find the signed document in the attachment.</p></div>',
                           body: SignCompleted({DocumentName: inst.filename + '.pdf', URL: url}),
-                          subject:
-                            'GEMS: ' +
-                            inst.filename +
-                            ' :Completed Document',
+                          subject: 'GEMS: Completed: ' +inst.filename,
                           attachments: {
                             // utf-8 string as an attachment
                             filename:
@@ -1924,10 +1921,7 @@ toggleSignModal = () => {
                                 to: OwnerEmail,
                                 //body:'<div><p>Hello , Please find the signed document in the attachment.</p></div>',
                                 body: SignCompleted({DocumentName: documentname, URL: url}),
-                                subject:
-                                  'GEMS: ' +
-                                  documentname +
-                                  ' :Completed Document',
+                                subject: 'GEMS: Completed: ' +documentname,
                                 attachments: {
                                   // utf-8 string as an attachment
                                   filename:
@@ -1955,10 +1949,7 @@ toggleSignModal = () => {
                                   to: recipientEmail,
                                   //body:'<div><p>Hello ' +recipientName +', Please find the signed document in the attachment.</p></div>',
                                   body: SignCompleted({DocumentName: documentname, URL: url}),
-                                  subject:
-                                    'GEMS: ' +
-                                    documentname +
-                                    ' :Completed Document',
+                                  subject: 'GEMS: Completed: ' +documentname,
                                   attachments: {
                                     // utf-8 string as an attachment
                                     filename:
@@ -2056,7 +2047,7 @@ toggleSignModal = () => {
                                     console.log(error)
                                   })
                                   var loginUserName = document.getElementById('navbarname').innerHTML;
-
+    
                                 axios
                                   .post('/api/sendmail', {
                                     to: nextuseremail,
@@ -2067,7 +2058,7 @@ toggleSignModal = () => {
                                     //   nextuserurl +
                                     //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
                                     body: SignReviewAndRequest({
-                                      SenderName: username ? username : loginUserName,
+                                      SenderName: loginUserName,
                                       RecipientName: nextusername, 
                                       DocumentName: documentname, 
                                       URL: nextuserurl
