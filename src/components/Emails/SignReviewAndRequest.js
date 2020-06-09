@@ -48,7 +48,7 @@ export const SignReviewAndRequest = (data) => {
                                                                         <tr>
                                                                             <td width="100%">
                                                                                 <center>
-                                                                                    <table width="292" cellspacing="0"
+                                                                                    <table cellspacing="0"
                                                                                         cellpadding="0">
                                                                                         <tbody>
                                                                                             <tr>
