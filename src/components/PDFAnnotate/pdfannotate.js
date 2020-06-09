@@ -2046,8 +2046,7 @@ toggleSignModal = () => {
                                   .catch(function (error) {
                                     console.log(error)
                                   })
-                                  var loginUserName = document.getElementById('navbarname').innerHTML;
-    
+                                  var loginUserName = getCookie('UserFullName');    
                                 axios
                                   .post('/api/sendmail', {
                                     to: nextuseremail,
@@ -3951,7 +3950,7 @@ toggleSignModal = () => {
                     modal[2].style.display = 'none'
                   })
 
-                                  var loginUserName = document.getElementById('navbarname').innerHTML;
+                                  var loginUserName = getCookie('UserFullName');
 
 
                 axios
