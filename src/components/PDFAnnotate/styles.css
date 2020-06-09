@@ -64,14 +64,12 @@ canvas, .canvas-container {
 .recipientsbar{
 	width: 100%;
 	height: 90%;
-	top:10px;
 	position: relative;
 	text-align:center;
 	align-items: center;
 	justify-content: center;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
-	margin:1%;
 	padding-left:10px;
 	padding-right:10px;
 }
@@ -146,16 +144,13 @@ canvas, .canvas-container {
 .toolbar {	
 	width: 100%;
 	height: 90%;
-	top:10px;
 	position: relative;
 	text-align:center;
 	align-items: center;
 	justify-content: center;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
-	margin:1%;
-	padding-left:10px;
-	padding-right:10px;
+	padding: 0 10px;
 }
 
 
@@ -186,9 +181,6 @@ canvas, .canvas-container {
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	background-color: rgba(0, 0, 0, 0.027);
 	border-radius: 10px;
-	margin:1%;
-	margin:1%;
-	width: 98%;
 	padding-left:10px;
 	padding-right:10px;
 	overflow: auto;
@@ -417,7 +409,7 @@ i.material-icons{
   }
 
 #tabcontent{
-	height: 320px;
+	height: 330px;
 }
 
 
@@ -536,10 +528,6 @@ i.material-icons{
 	  transform: rotate(360deg);
 	}
   }
-
-  #recipientselect{
-	  width:180px;
-  }
   
   
   #recipientselect option:nth-child(1) {color:#000; background-color:#E6EE9C;}
@@ -555,5 +543,35 @@ i.material-icons{
   #recipientselect option:nth-child(11) {color:#000; background-color:#64DD17;}
   #recipientselect option:nth-child(12) {color:#000; background-color:#00B8D4;}
   #recipientselect option:nth-child(13) {color:#000; background-color:#00BFA5;}
+
+  @media screen and (max-width: 480px) {
+	  #fieldsleftbar {
+		  margin-bottom: 10px;
+		  padding-bottom: 10px;
+		  border-bottom: 1px solid #E0E0E0;
+	  }
+	  #thumb-pdf-container {
+		  display: flex;
+		  height: auto;
+	  }
+	  #thumb-pdf-container .manage-pdf-download-btn {
+		  position: relative;
+		  margin-right: 50px;
+		  margin-left: -150px;
+		  margin-top: 30px;
+	  }
+	  .pdfAnNotateContainer #pdfcol {
+		  order: 3;
+	  }
+	  .editortoolbar {
+		  border-bottom: 1px solid #E0E0E0;
+	  }
+	  .editortoolbar .row > div {
+		  margin-bottom: 10px;
+	  }
+	  .editortoolbar #recipientselect {
+		  width: 100%;
+	  }
+  }
 
   

@@ -2,15 +2,6 @@
   #tsortable li { margin: 1%; padding: 5px; border-radius: 5px; border: 1px solid #f6f6f6; background-color: #fbfbfb; padding-left: 1.5em; width:98%; }
   #tsortable li span { position: absolute; margin-left: 1.3em; }
 
-  .rcard{
-	  padding:10px;
-	  background-color: transparent;
-	  border-radius: 5px;
-	  padding-top: 20px;
-	  padding-bottom: 20px;
-	  margin: 5px;
-  }
-
   #docnamecontainer{
     padding:10px;
 	  background-color: transparent;
@@ -20,10 +11,6 @@
 	  padding-bottom: 20px;
     margin: 5px;
     border: 1px dashed #c7c7c7;
-  }
-
-  .rcard:hover{
-	cursor: move;
   }
 
   .inputr{
@@ -43,22 +30,6 @@
 input[disabled]{
   background-color: #fff;
 }
-
-  .buttonr{
-	  width:4%;
-	  margin-left:0.5%;
-	  margin-right:0.5%;
-	  height:30px;
-	  background-color: rgb(189, 60, 0);
-	  color:#fff;
-	  border-radius: 5px;
-	  border: 0;
-
-  }
-
-  .buttonr:hover{
-	background-color: #626262;
-  }
 
   #trecipientoptionselect{
 	border: 1px solid #f6f6f6;

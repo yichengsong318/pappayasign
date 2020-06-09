@@ -236,7 +236,7 @@ class UploadSuccess extends React.Component {
 
     PDFFabric.prototype.savePdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -254,7 +254,7 @@ class UploadSuccess extends React.Component {
 
     PDFFabric.prototype.printPdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -444,7 +444,7 @@ $(document).on('click','.actionsign', function() {
       <>
 
 <div className="modal">
-            <div className="private-modal-content">
+            <div className="private-modal-content modal-dialog">
               <div>
               <Card className="shadow border-0 mx-3 p-3">
               <CardHeader className=" bg-transparent">
@@ -580,44 +580,42 @@ $(document).on('click','.actionsign', function() {
                 <CardBody>
                   <Row>
                     <Col lg="12">
-                      <div id="docnamecontainer">
-                      <div id="moreoptions" className="btn-group float-right mx-2 px-4">
-                      <button type="button" className="btn btn-neutral actionsign ">
-                        More
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-neutral actionsign dropdown-toggle dropdown-toggle-split"
-                      ></button>
-                      <div className="dropdown-menu2" id="dropdown">
-                        <button
-                          className="dropdown-item "
-                          id="docviewbtn"
-                          type="button"
-                        >
-                          View Document
-                        </button>
-                        <div className="dropdown-divider"></div>
-                        <button
-                          className="dropdown-item "
-                          id="docreplacebtn"
-                          type="button"
-                        >
-                          Replace Document
-                        </button>
-                        <button
-                          className="dropdown-item "
-                          id="docnameeditbtn"
-                          type="button"
-                        >
-                          Rename Document
-                        </button>
-                        
-                      </div>
-                    </div>
+                      <div id="docnamecontainer" className="d-flex justify-content-between align-items-center">
+                        <h5 className="mb-0" id="documentname"></h5>
+                        <div id="moreoptions" className="btn-group">
+                          <button type="button" className="btn btn-neutral actionsign ">
+                            More
+                          </button>
+                          <button
+                              type="button"
+                              className="btn btn-neutral actionsign dropdown-toggle dropdown-toggle-split"
+                          ></button>
+                          <div className="dropdown-menu2" id="dropdown">
+                            <button
+                                className="dropdown-item "
+                                id="docviewbtn"
+                                type="button"
+                            >
+                              View Document
+                            </button>
+                            <div className="dropdown-divider"></div>
+                            <button
+                                className="dropdown-item "
+                                id="docreplacebtn"
+                                type="button"
+                            >
+                              Replace Document
+                            </button>
+                            <button
+                                className="dropdown-item "
+                                id="docnameeditbtn"
+                                type="button"
+                            >
+                              Rename Document
+                            </button>
 
-                        <span><h5 id="documentname"></h5></span>
-                        
+                          </div>
+                        </div>
                       </div>
                       
                     </Col>

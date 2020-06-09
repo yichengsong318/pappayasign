@@ -72,7 +72,7 @@ class Recipients extends React.Component {
         var recepientOrderLabel = '';
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="rcard">'+recepientOrderLabel+'<input class="form-control-alternative p-1 recipient-order-label" id="recipient-order" placeholder="'+(index + 1)+'" type="number" style="width:6%"/><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
+          '<div class="p-2 rcard" id="rcard">'+recepientOrderLabel+'<input class="form-control-alternative p-1 recipient-order-label" id="recipient-order" placeholder="'+(index + 1)+'" type="number" min="1" style="width:6%"/><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
           people[index].name +
           '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-email" placeholder="' +
           people[index].email +
@@ -113,7 +113,7 @@ class Recipients extends React.Component {
         var recepientOrderLabel = '';
         var li = document.createElement('li')
         li.innerHTML =
-          '<div class="p-2 rcard" id="rcard">'+recepientOrderLabel+'<input class="form-control-alternative p-1 recipient-order-label" id="recipient-order" placeholder="'+recipientOrder+'" type="number" style="width:6%"/><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
+          '<div class="p-2 rcard" id="rcard">'+recepientOrderLabel+'<input class="form-control-alternative p-1 recipient-order-label" id="recipient-order" placeholder="'+recipientOrder+'" type="number" min="1" style="width:6%"/><input class="form-control-alternative p-3 inputr" id="recipient-name" placeholder="' +
           recipientName +
           '" type="text" disabled/><input class="form-control-alternative p-3 inputr" id="recipient-email" placeholder="' +
           recipientEmail +
@@ -357,7 +357,7 @@ class Recipients extends React.Component {
                     </div>
                     <Row>
                         {this.state.isSigningOrder ? (<Col lg="1">
-                          <FormGroup><Input type="number" className="form-control-alternative" id="recipient-input-order" placeholder="#"/></FormGroup>
+                          <FormGroup><Input type="number" className="form-control-alternative" id="recipient-input-order" min="1" placeholder="#"/></FormGroup>
                         </Col>) : (<Input type="hidden" className="form-control-alternative" id="recipient-input-order" placeholder="#"/>)}
                         <Col lg={this.state.isSigningOrder ? '3': '4'}><FormGroup><Input className="form-control-alternative" id="recipient-input-name" placeholder="Name" type="text"/></FormGroup></Col>
                           <Col lg="4">

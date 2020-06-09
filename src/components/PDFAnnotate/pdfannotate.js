@@ -28,6 +28,8 @@ import { SignReviewAndRequest } from 'components/Emails/SignReviewAndRequest';
 import { VoidedEmail } from 'components/Emails/VoidedEmail'
 
 const axios = require('axios').default
+// axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
 var PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
@@ -947,9 +949,6 @@ toggleSignModal = () => {
                     })
                     if (count === 0) {
                       document.getElementById('movecursorbtn').style.display="none";
-                      var page = ObjectArray[ObjectArrayIndex].page
-                      var nextobj = ObjectArray[ObjectArrayIndex].obj
-                      $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
                       var recieverfinishbtn = document.getElementById('recieverfinishbtn');
                       recieverfinishbtn.scrollIntoView();
                     } else {
@@ -966,7 +965,7 @@ toggleSignModal = () => {
                       global.pdf.Reload();
                       inst.fabricObjects[page].setActiveObject(nextobj);
                       $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
-                      $("#movecursorbtn").css({"top": nextobj.top});
+                      $("#movecursorbtn").css({"top": page * 1025 + nextobj.top + 20});
                       ObjectCursorIndex = ObjectCursorIndex + 1;
                     }
                   
@@ -985,10 +984,13 @@ toggleSignModal = () => {
                       }
                       global.pdf.Reload();
                       inst.fabricObjects[page].setActiveObject(nextobj);
-                      $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
+                      // $(".upper-canvas")[ObjectArray[0].page].scrollIntoView();
                       window.scrollTo(0, nextobj.top);
                       //console.log(nextobj.top)
-                      $("#movecursorbtn").css({"top": nextobj.top});
+                      $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
+                      $('#container').animate({
+                          scrollTop: page * 1000 + nextobj.top
+                      }, 2000);
                       //console.log('button position')
                       //console.log($("#movecursorbtn").position().top)
                       var movecursorbtn = document.getElementById('movecursorbtn');
@@ -1010,15 +1012,17 @@ toggleSignModal = () => {
                       inst.fabricObjects[page].setActiveObject(nextobj);
                       $(".upper-canvas")[ObjectArray[ObjectArrayIndex].page].scrollIntoView({behavior: 'auto'});
                       if(parseInt(ObjectArray[ObjectArrayIndex].page)  === 0){
-                        $("#movecursorbtn").css({"top": nextobj.top});
-                        var movecursorbtn = document.getElementById('movecursorbtn');
-                        movecursorbtn.scrollIntoView();
+                         $("#movecursorbtn").css({ top: page * 1025 + nextobj.top + 20 });
+                          $('#container').animate({
+                              scrollTop: page * 1000 + nextobj.top
+                          }, 2000);
                       }
                       else{
                         var pageheight = ((parseFloat($(".upper-canvas").eq(ObjectArray[ObjectArrayIndex].page).height())) * (parseInt(ObjectArray[ObjectArrayIndex].page))) + parseInt(nextobj.top)
-                        $("#movecursorbtn").css({"top": pageheight});
-                        var movecursorbtn = document.getElementById('movecursorbtn');
-                        movecursorbtn.scrollIntoView();
+                        $("#movecursorbtn").css({ top: pageheight });
+                        $('#container').animate({
+                            scrollTop: pageheight
+                        }, 2000);
                       }
                       ObjectCursorIndex = ObjectCursorIndex + 1;
           }
@@ -1255,7 +1259,7 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.savePdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -1270,7 +1274,7 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.printPdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -1286,7 +1290,7 @@ toggleSignModal = () => {
     PDFAnnotate.prototype.DownloadIndividual = function (fabricindex) {
       var inst = this
       var fabricObj = inst.fabricObjects[fabricindex];
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       doc.addImage(fabricObj.toDataURL("image/jpeg", 0.3), 'JPEG', 0, 0, undefined, undefined, undefined,'FAST')
       console.log('pdf saved')
       doc.save('pappayasign_' + fabricindex + '')
@@ -1325,7 +1329,7 @@ toggleSignModal = () => {
 
     PDFAnnotate.prototype.OnlySignerSave = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       var today = new Date().toLocaleString().replace(',', '')
       // // // // // // // ////console.log('action:'+action);
 
@@ -1362,7 +1366,7 @@ toggleSignModal = () => {
                     doc.addPage()
                     doc.setPage(index + 1)
                   }
-                  doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+                  doc.addImage(fabricObj.toDataURL(), 'png', 0, 0, 0, 0, '', 'FAST')
                   ////console.log(jsonData[index]);
                   ////console.log(JSON.stringify(jsonData[index]));
                   dataarray.push(JSON.stringify(jsonData[index]))
@@ -1509,16 +1513,13 @@ toggleSignModal = () => {
                       .catch(function (error) {
                         console.log(error)
                       })
-
+                      var url = process.env.REACT_APP_BASE_URL +'/#/admin/sign?id=' +fileid +'&type=db&u=' +userid +'&key=0';
                       axios
                         .post('/api/sendmailattachments', {
                           to: email,
                           //body:'<div><p>Hello , Please find the signed document in the attachment.</p></div>',
-                          body: SignCompleted({DocumentName: inst.filename + '.pdf', URL: '#'}),
-                          subject:
-                            'GEMS: ' +
-                            inst.filename +
-                            ' :Completed Document',
+                          body: SignCompleted({DocumentName: inst.filename + '.pdf', URL: url}),
+                          subject: 'GEMS: Completed: ' +inst.filename,
                           attachments: {
                             // utf-8 string as an attachment
                             filename:
@@ -1683,7 +1684,7 @@ toggleSignModal = () => {
         } else if (userid == useridother && ownerasreciever == false) {
           var jsonData = []
           var dataarray = []
-          var doc = new jsPDF()
+          var doc = new jsPDF('p', 'pt', 'a4', true)
 
           $.each(inst.fabricObjects, function (index, fabricObj) {
             //////console.log(fabricObj.toJSON());
@@ -1697,7 +1698,7 @@ toggleSignModal = () => {
               doc.addPage()
               doc.setPage(index + 1)
             }
-            doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+            doc.addImage(fabricObj.toDataURL(), 'png', 0, 0, 0, 0, '', 'FAST')
           })
           var dataURI = doc.output('datauristring')
           var arraybuffer = new Uint8Array(doc.output('arraybuffer'))
@@ -1736,7 +1737,7 @@ toggleSignModal = () => {
           var totalcount = 0
           var jsonData = []
           var dataarray = []
-          var doc = new jsPDF()
+          var doc = new jsPDF('p', 'pt', 'a4', true)
 
           $.each(inst.fabricObjects, function (index, fabricObj) {
             //////console.log(fabricObj.toJSON());
@@ -1892,7 +1893,7 @@ toggleSignModal = () => {
                                 doc.addPage()
                                 doc.setPage(index + 1)
                               }
-                              doc.addImage(fabricObj.toDataURL(), 'png', 0, 0)
+                              doc.addImage(fabricObj.toDataURL(), 'png', 0, 0, 0, 0, '', 'FAST')
                             })
                             var dataURI = doc.output('datauristring')
 
@@ -1914,15 +1915,13 @@ toggleSignModal = () => {
                                 console.log(error)
                               })
 
+                              var url = process.env.REACT_APP_BASE_URL +'/#/admin/sign?id=' +fileid +'&type=db&u=' +userid +'&key=0';
                             axios
                               .post('/api/sendmailattachments', {
                                 to: OwnerEmail,
                                 //body:'<div><p>Hello , Please find the signed document in the attachment.</p></div>',
-                                body: SignCompleted({DocumentName: documentname, URL: '#'}),
-                                subject:
-                                  'GEMS: ' +
-                                  documentname +
-                                  ' :Completed Document',
+                                body: SignCompleted({DocumentName: documentname, URL: url}),
+                                subject: 'GEMS: Completed: ' +documentname,
                                 attachments: {
                                   // utf-8 string as an attachment
                                   filename:
@@ -1944,15 +1943,13 @@ toggleSignModal = () => {
                               var recipientName = dbpeople[index].name
                               var recipientEmail = dbpeople[index].email
 
+                      var url = process.env.REACT_APP_BASE_URL +'/#/admin/sign?id=' +fileid +'&type=db&u=' +userid +'&key=0';
                               axios
                                 .post('/api/sendmailattachments', {
                                   to: recipientEmail,
                                   //body:'<div><p>Hello ' +recipientName +', Please find the signed document in the attachment.</p></div>',
-                                  body: SignCompleted({DocumentName: documentname, URL: '#'}),
-                                  subject:
-                                    'GEMS: ' +
-                                    documentname +
-                                    ' :Completed Document',
+                                  body: SignCompleted({DocumentName: documentname, URL: url}),
+                                  subject: 'GEMS: Completed: ' +documentname,
                                   attachments: {
                                     // utf-8 string as an attachment
                                     filename:
@@ -2050,7 +2047,7 @@ toggleSignModal = () => {
                                     console.log(error)
                                   })
                                   var loginUserName = document.getElementById('navbarname').innerHTML;
-
+    
                                 axios
                                   .post('/api/sendmail', {
                                     to: nextuseremail,
@@ -2061,7 +2058,7 @@ toggleSignModal = () => {
                                     //   nextuserurl +
                                     //   `" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d35400; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #d35400;">Review Envelope</a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </table> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px; Margin-top: 15px;"><strong>Do Not Share The Email</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">This email consists a secure link to GEMS, Please do not share this email, link or access code with others.</p> <p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>About GEMS</strong></p> <p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">Sign document electronically in just minutes, It's safe, secure and legally binding. Whether you're in an office, at home, on the go or even across the globe -- GEMS provides a professional trusted solution for Digital Transaction Management.</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Questions about the Document?</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">If you need to modify the document or have questions about the details in the document, Please reach out to the sender by emailing them directly</p><p style="font-family: sans-serif; font-size: 12px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 5px;"><strong>Terms and Conditions.</strong></p><p style="font-family: sans-serif; font-size: 11px; color:#727272; font-weight: normal; margin: 0; Margin-bottom: 15px;">By clicking on link / review envelope , I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on envelopes,including legally binding contracts - just the same as a pen-and-paper signature or initial.</p> </td> </tr> </table> </td> </tr> <!-- END MAIN CONTENT AREA --> </table> <!-- START FOOTER --> <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;"> <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"> <tr> <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"> Powered by <a href="http://www.pappaya.com" style="color: #d35400; font-size: 12px; text-align: center; text-decoration: none;">Pappaya</a>. </td> </tr> </table> </div> <!-- END FOOTER --> <!-- END CENTERED WHITE CONTAINER --> </div> </td> <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td> </tr> </table> </body></html>`,
                                     body: SignReviewAndRequest({
-                                      SenderName: username ? username : loginUserName,
+                                      SenderName: loginUserName,
                                       RecipientName: nextusername, 
                                       DocumentName: documentname, 
                                       URL: nextuserurl
@@ -3199,7 +3196,6 @@ toggleSignModal = () => {
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
               document.getElementById('fieldsrightbar').style.display = 'none'
-              $('#pdfcol').addClass('colfullwidth')
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
@@ -3398,7 +3394,6 @@ toggleSignModal = () => {
                       try {
                         document.getElementById('fieldsleftbar').style.display = 'none'
                         document.getElementById('fieldsrightbar').style.display = 'none'
-                        $('#pdfcol').addClass('colfullwidth')
                         document.getElementById('openfilebtn').style.display = 'none'
                         document.getElementById('penbtn').style.display = 'none'
                         document.getElementById('textbtn').style.display = 'none'
@@ -3634,7 +3629,6 @@ toggleSignModal = () => {
               document.getElementById('openfilebtn').style.display = 'none'
               document.getElementById('fieldsleftbar').style.display = 'none'
               document.getElementById('fieldsrightbar').style.display = 'none'
-              $('#pdfcol').addClass('colfullwidth')
               document.getElementById('penbtn').style.display = 'none'
               document.getElementById('textbtn').style.display = 'none'
               document.getElementById('signaturebtn').style.display = 'none'
@@ -4079,8 +4073,8 @@ $(document).on('click','.actionsign', function() {
         />
 
         <Row>
-          <Col lg="12" className="py-3">
-            <div id="moreoptions" className="btn-group float-right m-2 px-4">
+          <Col lg="12" className="py-3 d-flex justify-content-between">
+            <div id="moreoptions" className="btn-group">
               <button type="button" className="btn btn-neutral actionsign ">
                 Other Actions
               </button>
@@ -4211,44 +4205,34 @@ $(document).on('click','.actionsign', function() {
             </div>
           </div>
 
+        <Row className="mb-3">
+          <Col lg={12} id="editortoolbar" className="editortoolbar">
+            <Row>
+              <Col lg="2">
+                <select
+                    id="recipientselect"
+                    className="form-control selectpicker form-control-sm"
+                ></select>
+              </Col>
+              <Col lg="8">
+                <button id="zoominbtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">zoom_in</i>
+                </button>
+                <button id="zoomoutbtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">zoom_out</i>
+                </button>
+                <button id="savebtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">get_app</i>
+                </button>
+                <button id="printbtn" color="neutral" className="toolzoom">
+                  <i className="material-icons">print</i>
+                </button>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
         <Row>
-          <div id="editortoolbar" className="editortoolbar">
-            <Row>
-            <Col lg="2">
-            <div className="float-left ml-4">
-            <select
-                id="recipientselect"
-                className="form-control selectpicker form-control-sm"
-              ></select>
-            </div>
-            </Col>
-            <Col lg="8">
-            <button id="zoominbtn" color="neutral" className="toolzoom">
-              <i className="material-icons">zoom_in</i>
-            </button>
-            <button id="zoomoutbtn" color="neutral" className="toolzoom">
-              <i className="material-icons">zoom_out</i>
-            </button>
-            <button id="savebtn" color="neutral" className="toolzoom">
-                <i className="material-icons">get_app</i>
-              </button>
-            <button id="printbtn" color="neutral" className="toolzoom">
-                <i className="material-icons">print</i>
-              </button>
-            </Col>
-            <Col lg="2">
-            
-            </Col>
-            </Row>
-          </div>
-
-          
-
-          
-
-          
-
           <Col lg="2" id="fieldsleftbar">
             <div id="toolbar" className="toolbar">
               
@@ -4327,70 +4311,64 @@ $(document).on('click','.actionsign', function() {
           </Col>
 
           <Col lg="8" id="pdfcol">
-            <Row>
+            <Row className="justify-content-md-center">
               <Col lg="12"></Col>
             </Row>
-            <Row>
-            
-              <div id="container">
-              
-                <div
+            <div id="container">
+
+              <div
                   id="pdf-container"
                   style={{
                     height: '550px',
                   }}
-                >
-                  <Button
-                  id="movecursorbtn"
-                  className="m-2 float-left px-4"
-                  style={{zIndex: '99999999999999999999999999999999999999999'}}
-                  color="primary"
-                  type="button"
+              >
+                <Button
+                    id="movecursorbtn"
+                    className="m-2 float-left px-4"
+                    style={{zIndex: '99999999999999999999999999999999999999999'}}
+                    color="primary"
+                    type="button"
                 >
                   Start
                 </Button>
-                </div>
               </div>
-            </Row>
+            </div>
 
-            <Col lg="12" className="py-3">
+            <div lg="12" className="py-3">
               <Button
-                id="getlinkbtn"
-                className="m-2 float-left px-4"
-                color="primary"
-                type="button"
+                  id="getlinkbtn"
+                  className="m-2 float-left px-4"
+                  color="primary"
+                  type="button"
               >
                 Save
               </Button>
               <Button
-                id="onlysignerfinishbtn"
-                className="m-2 float-left px-4"
-                color="primary"
-                type="button"
+                  id="onlysignerfinishbtn"
+                  className="m-2 float-left px-4"
+                  color="primary"
+                  type="button"
               >
                 Finish
               </Button>
-              <div lg="6" id="emailbtncontainer">
+              <span id="emailbtncontainer">
                 <Button
-                  id="sendemailbtn"
-                  className="m-2 float-right px-4"
-                  color="primary"
-                  type="button"
+                    id="sendemailbtn"
+                    className="m-2 float-right px-4"
+                    color="primary"
+                    type="button"
                 >
                   Next
                 </Button>
-              </div>
-            </Col>
-
-            <div>
+              </span>
+            </div>
 
             <SignManager visible={showSignModal}
-                    onSave={this.saveSign}
-                    onClose={this.toggleSignModal} />
-              <InitialManager visible={showInitialModal}
-                    onSave={this.saveInitial}
-                    onClose={this.toggleInitialModal} />
-            </div>
+                         onSave={this.saveSign}
+                         onClose={this.toggleSignModal} />
+            <InitialManager visible={showInitialModal}
+                            onSave={this.saveInitial}
+                            onClose={this.toggleInitialModal} />
           </Col>
           <Col lg="2" id="fieldsrightbar" >
             <div id="recipientsbar" className="recipientsbar bg-light justify-content-start">

@@ -36,7 +36,7 @@ export const SignReviewAndRequest = (data) => {
                                                                                     <span
                                                                                         style="color: #ffffff;"><span
                                                                                             style="font-family: Helvetica, serif;"><span
-                                                                                                style="font-size: medium;">`+data.SenderName+` sent you a document to review and sign
+                                                                                                style="font-size: medium;">`+ data.SenderName + ` sent you a document to review and sign
                                                                                             </span></span></span></p>
                                                                                             
                                                                             </td>
@@ -48,24 +48,22 @@ export const SignReviewAndRequest = (data) => {
                                                                         <tr>
                                                                             <td width="100%">
                                                                                 <center>
-                                                                                    <table width="292" cellspacing="0"
+                                                                                    <table cellspacing="0"
                                                                                         cellpadding="0">
                                                                                         <tbody>
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <a href="`+ data.URL + `"
-                                                                                                    style="text-decoration:none; color: #000; background: #ffc423;width:292px; height:44px; display: flex; justify-content: center; align-items: center;"
-                                                                                                    bgcolor="#ffc423;"
-                                                                                                    class="western"
-                                                                                                        align="center">
-                                                                                                        <span style="font-family: Helvetica, serif;display: flex;
-                                                                                                        margin-top:10px;
-                                                                                                        margin-left: 25%;">
-                                                                                                            <span style="font-size: medium;">
-                                                                                                                <strong>REVIEW DOCUMENT </strong>
-                                                                                                            </span>
+                                                                                                style="text-decoration:none; color: #000; background: #ffc423;width:300px; padding:20px;"
+                                                                                                bgcolor="#ffc423;"
+                                                                                                class="western"
+                                                                                                    align="center">
+                                                                                                    <span style="font-family: Helvetica, serif;">
+                                                                                                        <span style="font-size: medium;">
+                                                                                                            <strong>REVIEW DOCUMENT</strong>
                                                                                                         </span>
-                                                                                                    </a>
+                                                                                                    </span>
+                                                                                                </a>
                                                                                                 </td> 
                                                                                             </tr>
                                                                                             </tr>

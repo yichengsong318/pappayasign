@@ -217,7 +217,7 @@ class Review extends React.Component {
 
     PDFFabric.prototype.savePdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -235,7 +235,7 @@ class Review extends React.Component {
 
     PDFFabric.prototype.printPdf = function () {
       var inst = this
-      var doc = new jsPDF()
+      var doc = new jsPDF('p', 'pt', 'a4', true)
       $.each(inst.fabricObjects, function (index, fabricObj) {
         if (index != 0) {
           doc.addPage()
@@ -679,7 +679,7 @@ class Review extends React.Component {
           firstRecipientPrivateMessage = people[0].privatemessage
         }
         var firstRecipientEmail = people[0].email;
-        var firstRecipientEmail = people[0].name;
+        var firstRecipientName = people[0].name;
         var url =
           process.env.REACT_APP_BASE_URL +
           '/#/admin/sign?id=' +
@@ -1102,7 +1102,7 @@ class Review extends React.Component {
       <>
         <HeaderDefault />
         {/* Page content */}
-        <div className="mt--9 pb-8">
+        <div className="mt--9 container">
           <Card className="shadow border-0 pb-2 mb-3 bg-dark mx-5">
             <CardBody>
               <Row>
@@ -1210,7 +1210,7 @@ class Review extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="private-modal-content">
+            <div className="private-modal-content modal-dialog">
               <div>
                 <Card className="shadow border-0 mx-3 p-3">
                   <CardHeader className=" bg-transparent">
@@ -1267,7 +1267,7 @@ class Review extends React.Component {
           </div>
 
           <div className="modal">
-            <div className="private-modal-content">
+            <div className="private-modal-content modal-dialog">
               <div>
                 <Card className="shadow border-0 mx-3 p-3">
                   <CardHeader className=" bg-transparent">
@@ -1316,14 +1316,14 @@ class Review extends React.Component {
                 <CardBody>
                   <Row>
                     <Col lg="6" className="my-3">
-                      <Col lg="12">
+                      <div>
                         <Button
                           className="float-right px-3 mx-1"
                           color="dark"
                           id="reviewprivatebtn"
                         >
                           Private Message
-                      </Button>
+                        </Button>
                         <h4 className="">Message to Recipients!</h4>
 
                         <FormGroup className="my-4">
@@ -1339,8 +1339,8 @@ class Review extends React.Component {
                             Max Characters: 100
                           </span>
                         </FormGroup>
-                      </Col>
-                      <Col lg="12">
+                      </div>
+                      <div>
                         <FormGroup className="">
                           <span className="emaillabelspan  py-2">
                             <strong>Email Body</strong>
@@ -1387,7 +1387,7 @@ class Review extends React.Component {
                             <option value="7">Every 7 days</option>
                           </select>
                         </FormGroup>
-                      </Col>
+                      </div>
                     </Col>
                     <Col lg="6" className="reviewcontainer">
                       <div className="nav-wrapper">

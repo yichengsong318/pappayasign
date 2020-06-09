@@ -160,7 +160,7 @@ onSave = async (result) => {
         >
           <Container>
             
-            <div className="header-body text-center my-5 mx-3">
+            <div className="header-body text-center my-md-5 my-2 mx-3">
               <Row className="justify-content-center">
                 <Col
                   lg="6"
