@@ -73,7 +73,7 @@ class ChooseTab extends Component {
         let context = canvas.getContext('2d');
         context.font = `${font.size}px ${font.name}`;
         context.fillStyle = "black";
-        context.fillText(text, 0, 30);
+        context.fillText(text, 15, 30);
         return canvas.toDataURL();
     };
 
