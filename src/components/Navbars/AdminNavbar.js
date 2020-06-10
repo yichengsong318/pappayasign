@@ -44,9 +44,9 @@ class AdminNavbar extends React.Component {
       //console.log('user logged in');
       //console.log(userid);
       var email = getCookie('useremail')
-      
 
-      
+
+
 
       axios
         .post('/api/getuserdata', {
@@ -97,7 +97,7 @@ class AdminNavbar extends React.Component {
           className="navbar-top navbar-horizontal navbar-dark"
           expand="md"
         >
-          <Container className="px-2" fluid>
+          <Container className="px-3" fluid>
             <img
               alt="..."
               style={{ maxWidth: '170px' }}

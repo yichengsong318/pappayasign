@@ -18,9 +18,9 @@ class TemplateDropzone extends Component {
     this.onDrop = this.onDrop.bind(this)
   }
 
-  
+
   FileName = ''
-  
+
   global = this
 
   convertImageToPDF = async (file) => {
@@ -82,8 +82,8 @@ uploadFile = async (file) => {
       TemplateDataVar.TemplateDataURI = file
       TemplateDataVar.TemplateDataPath = reader.result
       TemplateDataVar.TemplateDocName = global.FileName
-      
-      
+
+
       //console.log(DataVar);
 
       var url = '#/admin/templaterecipients'
@@ -159,7 +159,7 @@ if (files) {
             </div>
           </div>
       <div
-        className={`Dropzone ${this.state.hightlight ? 'Highlight' : ''}`}
+        className={`Dropzone text-center ${this.state.hightlight ? 'Highlight' : ''}`}
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
         onDrop={this.onDrop}
