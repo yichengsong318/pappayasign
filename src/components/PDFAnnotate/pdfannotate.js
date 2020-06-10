@@ -4088,7 +4088,6 @@ $(document).on('click','.actionsign', function() {
                 >
                   Finish Later
                 </button>
-                <div className="dropdown-divider"></div>
                 <button
                   className="dropdown-item "
                   id="recieverdeclinebtn"
@@ -4096,25 +4095,12 @@ $(document).on('click','.actionsign', function() {
                 >
                   Decline
                 </button>
-                <button 
-                  id="printbtn" 
-                  className="dropdown-item " 
-                  type="button"
-                >
-                  Print & Sign
-                </button>
                 <div className="dropdown-divider"></div>
-                <button className="dropdown-item " type="button">
+                <button className="dropdown-item" onClick="window.open('https://www.pappayasign.com');" type="button">
                   Help & Support
                 </button>
-                <button className="dropdown-item " type="button">
+                <button className="dropdown-item" onClick="window.open('https://www.pappayasign.com');" type="button">
                   About Pappayasign
-                </button>
-                <button className="dropdown-item " type="button">
-                  View History
-                </button>
-                <button className="dropdown-item " type="button">
-                  View Certificate(PDF)
                 </button>
               </div>
             </div>
