@@ -68,11 +68,16 @@ toggleSignModal = () => {
     })
   }
 
+  openPappayaSignSite = (e) => {
+    e.preventDefault();
+    window.open('https://www.pappayasign.com');
+  }
+
   doubleclickobj = null;
     pdf = null;
 
-	saveSign = (e) => {
-	    if (e.signatureBox) {
+  saveSign = (e) => {
+      if (e.signatureBox) {
             this.doubleclickobj.setSrc(e.signatureBox);
 
             this.doubleclickobj.set(
@@ -83,12 +88,12 @@ toggleSignModal = () => {
             this.pdf.Reload();
             this.toggleSignModal();
         } else {
-	        alert('Please set your signature!')
+          alert('Please set your signature!')
         }
     }
 
     saveInitial = (e) => {
-	    if (e.initialsBox) {
+      if (e.initialsBox) {
             this.doubleclickobj.setSrc(e.initialsBox);
 
             this.doubleclickobj.set(
@@ -99,7 +104,7 @@ toggleSignModal = () => {
             this.pdf.Reload();
             this.toggleInitialModal();
         } else {
-	        alert('Please set your initials!')
+          alert('Please set your initials!')
         }
     }
 
@@ -2941,7 +2946,7 @@ toggleSignModal = () => {
 
           if (o && t === 'i-text') {
               switch(a) {
-                  case 'bold':				
+                  case 'bold':        
                       var isBold = dtGetStyle(o, 'fontWeight') === 'bold';
                       dtSetStyle(o, 'fontWeight', isBold ? '' : 'bold');
                   break;
@@ -4040,7 +4045,7 @@ $(document).on('click','.actionsign', function() {
     droptogglesign = 1;
     }
     else if(droptogglesign === 1){
-		droptogglesign = 0;
+    droptogglesign = 0;
       $(this).parent().children('#dropdown')[0].style.display = 'none';
     }
   });
@@ -4096,10 +4101,10 @@ $(document).on('click','.actionsign', function() {
                   Decline
                 </button>
                 <div className="dropdown-divider"></div>
-                <button className="dropdown-item" onClick="window.open('https://www.pappayasign.com');" type="button">
+                <button className="dropdown-item" onClick={this.openPappayaSignSite} type="button">
                   Help & Support
                 </button>
-                <button className="dropdown-item" onClick="window.open('https://www.pappayasign.com');" type="button">
+                <button className="dropdown-item" onClick={this.openPappayaSignSite} type="button">
                   About Pappayasign
                 </button>
               </div>
