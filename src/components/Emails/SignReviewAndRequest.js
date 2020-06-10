@@ -36,7 +36,7 @@ export const SignReviewAndRequest = (data) => {
                                                                                     <span
                                                                                         style="color: #ffffff;"><span
                                                                                             style="font-family: Helvetica, serif;"><span
-                                                                                                style="font-size: medium;">`+ data.SenderName + ` sent you a document to review and sign
+                                                                                                style="font-size: medium;">You have a document to review and sign
                                                                                             </span></span></span></p>
                                                                                             
                                                                             </td>

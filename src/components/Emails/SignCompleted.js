@@ -55,17 +55,17 @@ export const SignCompleted = (data) => {
                                                                                         <tbody>
                                                                                             <tr>
                                                                                                 <td>
-                                                                                                    <a href="`+ data.URL + `"
+                                                                                                    <div
                                                                                                 style="text-decoration:none; color: #000; background: #ffc423;width:300px; padding:20px;"
                                                                                                 bgcolor="#ffc423;"
                                                                                                 class="western"
                                                                                                     align="center">
                                                                                                     <span style="font-family: Helvetica, serif;">
                                                                                                         <span style="font-size: medium;">
-                                                                                                            <strong>VIEW COMPLETED DOCUMENT</strong>
+                                                                                                            <strong>DOCUMENT COMPLETED</strong>
                                                                                                         </span>
                                                                                                     </span>
-                                                                                                </a>
+                                                                                                </div>
                                                                                                 </td> 
                                                                                             </tr>
                                                                                         </tbody>

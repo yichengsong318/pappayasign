@@ -37,7 +37,7 @@ export const VoidedEmail = (data) => {
                                                                                         style="color: #ffffff;"><span
                                                                                             style="font-family: Helvetica, serif;"><span
                                                                                                 style="font-size: medium;">
-                                                                                                `+ data.UserName + ` voided ` + data.DocumentName + `
+                                                                                                Document voided ` + data.DocumentName + `
                                                                                             </span></span></span></p>
                                                                                             
                                                                             </td>
