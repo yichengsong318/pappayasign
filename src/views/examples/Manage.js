@@ -1834,7 +1834,7 @@ class Tables extends React.Component {
                     modal[2].style.display = 'none'
                   })
 
-                  var loginUserName = document.getElementById('navbarname').innerHTML;
+                  var loginUserName = getCookie('UserFullName');    
 
 
                 axios
@@ -2008,7 +2008,7 @@ class Tables extends React.Component {
 
               recievers[index].RecipientStatus = 'Deleted'
               recievers[index].RecipientDateStatus = today
-              var loginUserName = document.getElementById('navbarname').innerHTML;
+              var loginUserName = getCookie('UserFullName');
 
               axios
                 .post('/api/sendmail', {
@@ -2763,7 +2763,7 @@ class Tables extends React.Component {
                     })
                     //console.log(dbpeople);
                     if (count === true) {
-                      var loginUserName = document.getElementById('navbarname').innerHTML;
+                      var loginUserName = getCookie('UserFullName');
                       axios
                         .post('/api/sendmail', {
                           to: data.RecipientEmail,
