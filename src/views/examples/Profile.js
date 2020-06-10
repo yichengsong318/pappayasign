@@ -211,7 +211,7 @@ class Profile extends React.Component {
       <>
         <UserHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className="mt--8 mt-md--7" fluid>
           <div className="modal">
             <div className="modal-content modal-dialog">
               <div>
@@ -297,7 +297,7 @@ class Profile extends React.Component {
                 </Row>
                 <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                   <div className="d-flex justify-content-between">
-                    
+
                   </div>
                 </CardHeader>
                 <CardBody className="pt-0 pt-md-4">
@@ -363,10 +363,10 @@ class Profile extends React.Component {
                               type="text"
                             />
                           </FormGroup>
-                         
+
                         </Col>
                         <Col lg="12">
-                        
+
                           <FormGroup>
                             <label
                               className="form-control-label"

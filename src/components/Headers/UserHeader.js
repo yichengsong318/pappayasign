@@ -50,7 +50,7 @@ class UserHeader extends React.Component {
         <div
           className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
           style={{
-            minHeight: '530px',
+            minHeight: '430px',
           }}
         >
           {/* Mask */}

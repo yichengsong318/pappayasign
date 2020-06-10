@@ -2,6 +2,10 @@
     display: flex;
     padding: 20px;
 
+    @media screen and (max-width:480px) {
+        flex-direction: column;
+    }
+
     .dropzone {
         border: 2px dashed #ccc;
         height: 180px;
@@ -10,6 +14,12 @@
         justify-content: center;
         align-items: center;
         position: relative;
+
+        @media screen and (max-width:480px) {
+            height: 170px!important;
+            margin: 0 0 10px 0!important;
+            flex: auto!important;
+        }
 
         &.error {
             border: 2px dashed red;

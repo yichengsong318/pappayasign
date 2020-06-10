@@ -435,7 +435,7 @@ class Login extends React.Component {
           </div>
         </div>
 
-        <Col lg="6" md="7" className="p-5 pb-8">
+        <Col lg="6" md="7" className="p-4 pb-8">
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-3 py-lg-3 ">
               <div className="text-center text-muted mb-3 mt-2">

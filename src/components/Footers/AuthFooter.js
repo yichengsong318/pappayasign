@@ -10,7 +10,7 @@ class Login extends React.Component {
         <footer className="py-5">
           <div className="mx-5">
             <Row className="align-items-center justify-content-xl-between">
-              <Col xl="6">
+              <Col xl="6" className="mb-md-0 mb-3">
                 <Nav className="nav-footer justify-content-center justify-content-xl-start">
                   <NavItem>
                     <NavLink
@@ -33,7 +33,7 @@ class Login extends React.Component {
                     </NavLink>
                   </NavItem>
 
-                  
+
                   <NavItem>
                     <NavLink
                       to="/admin/templates"

@@ -82,7 +82,7 @@ class Templates extends React.Component {
                 $('#templatetable').append(templatecontent)
               }
 
-              
+
               modal[0].style.display = 'none'
             }
           })
@@ -110,7 +110,7 @@ class Templates extends React.Component {
       <>
         <HeaderDefault />
         {/* Page content */}
-        <div className="mt--7 mx-6">
+        <div className="mt--8 mx-4">
           <div className="modal">
             <div className="modal-content modal-dialog">
               <div>

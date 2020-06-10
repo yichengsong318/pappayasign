@@ -21,7 +21,7 @@ class Index extends React.Component {
           </div>
         </div>
 
-        <Row className="mt--7 mx-6">
+        <Row className="mt--7 mx-md-6 mx-2">
           <Col className="mb-5 mb-xl-0" xl="12">
             <Card className="bg-gradient-white shadow">
               <CardHeader className="bg-transparent">

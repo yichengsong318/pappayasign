@@ -121,12 +121,12 @@ class SignManager extends Component {
             }
             return null
           }
-      
+
           var userid = getCookie('uid')
-      
+
           if (userid) {
             var email = getCookie('useremail')
-      
+
             try {
               axios
                 .post('/api/getuserdata', {
@@ -163,7 +163,7 @@ class SignManager extends Component {
 
         return (
             <div className="modal sign-manager-modal">
-                <div className="modal-content modal-dialog">
+                <div className="modal-content">
                     <div className="sign-manager-title">
                         <span>{title || 'Create Your Signature'}</span>
                         <i onClick={this.onClose} className="ni ni-fat-remove" />

@@ -2,9 +2,18 @@
     display: flex;
     padding: 20px;
 
+    @media screen and (max-width:480px) {
+        flex-direction: column;
+    }
+
     .drawer-box {
         border: 2px dashed #ccc;
         padding: 15px 15px 0 15px;
+
+        @media screen and (max-width:480px) {
+            height: 180px!important;
+            margin: 0 0 10px 0!important;
+        }
 
         .drawer-area {
             canvas {
@@ -15,8 +24,6 @@
                 box-shadow: none;
             }
         }
-
-        
 
         .intro {
             margin-top: 10px;

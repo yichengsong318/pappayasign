@@ -9,6 +9,10 @@
         display: block;
         text-align: left;
         width: 60%;
+
+        @media screen and (max-width:480px) {
+            width: 95%;
+        }
     }
 
     .sign-manager-title {
@@ -33,6 +37,10 @@
     .sign-manager-form {
         padding: 20px;
         border-bottom: 1px solid #e3e3e3;
+
+        .row > div {
+            margin-bottom: 15px;
+        }
 
         .form-group {
             margin-bottom: 0;

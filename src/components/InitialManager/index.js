@@ -116,12 +116,12 @@ class InitialManager extends Component {
             }
             return null
           }
-      
+
           var userid = getCookie('uid')
-      
+
           if (userid) {
             var email = getCookie('useremail')
-      
+
             try {
               axios
                 .post('/api/getuserdata', {
@@ -156,14 +156,14 @@ class InitialManager extends Component {
 
         return (
             <div className="modal initial-manager-modal">
-                <div className="modal-content modal-dialog">
+                <div className="modal-content">
                     <div className="sign-manager-title">
                         <span>{title || 'Create Your Initials'}</span>
                         <i onClick={this.onClose} className="ni ni-fat-remove" />
                     </div>
                     <Form role="form" className="sign-manager-form">
                         <div className="row">
-                            
+
                             <div className="col-md-12">
                                 <FormGroup className="d-flex align-items-center">
                                     <h5 className="mr-3 mb-0">Initial</h5>
