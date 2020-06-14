@@ -220,9 +220,6 @@ class PDFAnnotate extends React.Component {
 					var scale = 1.3;
 					for (var i = 1; i <= pdf.numPages; i++) {
 						pdf.getPage(i).then(function(page) {
-							var container = document.getElementById(
-								inst.container_id,
-							);
 							//var viewport = page.getViewport(1);
 							//var scale = (container.clientWidth - 80) / viewport.width;
 							var viewport = page.getViewport({ scale: scale });
@@ -235,6 +232,9 @@ class PDFAnnotate extends React.Component {
 
 							btn.innerHTML =
 								'<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
+							console.log(
+								document.getElementById(inst.container_id),
+							);
 							try {
 								document
 									.getElementById(inst.container_id)
@@ -583,46 +583,254 @@ class PDFAnnotate extends React.Component {
 						},
 					});
 
-					fabric.util.addListener(
-						fabricObj.upperCanvasEl,
-						'dblclick',
-						function(e) {
-							if (fabricObj.findTarget(e)) {
-								const objType = fabricObj.findTarget(e).type;
-								const obj = fabricObj.findTarget(e);
-								const objcolor = fabricObj.findTarget(e)
-									.backgroundColor;
-								const objid = fabricObj.findTarget(e).id;
-								////console.log(objType);
-								console.log(objcolor);
-								if (grabbedcolor != '') {
-									var rgbval =
-										hexToRgb(grabbedcolor).r +
-										', ' +
-										hexToRgb(grabbedcolor).g +
-										', ' +
-										hexToRgb(grabbedcolor).b;
-									var RGB = 'rgb(' + rgbval + ')';
-								}
+					const callbackEventDoubleClick = function(e) {
+						if (fabricObj.findTarget(e)) {
+							const objType = fabricObj.findTarget(e).type;
+							const obj = fabricObj.findTarget(e);
+							const objcolor = fabricObj.findTarget(e)
+								.backgroundColor;
+							const objid = fabricObj.findTarget(e).id;
+							////console.log(objType);
+							console.log(objcolor);
+							if (grabbedcolor != '') {
+								var rgbval =
+									hexToRgb(grabbedcolor).r +
+									', ' +
+									hexToRgb(grabbedcolor).g +
+									', ' +
+									hexToRgb(grabbedcolor).b;
+								var RGB = 'rgb(' + rgbval + ')';
+							}
 
-								if (
-									objcolor == RGB ||
-									owner == 'admin' ||
-									objid == email
-								) {
-									if (
-										fabricObj.findTarget(e).type != 'text'
-									) {
-										var id = fabricObj
-											.getObjects()
-											.indexOf(obj);
-										obj.selectable = true;
-										fabricObj.setActiveObject(
-											fabricObj.item(id),
-										);
+							if (
+								objcolor == RGB ||
+								owner == 'admin' ||
+								objid == email
+							) {
+								if (fabricObj.findTarget(e).type != 'text') {
+									var id = fabricObj
+										.getObjects()
+										.indexOf(obj);
+									obj.selectable = true;
+									fabricObj.setActiveObject(
+										fabricObj.item(id),
+									);
 
+									fabricObj.requestRenderAll();
+									if (owner != 'admin') {
+										if (objType === 'image') {
+											//alert('double clicked on a image!');
+											//doubleclickobj = fabricObj.findTarget(e)
+											////console.log(doubleclickobj);
+											//this.toggleSignModal();
+											global.doubleclickobj = fabricObj.findTarget(
+												e,
+											);
+											if (obj.width === obj.height) {
+												if (
+													initialimage != '' &&
+													objcolor != 'transparent'
+												) {
+													global.doubleclickobj.setSrc(
+														initialimage,
+													);
+													global.doubleclickobj.set(
+														'backgroundColor',
+														'transparent',
+													);
+													global.doubleclickobj.set({
+														width: 60,
+														height: 20,
+														scaleX: 0.6,
+														scaleY: 0.6,
+													});
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+													global.pdf.Reload();
+													$('#movecursorbtn').html(
+														'Next',
+													);
+												} else {
+													global.toggleInitialModal();
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+													$('#movecursorbtn').html(
+														'Next',
+													);
+													//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+												}
+											} else {
+												if (
+													signimage != '' &&
+													objcolor != 'transparent'
+												) {
+													global.doubleclickobj.setSrc(
+														signimage,
+													);
+													global.doubleclickobj.set(
+														'backgroundColor',
+														'transparent',
+													);
+													global.doubleclickobj.set({
+														width: 60,
+														height: 20,
+														scaleX: 0.6,
+														scaleY: 0.6,
+													});
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+													global.pdf.Reload();
+													$('#movecursorbtn').html(
+														'Next',
+													);
+												} else {
+													global.toggleSignModal();
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+													$('#movecursorbtn').html(
+														'Next',
+													);
+													//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
+												}
+											}
+
+											obj.set('id', email);
+										} else if (objType === 'i-text') {
+											$('#movecursorbtn').html('Next');
+											//console.log(obj.text);
+											if (username != '') {
+												if (obj.text === 'Name') {
+													obj.set('text', username);
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+												} else if (
+													obj.text === 'Title'
+												) {
+													obj.set('text', usertitle);
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+												} else if (
+													obj.text === 'Date Signed'
+												) {
+													var today = new Date();
+													var dd = String(
+														today.getDate(),
+													).padStart(2, '0');
+													var mm = String(
+														today.getMonth() + 1,
+													).padStart(2, '0'); //January is 0!
+													var yyyy = today.getFullYear();
+
+													today =
+														mm +
+														'/' +
+														dd +
+														'/' +
+														yyyy;
+													obj.set('text', today);
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+												}
+											} else {
+												if (
+													obj.text === 'Date Signed'
+												) {
+													var today = new Date();
+													var dd = String(
+														today.getDate(),
+													).padStart(2, '0');
+													var mm = String(
+														today.getMonth() + 1,
+													).padStart(2, '0'); //January is 0!
+													var yyyy = today.getFullYear();
+
+													today =
+														mm +
+														'/' +
+														dd +
+														'/' +
+														yyyy;
+													obj.set('text', today);
+													setTimeout(function() {
+														fabricObj.requestRenderAll();
+													}, 10);
+												}
+											}
+											obj.set(
+												'backgroundColor',
+												'transparent',
+											);
+											global.pdf.Reload();
+											obj.set('id', email);
+
+											var count = 0;
+											$.each(inst.fabricObjects, function(
+												index,
+												fabricObj,
+											) {
+												fabricObj
+													.getObjects()
+													.forEach(function(targ) {
+														////console.log(targ);
+														targ.selectable = false;
+														targ.hasControls = false;
+														if (
+															targ.backgroundColor ===
+															recipientrgbval
+														) {
+															count = count + 1;
+															////console.log(count);
+														}
+													});
+											});
+											if (count === 0) {
+												ObjectCursorIndex = 0;
+												ObjectArrayIndex = 0;
+												document.getElementById(
+													'movecursorbtn',
+												).style.display = 'none';
+												var page =
+													ObjectArray[
+														ObjectArrayIndex
+													].page;
+												var nextobj =
+													ObjectArray[
+														ObjectArrayIndex
+													].obj;
+												$('.upper-canvas')[
+													ObjectArray[
+														ObjectArrayIndex
+													].page
+												].scrollIntoView({
+													behavior: 'auto',
+												});
+												//document.getElementById('recieverfinishbtn').style.display = "block";
+												var recieverfinishbtn = document.getElementById(
+													'recieverfinishbtn',
+												);
+												recieverfinishbtn.scrollIntoView();
+											} else {
+												$('#movecursorbtn').html(
+													'Next',
+												);
+											}
+										}
+									} else if (owner == 'admin') {
+										obj.lockMovementX = false;
+										obj.lockMovementY = false;
+										obj.hasControls = true;
 										fabricObj.requestRenderAll();
-										if (owner != 'admin') {
+										if (
+											objcolor == 'transparent' ||
+											objcolor == 'rgb(189, 189, 189)'
+										) {
 											if (objType === 'image') {
 												//alert('double clicked on a image!');
 												//doubleclickobj = fabricObj.findTarget(e)
@@ -656,17 +864,11 @@ class PDFAnnotate extends React.Component {
 															fabricObj.requestRenderAll();
 														}, 10);
 														global.pdf.Reload();
-														$(
-															'#movecursorbtn',
-														).html('Next');
 													} else {
 														global.toggleInitialModal();
 														setTimeout(function() {
 															fabricObj.requestRenderAll();
 														}, 10);
-														$(
-															'#movecursorbtn',
-														).html('Next');
 														//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
 													}
 												} else {
@@ -694,26 +896,17 @@ class PDFAnnotate extends React.Component {
 															fabricObj.requestRenderAll();
 														}, 10);
 														global.pdf.Reload();
-														$(
-															'#movecursorbtn',
-														).html('Next');
 													} else {
 														global.toggleSignModal();
 														setTimeout(function() {
 															fabricObj.requestRenderAll();
 														}, 10);
-														$(
-															'#movecursorbtn',
-														).html('Next');
 														//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
 													}
 												}
 
 												obj.set('id', email);
 											} else if (objType === 'i-text') {
-												$('#movecursorbtn').html(
-													'Next',
-												);
 												//console.log(obj.text);
 												if (username != '') {
 													if (obj.text === 'Name') {
@@ -738,48 +931,9 @@ class PDFAnnotate extends React.Component {
 														obj.text ===
 														'Date Signed'
 													) {
-														var today = new Date();
-														var dd = String(
-															today.getDate(),
-														).padStart(2, '0');
-														var mm = String(
-															today.getMonth() +
-																1,
-														).padStart(2, '0'); //January is 0!
-														var yyyy = today.getFullYear();
-
-														today =
-															mm +
-															'/' +
-															dd +
-															'/' +
-															yyyy;
-														obj.set('text', today);
-														setTimeout(function() {
-															fabricObj.requestRenderAll();
-														}, 10);
-													}
-												} else {
-													if (
-														obj.text ===
-														'Date Signed'
-													) {
-														var today = new Date();
-														var dd = String(
-															today.getDate(),
-														).padStart(2, '0');
-														var mm = String(
-															today.getMonth() +
-																1,
-														).padStart(2, '0'); //January is 0!
-														var yyyy = today.getFullYear();
-
-														today =
-															mm +
-															'/' +
-															dd +
-															'/' +
-															yyyy;
+														var today = new Date()
+															.toLocaleString()
+															.replace(',', '');
 														obj.set('text', today);
 														setTimeout(function() {
 															fabricObj.requestRenderAll();
@@ -792,237 +946,58 @@ class PDFAnnotate extends React.Component {
 												);
 												global.pdf.Reload();
 												obj.set('id', email);
-
-												var count = 0;
-												$.each(
-													inst.fabricObjects,
-													function(index, fabricObj) {
-														fabricObj
-															.getObjects()
-															.forEach(function(
-																targ,
-															) {
-																////console.log(targ);
-																targ.selectable = false;
-																targ.hasControls = false;
-																if (
-																	targ.backgroundColor ===
-																	recipientrgbval
-																) {
-																	count =
-																		count +
-																		1;
-																	////console.log(count);
-																}
-															});
-													},
-												);
-												if (count === 0) {
-													ObjectCursorIndex = 0;
-													ObjectArrayIndex = 0;
-													document.getElementById(
-														'movecursorbtn',
-													).style.display = 'none';
-													var page =
-														ObjectArray[
-															ObjectArrayIndex
-														].page;
-													var nextobj =
-														ObjectArray[
-															ObjectArrayIndex
-														].obj;
-													$('.upper-canvas')[
-														ObjectArray[
-															ObjectArrayIndex
-														].page
-													].scrollIntoView({
-														behavior: 'auto',
-													});
-													//document.getElementById('recieverfinishbtn').style.display = "block";
-													var recieverfinishbtn = document.getElementById(
-														'recieverfinishbtn',
-													);
-													recieverfinishbtn.scrollIntoView();
-												} else {
-													$('#movecursorbtn').html(
-														'Next',
-													);
-												}
-											}
-										} else if (owner == 'admin') {
-											obj.lockMovementX = false;
-											obj.lockMovementY = false;
-											obj.hasControls = true;
-											fabricObj.requestRenderAll();
-											if (
-												objcolor == 'transparent' ||
-												objcolor == 'rgb(189, 189, 189)'
-											) {
-												if (objType === 'image') {
-													//alert('double clicked on a image!');
-													//doubleclickobj = fabricObj.findTarget(e)
-													////console.log(doubleclickobj);
-													//this.toggleSignModal();
-													global.doubleclickobj = fabricObj.findTarget(
-														e,
-													);
-													if (
-														obj.width === obj.height
-													) {
-														if (
-															initialimage !=
-																'' &&
-															objcolor !=
-																'transparent'
-														) {
-															global.doubleclickobj.setSrc(
-																initialimage,
-															);
-															global.doubleclickobj.set(
-																'backgroundColor',
-																'transparent',
-															);
-															global.doubleclickobj.set(
-																{
-																	width: 60,
-																	height: 20,
-																	scaleX: 0.6,
-																	scaleY: 0.6,
-																},
-															);
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-															global.pdf.Reload();
-														} else {
-															global.toggleInitialModal();
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-															//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
-														}
-													} else {
-														if (
-															signimage != '' &&
-															objcolor !=
-																'transparent'
-														) {
-															global.doubleclickobj.setSrc(
-																signimage,
-															);
-															global.doubleclickobj.set(
-																'backgroundColor',
-																'transparent',
-															);
-															global.doubleclickobj.set(
-																{
-																	width: 60,
-																	height: 20,
-																	scaleX: 0.6,
-																	scaleY: 0.6,
-																},
-															);
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-															global.pdf.Reload();
-														} else {
-															global.toggleSignModal();
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-															//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
-														}
-													}
-
-													obj.set('id', email);
-												} else if (
-													objType === 'i-text'
-												) {
-													//console.log(obj.text);
-													if (username != '') {
-														if (
-															obj.text === 'Name'
-														) {
-															obj.set(
-																'text',
-																username,
-															);
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-														} else if (
-															obj.text === 'Title'
-														) {
-															obj.set(
-																'text',
-																usertitle,
-															);
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-														} else if (
-															obj.text ===
-															'Date Signed'
-														) {
-															var today = new Date()
-																.toLocaleString()
-																.replace(
-																	',',
-																	'',
-																);
-															obj.set(
-																'text',
-																today,
-															);
-															setTimeout(
-																function() {
-																	fabricObj.requestRenderAll();
-																},
-																10,
-															);
-														}
-													}
-													obj.set(
-														'backgroundColor',
-														'transparent',
-													);
-													global.pdf.Reload();
-													obj.set('id', email);
-												}
 											}
 										}
 									}
-								} else {
-									obj.lockMovementX = true;
-									obj.lockMovementY = true;
-									// // // // // // // ////console.log('Email Id is different:' + objid);
-									alert(
-										"Sorry you don't have enough access to modify this object",
-									);
-									obj.selectable = false;
-									obj.hasControls = false;
 								}
+							} else {
+								obj.lockMovementX = true;
+								obj.lockMovementY = true;
+								// // // // // // // ////console.log('Email Id is different:' + objid);
+								alert(
+									"Sorry you don't have enough access to modify this object",
+								);
+								obj.selectable = false;
+								obj.hasControls = false;
 							}
-						},
+						}
+					};
+
+					function itemTapEvent(event) {
+						if (event.type === 'touchend') {
+							var lastTouch = $(this).data('lastTouch') || {
+									lastTime: 0,
+								},
+								now = event.timeStamp,
+								delta = now - lastTouch.lastTime;
+
+							if (delta > 20 && delta < 250) {
+								if (lastTouch.timerEv) {
+									clearTimeout(lastTouch.timerEv);
+									callbackEventDoubleClick(event);
+								}
+								return;
+							} else $(this).data('lastTouch', { lastTime: now });
+
+							$(this).data('lastTouch')['timerEv'] = setTimeout(
+								function() {
+									$(this).trigger('touchend');
+								},
+								250,
+							);
+						}
+					}
+
+					fabric.util.addListener(
+						fabricObj.upperCanvasEl,
+						'touchend',
+						itemTapEvent,
+					);
+
+					fabric.util.addListener(
+						fabricObj.upperCanvasEl,
+						'dblclick',
+						callbackEventDoubleClick,
 					);
 				});
 
@@ -2837,6 +2812,7 @@ class PDFAnnotate extends React.Component {
 																		.post(
 																			'/api/sendmail',
 																			{
+																				from: loginUserName,
 																				to: nextuseremail,
 																				body: SignReviewAndRequest(
 																					{

@@ -1066,7 +1066,8 @@ app.post('/api/sendmail', function(req, res) {
 	//console.log("req.body.subject is " + req.body.subject);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
-		from: '"Pappaya Sign" <noreply@pappayasign.com>', // sender address
+		from: `"${req.body.from ||
+			'Pappaya Sign'} via Pappaya Sign" <noreply@pappayasign.com>`, // sender address
 		to: req.body.to, // list of receivers
 		subject: req.body.subject, // Subject line
 		html: req.body.body, // html body
@@ -1087,7 +1088,8 @@ app.post('/api/sendmailattachments', function(req, res) {
 	//console.log("req.body.subject is " + req.body.subject);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
-		from: '"Pappaya Sign" <noreply@pappayasign.com>', // sender address
+		from: `"${req.body.from ||
+			'Pappaya Sign'} via Pappaya Sign" <noreply@pappayasign.com>`,
 		to: req.body.to, // list of receivers
 		subject: req.body.subject, // Subject line
 		html: req.body.body, // html body
