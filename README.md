@@ -3,21 +3,20 @@
 An e-Signature application
 
 ## Requirements
+
 Install Mongo locally.
 
 ## Install
 
 1. Clone repo
-1. Run `npm install`
+2. Run `cd frontend && npm install`
+3. Run `cd backend && npm install`
 
 ## Run for Development
 
-Use `npm run react` to start the live updating react development build.
-Run `node server.js` to start the node server.
+-   Run `cd frontend && npm start` to start the live updating react development build.
+-   Run `cd backend && npm start` to start the node server.
 
-## Build for production
+## Build for Production
 
-1. Run `npm run build` to compile the production build for react app.
-1. Run `npm start` to start the node serve production build.
-1. Run `node server.js` to start the node server.
-
+Run ./deploy.sh to run deployment script
