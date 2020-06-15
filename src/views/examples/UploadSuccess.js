@@ -103,30 +103,33 @@ class UploadSuccess extends React.Component {
       this.recipientcolor = ''
       this.filename = filename
       this.url = url
-      var inst = this
+      let inst = this
       inst.fabricObjects.length = 0;
       inst.fabricObjectsData.length = 0;
 
+      // Removing Previously existing canvas elements 
+      // so that new documents doesn't get appended to old contents
+      document.getElementById(inst.container_id).innerHTML = "";
 
-      var loadingTask = PDFJS.getDocument(this.url)
+      let loadingTask = PDFJS.getDocument(this.url)
       loadingTask.promise.then(
         function (pdf) {
           inst.number_of_pages = pdf.numPages
-          var scale = 1.3
-          for (var i = 1; i <= pdf.numPages; i++) {
+          const scale = 1.3
+          for (let i = 1; i <= pdf.numPages; i++) {
             pdf.getPage(i).then(function (page) {
-              var container = document.getElementById(inst.container_id)
+              const container = document.getElementById(inst.container_id)
               //var viewport = page.getViewport(1);
               //var scale = (container.clientWidth - 80) / viewport.width;
-              var viewport = page.getViewport({scale:scale})
-              var canvas = document.createElement('canvas')
+              const viewport = page.getViewport({scale:scale})
+              const canvas = document.createElement('canvas')
               try {
-                document.getElementById(inst.container_id).appendChild(canvas)
+                container.appendChild(canvas)
               } catch (error) {}
               canvas.className = 'review-pdf-canvas'
               canvas.height = viewport.height
               canvas.width = viewport.width
-              var context = canvas.getContext('2d')
+              const context = canvas.getContext('2d')
 
               var renderContext = {
                 canvasContext: context,
@@ -138,7 +141,7 @@ class UploadSuccess extends React.Component {
                   $(el).attr('id', 'page-' + (index + 1) + '-canvas')
                 })
                 inst.pages_rendered++
-                if (inst.pages_rendered == inst.number_of_pages)
+                if (inst.pages_rendered === inst.number_of_pages)
                   inst.initFabric()
               })
             })
@@ -380,6 +383,7 @@ class UploadSuccess extends React.Component {
 
     $("#docreplacebtn").on('click', function () {
       $(".actionsign").click( function() {});
+      global.pdfset = 'not set';
       document.getElementById('replaceinput').click()
     });
 
@@ -390,21 +394,21 @@ class UploadSuccess extends React.Component {
       try {
         if(global.pdfset === 'not set'){
           global.pdfset = 'set';
-                      global.pdf = await new PDFFabric(
-                        'review-pdf-container',
-                        'review-toolbar',
-                        DataVar.DataPath,
-                        'Default',
-                        {
-                          onPageUpdated: (page, oldData, newData) => {
-                            
-                            //modal[0].style.display = "block";
-                            ////console.log(page, oldData, newData);
-                          },
-                        }
-                      )
-                      modal[2].style.display = 'none'
-                      modal[1].style.display = 'block'
+          global.pdf = await new PDFFabric(
+            'review-pdf-container',
+            'review-toolbar',
+            DataVar.DataPath,
+            'Default',
+            {
+              onPageUpdated: (page, oldData, newData) => {
+                
+                //modal[0].style.display = "block";
+                ////console.log(page, oldData, newData);
+              },
+            }
+          )
+          modal[2].style.display = 'none'
+          modal[1].style.display = 'block'
         }
         else{
           modal[2].style.display = 'none'
