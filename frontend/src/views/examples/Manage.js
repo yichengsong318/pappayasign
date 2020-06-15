@@ -3124,6 +3124,7 @@ class Tables extends React.Component {
 											);
 											axios
 												.post('/api/sendmail', {
+													from: loginUserName,
 													to: data.RecipientEmail,
 													body: SignReviewAndRequest({
 														SenderName: loginUserName,
