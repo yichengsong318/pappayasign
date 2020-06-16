@@ -51,7 +51,7 @@ class UploadSuccess extends React.Component {
 		var reader = new FileReader();
 		reader.readAsDataURL(files[0]);
 
-		reader.onload = function() {
+		reader.onload = function () {
 			DataVar.DataURI = files[0];
 			DataVar.DataPath = reader.result;
 			PreviewData.DataPath = reader.result;
@@ -64,7 +64,7 @@ class UploadSuccess extends React.Component {
 			//$('<a href="'+url+'" target="blank"></a>')[0].click();
 		};
 
-		reader.onerror = function() {
+		reader.onerror = function () {
 			//console.log(reader.error);
 			alert('Error Opening File');
 		};
@@ -77,7 +77,7 @@ class UploadSuccess extends React.Component {
 	componentDidMount() {
 		var global = this;
 
-		var PDFFabric = function(
+		var PDFFabric = function (
 			container_id,
 			toolbar_id,
 			url,
@@ -106,17 +106,17 @@ class UploadSuccess extends React.Component {
 			inst.fabricObjects.length = 0;
 			inst.fabricObjectsData.length = 0;
 
-			// Removing Previously existing canvas elements 
+			// Removing Previously existing canvas elements
 			// so that new documents doesn't get appended to old contents
-			document.getElementById(inst.container_id).innerHTML = "";
+			document.getElementById(inst.container_id).innerHTML = '';
 
 			let loadingTask = PDFJS.getDocument(this.url);
 			loadingTask.promise.then(
-				function(pdf) {
+				function (pdf) {
 					inst.number_of_pages = pdf.numPages;
 					const scale = 1.3;
 					for (let i = 1; i <= pdf.numPages; i++) {
-						pdf.getPage(i).then(function(page) {
+						pdf.getPage(i).then(function (page) {
 							const container = document.getElementById(
 								inst.container_id,
 							);
@@ -137,8 +137,8 @@ class UploadSuccess extends React.Component {
 								viewport: viewport,
 							};
 							let renderTask = page.render(renderContext);
-							renderTask.promise.then(function() {
-								$('.review-pdf-canvas').each(function(
+							renderTask.promise.then(function () {
+								$('.review-pdf-canvas').each(function (
 									index,
 									el,
 								) {
@@ -148,20 +148,22 @@ class UploadSuccess extends React.Component {
 									);
 								});
 								inst.pages_rendered++;
-								if (inst.pages_rendered === inst.number_of_pages)
+								if (
+									inst.pages_rendered === inst.number_of_pages
+								)
 									inst.initFabric();
 							});
 						});
 					}
 				},
-				function(reason) {
+				function (reason) {
 					console.error(reason);
 				},
 			);
 
-			this.initFabric = function() {
+			this.initFabric = function () {
 				var inst = this;
-				$('#' + inst.container_id + ' canvas').each(function(
+				$('#' + inst.container_id + ' canvas').each(function (
 					index,
 					el,
 				) {
@@ -173,7 +175,7 @@ class UploadSuccess extends React.Component {
 						},
 					});
 
-					fabricObj.on('object:selected', function(e) {
+					fabricObj.on('object:selected', function (e) {
 						e.target.transparentCorners = false;
 						e.target.borderColor = '#cccccc';
 						e.target.cornerColor = '#d35400';
@@ -199,7 +201,7 @@ class UploadSuccess extends React.Component {
 						background,
 						fabricObj.renderAll.bind(fabricObj),
 					);
-					fabricObj.on('after:render', function() {
+					fabricObj.on('after:render', function () {
 						inst.fabricObjectsData[index] = fabricObj.toJSON();
 						fabricObj.off('after:render');
 					});
@@ -207,7 +209,7 @@ class UploadSuccess extends React.Component {
 
 				try {
 					var addobjbtn = document.getElementById('manageaddobjbtn');
-					addobjbtn.addEventListener('click', function(event) {
+					addobjbtn.addEventListener('click', function (event) {
 						global.pdf.AddObj();
 						//console.log(global.pdf)
 						//console.log('adding objects')
@@ -217,16 +219,16 @@ class UploadSuccess extends React.Component {
 			};
 		};
 
-		PDFFabric.prototype.AddObj = function() {
+		PDFFabric.prototype.AddObj = function () {
 			var inst = this;
 			//console.log('started adding objects')
 			// // // // // // // ////console.log('file id found');
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				////console.log(index);
 
-				fabricObj.loadFromJSON(PreviewData.Data[index], function() {
+				fabricObj.loadFromJSON(PreviewData.Data[index], function () {
 					fabricObj.renderAll();
-					fabricObj.getObjects().forEach(function(targ) {
+					fabricObj.getObjects().forEach(function (targ) {
 						////console.log(targ);
 						targ.selectable = false;
 						targ.hasControls = false;
@@ -236,10 +238,10 @@ class UploadSuccess extends React.Component {
 			//console.log('pdf done')
 		};
 
-		PDFFabric.prototype.savePdf = function() {
+		PDFFabric.prototype.savePdf = function () {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -262,10 +264,10 @@ class UploadSuccess extends React.Component {
 			modal[2].style.display = 'none';
 		};
 
-		PDFFabric.prototype.printPdf = function() {
+		PDFFabric.prototype.printPdf = function () {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -287,9 +289,9 @@ class UploadSuccess extends React.Component {
 			modal[2].style.display = 'none';
 		};
 
-		PDFFabric.prototype.Clear = function() {
+		PDFFabric.prototype.Clear = function () {
 			var inst = this;
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				inst.fabricObjects.slice(index, 1);
 			});
 			modal[2].style.display = 'none';
@@ -331,7 +333,7 @@ class UploadSuccess extends React.Component {
 		var uploadsuccessnextbtn = document.getElementById(
 			'uploadsuccessnextbtn',
 		);
-		uploadsuccessnextbtn.addEventListener('click', function(event) {
+		uploadsuccessnextbtn.addEventListener('click', function (event) {
 			//window.location.hash = '#/admin/recipients';
 			if (document.getElementById('onlysignercheck').checked) {
 				DataVar.OnlySigner = true;
@@ -358,20 +360,20 @@ class UploadSuccess extends React.Component {
 				DataVar.DocName;
 		}
 
-		$('#docnameeditbtn').on('click', function() {
-			$('.actionsign').click(function() {});
+		$('#docnameeditbtn').on('click', function () {
+			$('.actionsign').click(function () {});
 			modal[0].style.display = 'block';
 		});
 
-		$(document).on('click', '.docnameedit-close', function() {
+		$(document).on('click', '.docnameedit-close', function () {
 			modal[0].style.display = 'none';
 		});
 
-		$('#docnameeditcancelbtn').on('click', function() {
+		$('#docnameeditcancelbtn').on('click', function () {
 			modal[0].style.display = 'none';
 		});
 
-		$('#docnameeditsavebtn').on('click', function() {
+		$('#docnameeditsavebtn').on('click', function () {
 			DataVar.DocName = document.getElementById(
 				'input-docnameedit-message',
 			).value;
@@ -384,7 +386,7 @@ class UploadSuccess extends React.Component {
 			modal[0].style.display = 'none';
 		});
 
-		$('#onlysignercheck').change(function() {
+		$('#onlysignercheck').change(function () {
 			if (this.checked) {
 				document.getElementById('uploadsuccesssignbtn').style.display =
 					'block';
@@ -401,20 +403,20 @@ class UploadSuccess extends React.Component {
 		var uploadsuccesssignbtn = document.getElementById(
 			'uploadsuccesssignbtn',
 		);
-		uploadsuccesssignbtn.addEventListener('click', function(event) {
+		uploadsuccesssignbtn.addEventListener('click', function (event) {
 			DataVar.OnlySigner = true;
 			window.location.hash = '#/admin/sign';
 		});
 
-		$('#docreplacebtn').on('click', function() {
-			$('.actionsign').click(function() {});
+		$('#docreplacebtn').on('click', function () {
+			$('.actionsign').click(function () {});
 			document.getElementById('replaceinput').click();
 			global.pdfset = 'not set';
 		});
 
-		$('#docviewbtn').click(async function() {
+		$('#docviewbtn').click(async function () {
 			modal[2].style.display = 'block';
-			$('.actionsign').click(function() {});
+			$('.actionsign').click(function () {});
 			try {
 				if (global.pdfset === 'not set') {
 					global.pdfset = 'set';
@@ -439,25 +441,36 @@ class UploadSuccess extends React.Component {
 			} catch (error) {}
 		});
 
-		$(document).on('click', '.preview-close', function() {
+		$(document).on('click', '.preview-close', function () {
 			modal[1].style.display = 'none';
-			$('.actionsign').click(function() {});
+			$('.actionsign').click(function () {});
 		});
 
 		var droptogglesign = 0;
 
-		$(document).on('click', '.actionsign', function() {
-			$('.dropdown-menu2').css({ display: 'none' });
+		// Closing the dropdown when the user clicks outside the document
+		let dropdownAction = false;
+
+		document.onclick = (mouseEvt) => {
+			if (droptogglesign === 1 && !dropdownAction) {
+				const dropDown = document.getElementById('dropdown');
+				dropDown.setAttribute('style', 'display:none');
+				droptogglesign = 0;
+			}
+			dropdownAction = dropdownAction ? !dropdownAction : dropdownAction;
+		};
+
+		$(document).on('click', '.actionsign', function () {
+			// $('.dropdown-menu2').css({ display: 'none' });
 			if (droptogglesign === 0) {
-				$(this)
-					.parent()
-					.children('#dropdown')[0].style.display = 'block';
+				$(this).parent().children('#dropdown')[0].style.display =
+					'block';
 				droptogglesign = 1;
+				dropdownAction = true;
 			} else if (droptogglesign === 1) {
 				droptogglesign = 0;
-				$(this)
-					.parent()
-					.children('#dropdown')[0].style.display = 'none';
+				$(this).parent().children('#dropdown')[0].style.display =
+					'none';
 			}
 		});
 	}
