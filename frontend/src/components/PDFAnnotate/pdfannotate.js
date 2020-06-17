@@ -177,20 +177,6 @@ class PDFAnnotate extends React.Component {
 		var ObjectCursorIndex = 0;
 		modal[0].style.display = 'block';
 
-		// var element = document.getElementById('pdf-container');
-		// var hammertime = Hammer(element);
-		//
-		// hammertime.get('pinch').set({ enable: true });
-
-		// var myScroll = new IScroll('#pdf-container', {
-		// 	zoom: true,
-		// 	scrollbars: true,
-		// 	wheelHorizontal: true,
-		// 	scrollX : false,
-		// 	scrollY: true
-		// });
-		alert('d');
-
 		var PDFAnnotate = function(
 			container_id,
 			toolbar_id,
