@@ -3,13 +3,26 @@ import HeaderDefault from 'components/Headers/HeaderDefault.js';
 import React from 'react';
 import $ from 'jquery';
 // reactstrap components
-import { Card, CardBody, CardHeader, Col, Row, CardFooter, Button } from 'reactstrap';
+import {
+	Card,
+	CardBody,
+	CardHeader,
+	Col,
+	Row,
+	CardFooter,
+	Button,
+} from 'reactstrap';
 import PDFAnnotate from '../../components/PDFAnnotate/pdfannotate';
 import DataVar from '../../variables/data';
 const axios = require('axios').default;
 
-
 class Icons extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showDiscardModal: false,
+		};
+	}
 	componentDidMount() {
 		function getCookie(name) {
 			var nameEQ = name + '=';
@@ -52,7 +65,7 @@ class Icons extends React.Component {
 				signfileid = data.id;
 				signkey = data.key;
 				// // // // // // // ////console.log('key:'+key);
-			} catch (error) { }
+			} catch (error) {}
 
 			if (signfilename == '' || signuseridother == '') {
 			} else {
@@ -74,24 +87,28 @@ class Icons extends React.Component {
 			//window.location.hash = "#/auth/login";
 		}
 
-		$('#stepaddbtn').click(function () {
+		$('#stepaddbtn').click(function() {
 			window.location.hash = '#/admin/uploadsuccess';
 		});
 
-		$('#stepselectbtn').click(function () {
+		$('#stepselectbtn').click(function() {
 			window.location.hash = '#/admin/recipients';
 		});
 
-		$('#documentdiscardbtn').on('click', function () {
-			$('#DocumentDiscardModal').css('display', 'block');
+		$('#documentdiscardbtn').on('click', () => {
+			this.setState({
+				showDiscardModal: true,
+			});
 		});
-		$('#doccumentdiscard-close, #documentcancel').on('click', function () {
-			$('#DocumentDiscardModal').css('display', 'none');
+		$('#doccumentdiscard-close, #documentcancel').on('click', () => {
+			this.setState({
+				showDiscardModal: false,
+			});
 		});
-		$('#documentdiscard').on('click', function () {
+		$('#documentdiscard').on('click', function() {
 			window.location.hash = '#/admin/index';
 		});
-		$('#documentsaveandclose').on('click', function () {
+		$('#documentsaveandclose').on('click', function() {
 			var today = new Date().toLocaleString().replace(',', '');
 			console.log('dadfa', DataVar);
 			axios
@@ -108,7 +125,7 @@ class Icons extends React.Component {
 					Data: [],
 					Reciever: DataVar.RecipientArray,
 				})
-				.then(function (response) {
+				.then(function(response) {
 					window.location.hash = '#/manage/index';
 				});
 		});
@@ -125,53 +142,64 @@ class Icons extends React.Component {
 		}
 	}
 	render() {
+		const { showDiscardModal } = this.state;
 		return (
 			<>
 				<HeaderDefault />
 				{/* Page content */}
-				<div className="modal" id="DocumentDiscardModal">
-					<div className="private-modal-content modal-dialog">
-						<div>
-							<Card className="shadow border-0 mx-3 p-3">
-								<CardHeader className=" bg-transparent">
-									<div className="review-manager-title">
-										<span>Do you want to save the envelop?</span>
-										<i className="ni ni-fat-remove" id="doccumentdiscard-close" />
-									</div>
-								</CardHeader>
-								<CardBody>
-									<Row>
-										<Col lg="12">Your changes will be lost if you don't save them</Col>
-									</Row>
-								</CardBody>
-								<CardFooter>
-									<Row>
-										<Col lg="12">
-											<Button
-												className="mx-2 px-4"
-												color="primary"
-												id="documentsaveandclose">
-												Save &amp; Close
-										</Button>
-											<Button
-												className="mx-2 px-4"
-												color="neutral"
-												id="documentdiscard">
-												Discard
-										</Button>
-											<Button
-												className="px-4 mx-2"
-												color="neutral"
-												id="documentcancel">
-												Cancel
-										</Button>
-										</Col>
-									</Row>
-								</CardFooter>
-							</Card>
+				{showDiscardModal && (
+					<div className="modal" id="DocumentDiscardModal">
+						<div className="private-modal-content modal-dialog">
+							<div>
+								<Card className="shadow border-0 mx-3 p-3">
+									<CardHeader className=" bg-transparent">
+										<div className="review-manager-title">
+											<span>
+												Do you want to save the envelop?
+											</span>
+											<i
+												className="ni ni-fat-remove"
+												id="doccumentdiscard-close"
+											/>
+										</div>
+									</CardHeader>
+									<CardBody>
+										<Row>
+											<Col lg="12">
+												Your changes will be lost if you
+												don't save them
+											</Col>
+										</Row>
+									</CardBody>
+									<CardFooter>
+										<Row>
+											<Col lg="12">
+												<Button
+													className="mx-2 px-4"
+													color="primary"
+													id="documentsaveandclose">
+													Save &amp; Close
+												</Button>
+												<Button
+													className="mx-2 px-4"
+													color="neutral"
+													id="documentdiscard">
+													Discard
+												</Button>
+												<Button
+													className="px-4 mx-2"
+													color="neutral"
+													id="documentcancel">
+													Cancel
+												</Button>
+											</Col>
+										</Row>
+									</CardFooter>
+								</Card>
+							</div>
 						</div>
 					</div>
-				</div>
+				)}
 				<div className="mt--9 pb-3">
 					<Card
 						className="shadow border-0 pb-2 mx-5 mb-3 bg-dark"
@@ -188,11 +216,11 @@ class Icons extends React.Component {
 													id="documentdiscardbtn"
 													type="button"
 													className="btn btn-primary btn-circle-process">
-													<i class="ni ni-fat-remove flow-close"></i>
+													<i class="ni ni-fat-remove flow-close" />
 												</button>
 												<p className="steplabel">
 													Close
-														</p>
+												</p>
 											</div>
 											<div className="stepwizard-step">
 												<button
