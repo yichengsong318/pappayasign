@@ -639,6 +639,7 @@ i.material-icons {
 	justify-content: left;
 	-webkit-animation: fadeinout 0.25s linear forwards;
 	animation: fadeinout 0.25s linear forwards;
+	pointer-events: all !important;
 }
 
 .review-act-modal-content {
@@ -681,6 +682,7 @@ i.material-icons {
 	justify-content: left;
 	-webkit-animation: fadeinout 0.25s linear forwards;
 	animation: fadeinout 0.25s linear forwards;
+	pointer-events: all !important;
 }
 
 .flowlabelspan {
