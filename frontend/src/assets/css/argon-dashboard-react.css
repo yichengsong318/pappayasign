@@ -174,12 +174,20 @@
 	padding: 0.6rem !important;
 	font-size: 2rem !important;
 	border-radius: 3px !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.nav-link-icon .btn-inner--icon {
+	font-size: 5px;
 }
 
 .nav-link-icon .btn-inner--icon i {
 	font-size: 1rem !important;
 	color: #fff;
 	vertical-align: middle;
+	padding: 0;
 }
 
 .nav-link-icon .btn-inner--text {
@@ -835,6 +843,10 @@ i.material-icons {
 	#completepic {
 		width: 100%;
 		height: 100%;
+	}
+
+	#navbaradminmainprofile {
+		border-top: 1px solid #eee;
 	}
 }
 
@@ -14332,11 +14344,6 @@ a.text-lighter:focus {
 
 .btn-outline-secondary {
 	color: #4385b1;
-}
-
-.btn-inner--icon i:not(.fa) {
-	position: relative;
-	top: 2px;
 }
 
 .btn-link {

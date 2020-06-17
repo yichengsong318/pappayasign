@@ -205,9 +205,44 @@ class AdminNavbar extends React.Component {
 										</span>
 									</NavLink>
 								</NavItem>
+
+								<NavItem className="d-block d-md-none">
+									<NavLink
+										className="nav-link-icon navtop"
+										activeClassName="active"
+										to="/admin/user-profile"
+										tag={Link}>
+										<span className="btn-inner--icon">
+											<i className="material-icons">
+												help
+											</i>
+										</span>
+										<span className="btn-inner--text">
+											Support
+										</span>
+									</NavLink>
+								</NavItem>
+
+								<NavItem className="d-block d-md-none">
+									<NavLink
+										id="adminnavbarlogoutbtn"
+										className="nav-link-icon navtop"
+										activeClassName="active"
+										to="/logout"
+										tag={Link}>
+										<span className="btn-inner--icon">
+											<i className="material-icons">
+												exit_to_app
+											</i>
+										</span>
+										<span className="btn-inner--text">
+											Logout
+										</span>
+									</NavLink>
+								</NavItem>
 							</Nav>
 							<Nav
-								className="align-items-center d-none d-md-flex"
+								className="align-items-center d-flex"
 								navbar
 								id="navbaradminmainprofile">
 								<UncontrolledDropdown nav>
@@ -222,7 +257,7 @@ class AdminNavbar extends React.Component {
 													src={'/team-4-800x800.jpg'}
 												/>
 											</span>
-											<Media className="ml-2 d-none d-lg-block">
+											<Media className="ml-2">
 												<span
 													id="navbarname"
 													className="mb-0 text-sm font-weight-bold"
@@ -237,28 +272,18 @@ class AdminNavbar extends React.Component {
 											className="dropdown-item2"
 											to="/admin/user-profile"
 											tag={Link}>
-											<i className="ni ni-settings-gear-65" />
-											<span>Settings</span>
-										</DropdownItem>
-										<DropdownItem
-											className="dropdown-item2"
-											to="/admin/manage"
-											tag={Link}>
-											<i className="ni ni-calendar-grid-58" />
-											<span>Manage</span>
-										</DropdownItem>
-										<DropdownItem
-											className="dropdown-item2"
-											to="/admin/user-profile"
-											tag={Link}>
-											<i className="ni ni-support-16" />
+											<i className="material-icons">
+												help
+											</i>
 											<span>Support</span>
 										</DropdownItem>
 										<DropdownItem divider />
 										<DropdownItem
 											className="dropdown-item2 logoutbtn"
 											id="adminnavbarlogoutbtn">
-											<i className="ni ni-user-run" />
+											<i className="material-icons">
+												exit_to_app
+											</i>
 											<span>Logout</span>
 										</DropdownItem>
 									</DropdownMenu>
