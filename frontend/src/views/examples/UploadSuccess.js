@@ -102,39 +102,41 @@ class UploadSuccess extends React.Component {
 			this.recipientcolor = '';
 			this.filename = filename;
 			this.url = url;
-			var inst = this;
+			let inst = this;
 			inst.fabricObjects.length = 0;
 			inst.fabricObjectsData.length = 0;
 
-			var loadingTask = PDFJS.getDocument(this.url);
+			// Removing Previously existing canvas elements
+			// so that new documents doesn't get appended to old contents
+			document.getElementById(inst.container_id).innerHTML = '';
+
+			let loadingTask = PDFJS.getDocument(this.url);
 			loadingTask.promise.then(
 				function (pdf) {
 					inst.number_of_pages = pdf.numPages;
-					var scale = 1.3;
-					for (var i = 1; i <= pdf.numPages; i++) {
+					const scale = 1.3;
+					for (let i = 1; i <= pdf.numPages; i++) {
 						pdf.getPage(i).then(function (page) {
-							var container = document.getElementById(
+							const container = document.getElementById(
 								inst.container_id,
 							);
 							//var viewport = page.getViewport(1);
 							//var scale = (container.clientWidth - 80) / viewport.width;
-							var viewport = page.getViewport({ scale: scale });
-							var canvas = document.createElement('canvas');
+							const viewport = page.getViewport({ scale: scale });
+							const canvas = document.createElement('canvas');
 							try {
-								document
-									.getElementById(inst.container_id)
-									.appendChild(canvas);
-							} catch (error) { }
+								container.appendChild(canvas);
+							} catch (error) {}
 							canvas.className = 'review-pdf-canvas';
 							canvas.height = viewport.height;
 							canvas.width = viewport.width;
 							var context = canvas.getContext('2d');
 
-							var renderContext = {
+							const renderContext = {
 								canvasContext: context,
 								viewport: viewport,
 							};
-							var renderTask = page.render(renderContext);
+							let renderTask = page.render(renderContext);
 							renderTask.promise.then(function () {
 								$('.review-pdf-canvas').each(function (
 									index,
@@ -146,7 +148,9 @@ class UploadSuccess extends React.Component {
 									);
 								});
 								inst.pages_rendered++;
-								if (inst.pages_rendered == inst.number_of_pages)
+								if (
+									inst.pages_rendered === inst.number_of_pages
+								)
 									inst.initFabric();
 							});
 						});
@@ -357,7 +361,7 @@ class UploadSuccess extends React.Component {
 		}
 
 		$('#docnameeditbtn').on('click', function () {
-			$('.actionsign').click(function () { });
+			$('.actionsign').click(function () {});
 			modal[0].style.display = 'block';
 		});
 
@@ -405,13 +409,14 @@ class UploadSuccess extends React.Component {
 		});
 
 		$('#docreplacebtn').on('click', function () {
-			$('.actionsign').click(function () { });
+			$('.actionsign').click(function () {});
 			document.getElementById('replaceinput').click();
+			global.pdfset = 'not set';
 		});
 
 		$('#docviewbtn').click(async function () {
 			modal[2].style.display = 'block';
-			$('.actionsign').click(function () { });
+			$('.actionsign').click(function () {});
 			try {
 				if (global.pdfset === 'not set') {
 					global.pdfset = 'set';
@@ -438,23 +443,34 @@ class UploadSuccess extends React.Component {
 
 		$(document).on('click', '.preview-close', function () {
 			modal[1].style.display = 'none';
-			$('.actionsign').click(function () { });
+			$('.actionsign').click(function () {});
 		});
 
 		var droptogglesign = 0;
 
+		// Closing the dropdown when the user clicks outside the document
+		let dropdownAction = false;
+
+		document.onclick = (mouseEvt) => {
+			if (droptogglesign === 1 && !dropdownAction) {
+				const dropDown = document.getElementById('dropdown');
+				dropDown.setAttribute('style', 'display:none');
+				droptogglesign = 0;
+			}
+			dropdownAction = dropdownAction ? !dropdownAction : dropdownAction;
+		};
+
 		$(document).on('click', '.actionsign', function () {
-			$('.dropdown-menu2').css({ display: 'none' });
+			// $('.dropdown-menu2').css({ display: 'none' });
 			if (droptogglesign === 0) {
-				$(this)
-					.parent()
-					.children('#dropdown')[0].style.display = 'block';
+				$(this).parent().children('#dropdown')[0].style.display =
+					'block';
 				droptogglesign = 1;
+				dropdownAction = true;
 			} else if (droptogglesign === 1) {
 				droptogglesign = 0;
-				$(this)
-					.parent()
-					.children('#dropdown')[0].style.display = 'none';
+				$(this).parent().children('#dropdown')[0].style.display =
+					'none';
 			}
 		});
 

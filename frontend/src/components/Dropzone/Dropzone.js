@@ -23,16 +23,36 @@ class Dropzone extends Component {
 	global = this;
 
 	convertImageToPDF = async (file) => {
+		const imagesFormat = {
+			'image/png': 'PNG',
+			'image/jpg': 'JPG',
+			'image/jpeg': 'JPEG',
+		};
+
 		return new Promise((resolve) => {
 			const reader = new FileReader();
 
-			reader.onload = function(e) {
-				var img = new Image();
+			reader.onload = function (e) {
+				let img = new Image();
 				img.src = e.target.result;
 
-				var doc = new jsPDF('p', 'mm', 'a4', true);
-				doc.addImage(img, 0, 0);
-				var modal = document.querySelectorAll('.modal');
+				// Added the scale factor to resize the image to fit the document
+				const a4Width = 209;
+				const scaleFactor = img.width / a4Width;
+				const scaleHeight = Math.floor(img.height / scaleFactor);
+
+				let doc = new jsPDF('p', 'mm', 'a4', true);
+				doc.addImage(
+					img,
+					imagesFormat[file.type],
+					0,
+					0,
+					a4Width,
+					scaleHeight,
+					'img',
+					'NONE',
+				);
+				let modal = document.querySelectorAll('.modal');
 				modal[0].style.display = 'none';
 				resolve(
 					new File([doc.output('blob')], `${global.FileName}.pdf`, {
@@ -80,7 +100,7 @@ class Dropzone extends Component {
 		var reader = new FileReader();
 		reader.readAsDataURL(file);
 
-		reader.onload = function() {
+		reader.onload = function () {
 			DataVar.DataURI = file;
 			DataVar.DataPath = reader.result;
 			PreviewData.DataPath = reader.result;
@@ -93,7 +113,7 @@ class Dropzone extends Component {
 			//$('<a href="'+url+'" target="blank"></a>')[0].click();
 		};
 
-		reader.onerror = function() {
+		reader.onerror = function () {
 			//console.log(reader.error);
 			alert('Error Opening File');
 		};

@@ -776,6 +776,7 @@ class Review extends React.Component {
 
 				axios
 					.post('/api/sendmail', {
+						from: loginUserName,
 						to: firstRecipientEmail,
 						body: SignReviewAndRequest({
 							SenderName: loginUserName,
@@ -971,6 +972,7 @@ class Review extends React.Component {
 
 						axios
 							.post('/api/sendmail', {
+								from: loginUserName,
 								to: recipientEmail,
 								body: SignReviewAndRequest({
 									SenderName: loginUserName,
