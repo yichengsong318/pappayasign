@@ -7,6 +7,7 @@ import * as jsPDF from 'jspdf';
 import React from 'react';
 import * as dataTable from 'datatables';
 // reactstrap components
+import './Manage.scss';
 import {
 	Button,
 	Card,
@@ -91,7 +92,7 @@ class Tables extends React.Component {
 				var completedbtn = document.getElementById('completedbtn');
 				completedbtn.click();
 			}
-		} catch (error) {}
+		} catch (error) { }
 
 		var modal = document.querySelectorAll('.modal');
 		modal[0].style.display = 'block';
@@ -114,7 +115,7 @@ class Tables extends React.Component {
 		var RowSelectData = [];
 		var checkvoid = false;
 
-		var PDFFabric = function(
+		var PDFFabric = function (
 			container_id,
 			toolbar_id,
 			url,
@@ -145,11 +146,11 @@ class Tables extends React.Component {
 
 			var loadingTask = PDFJS.getDocument(this.url);
 			loadingTask.promise.then(
-				function(pdf) {
+				function (pdf) {
 					inst.number_of_pages = pdf.numPages;
 					var scale = 1.3;
 					for (var i = 1; i <= pdf.numPages; i++) {
-						pdf.getPage(i).then(function(page) {
+						pdf.getPage(i).then(function (page) {
 							var container = document.getElementById(
 								inst.container_id,
 							);
@@ -180,7 +181,7 @@ class Tables extends React.Component {
 								document
 									.getElementById(inst.container_id)
 									.appendChild(openbtn);
-							} catch (error) {}
+							} catch (error) { }
 							canvas.className = 'manage-pdf-canvas';
 							canvas.height = viewport.height;
 							canvas.width = viewport.width;
@@ -191,8 +192,8 @@ class Tables extends React.Component {
 								viewport: viewport,
 							};
 							var renderTask = page.render(renderContext);
-							renderTask.promise.then(function() {
-								$('.manage-pdf-canvas').each(function(
+							renderTask.promise.then(function () {
+								$('.manage-pdf-canvas').each(function (
 									index,
 									el,
 								) {
@@ -208,14 +209,14 @@ class Tables extends React.Component {
 						});
 					}
 				},
-				function(reason) {
+				function (reason) {
 					console.error(reason);
 				},
 			);
 
-			this.initFabric = function() {
+			this.initFabric = function () {
 				var inst = this;
-				$('#' + inst.container_id + ' canvas').each(function(
+				$('#' + inst.container_id + ' canvas').each(function (
 					index,
 					el,
 				) {
@@ -227,7 +228,7 @@ class Tables extends React.Component {
 						},
 					});
 
-					fabricObj.on('object:selected', function(e) {
+					fabricObj.on('object:selected', function (e) {
 						e.target.transparentCorners = false;
 						e.target.borderColor = '#cccccc';
 						e.target.cornerColor = '#d35400';
@@ -253,7 +254,7 @@ class Tables extends React.Component {
 						background,
 						fabricObj.renderAll.bind(fabricObj),
 					);
-					fabricObj.on('after:render', function() {
+					fabricObj.on('after:render', function () {
 						inst.fabricObjectsData[index] = fabricObj.toJSON();
 						fabricObj.off('after:render');
 					});
@@ -261,24 +262,24 @@ class Tables extends React.Component {
 
 				try {
 					var addobjbtn = document.getElementById('manageaddobjbtn');
-					addobjbtn.addEventListener('click', function(event) {
+					addobjbtn.addEventListener('click', function (event) {
 						global.pdf.AddObj();
 						//console.log(global.pdf)
 						//console.log('adding objects')
 					});
 					addobjbtn.click();
-				} catch (error) {}
+				} catch (error) { }
 			};
 		};
 
-		PDFFabric.prototype.AddObj = function() {
+		PDFFabric.prototype.AddObj = function () {
 			var inst = this;
 			//console.log('started adding objects')
 			// // // // // // // ////console.log('file id found');
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				////console.log(index);
 				if (checkvoid == true) {
-					fabricObj.loadFromJSON(RowSelectData[index], function() {
+					fabricObj.loadFromJSON(RowSelectData[index], function () {
 						var text = new fabric.Text('VOIDED', {
 							left: fabricObj.width / 2 - 210,
 							top: fabricObj.height / 2 - 50,
@@ -292,16 +293,16 @@ class Tables extends React.Component {
 						});
 						fabricObj.add(text);
 						fabricObj.renderAll();
-						fabricObj.getObjects().forEach(function(targ) {
+						fabricObj.getObjects().forEach(function (targ) {
 							////console.log(targ);
 							targ.selectable = false;
 							targ.hasControls = false;
 						});
 					});
 				} else {
-					fabricObj.loadFromJSON(RowSelectData[index], function() {
+					fabricObj.loadFromJSON(RowSelectData[index], function () {
 						fabricObj.renderAll();
-						fabricObj.getObjects().forEach(function(targ) {
+						fabricObj.getObjects().forEach(function (targ) {
 							////console.log(targ);
 							targ.selectable = false;
 							targ.hasControls = false;
@@ -312,10 +313,10 @@ class Tables extends React.Component {
 			//console.log('pdf done')
 		};
 
-		PDFFabric.prototype.savePdf = function() {
+		PDFFabric.prototype.savePdf = function () {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -338,10 +339,10 @@ class Tables extends React.Component {
 			modal[0].style.display = 'none';
 		};
 
-		PDFFabric.prototype.printPdf = function() {
+		PDFFabric.prototype.printPdf = function () {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -363,10 +364,10 @@ class Tables extends React.Component {
 			modal[0].style.display = 'none';
 		};
 
-		PDFFabric.prototype.OpenIndividual = function(fabricindex) {
+		PDFFabric.prototype.OpenIndividual = function (fabricindex) {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -389,7 +390,7 @@ class Tables extends React.Component {
 			modal[0].style.display = 'none';
 		};
 
-		PDFFabric.prototype.DownloadIndividual = function(fabricindex) {
+		PDFFabric.prototype.DownloadIndividual = function (fabricindex) {
 			var inst = this;
 			var fabricObj = inst.fabricObjects[fabricindex];
 			var doc = new jsPDF('p', 'pt', 'a4', true);
@@ -408,9 +409,9 @@ class Tables extends React.Component {
 			modal[0].style.display = 'none';
 		};
 
-		PDFFabric.prototype.Clear = function() {
+		PDFFabric.prototype.Clear = function () {
 			var inst = this;
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				inst.fabricObjects.slice(index, 1);
 			});
 			modal[0].style.display = 'none';
@@ -458,7 +459,7 @@ class Tables extends React.Component {
 				.post('/api/getuserdata', {
 					UserID: userid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'user found') {
 						var Request = response.data.user.Request;
@@ -469,7 +470,7 @@ class Tables extends React.Component {
 						var actionrequiredcontent = '';
 						var sentcontent = '';
 
-						Request.sort(function(a, b) {
+						Request.sort(function (a, b) {
 							var keyA = new Date(a.RecipientDateStatus),
 								keyB = new Date(b.RecipientDateStatus);
 							// Compare the 2 dates
@@ -480,11 +481,11 @@ class Tables extends React.Component {
 
 						Request = Request.reverse();
 
-						Request.forEach(function(data, index) {
+						Request.forEach(function (data, index) {
 							if (
 								Request[index].RecipientStatus == 'Void' ||
 								Request[index].RecipientStatus ==
-									'Need to Sign' ||
+								'Need to Sign' ||
 								Request[index].RecipientStatus == 'Expiring' ||
 								Request[index].RecipientStatus == 'Completed' ||
 								Request[index].RecipientStatus == 'Correcting'
@@ -909,7 +910,7 @@ class Tables extends React.Component {
 						}
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 					modal[0].style.display = 'none';
 				});
@@ -922,7 +923,7 @@ class Tables extends React.Component {
 				.post('/api/getmanagedocdata', {
 					UserID: userid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc found') {
 						var Documents = response.data.doc;
@@ -937,7 +938,7 @@ class Tables extends React.Component {
 						var expiringcontent = '';
 						var actionrequiredcontent = '';
 
-						Documents.sort(function(a, b) {
+						Documents.sort(function (a, b) {
 							var keyA = new Date(a.DateStatus),
 								keyB = new Date(b.DateStatus);
 							// Compare the 2 dates
@@ -948,10 +949,10 @@ class Tables extends React.Component {
 
 						Documents = Documents.reverse();
 
-						Documents.forEach(function(data, index) {
+						Documents.forEach(function (data, index) {
 							var reciverlist = '';
 							try {
-								data.Reciever.forEach(function(
+								data.Reciever.forEach(function (
 									reciever,
 									index,
 								) {
@@ -962,7 +963,7 @@ class Tables extends React.Component {
 										reciever.RecipientEmail +
 										'\n';
 								});
-							} catch (error) {}
+							} catch (error) { }
 
 							if (
 								data.Status == 'Sent' ||
@@ -983,7 +984,7 @@ class Tables extends React.Component {
 									sentcontent +=
 										'<td><input class="primary" type="checkbox"></td>';
 									sentcontent +=
-										'<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>';
+										'<td><i class="material-icons">error</i></td>';
 									sentcontent +=
 										'<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
 										data.DocumentName +
@@ -1034,7 +1035,7 @@ class Tables extends React.Component {
 									allcontent +=
 										'<td><input class="primary" type="checkbox"></td>';
 									allcontent +=
-										'<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>';
+										'<td><i class="material-icons">error</i></td>';
 									allcontent +=
 										'<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
 										data.DocumentName +
@@ -1085,7 +1086,7 @@ class Tables extends React.Component {
 									actionrequiredcontent +=
 										'<td><input class="primary" type="checkbox"></td>';
 									actionrequiredcontent +=
-										'<td><i class="material-icons manage-pdf-download-btn-icon">query_builder</i></td>';
+										'<td><i class="material-icons">error</i></td>';
 									actionrequiredcontent +=
 										'<td scope="row" class="rowselect"><span className="mb-0 text-sm">' +
 										data.DocumentName +
@@ -1731,32 +1732,32 @@ class Tables extends React.Component {
 						modal[0].style.display = 'none';
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 					modal[0].style.display = 'none';
 				});
 		}
 
-		$(document).on('click', '.manage-pdf-download-btn', function() {
+		$(document).on('click', '.manage-pdf-download-btn', function () {
 			//console.log($(".manage-pdf-download-btn").index(this));
 			var index = $('.manage-pdf-download-btn').index(this);
 			modal[0].style.display = 'block';
-			setTimeout(function() {
+			setTimeout(function () {
 				global.pdf.DownloadIndividual(index);
 			}, 1000);
 		});
 
-		$(document).on('click', '.manage-pdf-open-btn', function() {
+		$(document).on('click', '.manage-pdf-open-btn', function () {
 			var index = $('.manage-pdf-open-btn').index(this);
 			try {
 				modal[0].style.display = 'block';
-				setTimeout(function() {
+				setTimeout(function () {
 					global.pdf.OpenIndividual(index);
 				}, 1000);
-			} catch (error) {}
+			} catch (error) { }
 		});
 
-		$(document).on('click', '.rowselect', function() {
+		$(document).on('click', '.rowselect', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[2].style.display = 'block';
 			$('#managerecipientstable li').remove();
@@ -1787,7 +1788,7 @@ class Tables extends React.Component {
 					DocumentID: rowselectfileid,
 					Owner: rowselectuserid,
 				})
-				.then(async function(response) {
+				.then(async function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
@@ -1829,7 +1830,7 @@ class Tables extends React.Component {
 
 						var reciverlistrow = '';
 						try {
-							Document.Reciever.forEach(function(
+							Document.Reciever.forEach(function (
 								reciever,
 								index,
 							) {
@@ -1931,7 +1932,7 @@ class Tables extends React.Component {
 									UserID: rowselectuserid,
 									filename: rowselectfileid,
 								})
-								.then(async function(response) {
+								.then(async function (response) {
 									console.log(response);
 									if (response.data.Status === 'doc found') {
 										var doc = response.data.data;
@@ -1957,7 +1958,7 @@ class Tables extends React.Component {
 										console.log(global.pdf);
 									}
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[0].style.display = 'none';
 								});
@@ -1967,12 +1968,12 @@ class Tables extends React.Component {
 						}
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		});
 
-		$('#detailbackbtn').click(function() {
+		$('#detailbackbtn').click(function () {
 			$('.manage-pdf-canvas').remove();
 			const myNode = document.getElementById('manage-pdf-container');
 			myNode.innerHTML = '';
@@ -1993,29 +1994,29 @@ class Tables extends React.Component {
 			document.getElementById('detailstatusdate').innerHTML = '';
 		});
 
-		$('#detaildownloadbtn').click(function() {
+		$('#detaildownloadbtn').click(function () {
 			modal[0].style.display = 'block';
-			setTimeout(function() {
+			setTimeout(function () {
 				global.pdf.savePdf();
 			}, 1000);
 		});
 
-		$('#detailprintbtn').click(function() {
+		$('#detailprintbtn').click(function () {
 			modal[0].style.display = 'block';
-			setTimeout(function() {
+			setTimeout(function () {
 				global.pdf.printPdf();
 			}, 1000);
 		});
 
-		$('.flow-close').click(function() {
+		$('.flow-close').click(function () {
 			modal[6].style.display = 'none';
 		});
 
-		$('#signflowbtn').click(function() {
+		$('#signflowbtn').click(function () {
 			modal[6].style.display = 'block';
 		});
 
-		$(document).on('click', '.void', function() {
+		$(document).on('click', '.void', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			try {
 				//console.log($(this).parent().parent().parent().parent().children('#datakey')[0].innerHTML);
@@ -2063,7 +2064,7 @@ class Tables extends React.Component {
 			modal[3].style.display = 'block';
 		});
 
-		$('#managevoidapprovebtn').click(function() {
+		$('#managevoidapprovebtn').click(function () {
 			modal[3].style.display = 'none';
 			modal[2].style.display = 'block';
 			var DodumentName = '';
@@ -2076,7 +2077,7 @@ class Tables extends React.Component {
 						DocumentID: voidfileid,
 						Owner: voiduserid,
 					})
-					.then(function(response) {
+					.then(function (response) {
 						console.log(response);
 						if (response.data.Status === 'got recievers') {
 							var recievers = response.data.Reciever;
@@ -2084,7 +2085,7 @@ class Tables extends React.Component {
 							var DocID = voidfileid;
 							var OwnerEmail = response.data.OwnerEmail;
 
-							recievers.forEach(function(item, index) {
+							recievers.forEach(function (item, index) {
 								var recipient_index = index;
 								DodumentName = item.DocumentName;
 								//console.log(recipient_index);
@@ -2097,10 +2098,10 @@ class Tables extends React.Component {
 										Reciever: recievers,
 										Owner: voiduserid,
 									})
-									.then(function(response) {
+									.then(function (response) {
 										console.log(response);
 									})
-									.catch(function(error) {
+									.catch(function (error) {
 										console.log(error);
 										modal[2].style.display = 'none';
 									});
@@ -2117,10 +2118,10 @@ class Tables extends React.Component {
 										}),
 										subject: `GEMS: Voided - ${DodumentName}`,
 									})
-									.then(function(response) {
+									.then(function (response) {
 										console.log(response);
 									})
-									.catch(function(error) {
+									.catch(function (error) {
 										//console.log('no data');
 										modal[2].style.display = 'none';
 									});
@@ -2130,7 +2131,7 @@ class Tables extends React.Component {
 								.post('/api/getRequests', {
 									UserID: voiduserid,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 									if (
 										response.data.Status === 'got request'
@@ -2138,7 +2139,7 @@ class Tables extends React.Component {
 										var request = response.data.Request;
 										var status = response.data.DocStatus;
 
-										request.forEach(function(item, index) {
+										request.forEach(function (item, index) {
 											if (
 												request[index].DocumentID ===
 												voidfileid
@@ -2159,10 +2160,10 @@ class Tables extends React.Component {
 															Request: request,
 														},
 													)
-													.then(function(response) {
+													.then(function (response) {
 														console.log(response);
 													})
-													.catch(function(error) {
+													.catch(function (error) {
 														console.log(error);
 														modal[2].style.display =
 															'none';
@@ -2171,7 +2172,7 @@ class Tables extends React.Component {
 										});
 									}
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[2].style.display = 'none';
 								});
@@ -2182,7 +2183,7 @@ class Tables extends React.Component {
 									Status: 'Void',
 									Owner: voiduserid,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 									if (
 										response.data === 'insert done' ||
@@ -2190,8 +2191,8 @@ class Tables extends React.Component {
 									) {
 										alert(
 											'Document ' +
-												DodumentName +
-												' has been voided successfully',
+											DodumentName +
+											' has been voided successfully',
 										);
 										inboxfunc();
 										datafunc();
@@ -2199,13 +2200,13 @@ class Tables extends React.Component {
 										modal[2].style.display = 'none';
 									}
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[2].style.display = 'none';
 								});
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log(error);
 						modal[2].style.display = 'none';
 					});
@@ -2218,11 +2219,11 @@ class Tables extends React.Component {
 			}
 		});
 
-		$('#managevoidcancelbtn').click(function() {
+		$('#managevoidcancelbtn').click(function () {
 			modal[3].style.display = 'none';
 		});
 
-		$(document).on('click', '.deletemanage', function() {
+		$(document).on('click', '.deletemanage', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			try {
 				//console.log($(this).parent().parent().parent().parent().children('#datakey')[0].innerHTML);
@@ -2270,7 +2271,7 @@ class Tables extends React.Component {
 			modal[4].style.display = 'block';
 		});
 
-		$('#managedeleteapprovebtn').click(function() {
+		$('#managedeleteapprovebtn').click(function () {
 			modal[4].style.display = 'none';
 			modal[2].style.display = 'block';
 			var DocumentName = '';
@@ -2281,7 +2282,7 @@ class Tables extends React.Component {
 					DocumentID: deletefileid,
 					Owner: deleteuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'got recievers') {
 						var recievers = response.data.Reciever;
@@ -2289,7 +2290,7 @@ class Tables extends React.Component {
 						var DocID = deletefileid;
 						var OwnerEmail = response.data.OwnerEmail;
 
-						recievers.forEach(function(item, index) {
+						recievers.forEach(function (item, index) {
 							var recipient_index = index;
 							DocumentName = item.DocumentName;
 							//console.log(recipient_index);
@@ -2308,10 +2309,10 @@ class Tables extends React.Component {
 									}),
 									subject: `GEMS: Voided - ${DocumentName}`,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									//console.log('no data');
 									modal[2].style.display = 'none';
 								});
@@ -2321,10 +2322,10 @@ class Tables extends React.Component {
 									Reciever: recievers,
 									Owner: deleteuserid,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[2].style.display = 'none';
 								});
@@ -2333,7 +2334,7 @@ class Tables extends React.Component {
 								.post('/api/getRequests', {
 									UserID: deleteuserid,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 									if (
 										response.data.Status === 'got request'
@@ -2341,7 +2342,7 @@ class Tables extends React.Component {
 										var request = response.data.Request;
 										var status = response.data.DocStatus;
 
-										request.forEach(function(item, index) {
+										request.forEach(function (item, index) {
 											if (
 												request[index].DocumentID ===
 												deletefileid
@@ -2362,10 +2363,10 @@ class Tables extends React.Component {
 															Request: request,
 														},
 													)
-													.then(function(response) {
+													.then(function (response) {
 														console.log(response);
 													})
-													.catch(function(error) {
+													.catch(function (error) {
 														console.log(error);
 														modal[2].style.display =
 															'none';
@@ -2374,7 +2375,7 @@ class Tables extends React.Component {
 										});
 									}
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[2].style.display = 'none';
 								});
@@ -2386,7 +2387,7 @@ class Tables extends React.Component {
 								Status: 'Deleted',
 								Owner: deleteuserid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 								if (
 									response.data === 'insert done' ||
@@ -2394,32 +2395,32 @@ class Tables extends React.Component {
 								) {
 									alert(
 										'Document ' +
-											DocumentName +
-											' has been deleted successfully, you can find it in the deleted folder before it is permanantly deleted',
+										DocumentName +
+										' has been deleted successfully, you can find it in the deleted folder before it is permanantly deleted',
 									);
 									inboxfunc();
 									datafunc();
 									modal[2].style.display = 'none';
 								}
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 								modal[2].style.display = 'none';
 							});
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 					modal[2].style.display = 'none';
 				});
 		});
 
-		$('#managedeletecancelbtn').click(function() {
+		$('#managedeletecancelbtn').click(function () {
 			modal[4].style.display = 'none';
 			modal[2].style.display = 'none';
 		});
 
-		$(document).on('click', '.export', function() {
+		$(document).on('click', '.export', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[2].style.display = 'block';
 			//console.log($(this).parent().parent().parent().parent().children('#datakey')[0].innerHTML);
@@ -2455,7 +2456,7 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: exportuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
@@ -2484,12 +2485,12 @@ class Tables extends React.Component {
 						modal[2].style.display = 'none';
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		});
 
-		$(document).on('click', '.history', function() {
+		$(document).on('click', '.history', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[2].style.display = 'block';
 			//console.log($(this).parent().parent().parent().parent().children('#datakey')[0].innerHTML);
@@ -2526,13 +2527,13 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: historyuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var reciverlistrow = '';
 						var Document = response.data.Document;
 						Signatures = Document.Reciever.length;
-						Document.Reciever.forEach(function(reciever, index) {
+						Document.Reciever.forEach(function (reciever, index) {
 							var id = index + 1;
 							reciverlistrow =
 								reciverlistrow +
@@ -2569,7 +2570,7 @@ class Tables extends React.Component {
 						}
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 
@@ -2578,7 +2579,7 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: historyuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					var historycontent = '';
 					$('#historytable tbody tr').remove();
 					modal[2].style.display = 'none';
@@ -2588,7 +2589,7 @@ class Tables extends React.Component {
 					if (response.data.Status === 'history found') {
 						var History = response.data.history;
 
-						History.forEach(function(item, index) {
+						History.forEach(function (item, index) {
 							historycontent += '<tr >';
 							historycontent +=
 								'<th scope="row"><span className="mb-0 text-sm"></span>' +
@@ -2619,7 +2620,7 @@ class Tables extends React.Component {
 						//console.log(CSV(datarray, fileid));
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		});
@@ -2632,7 +2633,7 @@ class Tables extends React.Component {
 			var result = keys.join(',') + '\n';
 
 			// Add the rows
-			array.forEach(function(obj) {
+			array.forEach(function (obj) {
 				result += keys.map((k) => obj[k]).join(',') + '\n';
 			});
 
@@ -2646,7 +2647,7 @@ class Tables extends React.Component {
 			return result;
 		}
 
-		$(document).on('click', '.action', function() {
+		$(document).on('click', '.action', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			if (droptoggle === 0) {
 				$(this)
@@ -2661,7 +2662,7 @@ class Tables extends React.Component {
 			}
 		});
 
-		$(document).on('click', '.correct', function() {
+		$(document).on('click', '.correct', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[2].style.display = 'block';
 			try {
@@ -2717,13 +2718,13 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: correctuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'got recievers') {
 						var recievers = response.data.Reciever;
 						var status = response.data.DocStatus;
 
-						recievers.forEach(function(item, index) {
+						recievers.forEach(function (item, index) {
 							docname = item.DocumentName;
 							dbpeople.push({
 								name: item.RecipientName,
@@ -2742,10 +2743,10 @@ class Tables extends React.Component {
 									Reciever: recievers,
 									Owner: correctuserid,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[2].style.display = 'none';
 								});
@@ -2754,7 +2755,7 @@ class Tables extends React.Component {
 								.post('/api/getRequests', {
 									UserID: correctuserid,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 									if (
 										response.data.Status === 'got request'
@@ -2762,7 +2763,7 @@ class Tables extends React.Component {
 										var request = response.data.Request;
 										var status = response.data.DocStatus;
 
-										request.forEach(function(item, index) {
+										request.forEach(function (item, index) {
 											if (
 												request[index].DocumentID ===
 												fileid
@@ -2783,10 +2784,10 @@ class Tables extends React.Component {
 															Request: request,
 														},
 													)
-													.then(function(response) {
+													.then(function (response) {
 														console.log(response);
 													})
-													.catch(function(error) {
+													.catch(function (error) {
 														console.log(error);
 														modal[2].style.display =
 															'none';
@@ -2795,7 +2796,7 @@ class Tables extends React.Component {
 										});
 									}
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 									modal[2].style.display = 'none';
 								});
@@ -2807,14 +2808,14 @@ class Tables extends React.Component {
 								Status: 'Correcting',
 								Owner: correctuserid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 								if (
 									response.data === 'insert done' ||
 									response.data === 'update done'
 								) {
 									//alert('Document Correcting');
-									setTimeout(function() {
+									setTimeout(function () {
 										modal[2].style.display = 'none';
 										DataVar.RecipientArray = dbpeople;
 										var wurl =
@@ -2829,19 +2830,19 @@ class Tables extends React.Component {
 									}, 3000);
 								}
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 								modal[2].style.display = 'none';
 							});
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 					modal[2].style.display = 'none';
 				});
 		});
 
-		$(document).on('click', '.create', function() {
+		$(document).on('click', '.create', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[2].style.display = 'block';
 			try {
@@ -2894,12 +2895,12 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: createuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
 						var dbpeople = [];
-						Document.Reciever.forEach(function(data, index) {
+						Document.Reciever.forEach(function (data, index) {
 							dbpeople.push({
 								name: data.RecipientName,
 								email: data.RecipientEmail,
@@ -2917,7 +2918,7 @@ class Tables extends React.Component {
 								UserID: createuserid,
 								filename: fileid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 								if (response.data.Status === 'doc found') {
 									var doc = response.data.data;
@@ -2939,18 +2940,18 @@ class Tables extends React.Component {
 									window.location.hash = wurl;
 								}
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 								modal[2].style.display = 'none';
 							});
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		});
 
-		$(document).on('click', '.savetemplate', function() {
+		$(document).on('click', '.savetemplate', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[2].style.display = 'block';
 			try {
@@ -3004,12 +3005,12 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: templateuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
 						var dbpeople = [];
-						Document.Reciever.forEach(function(data, index) {
+						Document.Reciever.forEach(function (data, index) {
 							dbpeople.push({
 								name: data.RecipientName,
 								email: data.RecipientEmail,
@@ -3031,12 +3032,12 @@ class Tables extends React.Component {
 						window.location.hash = wurl;
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		});
 
-		$(document).on('click', '.resend', function() {
+		$(document).on('click', '.resend', function () {
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[1].style.display = 'block';
 			try {
@@ -3085,7 +3086,7 @@ class Tables extends React.Component {
 					DocumentID: fileid,
 					Owner: resenduserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
@@ -3094,7 +3095,7 @@ class Tables extends React.Component {
 
 						var Reciever = Document.Reciever;
 
-						Document.Reciever.forEach(function(data, index) {
+						Document.Reciever.forEach(function (data, index) {
 							var url =
 								process.env.REACT_APP_BASE_URL +
 								'/#/admin/sign?id=' +
@@ -3144,10 +3145,10 @@ class Tables extends React.Component {
 														'GEMS: Please Sign - ' +
 														DocName,
 												})
-												.then(function(response) {
+												.then(function (response) {
 													console.log(response);
 												})
-												.catch(function(error) {
+												.catch(function (error) {
 													//console.log('message could not be sent');
 												});
 										}
@@ -3159,22 +3160,22 @@ class Tables extends React.Component {
 						modal[1].style.display = 'none';
 						alert(
 							'Document ' +
-								DocName +
-								' has been successfully resent',
+							DocName +
+							' has been successfully resent',
 						);
 						//console.log('Document Resent');
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		});
 
-		$('#startnowbtn').click(function() {
+		$('#startnowbtn').click(function () {
 			window.location.hash = '#/admin/startdrop';
 		});
 
-		var randomString = function(len, bits) {
+		var randomString = function (len, bits) {
 			bits = bits || 36;
 			var outStr = '',
 				newStr;
@@ -3190,13 +3191,13 @@ class Tables extends React.Component {
 			return outStr.toUpperCase();
 		};
 
-		window.onclick = function(e) {
+		window.onclick = function (e) {
 			if (e.target == modal[5]) {
 				modal[5].style.display = 'none';
 			}
 		};
 
-		$('#historycertificatebtn').click(function() {
+		$('#historycertificatebtn').click(function () {
 			modal[2].style.display = 'block';
 			modal[5].style.display = 'none';
 			var Pages = 0;
@@ -3205,7 +3206,7 @@ class Tables extends React.Component {
 					DocumentID: historyfileid,
 					Owner: historyuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
@@ -3216,14 +3217,14 @@ class Tables extends React.Component {
 								DocumentID: historyfileid,
 								Owner: historyuserid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 								if (response.data.Status === 'history found') {
 									var signers = response.data.history;
 
 									var signerslist = '';
 
-									signers.forEach(function(item, index) {
+									signers.forEach(function (item, index) {
 										var HistoryUser = item.HistoryUser.replace(
 											/\n/g,
 											' ',
@@ -3262,23 +3263,23 @@ class Tables extends React.Component {
 										27,
 										` \n
             EnvelopeID:` +
-											Document.DocumentID +
-											`
+										Document.DocumentID +
+										`
             Subject: Please Sign: ` +
-											Document.DocumentName +
-											`
+										Document.DocumentName +
+										`
             Envelope Orginator: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
             Status: ` +
-											Document.Status +
-											`
+										Document.Status +
+										`
             Envelope Pages: ` +
-											Pages +
-											`
+										Pages +
+										`
             Signatures: ` +
-											Signatures +
-											`
+										Signatures +
+										`
             Time Zone:  (UTC+05:30) (Asia/Kolkata)
             `,
 									);
@@ -3295,14 +3296,14 @@ class Tables extends React.Component {
 										` \n
               Status:Original
               Date Created: ` +
-											Document.DateCreated +
-											`
+										Document.DateCreated +
+										`
               Holder: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
               Holder Email: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
               `,
 									);
 
@@ -3317,8 +3318,8 @@ class Tables extends React.Component {
 										105,
 										` 
               ` +
-											signerslist +
-											`
+										signerslist +
+										`
               `,
 									);
 
@@ -3357,11 +3358,11 @@ class Tables extends React.Component {
             documents from us.\n
             All notices and disclosures will be sent to you electronically\n
             Electronic Record and Signature Disclosure created on: ` +
-											Document.DateCreated +
-											` Parties agreed to:\n
+										Document.DateCreated +
+										` Parties agreed to:\n
             ` +
-											Document.OwnerEmail +
-											`\n 
+										Document.OwnerEmail +
+										`\n 
             Unless you tell us otherwise in accordance with the procedures described herein, we will provide electronically to 
             you through the GEMS system all required notices, disclosures, authorizations, acknowledgements, and other 
             documents that are required to be provided or made available to you during the course of our relationship with you.
@@ -3375,21 +3376,21 @@ class Tables extends React.Component {
             You may contact us to let us know of your changes as to how we may contact you electronically, to request paper
             copies of certain information from us, and to withdraw your prior consent to receive notices and disclosures
             electronically as follows: To contact us by email send messages to: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
             To advise envelope holder of your new email address\n
             To let us know of a change in your email address where we should send notices and disclosures electronically to
             you, you must send an email message to us at ` +
-											Document.OwnerEmail +
-											` and in the body of such request you
+										Document.OwnerEmail +
+										` and in the body of such request you
             must state: your previous email address, your new email address. We do not require any other information from
             you to change your email address. If you created a GEMS account, you may update it with your new email
             address through your account preferences.\n
             To request paper copies from envelope holder\n
             To request delivery from us of paper copies of the notices and disclosures previously provided by us to you
             electronically, you must send us an email to ` +
-											Document.OwnerEmail +
-											` and in the body of such request you
+										Document.OwnerEmail +
+										` and in the body of such request you
             must state your email address, full name, mailing address, and telephone number. We will bill you for any fees at
             that time, if any.\n
             `,
@@ -3405,8 +3406,8 @@ class Tables extends React.Component {
               i.  decline to sign a document from within your signing session, and on the subsequent page, select the check-box
                   indicating you wish to withdraw your consent, or you may;\n
               ii. send us an email to ` +
-											Document.OwnerEmail +
-											` and in the body of such request you must state your email,
+										Document.OwnerEmail +
+										` and in the body of such request you must state your email,
                   full name, mailing address, and telephone number. We do not need any other information from you to withdraw
                   consent. The consequences of your withdrawing consent for online documents will be that transactions may take a
                   longer time to process.\n
@@ -3439,19 +3440,19 @@ class Tables extends React.Component {
 									//console.log(CSV(datarray, fileid));
 								}
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 							});
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 					modal[2].style.display = 'none';
 					modal[5].style.display = 'block';
 				});
 		});
 
-		$('#historyprintbtn').click(function() {
+		$('#historyprintbtn').click(function () {
 			modal[2].style.display = 'block';
 			modal[5].style.display = 'none';
 
@@ -3460,7 +3461,7 @@ class Tables extends React.Component {
 					DocumentID: historyfileid,
 					Owner: historyuserid,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					console.log(response);
 					if (response.data.Status === 'doc data done') {
 						var Document = response.data.Document;
@@ -3470,13 +3471,13 @@ class Tables extends React.Component {
 								DocumentID: historyfileid,
 								Owner: historyuserid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 								if (response.data.Status === 'history found') {
 									var signers = response.data.history;
 									var signerslist = '';
 
-									signers.forEach(function(item, index) {
+									signers.forEach(function (item, index) {
 										var HistoryUser = item.HistoryUser.replace(
 											/\n/g,
 											' ',
@@ -3515,17 +3516,17 @@ class Tables extends React.Component {
 										30,
 										` \n
             EnvelopeID:` +
-											Document.DocumentID +
-											`
+										Document.DocumentID +
+										`
             Subject: Please Sign: ` +
-											Document.DocumentName +
-											`
+										Document.DocumentName +
+										`
             Status: ` +
-											Document.Status +
-											`
+										Document.Status +
+										`
             Envelope Orginator: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
             Time Zone:  (UTC+05:30) (Asia/Kolkata)
             `,
 									);
@@ -3542,14 +3543,14 @@ class Tables extends React.Component {
 										` \n
               Status:Original
               Date Created: ` +
-											Document.DateCreated +
-											`
+										Document.DateCreated +
+										`
               Holder: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
               Holder Email: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
               `,
 									);
 
@@ -3564,8 +3565,8 @@ class Tables extends React.Component {
 										105,
 										` 
               ` +
-											signerslist +
-											`
+										signerslist +
+										`
               `,
 									);
 
@@ -3604,11 +3605,11 @@ class Tables extends React.Component {
             documents from us.\n
             All notices and disclosures will be sent to you electronically\n
             Electronic Record and Signature Disclosure created on: ` +
-											Document.DateCreated +
-											` Parties agreed to:\n
+										Document.DateCreated +
+										` Parties agreed to:\n
             ` +
-											Document.OwnerEmail +
-											`\n 
+										Document.OwnerEmail +
+										`\n 
             Unless you tell us otherwise in accordance with the procedures described herein, we will provide electronically to 
             you through the GEMS system all required notices, disclosures, authorizations, acknowledgements, and other 
             documents that are required to be provided or made available to you during the course of our relationship with you.
@@ -3622,21 +3623,21 @@ class Tables extends React.Component {
             You may contact us to let us know of your changes as to how we may contact you electronically, to request paper
             copies of certain information from us, and to withdraw your prior consent to receive notices and disclosures
             electronically as follows: To contact us by email send messages to: ` +
-											Document.OwnerEmail +
-											`
+										Document.OwnerEmail +
+										`
             To advise envelope holder of your new email address\n
             To let us know of a change in your email address where we should send notices and disclosures electronically to
             you, you must send an email message to us at ` +
-											Document.OwnerEmail +
-											` and in the body of such request you
+										Document.OwnerEmail +
+										` and in the body of such request you
             must state: your previous email address, your new email address. We do not require any other information from
             you to change your email address. If you created a GEMS account, you may update it with your new email
             address through your account preferences.\n
             To request paper copies from envelope holder\n
             To request delivery from us of paper copies of the notices and disclosures previously provided by us to you
             electronically, you must send us an email to ` +
-											Document.OwnerEmail +
-											` and in the body of such request you
+										Document.OwnerEmail +
+										` and in the body of such request you
             must state your email address, full name, mailing address, and telephone number. We will bill you for any fees at
             that time, if any.\n
             `,
@@ -3652,8 +3653,8 @@ class Tables extends React.Component {
               i.  decline to sign a document from within your signing session, and on the subsequent page, select the check-box
                   indicating you wish to withdraw your consent, or you may;\n
               ii. send us an email to ` +
-											Document.OwnerEmail +
-											` and in the body of such request you must state your email,
+										Document.OwnerEmail +
+										` and in the body of such request you must state your email,
                   full name, mailing address, and telephone number. We do not need any other information from you to withdraw
                   consent. The consequences of your withdrawing consent for online documents will be that transactions may take a
                   longer time to process.\n
@@ -3687,19 +3688,19 @@ class Tables extends React.Component {
 									//console.log(CSV(datarray, fileid));
 								}
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 							});
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 					modal[2].style.display = 'none';
 					modal[5].style.display = 'block';
 				});
 		});
 
-		$(document).on('input', '#managevoidmessage', function() {
+		$(document).on('input', '#managevoidmessage', function () {
 			if ($('#managevoidmessage').val() == '') {
 				$('#managevoidapprovebtn').attr('disabled', true);
 			} else {
@@ -3722,7 +3723,7 @@ class Tables extends React.Component {
 			<>
 				<HeaderDefault />
 				{/* Page content */}
-				<div className="mt--8 mx-4">
+				<div className="mt--8 mx-4 manage-section">
 					<div className="modal">
 						<div className="modal-content modal-dialog">
 							<div>

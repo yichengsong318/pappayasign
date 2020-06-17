@@ -62,7 +62,7 @@ class Review extends React.Component {
 		var pdf = '';
 		var global = this;
 
-		var PDFFabric = function(
+		var PDFFabric = function (
 			container_id,
 			toolbar_id,
 			url,
@@ -93,11 +93,11 @@ class Review extends React.Component {
 
 			var loadingTask = PDFJS.getDocument(this.url);
 			loadingTask.promise.then(
-				function(pdf) {
+				function (pdf) {
 					inst.number_of_pages = pdf.numPages;
 					var scale = 1.3;
 					for (var i = 1; i <= pdf.numPages; i++) {
-						pdf.getPage(i).then(function(page) {
+						pdf.getPage(i).then(function (page) {
 							var container = document.getElementById(
 								inst.container_id,
 							);
@@ -109,7 +109,7 @@ class Review extends React.Component {
 								document
 									.getElementById(inst.container_id)
 									.appendChild(canvas);
-							} catch (error) {}
+							} catch (error) { }
 							canvas.className = 'review-pdf-canvas';
 							canvas.height = viewport.height;
 							canvas.width = viewport.width;
@@ -120,8 +120,8 @@ class Review extends React.Component {
 								viewport: viewport,
 							};
 							var renderTask = page.render(renderContext);
-							renderTask.promise.then(function() {
-								$('.review-pdf-canvas').each(function(
+							renderTask.promise.then(function () {
+								$('.review-pdf-canvas').each(function (
 									index,
 									el,
 								) {
@@ -137,14 +137,14 @@ class Review extends React.Component {
 						});
 					}
 				},
-				function(reason) {
+				function (reason) {
 					console.error(reason);
 				},
 			);
 
-			this.initFabric = function() {
+			this.initFabric = function () {
 				var inst = this;
-				$('#' + inst.container_id + ' canvas').each(function(
+				$('#' + inst.container_id + ' canvas').each(function (
 					index,
 					el,
 				) {
@@ -156,7 +156,7 @@ class Review extends React.Component {
 						},
 					});
 
-					fabricObj.on('object:selected', function(e) {
+					fabricObj.on('object:selected', function (e) {
 						e.target.transparentCorners = false;
 						e.target.borderColor = '#cccccc';
 						e.target.cornerColor = '#d35400';
@@ -182,7 +182,7 @@ class Review extends React.Component {
 						background,
 						fabricObj.renderAll.bind(fabricObj),
 					);
-					fabricObj.on('after:render', function() {
+					fabricObj.on('after:render', function () {
 						inst.fabricObjectsData[index] = fabricObj.toJSON();
 						fabricObj.off('after:render');
 					});
@@ -190,26 +190,26 @@ class Review extends React.Component {
 
 				try {
 					var addobjbtn = document.getElementById('manageaddobjbtn');
-					addobjbtn.addEventListener('click', function(event) {
+					addobjbtn.addEventListener('click', function (event) {
 						global.pdf.AddObj();
 						//console.log(global.pdf)
 						//console.log('adding objects')
 					});
 					addobjbtn.click();
-				} catch (error) {}
+				} catch (error) { }
 			};
 		};
 
-		PDFFabric.prototype.AddObj = function() {
+		PDFFabric.prototype.AddObj = function () {
 			var inst = this;
 			//console.log('started adding objects')
 			// // // // // // // ////console.log('file id found');
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				////console.log(index);
 
-				fabricObj.loadFromJSON(PreviewData.Data[index], function() {
+				fabricObj.loadFromJSON(PreviewData.Data[index], function () {
 					fabricObj.renderAll();
-					fabricObj.getObjects().forEach(function(targ) {
+					fabricObj.getObjects().forEach(function (targ) {
 						////console.log(targ);
 						targ.selectable = false;
 						targ.hasControls = false;
@@ -219,10 +219,10 @@ class Review extends React.Component {
 			//console.log('pdf done')
 		};
 
-		PDFFabric.prototype.savePdf = function() {
+		PDFFabric.prototype.savePdf = function () {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -245,10 +245,10 @@ class Review extends React.Component {
 			modal[0].style.display = 'none';
 		};
 
-		PDFFabric.prototype.printPdf = function() {
+		PDFFabric.prototype.printPdf = function () {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -270,9 +270,9 @@ class Review extends React.Component {
 			modal[0].style.display = 'none';
 		};
 
-		PDFFabric.prototype.Clear = function() {
+		PDFFabric.prototype.Clear = function () {
 			var inst = this;
-			$.each(inst.fabricObjects, function(index, fabricObj) {
+			$.each(inst.fabricObjects, function (index, fabricObj) {
 				inst.fabricObjects.slice(index, 1);
 			});
 			modal[0].style.display = 'none';
@@ -281,14 +281,14 @@ class Review extends React.Component {
 		var ip = '';
 		axios
 			.post('/api/getip', {})
-			.then(function(response) {
+			.then(function (response) {
 				console.log(response);
 				var remoteAddress = response.data;
 				const array = remoteAddress.split(':');
 				ip = array[array.length - 1];
 				//console.log(ip);
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error);
 			});
 
@@ -369,7 +369,7 @@ class Review extends React.Component {
 				filenamemain = data.id;
 				try {
 					action = data.action;
-				} catch (error) {}
+				} catch (error) { }
 
 				docname = DataVar.DocName;
 				document.getElementById(
@@ -382,7 +382,7 @@ class Review extends React.Component {
 
 				var people = [];
 				people = DataVar.RecipientArray;
-				people.forEach(function(item, index) {
+				people.forEach(function (item, index) {
 					var li = document.createElement('li');
 					li.innerHTML =
 						`<div>
@@ -420,11 +420,11 @@ class Review extends React.Component {
 			modal[0].style.display = 'none';
 		}
 
-		$('#reviewprivatebtn').click(async function() {
+		$('#reviewprivatebtn').click(async function () {
 			modal[4].style.display = 'block';
 		});
 
-		$('#reviewpreviewbtn').click(async function() {
+		$('#reviewpreviewbtn').click(async function () {
 			modal[2].style.display = 'block';
 			try {
 				if (pdfset === 'not set') {
@@ -447,10 +447,10 @@ class Review extends React.Component {
 					modal[2].style.display = 'none';
 					modal[3].style.display = 'block';
 				}
-			} catch (error) {}
+			} catch (error) { }
 		});
 
-		$('#reviewautoremindercheck').change(function() {
+		$('#reviewautoremindercheck').change(function () {
 			if (this.checked) {
 				document.getElementById('autoreminderselect').style.display =
 					'block';
@@ -486,14 +486,14 @@ class Review extends React.Component {
 
 		console.log(dateCurrent + '' + dateFrom);
 
-		$(document).ready(function() {
+		$(document).ready(function () {
 			$('#input-expiry-date').val(dateTo);
 			$('#input-expiry-date').attr('min', dateCurrent);
 		});
 
 		var inputDate = document.querySelector('input#input-expiry-date');
 
-		inputDate.addEventListener('input', function() {
+		inputDate.addEventListener('input', function () {
 			var current = this.value;
 			var thirddayfromnow = moment()
 				.add(3, 'd')
@@ -529,20 +529,20 @@ class Review extends React.Component {
 			}
 		});
 
-		$(document).on('click', '.preview-close', function() {
+		$(document).on('click', '.preview-close', function () {
 			modal[3].style.display = 'none';
 		});
 
-		$(document).on('click', '.private-close', function() {
+		$(document).on('click', '.private-close', function () {
 			modal[4].style.display = 'none';
 		});
 
-		$('#privatecancelbtn').on('click', function() {
+		$('#privatecancelbtn').on('click', function () {
 			modal[4].style.display = 'none';
 		});
 
 		var selecteditem = '';
-		$('#privaterecipientselect').on('focus', function() {
+		$('#privaterecipientselect').on('focus', function () {
 			selecteditem = this.value;
 			var privatemessage = document.getElementById(
 				'input-private-message',
@@ -551,7 +551,7 @@ class Review extends React.Component {
 			console.log(people);
 		});
 
-		$('#privaterecipientselect').on('change', function() {
+		$('#privaterecipientselect').on('change', function () {
 			console.log(this.value);
 			getPrivate(this.value);
 			console.log(people);
@@ -582,11 +582,11 @@ class Review extends React.Component {
 						break; //Stop this loop, we found it!
 					}
 				}
-			} catch (error) {}
+			} catch (error) { }
 		}
 
 		var privatemessagekey = false;
-		$('#privatesavebtn').on('click', function() {
+		$('#privatesavebtn').on('click', function () {
 			privatemessagekey = true;
 			var select = document.getElementById('privaterecipientselect');
 			var recipientemail = select.options[select.selectedIndex].value;
@@ -595,7 +595,7 @@ class Review extends React.Component {
 			).value;
 			changePrivate(recipientemail, privatemessage);
 			$('#reviewrecipientstable').html('');
-			people.forEach(function(item, index) {
+			people.forEach(function (item, index) {
 				if (item.privatemessage) {
 					if (item.privatemessage != '') {
 						var li = document.createElement('li');
@@ -671,7 +671,7 @@ class Review extends React.Component {
 			modal[4].style.display = 'none';
 		});
 
-		$('#reviewnextbtn').click(function() {
+		$('#reviewnextbtn').click(function () {
 			modal[1].style.display = 'block';
 
 			var today = new Date().toLocaleString().replace(',', '');
@@ -732,10 +732,10 @@ class Review extends React.Component {
 							HistoryStatus: 'Sent',
 							Owner: userid,
 						})
-						.then(function(response) {
+						.then(function (response) {
 							console.log(response);
 						})
-						.catch(function(error) {
+						.catch(function (error) {
 							console.log(error);
 						});
 
@@ -743,7 +743,7 @@ class Review extends React.Component {
 						.post('/api/getrequestuser', {
 							UserEmail: people[0].email,
 						})
-						.then(function(response) {
+						.then(function (response) {
 							console.log(response);
 							if (response.data.Status === 'user found') {
 								axios
@@ -756,19 +756,19 @@ class Review extends React.Component {
 										RecipientStatus: 'Need to Sign',
 										RecipientDateStatus: today,
 									})
-									.then(function(response) {
+									.then(function (response) {
 										console.log(response);
 										if (response.data === 'user found') {
 										}
 									})
-									.catch(function(error) {
+									.catch(function (error) {
 										console.log(error);
 										modal[1].style.display = 'none';
 										alert(error);
 									});
 							}
 						})
-						.catch(function(error) {
+						.catch(function (error) {
 							console.log(error);
 						});
 				}
@@ -786,14 +786,14 @@ class Review extends React.Component {
 						subject: 'GEMS: Please Sign - ' + docname,
 						//subject: 'GEMS: ' + subject + '',
 					})
-					.then(function(response) {
+					.then(function (response) {
 						console.log(response);
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						//console.log('message could not be sent');
 					});
 
-				people.forEach(function(item, index) {
+				people.forEach(function (item, index) {
 					var recipientName = people[index].name;
 					var recipientEmail = people[index].email;
 					var firstRecipientEmail = people[0].email;
@@ -830,10 +830,10 @@ class Review extends React.Component {
 								HistoryStatus: 'Sent',
 								Owner: userid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 							});
 						//console.log(Reciever);
@@ -849,7 +849,7 @@ class Review extends React.Component {
 						Reciever: Reciever,
 						Owner: userid,
 					})
-					.then(function(response) {
+					.then(function (response) {
 						console.log(response);
 						if (response.data === 'reciever done') {
 							modal[1].style.display = 'none';
@@ -862,10 +862,10 @@ class Review extends React.Component {
 									year: year,
 									trigger: trigger,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 								});
 
@@ -886,10 +886,10 @@ class Review extends React.Component {
 										date: date,
 										Owner: userid,
 									})
-									.then(function(response) {
+									.then(function (response) {
 										console.log(response);
 									})
-									.catch(function(error) {
+									.catch(function (error) {
 										console.log(error);
 									});
 							}
@@ -897,13 +897,13 @@ class Review extends React.Component {
 							DataVar.RecipientArray = [];
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log(error);
 						modal[1].style.display = 'none';
 						alert(error);
 					});
 			} else {
-				people.forEach(function(item, index) {
+				people.forEach(function (item, index) {
 					var RecipientPrivateMessage = '';
 					if (privatemessagekey) {
 						RecipientPrivateMessage = people[index].privatemessage;
@@ -935,7 +935,7 @@ class Review extends React.Component {
 								.post('/api/getrequestuser', {
 									UserEmail: recipientEmail,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 									if (response.data.Status === 'user found') {
 										axios
@@ -948,7 +948,7 @@ class Review extends React.Component {
 												RecipientStatus: 'Need to Sign',
 												RecipientDateStatus: today,
 											})
-											.then(function(response) {
+											.then(function (response) {
 												console.log(response);
 												if (
 													response.data ===
@@ -956,14 +956,14 @@ class Review extends React.Component {
 												) {
 												}
 											})
-											.catch(function(error) {
+											.catch(function (error) {
 												console.log(error);
 												modal[1].style.display = 'none';
 												alert(error);
 											});
 									}
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 								});
 						}
@@ -981,10 +981,10 @@ class Review extends React.Component {
 								subject: 'GEMS: Please Sign - ' + docname,
 								//subject: 'GEMS: ' + subject + '',
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								//console.log('message could not be sent');
 							});
 
@@ -1014,10 +1014,10 @@ class Review extends React.Component {
 								HistoryStatus: 'Sent',
 								Owner: userid,
 							})
-							.then(function(response) {
+							.then(function (response) {
 								console.log(response);
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 							});
 						//console.log(Reciever);
@@ -1033,7 +1033,7 @@ class Review extends React.Component {
 						Reciever: Reciever,
 						Owner: userid,
 					})
-					.then(function(response) {
+					.then(function (response) {
 						console.log(response);
 						if (response.data === 'reciever done') {
 							modal[1].style.display = 'none';
@@ -1046,10 +1046,10 @@ class Review extends React.Component {
 									year: year,
 									trigger: trigger,
 								})
-								.then(function(response) {
+								.then(function (response) {
 									console.log(response);
 								})
-								.catch(function(error) {
+								.catch(function (error) {
 									console.log(error);
 								});
 
@@ -1078,10 +1078,10 @@ class Review extends React.Component {
 										url: url,
 										Owner: userid,
 									})
-									.then(function(response) {
+									.then(function (response) {
 										console.log(response);
 									})
-									.catch(function(error) {
+									.catch(function (error) {
 										console.log(error);
 									});
 							}
@@ -1089,7 +1089,7 @@ class Review extends React.Component {
 							DataVar.RecipientArray = [];
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log(error);
 						modal[1].style.display = 'none';
 						alert(error);
@@ -1097,19 +1097,19 @@ class Review extends React.Component {
 			}
 		});
 
-		$('#docnameeditbtn').on('click', function() {
+		$('#docnameeditbtn').on('click', function () {
 			modal[5].style.display = 'block';
 		});
 
-		$(document).on('click', '.docnameedit-close', function() {
+		$(document).on('click', '.docnameedit-close', function () {
 			modal[5].style.display = 'none';
 		});
 
-		$('#docnameeditcancelbtn').on('click', function() {
+		$('#docnameeditcancelbtn').on('click', function () {
 			modal[5].style.display = 'none';
 		});
 
-		$('#docnameeditsavebtn').on('click', function() {
+		$('#docnameeditsavebtn').on('click', function () {
 			docname = document.getElementById('input-docnameedit-message')
 				.value;
 			document.getElementById('input-docnameedit-message').value = '';
@@ -1121,17 +1121,59 @@ class Review extends React.Component {
 			modal[5].style.display = 'none';
 		});
 
-		$('#stepaddbtn').click(function() {
+		$('#stepaddbtn').click(function () {
 			window.location.hash = '#/admin/uploadsuccess';
 		});
 
-		$('#stepselectbtn').click(function() {
+		$('#stepselectbtn').click(function () {
 			window.location.hash = '#/admin/recipients';
 		});
 
-		$('#stepprocessbtn').click(function() {
+		$('#stepprocessbtn').click(function () {
 			window.location.hash = '#/admin/sign';
 		});
+
+		$('#documentdiscardbtn').on('click', function () {
+			$('#DocumentDiscardModal').css('display', 'block');
+		});
+		$('#doccumentdiscard-close, #documentcancel').on('click', function () {
+			$('#DocumentDiscardModal').css('display', 'none');
+		});
+		$('#documentdiscard').on('click', function () {
+			window.location.hash = '#/admin/index';
+		});
+		$('#documentsaveandclose').on('click', function () {
+			var today = new Date().toLocaleString().replace(',', '');
+			console.log('dadfa', DataVar);
+			axios
+				.post('/api/adddocumentdata', {
+					DocumentName: DataVar.DocName,
+					DocumentID: DataVar.DocumentID,
+					OwnerEmail: getCookie('useremail'),
+					DateCreated: today,
+					DateStatus: today,
+					DateSent: '',
+					Owner: '',
+					Status: 'Draft',
+					SignOrder: DataVar.SignOrder,
+					Data: [],
+					Reciever: DataVar.RecipientArray,
+				})
+				.then(function (response) {
+					window.location.hash = '#/manage/index';
+				});
+		});
+		function getCookie(name) {
+			var nameEQ = name + '=';
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) == 0)
+					return c.substring(nameEQ.length, c.length);
+			}
+			return null;
+		}
 	}
 	render() {
 		return (
@@ -1147,6 +1189,17 @@ class Review extends React.Component {
 									className="form-check form-check-inline">
 									<div className="stepwizard">
 										<div className="stepwizard-row">
+											<div className="stepwizard-step">
+												<button
+													id="documentdiscardbtn"
+													type="button"
+													className="btn btn-primary btn-circle-process">
+													<i class="ni ni-fat-remove flow-close"></i>
+												</button>
+												<p className="steplabel">
+													Close
+														</p>
+											</div>
 											<div className="stepwizard-step">
 												<button
 													type="button"
@@ -1338,7 +1391,49 @@ class Review extends React.Component {
 							</div>
 						</div>
 					</div>
-
+					<div className="modal" id="DocumentDiscardModal">
+						<div className="private-modal-content modal-dialog">
+							<div>
+								<Card className="shadow border-0 mx-3 p-3">
+									<CardHeader className=" bg-transparent">
+										<div className="review-manager-title">
+											<span>Do you want to save the envelop?</span>
+											<i className="ni ni-fat-remove" id="doccumentdiscard-close" />
+										</div>
+									</CardHeader>
+									<CardBody>
+										<Row>
+											<Col lg="12">Your changes will be lost if you don't save them</Col>
+										</Row>
+									</CardBody>
+									<CardFooter>
+										<Row>
+											<Col lg="12">
+												<Button
+													className="mx-2 px-4"
+													color="primary"
+													id="documentsaveandclose">
+													Save &amp; Close
+										</Button>
+												<Button
+													className="mx-2 px-4"
+													color="neutral"
+													id="documentdiscard">
+													Discard
+										</Button>
+												<Button
+													className="px-4 mx-2"
+													color="neutral"
+													id="documentcancel">
+													Cancel
+										</Button>
+											</Col>
+										</Row>
+									</CardFooter>
+								</Card>
+							</div>
+						</div>
+					</div>
 					<Row>
 						<div className="col  pb-2">
 							<Card className="shadow border-0 mx-3">

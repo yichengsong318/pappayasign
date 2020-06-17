@@ -215,7 +215,7 @@ class UploadSuccess extends React.Component {
 						//console.log('adding objects')
 					});
 					addobjbtn.click();
-				} catch (error) {}
+				} catch (error) { }
 			};
 		};
 
@@ -328,7 +328,7 @@ class UploadSuccess extends React.Component {
 				waction +
 				'';
 			document.getElementById('checkdiv').style.display = 'none';
-		} catch (error) {}
+		} catch (error) { }
 
 		var uploadsuccessnextbtn = document.getElementById(
 			'uploadsuccessnextbtn',
@@ -438,7 +438,7 @@ class UploadSuccess extends React.Component {
 					modal[2].style.display = 'none';
 					modal[1].style.display = 'block';
 				}
-			} catch (error) {}
+			} catch (error) { }
 		});
 
 		$(document).on('click', '.preview-close', function () {
@@ -473,6 +473,49 @@ class UploadSuccess extends React.Component {
 					'none';
 			}
 		});
+
+		$('#documentdiscardbtn').on('click', function () {
+			$('#DocumentDiscardModal').css('display', 'block');
+		});
+		$('#doccumentdiscard-close, #documentcancel').on('click', function () {
+			$('#DocumentDiscardModal').css('display', 'none');
+		});
+		$('#documentdiscard').on('click', function () {
+			window.location.hash = '#/admin/index';
+		});
+		$('#documentsaveandclose').on('click', function () {
+			var today = new Date().toLocaleString().replace(',', '');
+			console.log('dadfa', DataVar);
+			axios
+				.post('/api/adddocumentdata', {
+					DocumentName: DataVar.DocName,
+					DocumentID: DataVar.DocumentID,
+					OwnerEmail: getCookie('useremail'),
+					DateCreated: today,
+					DateStatus: today,
+					DateSent: '',
+					Owner: '',
+					Status: 'Draft',
+					SignOrder: DataVar.SignOrder,
+					Data: [],
+					Reciever: DataVar.RecipientArray,
+				})
+				.then(function (response) {
+					window.location.hash = '#/manage/index';
+				});
+		});
+		function getCookie(name) {
+			var nameEQ = name + '=';
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) == 0)
+					return c.substring(nameEQ.length, c.length);
+			}
+			return null;
+		}
+
 	}
 	render() {
 		return (
@@ -548,6 +591,50 @@ class UploadSuccess extends React.Component {
 					</div>
 				</div>
 
+				<div className="modal" id="DocumentDiscardModal">
+					<div className="private-modal-content modal-dialog">
+						<div>
+							<Card className="shadow border-0 mx-3 p-3">
+								<CardHeader className=" bg-transparent">
+									<div className="review-manager-title">
+										<span>Do you want to save the envelop?</span>
+										<i className="ni ni-fat-remove" id="doccumentdiscard-close" />
+									</div>
+								</CardHeader>
+								<CardBody>
+									<Row>
+										<Col lg="12">Your changes will be lost if you don't save them</Col>
+									</Row>
+								</CardBody>
+								<CardFooter>
+									<Row>
+										<Col lg="12">
+											<Button
+												className="mx-2 px-4"
+												color="primary"
+												id="documentsaveandclose">
+												Save &amp; Close
+										</Button>
+											<Button
+												className="mx-2 px-4"
+												color="neutral"
+												id="documentdiscard">
+												Discard
+										</Button>
+											<Button
+												className="px-4 mx-2"
+												color="neutral"
+												id="documentcancel">
+												Cancel
+										</Button>
+										</Col>
+									</Row>
+								</CardFooter>
+							</Card>
+						</div>
+					</div>
+				</div>
+
 				<HeaderDefault />
 				{/* Page content */}
 				<Container className="mt--9 pb-8">
@@ -561,6 +648,17 @@ class UploadSuccess extends React.Component {
 											className="form-check form-check-inline">
 											<div className="stepwizard">
 												<div className="stepwizard-row">
+													<div className="stepwizard-step">
+														<button
+															id="documentdiscardbtn"
+															type="button"
+															className="btn btn-primary btn-circle-process">
+															<i class="ni ni-fat-remove flow-close"></i>
+														</button>
+														<p className="steplabel">
+															Close
+														</p>
+													</div>
 													<div className="stepwizard-step">
 														<button
 															type="button"
