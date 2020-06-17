@@ -18,7 +18,6 @@ import {
 import DataVar from '../../variables/data';
 import PreviewData from '../../variables/preview';
 import './pdfannotate.css';
-//import fabric from 'fabric-webpack'
 import './styles.css';
 import { getColorFromHex, randomString, getGeoInfo } from './utils';
 import SignManager from '../SignManager';
@@ -71,13 +70,6 @@ class PDFAnnotate extends React.Component {
 		});
 	};
 
-	toggleNavs = (e, state, index) => {
-		e.preventDefault();
-		this.setState({
-			[state]: index,
-		});
-	};
-
 	openPappayaSignSite = (e) => {
 		e.preventDefault();
 		window.open('https://www.pappayasign.com');
@@ -85,9 +77,11 @@ class PDFAnnotate extends React.Component {
 
 	doubleclickobj = null;
 	pdf = null;
+	signimage = '';
 
 	saveSign = (e) => {
 		if (e.signatureBox) {
+			this.signimage = e.signatureBox;
 			this.doubleclickobj.setSrc(e.signatureBox);
 
 			this.doubleclickobj.set('backgroundColor', 'transparent');
@@ -172,7 +166,6 @@ class PDFAnnotate extends React.Component {
 		var signorderval = false;
 		var dbpeople = [];
 		var key = '';
-		var signimage = '';
 		var initialimage = '';
 		var username = '';
 		var usertitle = '';
@@ -183,6 +176,20 @@ class PDFAnnotate extends React.Component {
 		var ObjectArrayIndex = 0;
 		var ObjectCursorIndex = 0;
 		modal[0].style.display = 'block';
+
+		// var element = document.getElementById('pdf-container');
+		// var hammertime = Hammer(element);
+		//
+		// hammertime.get('pinch').set({ enable: true });
+
+		// var myScroll = new IScroll('#pdf-container', {
+		// 	zoom: true,
+		// 	scrollbars: true,
+		// 	wheelHorizontal: true,
+		// 	scrollX : false,
+		// 	scrollY: true
+		// });
+		alert('d');
 
 		var PDFAnnotate = function(
 			container_id,
@@ -619,10 +626,6 @@ class PDFAnnotate extends React.Component {
 									fabricObj.requestRenderAll();
 									if (owner != 'admin') {
 										if (objType === 'image') {
-											//alert('double clicked on a image!');
-											//doubleclickobj = fabricObj.findTarget(e)
-											////console.log(doubleclickobj);
-											//this.toggleSignModal();
 											global.doubleclickobj = fabricObj.findTarget(
 												e,
 											);
@@ -663,11 +666,11 @@ class PDFAnnotate extends React.Component {
 												}
 											} else {
 												if (
-													signimage != '' &&
+													global.signimage != '' &&
 													objcolor != 'transparent'
 												) {
 													global.doubleclickobj.setSrc(
-														signimage,
+														global.signimage,
 													);
 													global.doubleclickobj.set(
 														'backgroundColor',
@@ -832,10 +835,6 @@ class PDFAnnotate extends React.Component {
 											objcolor == 'rgb(189, 189, 189)'
 										) {
 											if (objType === 'image') {
-												//alert('double clicked on a image!');
-												//doubleclickobj = fabricObj.findTarget(e)
-												////console.log(doubleclickobj);
-												//this.toggleSignModal();
 												global.doubleclickobj = fabricObj.findTarget(
 													e,
 												);
@@ -873,12 +872,13 @@ class PDFAnnotate extends React.Component {
 													}
 												} else {
 													if (
-														signimage != '' &&
+														global.signimage !=
+															'' &&
 														objcolor !=
 															'transparent'
 													) {
 														global.doubleclickobj.setSrc(
-															signimage,
+															global.signimage,
 														);
 														global.doubleclickobj.set(
 															'backgroundColor',
@@ -963,35 +963,10 @@ class PDFAnnotate extends React.Component {
 						}
 					};
 
-					function itemTapEvent(event) {
-						if (event.type === 'touchend') {
-							var lastTouch = $(this).data('lastTouch') || {
-									lastTime: 0,
-								},
-								now = event.timeStamp,
-								delta = now - lastTouch.lastTime;
-
-							if (delta > 20 && delta < 250) {
-								if (lastTouch.timerEv) {
-									clearTimeout(lastTouch.timerEv);
-									callbackEventDoubleClick(event);
-								}
-								return;
-							} else $(this).data('lastTouch', { lastTime: now });
-
-							$(this).data('lastTouch')['timerEv'] = setTimeout(
-								function() {
-									$(this).trigger('touchend');
-								},
-								250,
-							);
-						}
-					}
-
 					fabric.util.addListener(
 						fabricObj.upperCanvasEl,
 						'touchend',
-						itemTapEvent,
+						callbackEventDoubleClick,
 					);
 
 					fabric.util.addListener(
@@ -1394,7 +1369,6 @@ class PDFAnnotate extends React.Component {
 								fabricObj.add(text);
 							});
 						} else {
-							// // // // // // // ////console.log('file id found');
 							axios
 								.post('/api/getdocdata', {
 									DocumentID: fileid,
@@ -1613,12 +1587,9 @@ class PDFAnnotate extends React.Component {
 		PDFAnnotate.prototype.ZoomIn = function() {
 			var inst = this;
 
-			//jsonData =  inst.fabricObjects.toJSON();
-
 			var container = document.getElementById(inst.container_id);
 			var scaleX =
 				container.getBoundingClientRect().width / container.offsetWidth;
-			////console.log(scaleX)
 			scaleX = scaleX + 0.1;
 			container.style.transform = 'scale(' + scaleX + ')';
 		};
@@ -1628,7 +1599,7 @@ class PDFAnnotate extends React.Component {
 			var container = document.getElementById(inst.container_id);
 			var scaleX =
 				container.getBoundingClientRect().width / container.offsetWidth;
-			////console.log(scaleX)
+
 			scaleX = scaleX - 0.1;
 			container.style.transform = 'scale(' + scaleX + ')';
 		};
@@ -1755,7 +1726,6 @@ class PDFAnnotate extends React.Component {
 							filedata: DataVar.DataPath,
 						})
 						.then(function(response) {
-							console.log(response);
 							if (response.data === 'document upload success') {
 								// // // // // // // ////console.log('completed');
 								var dataarray = [];
@@ -2266,7 +2236,7 @@ class PDFAnnotate extends React.Component {
 										DocumentID: filename,
 										Owner: useridother,
 									})
-									.then(function(response) {
+									.then(async function(response) {
 										console.log(response);
 										if (
 											response.data.Status ===
@@ -2279,7 +2249,7 @@ class PDFAnnotate extends React.Component {
 											var status =
 												response.data.DocStatus;
 
-											recievers.forEach(function(
+											recievers.forEach(async function(
 												item,
 												index,
 											) {
@@ -2530,6 +2500,7 @@ class PDFAnnotate extends React.Component {
 															'&type=db&u=' +
 															userid +
 															'&key=0';
+
 														axios
 															.post(
 																'/api/sendmailattachments',
@@ -2805,18 +2776,36 @@ class PDFAnnotate extends React.Component {
 																				);
 																			},
 																		);
-																	var loginUserName = getCookie(
-																		'UserFullName',
+
+																	let doc = await axios.post(
+																		'/api/getdocdata',
+																		{
+																			DocumentID: fileid,
+																			Owner: useridother,
+																		},
 																	);
+
+																	doc =
+																		doc.data;
+
 																	axios
 																		.post(
 																			'/api/sendmail',
 																			{
-																				from: loginUserName,
+																				from: doc.Owner
+																					? `${
+																							doc
+																								.Owner
+																								.UserFirstName
+																					  } ${
+																							doc
+																								.Owner
+																								.UserLastName
+																					  }`
+																					: null,
 																				to: nextuseremail,
 																				body: SignReviewAndRequest(
 																					{
-																						SenderName: loginUserName,
 																						RecipientName: nextusername,
 																						DocumentName: documentname,
 																						URL: nextuserurl,
@@ -2836,7 +2825,6 @@ class PDFAnnotate extends React.Component {
 																				);
 																				window.location.hash =
 																					'#/admin/completesuccess';
-																				// // // // // // // ////console.log('doc sent to next user');
 																			},
 																		)
 																		.catch(
@@ -3625,7 +3613,7 @@ class PDFAnnotate extends React.Component {
 					'9999999999999999999999999999999999999999999',
 				);
 				if (recipientcolor == 'rgb(189, 189, 189)') {
-					if (signimage == '' || signimage == null) {
+					if (global.signimage == '' || global.signimage == null) {
 						global.pdf.enableImage(
 							dataUrl,
 							recipientemail,
@@ -3634,7 +3622,7 @@ class PDFAnnotate extends React.Component {
 						);
 					} else {
 						global.pdf.enableImage(
-							signimage,
+							global.signimage,
 							recipientemail,
 							'transparent',
 							0.6,
@@ -3999,7 +3987,7 @@ class PDFAnnotate extends React.Component {
 							if (response.data.Status === 'user found') {
 								if (response.data.user.SignID != '') {
 									if (response.data.user.SignImage) {
-										signimage =
+										global.signimage =
 											response.data.user.SignImageBox;
 										initialimage =
 											response.data.user.InitialsBox;
@@ -5540,12 +5528,12 @@ class PDFAnnotate extends React.Component {
 						<Row className="justify-content-md-center">
 							<Col lg="12" />
 						</Row>
-						<div id="container">
-							<div
-								id="pdf-container"
-								style={{
-									height: '550px',
-								}}>
+						<div
+							id="container"
+							style={{
+								height: '550px',
+							}}>
+							<div id="pdf-container">
 								<Button
 									id="movecursorbtn"
 									className="m-2 float-left px-4"
