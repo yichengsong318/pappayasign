@@ -779,7 +779,6 @@ class Review extends React.Component {
 						from: loginUserName,
 						to: firstRecipientEmail,
 						body: SignReviewAndRequest({
-							SenderName: loginUserName,
 							RecipientName: firstRecipientName,
 							DocumentName: docname,
 							URL: url,
@@ -975,7 +974,6 @@ class Review extends React.Component {
 								from: loginUserName,
 								to: recipientEmail,
 								body: SignReviewAndRequest({
-									SenderName: loginUserName,
 									RecipientName: recipientName,
 									DocumentName: docname,
 									URL: url,

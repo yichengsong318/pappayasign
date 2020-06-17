@@ -808,11 +808,9 @@ class SelectTemplateRecipients extends React.Component {
 																				.post(
 																					'/api/sendmail',
 																					{
-																						from: loginUserName,
 																						to: recipientEmail,
 																						body: SignReviewAndRequest(
 																							{
-																								SenderName: loginUserName,
 																								RecipientName: recipientName,
 																								DocumentName:
 																									Template.TemplateName,

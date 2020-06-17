@@ -3122,12 +3122,19 @@ class Tables extends React.Component {
 											var loginUserName = getCookie(
 												'UserFullName',
 											);
+											const docCreator =
+												response.data.Owner;
 											axios
 												.post('/api/sendmail', {
-													from: loginUserName,
+													from: docCreator
+														? `${
+																docCreator.UserFirstName
+														  } ${
+																docCreator.UserLastName
+														  }`
+														: null,
 													to: data.RecipientEmail,
 													body: SignReviewAndRequest({
-														SenderName: loginUserName,
 														RecipientName:
 															data.RecipientName,
 														DocumentName: DocName,
