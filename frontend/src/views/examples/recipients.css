@@ -113,15 +113,14 @@ input[disabled] {
 }
 
 @media screen and (max-width: 640px) {
-	#recipientsbar {
-		height: 190px;
-		margin-bottom: 10px;
-		overflow-x: scroll;
-		overflow-y: hidden;
+	#fieldsrightbar {
+		height: 100%;
+		margin-bottom: 15px;
 	}
 	#recipientsbar #thumb-container {
 		height: 180px;
 		overflow-y: hidden;
+		overflow-x: scroll;
 	}
 	#recipientdiv li {
 		margin-bottom: 10px;
