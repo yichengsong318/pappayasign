@@ -629,7 +629,8 @@ i.material-icons {
 @media screen and (max-width: 640px) {
 
 	.sign-screen #editortoolbar,
-	.sign-screen #fieldsrightbar
+	.sign-screen #fieldsrightbar,
+	.sign-screen footer
 	{
 		display: none;
 	}
@@ -638,8 +639,22 @@ i.material-icons {
 		margin: 0!important;
 	}
 
+	.sign-screen #pdfcol {
+		padding: 0!important;
+		overflow: hidden;
+	}
+
 	.sign-screen #container {
-		height: auto !important;
+		/*height: auto!important;*/
+		padding: 0;
+	}
+
+	.sign-screen #pdf-container {
+		padding: 0;
+	}
+
+	.sign-screen .canvas-container {
+		top: 0;
 	}
 
 }
