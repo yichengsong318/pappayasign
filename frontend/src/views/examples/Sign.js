@@ -18,13 +18,38 @@ import DataVar from '../../variables/data';
 const axios = require('axios').default;
 
 class Icons extends React.Component {
+<<<<<<< HEAD
+	state = {
+		title: ''
+	}
+	getTitle = () => {
+		switch (this.state.title) {
+			case 'correct':
+				return 'Correcting';
+				break;
+			default:
+				return '';
+				break;
+		}
+=======
 	constructor(props) {
 		super(props);
 		this.state = {
 			showDiscardModal: false,
 		};
+>>>>>>> 9883fb7722afe7318ecda401f2ddc84715381e1a
 	}
 	componentDidMount() {
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			}
+			return decodeURI(results[1]) || 0;
+		}
+		this.setState({ title: $.urlParam('action') });
+
 		function getCookie(name) {
 			var nameEQ = name + '=';
 			var ca = document.cookie.split(';');
@@ -66,7 +91,7 @@ class Icons extends React.Component {
 				signfileid = data.id;
 				signkey = data.key;
 				// // // // // // // ////console.log('key:'+key);
-			} catch (error) {}
+			} catch (error) { }
 
 			if (signfilename == '' || signuseridother == '') {
 			} else {
@@ -88,11 +113,11 @@ class Icons extends React.Component {
 			//window.location.hash = "#/auth/login";
 		}
 
-		$('#stepaddbtn').click(function() {
+		$('#stepaddbtn').click(function () {
 			window.location.hash = '#/admin/uploadsuccess';
 		});
 
-		$('#stepselectbtn').click(function() {
+		$('#stepselectbtn').click(function () {
 			window.location.hash = '#/admin/recipients';
 		});
 
@@ -110,10 +135,10 @@ class Icons extends React.Component {
 				});
 			},
 		);
-		$('#documentdiscard').on('click', function() {
+		$('#documentdiscard').on('click', function () {
 			window.location.hash = '#/admin/index';
 		});
-		$('#documentsaveandclose').on('click', function() {
+		$('#documentsaveandclose').on('click', function () {
 			var today = new Date().toLocaleString().replace(',', '');
 			console.log('dadfa', DataVar);
 			axios
@@ -130,7 +155,7 @@ class Icons extends React.Component {
 					Data: [],
 					Reciever: DataVar.RecipientArray,
 				})
-				.then(function(response) {
+				.then(function (response) {
 					window.location.hash = '#/manage/index';
 				});
 		});
@@ -145,6 +170,8 @@ class Icons extends React.Component {
 			}
 			return null;
 		}
+
+		$('#DocumentDiscardModal').css('display', 'none');
 	}
 	render() {
 		const { showDiscardModal } = this.state;
@@ -205,6 +232,52 @@ class Icons extends React.Component {
 						</div>
 					</div>
 				)}
+				<div className="modal" id="DocumentDiscardModal" style={{ display: 'none' }}>
+					<div className="private-modal-content modal-dialog">
+						<div>
+							<Card className="shadow border-0 mx-3 p-3">
+								<CardHeader className=" bg-transparent">
+									<div className="review-manager-title">
+										<span>Do you want to save the envelop?</span>
+										<i className="ni ni-fat-remove" id="doccumentdiscard-close" />
+									</div>
+								</CardHeader>
+								<CardBody>
+									<Row>
+										<Col lg="12">
+											Your changes will be lost if you
+											don't save them
+											</Col>
+									</Row>
+								</CardBody>
+								<CardFooter>
+									<Row>
+										<Col lg="12">
+											<Button
+												className="mx-2 px-4"
+												color="primary"
+												id="documentsaveandclose">
+												Save &amp; Close
+												</Button>
+											<Button
+												className="mx-2 px-4"
+												color="neutral"
+												id="documentdiscard">
+												Discard
+												</Button>
+											<Button
+												className="px-4 mx-2"
+												color="neutral"
+												id="documentcancel">
+												Cancel
+												</Button>
+										</Col>
+									</Row>
+								</CardFooter>
+							</Card>
+						</div>
+					</div>
+				</div>
 				<Container className="mt--9">
 					<Row>
 						<div className="col pb-2">

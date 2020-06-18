@@ -28,6 +28,7 @@ class Recipients extends React.Component {
 		super(props);
 		this.state = {
 			isSigningOrder: false,
+			title: ''
 		};
 	}
 
@@ -35,7 +36,28 @@ class Recipients extends React.Component {
 		this.setState({ isSigningOrder: !this.state.isSigningOrder });
 	};
 
+	getTitle = () => {
+		switch (this.state.title) {
+			case 'correct':
+				return 'Correcting';
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
 	componentDidMount() {
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			}
+			return decodeURI(results[1]) || 0;
+		}
+		this.setState({ title: $.urlParam('action') });
+
 		var wurl = '';
 		var fileid = '';
 		var wuserid = '';
@@ -468,6 +490,9 @@ class Recipients extends React.Component {
 										</div>
 									</div>
 								</Col>
+							</Row>
+							<Row>
+								<Col lg='12' style={{ textAlign: 'center', color: '#FFFFFF', fontSize: '16px' }}>{this.getTitle()}</Col>
 							</Row>
 						</CardBody>
 					</Card>

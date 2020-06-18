@@ -979,7 +979,7 @@ class SaveAsTemplate extends React.Component {
 															id="sat-btn"
 															className="close-btn float-right m-2 px-5">
 															{' '}
-															Finish
+															Save
 														</Button>
 														<Button
 															id="satappend-btn"

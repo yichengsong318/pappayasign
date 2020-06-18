@@ -671,6 +671,7 @@ i.material-icons {
 	width: 70%;
 	-webkit-animation: fadeinout 0.25s linear forwards;
 	animation: fadeinout 0.25s linear forwards;
+	pointer-events: all;
 }
 
 #historytable tbody {

@@ -3037,7 +3037,9 @@ class Tables extends React.Component {
 				});
 		});
 
-		$(document).on('click', '.resend', function() {
+		$(document).on('click', '.resend', function () {
+			const that = $(this);
+			$(this).attr('disabled', 'disabled');
 			$('.dropdown-menu2').css({ display: 'none' });
 			modal[1].style.display = 'block';
 			try {
@@ -3158,6 +3160,8 @@ class Tables extends React.Component {
 						});
 
 						modal[1].style.display = 'none';
+
+						that.removeAttr('disabled');
 						alert(
 							'Document ' +
 								DocName +

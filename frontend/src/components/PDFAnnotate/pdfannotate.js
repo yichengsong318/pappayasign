@@ -5175,6 +5175,17 @@ class PDFAnnotate extends React.Component {
 					.children('#dropdown')[0].style.display = 'none';
 			}
 		});
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			}
+			return decodeURI(results[1]) || 0;
+		}
+		if(action == 'correct'){
+			$('#ppsActionBtns').hide();
+		}
 	}
 
 	render() {
@@ -5205,7 +5216,7 @@ class PDFAnnotate extends React.Component {
 					src={require('../../assets/img/icons/common/initialimg.png')}
 				/>
 
-				<Row>
+				<Row id="ppsActionBtns">
 					<Col
 						lg="12"
 						className="d-flex justify-content-between">
