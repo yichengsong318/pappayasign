@@ -123,7 +123,7 @@ class PDFAnnotate extends React.Component {
 		axios
 			.post('/api/getip', {})
 			.then(function(response) {
-				console.log(response);
+				// console.log(response);
 				var remoteAddress = response.data;
 				const array = remoteAddress.split(':');
 				ip = array[array.length - 1];
@@ -225,9 +225,9 @@ class PDFAnnotate extends React.Component {
 
 							btn.innerHTML =
 								'<i class="material-icons manage-pdf-download-btn-icon">get_app</i>';
-							console.log(
-								document.getElementById(inst.container_id),
-							);
+							// console.log(
+							// 	document.getElementById(inst.container_id),
+							// );
 							try {
 								document
 									.getElementById(inst.container_id)
@@ -4659,6 +4659,12 @@ class PDFAnnotate extends React.Component {
 						console.log(error);
 					}
 				} else {
+
+					// Set class for sign page and alter page
+					document.body.classList.add("sign-screen");
+					document.getElementById('pdfcol').classList.remove("col-lg-8");
+					document.getElementById('pdfcol').classList.add("col-lg-10");
+
 					if (userid != useridother) {
 						//console.log('userid not equal')
 						try {
@@ -4862,7 +4868,7 @@ class PDFAnnotate extends React.Component {
 							filename: filename,
 						})
 						.then(function(response) {
-							console.log(response);
+							// console.log(response);
 							if (response.data.Status === 'doc found') {
 								var doc = response.data.data;
 
@@ -5202,7 +5208,7 @@ class PDFAnnotate extends React.Component {
 				<Row>
 					<Col
 						lg="12"
-						className="py-3 d-flex justify-content-between">
+						className="d-flex justify-content-between">
 						<div id="moreoptions" className="btn-group">
 							<button
 								type="button"

@@ -609,3 +609,42 @@ i.material-icons {
 		width: 100%;
 	}
 }
+
+/* Sign Screen */
+.sign-screen {
+	width: 100%;
+}
+
+.sign-screen #nav-footer,
+.sign-screen #signtitle-holder,
+.sign-screen #navbar-collapse-main
+{
+	display: none;
+}
+
+.sign-screen .header {
+	padding-bottom: 5rem!important;
+}
+
+@media screen and (max-width: 640px) {
+
+	.sign-screen #editortoolbar,
+	.sign-screen #fieldsrightbar
+	{
+		display: none;
+	}
+
+	.sign-screen #pdf-area {
+		margin: 0!important;
+	}
+
+	.sign-screen #container {
+		height: auto !important;
+	}
+
+}
+
+/* Hide Captcha */
+.grecaptcha-badge {
+	display: none;
+}

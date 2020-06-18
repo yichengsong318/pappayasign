@@ -221,7 +221,7 @@ class Icons extends React.Component {
 															id="documentdiscardbtn"
 															type="button"
 															className="btn btn-primary btn-circle-process">
-															<i class="ni ni-fat-remove flow-close" />
+															<i className="ni ni-fat-remove flow-close" />
 														</button>
 														<p className="steplabel">
 															Close
@@ -279,8 +279,8 @@ class Icons extends React.Component {
 					</Row>
 				</Container>
 
-				<Card className="shadow mx-3">
-					<CardHeader className=" bg-transparent">
+				<Card id="pdf-area" className="shadow mx-3">
+					<CardHeader id="signtitle-holder" className=" bg-transparent">
 						<h3 id="signtitle">Prepare Document</h3>
 					</CardHeader>
 					<CardBody>

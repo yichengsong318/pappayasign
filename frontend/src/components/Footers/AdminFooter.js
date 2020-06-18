@@ -9,7 +9,7 @@ class Footer extends React.Component {
 			<footer className="footer">
 				<Row className="align-items-center justify-content-xl-between">
 					<Col xl="6" className="mb-md-0 mb-3">
-						<Nav className="nav-footer justify-content-center justify-content-xl-start">
+						<Nav id="nav-footer" className="nav-footer justify-content-center justify-content-xl-start">
 							<NavItem>
 								<NavLink
 									to="/admin/index"
