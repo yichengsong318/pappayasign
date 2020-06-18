@@ -357,25 +357,23 @@ i.material-icons {
 }
 
 .form-check-inline {
-	float: center;
 	text-align: center;
 	justify-content: center;
 }
 
 .stepwizard-step p {
 	margin-top: 10px;
+	margin-bottom: 0;
 }
 
 .stepwizard-row {
-	display: table-row;
+	display: flex;
+	justify-content: space-between;
+	position: relative;
 }
 
 .stepwizard {
-	display: table;
 	width: 100%;
-	position: relative;
-	margin-left: 20px !important;
-	margin-right: 10px !important;
 }
 
 .stepwizard-step button[disabled] {
@@ -395,7 +393,7 @@ i.material-icons {
 }
 
 .stepwizard-step {
-	display: table-cell;
+	flex: 1 1 0;
 	text-align: center !important;
 	position: relative;
 }
@@ -834,7 +832,7 @@ i.material-icons {
 	justify-content: left !important;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 640px) {
 	#review-pdf-container {
 		transform: scale(0.4);
 		padding: 8px;
@@ -14309,9 +14307,6 @@ a.text-lighter:focus {
 .btn:hover {
 	box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 	transform: translateY(-1px);
-}
-.btn:not(:last-child) {
-	margin-right: 0.5rem;
 }
 .btn i:not(:first-child),
 .btn svg:not(:first-child) {

@@ -11,6 +11,7 @@ import {
 	Row,
 	CardFooter,
 	Button,
+	Container,
 } from 'reactstrap';
 import PDFAnnotate from '../../components/PDFAnnotate/pdfannotate';
 import DataVar from '../../variables/data';
@@ -100,11 +101,15 @@ class Icons extends React.Component {
 				showDiscardModal: true,
 			});
 		});
-		$('#doccumentdiscard-close, #documentcancel').on('click', () => {
-			this.setState({
-				showDiscardModal: false,
-			});
-		});
+		$(document).on(
+			'click',
+			'#doccumentdiscard-close, #documentcancel',
+			() => {
+				this.setState({
+					showDiscardModal: false,
+				});
+			},
+		);
 		$('#documentdiscard').on('click', function() {
 			window.location.hash = '#/admin/index';
 		});
@@ -148,7 +153,7 @@ class Icons extends React.Component {
 				<HeaderDefault />
 				{/* Page content */}
 				{showDiscardModal && (
-					<div className="modal" id="DocumentDiscardModal">
+					<div className="modal d-block" id="DocumentDiscardModal">
 						<div className="private-modal-content modal-dialog">
 							<div>
 								<Card className="shadow border-0 mx-3 p-3">
@@ -200,84 +205,88 @@ class Icons extends React.Component {
 						</div>
 					</div>
 				)}
-				<div className="mt--9 pb-3">
-					<Card
-						className="shadow border-0 pb-2 mx-5 mb-3 bg-dark"
-						id="headerstepwizard">
-						<CardBody>
-							<Row>
-								<Col
-									lg="12"
-									className="form-check form-check-inline">
-									<div className="stepwizard">
-										<div className="stepwizard-row">
-											<div className="stepwizard-step">
-												<button
-													id="documentdiscardbtn"
-													type="button"
-													className="btn btn-primary btn-circle-process">
-													<i class="ni ni-fat-remove flow-close" />
-												</button>
-												<p className="steplabel">
-													Close
-												</p>
+				<Container className="mt--9">
+					<Row>
+						<div className="col pb-2">
+							<Card
+								className="shadow border-0 mb-3 bg-dark"
+								id="headerstepwizard">
+								<CardBody>
+									<Row>
+										<Col lg="12" className="form-check">
+											<div className="stepwizard">
+												<div className="stepwizard-row">
+													<div className="stepwizard-step">
+														<button
+															id="documentdiscardbtn"
+															type="button"
+															className="btn btn-primary btn-circle-process">
+															<i class="ni ni-fat-remove flow-close" />
+														</button>
+														<p className="steplabel">
+															Close
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															id="stepaddbtn"
+															className="btn btn-primary btn-circle-process">
+															1
+														</button>
+														<p className="steplabel">
+															Add
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															id="stepselectbtn"
+															className="btn btn-primary btn-circle-process">
+															2
+														</button>
+														<p className="steplabel">
+															Select
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															className="btn btn-primary btn-circle-process">
+															3
+														</button>
+														<p className="steplabel">
+															Process
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															className="btn btn-primary-outline btn-circle-process">
+															4
+														</button>
+														<p className="steplabel">
+															Review
+														</p>
+													</div>
+												</div>
 											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													id="stepaddbtn"
-													className="btn btn-primary btn-circle-process">
-													1
-												</button>
-												<p className="steplabel">Add</p>
-											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													id="stepselectbtn"
-													className="btn btn-primary btn-circle-process">
-													2
-												</button>
-												<p className="steplabel">
-													Select
-												</p>
-											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													className="btn btn-primary btn-circle-process">
-													3
-												</button>
-												<p className="steplabel">
-													Process
-												</p>
-											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													className="btn btn-primary-outline btn-circle-process">
-													4
-												</button>
-												<p className="steplabel">
-													Review
-												</p>
-											</div>
-										</div>
-									</div>
-								</Col>
-							</Row>
-						</CardBody>
-					</Card>
+										</Col>
+									</Row>
+								</CardBody>
+							</Card>
+						</div>
+					</Row>
+				</Container>
 
-					<Card className=" shadow mx-3">
-						<CardHeader className=" bg-transparent">
-							<h3 id="signtitle">Prepare Document</h3>
-						</CardHeader>
-						<CardBody>
-							<PDFAnnotate />
-						</CardBody>
-					</Card>
-				</div>
+				<Card className="shadow mx-3">
+					<CardHeader className=" bg-transparent">
+						<h3 id="signtitle">Prepare Document</h3>
+					</CardHeader>
+					<CardBody>
+						<PDFAnnotate />
+					</CardBody>
+				</Card>
 			</>
 		);
 	}
