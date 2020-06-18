@@ -13,6 +13,7 @@ const AWS = require('aws-sdk');
 var upload = require('express-fileupload');
 var docxConverter = require('docx-pdf');
 var fs = require('fs');
+const compression = require('compression');
 
 require('dotenv').config({ path: path.resolve(__dirname + '/.env') });
 
@@ -20,6 +21,11 @@ const extend_pdf = '.pdf';
 const extend_docx = '.docx';
 
 app.use(upload());
+app.use(
+	compression({
+		level: 9,
+	}),
+);
 
 var enableCORS = function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -613,13 +619,16 @@ app.post('/api/getdocdata', function(req, res) {
 					});
 
 				var docdata = {
-					Data: result.Data,
+					Data: {
+						...result.Data,
+					},
 					SignOrder: result.SignOrder,
 					DocStatus: result.Status,
 					Document: result,
 					Status: 'doc data done',
 					Owner: owner,
 				};
+				delete result.Data;
 				res.send(docdata);
 			} else {
 				var docdata = {

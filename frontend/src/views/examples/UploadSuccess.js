@@ -54,7 +54,7 @@ class UploadSuccess extends React.Component {
 		var reader = new FileReader();
 		reader.readAsDataURL(files[0]);
 
-		reader.onload = function () {
+		reader.onload = function() {
 			DataVar.DataURI = files[0];
 			DataVar.DataPath = reader.result;
 			PreviewData.DataPath = reader.result;
@@ -67,7 +67,7 @@ class UploadSuccess extends React.Component {
 			//$('<a href="'+url+'" target="blank"></a>')[0].click();
 		};
 
-		reader.onerror = function () {
+		reader.onerror = function() {
 			//console.log(reader.error);
 			alert('Error Opening File');
 		};
@@ -101,7 +101,7 @@ class UploadSuccess extends React.Component {
 		const action = $.urlParam('action');
 		this.setState({ title: action });
 
-		var PDFFabric = function (
+		var PDFFabric = function(
 			container_id,
 			toolbar_id,
 			url,
@@ -136,11 +136,11 @@ class UploadSuccess extends React.Component {
 
 			let loadingTask = PDFJS.getDocument(this.url);
 			loadingTask.promise.then(
-				function (pdf) {
+				function(pdf) {
 					inst.number_of_pages = pdf.numPages;
 					const scale = 1.3;
 					for (let i = 1; i <= pdf.numPages; i++) {
-						pdf.getPage(i).then(function (page) {
+						pdf.getPage(i).then(function(page) {
 							const container = document.getElementById(
 								inst.container_id,
 							);
@@ -161,8 +161,8 @@ class UploadSuccess extends React.Component {
 								viewport: viewport,
 							};
 							let renderTask = page.render(renderContext);
-							renderTask.promise.then(function () {
-								$('.review-pdf-canvas').each(function (
+							renderTask.promise.then(function() {
+								$('.review-pdf-canvas').each(function(
 									index,
 									el,
 								) {
@@ -180,14 +180,14 @@ class UploadSuccess extends React.Component {
 						});
 					}
 				},
-				function (reason) {
+				function(reason) {
 					console.error(reason);
 				},
 			);
 
-			this.initFabric = function () {
+			this.initFabric = function() {
 				var inst = this;
-				$('#' + inst.container_id + ' canvas').each(function (
+				$('#' + inst.container_id + ' canvas').each(function(
 					index,
 					el,
 				) {
@@ -199,7 +199,7 @@ class UploadSuccess extends React.Component {
 						},
 					});
 
-					fabricObj.on('object:selected', function (e) {
+					fabricObj.on('object:selected', function(e) {
 						e.target.transparentCorners = false;
 						e.target.borderColor = '#cccccc';
 						e.target.cornerColor = '#d35400';
@@ -225,7 +225,7 @@ class UploadSuccess extends React.Component {
 						background,
 						fabricObj.renderAll.bind(fabricObj),
 					);
-					fabricObj.on('after:render', function () {
+					fabricObj.on('after:render', function() {
 						inst.fabricObjectsData[index] = fabricObj.toJSON();
 						fabricObj.off('after:render');
 					});
@@ -233,26 +233,26 @@ class UploadSuccess extends React.Component {
 
 				try {
 					var addobjbtn = document.getElementById('manageaddobjbtn');
-					addobjbtn.addEventListener('click', function (event) {
+					addobjbtn.addEventListener('click', function(event) {
 						global.pdf.AddObj();
 						//console.log(global.pdf)
 						//console.log('adding objects')
 					});
 					addobjbtn.click();
-				} catch (error) { }
+				} catch (error) {}
 			};
 		};
 
-		PDFFabric.prototype.AddObj = function () {
+		PDFFabric.prototype.AddObj = function() {
 			var inst = this;
 			//console.log('started adding objects')
 			// // // // // // // ////console.log('file id found');
-			$.each(inst.fabricObjects, function (index, fabricObj) {
+			$.each(inst.fabricObjects, function(index, fabricObj) {
 				////console.log(index);
 
-				fabricObj.loadFromJSON(PreviewData.Data[index], function () {
+				fabricObj.loadFromJSON(PreviewData.Data[index], function() {
 					fabricObj.renderAll();
-					fabricObj.getObjects().forEach(function (targ) {
+					fabricObj.getObjects().forEach(function(targ) {
 						////console.log(targ);
 						targ.selectable = false;
 						targ.hasControls = false;
@@ -262,10 +262,10 @@ class UploadSuccess extends React.Component {
 			//console.log('pdf done')
 		};
 
-		PDFFabric.prototype.savePdf = function () {
+		PDFFabric.prototype.savePdf = function() {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function (index, fabricObj) {
+			$.each(inst.fabricObjects, function(index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -288,10 +288,10 @@ class UploadSuccess extends React.Component {
 			modal[2].style.display = 'none';
 		};
 
-		PDFFabric.prototype.printPdf = function () {
+		PDFFabric.prototype.printPdf = function() {
 			var inst = this;
 			var doc = new jsPDF('p', 'pt', 'a4', true);
-			$.each(inst.fabricObjects, function (index, fabricObj) {
+			$.each(inst.fabricObjects, function(index, fabricObj) {
 				if (index != 0) {
 					doc.addPage();
 					doc.setPage(index + 1);
@@ -313,9 +313,9 @@ class UploadSuccess extends React.Component {
 			modal[2].style.display = 'none';
 		};
 
-		PDFFabric.prototype.Clear = function () {
+		PDFFabric.prototype.Clear = function() {
 			var inst = this;
-			$.each(inst.fabricObjects, function (index, fabricObj) {
+			$.each(inst.fabricObjects, function(index, fabricObj) {
 				inst.fabricObjects.slice(index, 1);
 			});
 			modal[2].style.display = 'none';
@@ -352,12 +352,12 @@ class UploadSuccess extends React.Component {
 				waction +
 				'';
 			document.getElementById('checkdiv').style.display = 'none';
-		} catch (error) { }
+		} catch (error) {}
 
 		var uploadsuccessnextbtn = document.getElementById(
 			'uploadsuccessnextbtn',
 		);
-		uploadsuccessnextbtn.addEventListener('click', function (event) {
+		uploadsuccessnextbtn.addEventListener('click', function(event) {
 			//window.location.hash = '#/admin/recipients';
 			if (document.getElementById('onlysignercheck').checked) {
 				DataVar.OnlySigner = true;
@@ -386,18 +386,19 @@ class UploadSuccess extends React.Component {
 
 		$('#docnameeditbtn').on('click', function () {
 			$('.actionsign').click(function () { });
+			$('.actionsign').click(function() {});
 			modal[0].style.display = 'block';
 		});
 
-		$(document).on('click', '.docnameedit-close', function () {
+		$(document).on('click', '.docnameedit-close', function() {
 			modal[0].style.display = 'none';
 		});
 
-		$('#docnameeditcancelbtn').on('click', function () {
+		$('#docnameeditcancelbtn').on('click', function() {
 			modal[0].style.display = 'none';
 		});
 
-		$('#docnameeditsavebtn').on('click', function () {
+		$('#docnameeditsavebtn').on('click', function() {
 			DataVar.DocName = document.getElementById(
 				'input-docnameedit-message',
 			).value;
@@ -410,7 +411,7 @@ class UploadSuccess extends React.Component {
 			modal[0].style.display = 'none';
 		});
 
-		$('#onlysignercheck').change(function () {
+		$('#onlysignercheck').change(function() {
 			if (this.checked) {
 				document.getElementById('uploadsuccesssignbtn').style.display =
 					'block';
@@ -427,20 +428,20 @@ class UploadSuccess extends React.Component {
 		var uploadsuccesssignbtn = document.getElementById(
 			'uploadsuccesssignbtn',
 		);
-		uploadsuccesssignbtn.addEventListener('click', function (event) {
+		uploadsuccesssignbtn.addEventListener('click', function(event) {
 			DataVar.OnlySigner = true;
 			window.location.hash = '#/admin/sign';
 		});
 
-		$('#docreplacebtn').on('click', function () {
-			$('.actionsign').click(function () { });
+		$('#docreplacebtn').on('click', function() {
+			$('.actionsign').click(function() {});
 			document.getElementById('replaceinput').click();
 			global.pdfset = 'not set';
 		});
 
-		$('#docviewbtn').click(async function () {
+		$('#docviewbtn').click(async function() {
 			modal[2].style.display = 'block';
-			$('.actionsign').click(function () { });
+			$('.actionsign').click(function() {});
 			try {
 				if (global.pdfset === 'not set') {
 					global.pdfset = 'set';
@@ -462,12 +463,12 @@ class UploadSuccess extends React.Component {
 					modal[2].style.display = 'none';
 					modal[1].style.display = 'block';
 				}
-			} catch (error) { }
+			} catch (error) {}
 		});
 
-		$(document).on('click', '.preview-close', function () {
+		$(document).on('click', '.preview-close', function() {
 			modal[1].style.display = 'none';
-			$('.actionsign').click(function () { });
+			$('.actionsign').click(function() {});
 		});
 
 		var droptogglesign = 0;
@@ -484,30 +485,32 @@ class UploadSuccess extends React.Component {
 			dropdownAction = dropdownAction ? !dropdownAction : dropdownAction;
 		};
 
-		$(document).on('click', '.actionsign', function () {
+		$(document).on('click', '.actionsign', function() {
 			// $('.dropdown-menu2').css({ display: 'none' });
 			if (droptogglesign === 0) {
-				$(this).parent().children('#dropdown')[0].style.display =
-					'block';
+				$(this)
+					.parent()
+					.children('#dropdown')[0].style.display = 'block';
 				droptogglesign = 1;
 				dropdownAction = true;
 			} else if (droptogglesign === 1) {
 				droptogglesign = 0;
-				$(this).parent().children('#dropdown')[0].style.display =
-					'none';
+				$(this)
+					.parent()
+					.children('#dropdown')[0].style.display = 'none';
 			}
 		});
 
-		$('#documentdiscardbtn').on('click', function () {
+		$('#documentdiscardbtn').on('click', function() {
 			$('#DocumentDiscardModal').css('display', 'block');
 		});
-		$('#doccumentdiscard-close, #documentcancel').on('click', function () {
+		$('#doccumentdiscard-close, #documentcancel').on('click', function() {
 			$('#DocumentDiscardModal').css('display', 'none');
 		});
-		$('#documentdiscard').on('click', function () {
+		$('#documentdiscard').on('click', function() {
 			window.location.hash = '#/admin/index';
 		});
-		$('#documentsaveandclose').on('click', function () {
+		$('#documentsaveandclose').on('click', function() {
 			var today = new Date().toLocaleString().replace(',', '');
 			console.log('dadfa', DataVar);
 			axios
@@ -524,7 +527,7 @@ class UploadSuccess extends React.Component {
 					Data: [],
 					Reciever: DataVar.RecipientArray,
 				})
-				.then(function (response) {
+				.then(function(response) {
 					window.location.hash = '#/manage/index';
 				});
 		});
@@ -539,7 +542,6 @@ class UploadSuccess extends React.Component {
 			}
 			return null;
 		}
-
 	}
 	render() {
 		return (
@@ -621,13 +623,21 @@ class UploadSuccess extends React.Component {
 							<Card className="shadow border-0 mx-3 p-3">
 								<CardHeader className=" bg-transparent">
 									<div className="review-manager-title">
-										<span>Do you want to save the envelop?</span>
-										<i className="ni ni-fat-remove" id="doccumentdiscard-close" />
+										<span>
+											Do you want to save the envelop?
+										</span>
+										<i
+											className="ni ni-fat-remove"
+											id="doccumentdiscard-close"
+										/>
 									</div>
 								</CardHeader>
 								<CardBody>
 									<Row>
-										<Col lg="12">Your changes will be lost if you don't save them</Col>
+										<Col lg="12">
+											Your changes will be lost if you
+											don't save them
+										</Col>
 									</Row>
 								</CardBody>
 								<CardFooter>
@@ -638,19 +648,19 @@ class UploadSuccess extends React.Component {
 												color="primary"
 												id="documentsaveandclose">
 												Save &amp; Close
-										</Button>
+											</Button>
 											<Button
 												className="mx-2 px-4"
 												color="neutral"
 												id="documentdiscard">
 												Discard
-										</Button>
+											</Button>
 											<Button
 												className="px-4 mx-2"
 												color="neutral"
 												id="documentcancel">
 												Cancel
-										</Button>
+											</Button>
 										</Col>
 									</Row>
 								</CardFooter>
@@ -664,12 +674,10 @@ class UploadSuccess extends React.Component {
 				<Container className="mt--9 pb-8">
 					<Row>
 						<div className="col  pb-2">
-							<Card className="shadow border-0 pb-2 mb-3 bg-dark">
+							<Card className="shadow border-0 mb-3 bg-dark">
 								<CardBody>
 									<Row>
-										<Col
-											lg="12"
-											className="form-check form-check-inline">
+										<Col lg="12" className="form-check">
 											<div className="stepwizard">
 												<div className="stepwizard-row">
 													<div className="stepwizard-step">
@@ -677,7 +685,7 @@ class UploadSuccess extends React.Component {
 															id="documentdiscardbtn"
 															type="button"
 															className="btn btn-primary btn-circle-process">
-															<i class="ni ni-fat-remove flow-close"></i>
+															<i className="ni ni-fat-remove flow-close"></i>
 														</button>
 														<p className="steplabel">
 															Close

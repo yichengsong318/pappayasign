@@ -20,7 +20,7 @@
 	background-color: transparent;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 640px) {
 	#pdf-container {
 		transform: scale(0.4);
 		padding: 8px;
@@ -117,8 +117,7 @@ canvas,
 .editortoolbar .toolzoom {
 	display: inline-block;
 	color: #626262;
-	border: none !important;
-	padding-top: 5px;
+	padding: 5px;
 	font-size: 10px !important;
 	background-color: transparent;
 	border-radius: 5px;
@@ -581,7 +580,7 @@ i.material-icons {
 	background-color: #00bfa5;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 640px) {
 	#fieldsleftbar {
 		margin-bottom: 10px;
 		padding-bottom: 10px;

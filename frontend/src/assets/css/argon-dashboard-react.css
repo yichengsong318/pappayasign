@@ -174,12 +174,20 @@
 	padding: 0.6rem !important;
 	font-size: 2rem !important;
 	border-radius: 3px !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.nav-link-icon .btn-inner--icon {
+	font-size: 5px;
 }
 
 .nav-link-icon .btn-inner--icon i {
 	font-size: 1rem !important;
 	color: #fff;
 	vertical-align: middle;
+	padding: 0;
 }
 
 .nav-link-icon .btn-inner--text {
@@ -349,25 +357,23 @@ i.material-icons {
 }
 
 .form-check-inline {
-	float: center;
 	text-align: center;
 	justify-content: center;
 }
 
 .stepwizard-step p {
 	margin-top: 10px;
+	margin-bottom: 0;
 }
 
 .stepwizard-row {
-	display: table-row;
+	display: flex;
+	justify-content: space-between;
+	position: relative;
 }
 
 .stepwizard {
-	display: table;
 	width: 100%;
-	position: relative;
-	margin-left: 20px !important;
-	margin-right: 10px !important;
 }
 
 .stepwizard-step button[disabled] {
@@ -387,7 +393,7 @@ i.material-icons {
 }
 
 .stepwizard-step {
-	display: table-cell;
+	flex: 1 1 0;
 	text-align: center !important;
 	position: relative;
 }
@@ -827,7 +833,7 @@ i.material-icons {
 	justify-content: left !important;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 640px) {
 	#review-pdf-container {
 		transform: scale(0.4);
 		padding: 8px;
@@ -836,6 +842,10 @@ i.material-icons {
 	#completepic {
 		width: 100%;
 		height: 100%;
+	}
+
+	#navbaradminmainprofile {
+		border-top: 1px solid #eee;
 	}
 }
 
@@ -14299,9 +14309,6 @@ a.text-lighter:focus {
 	box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 	transform: translateY(-1px);
 }
-.btn:not(:last-child) {
-	margin-right: 0.5rem;
-}
 .btn i:not(:first-child),
 .btn svg:not(:first-child) {
 	margin-left: 0.5rem;
@@ -14333,11 +14340,6 @@ a.text-lighter:focus {
 
 .btn-outline-secondary {
 	color: #4385b1;
-}
-
-.btn-inner--icon i:not(.fa) {
-	position: relative;
-	top: 2px;
 }
 
 .btn-link {

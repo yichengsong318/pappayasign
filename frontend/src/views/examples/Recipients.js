@@ -13,7 +13,7 @@ import {
 	FormGroup,
 	Input,
 	Row,
-	CardFooter
+	CardFooter,
 } from 'reactstrap';
 import DataVar from '../../variables/data';
 import './recipients.css';
@@ -86,12 +86,12 @@ class Recipients extends React.Component {
 				'&action=' +
 				waction +
 				'';
-		} catch (error) { }
+		} catch (error) {}
 
 		try {
 			var people = [];
 			people = DataVar.RecipientArray;
-			people.forEach(function (item, index) {
+			people.forEach(function(item, index) {
 				var recepientOrderLabel = '';
 				var li = document.createElement('li');
 				li.innerHTML =
@@ -108,14 +108,14 @@ class Recipients extends React.Component {
 					'" type="text" disabled/><button class="buttonr delete">x</button></div>';
 				$('#sortable').append(li);
 			});
-		} catch (error) { }
+		} catch (error) {}
 
-		$(function () {
+		$(function() {
 			$('#sortable').sortable();
 			$('#sortable').disableSelection();
 		});
 
-		$('#append-btn').click(function () {
+		$('#append-btn').click(function() {
 			var recipientOrder = document.getElementById(
 				'recipient-input-order',
 			).value;
@@ -179,7 +179,7 @@ class Recipients extends React.Component {
 					alert('There are no recepeints, Please add recipients');
 					DataVar.RecipientArray = people;
 				} else {
-					listItems.each(function (li) {
+					listItems.each(function(li) {
 						var recipientN = $(this)
 							.children('#rcard')
 							.children('#recipient-name')
@@ -203,7 +203,7 @@ class Recipients extends React.Component {
 			}
 		});
 
-		$(document).on('click', '.delete', function () {
+		$(document).on('click', '.delete', function() {
 			$(this)
 				.parent()
 				.parent()
@@ -213,12 +213,12 @@ class Recipients extends React.Component {
 
 		$('#signordercheck').attr('disabled', 'disabled');
 
-		$('#previous-btn').click(function () {
+		$('#previous-btn').click(function() {
 			var url = '#/admin/uploadsuccess';
 			window.location.hash = url;
 		});
 
-		$('#signordercheck').change(function () {
+		$('#signordercheck').change(function() {
 			var checked = $(this).is(':checked');
 			if (checked) {
 				$('.recipient-order-label').show();
@@ -232,12 +232,12 @@ class Recipients extends React.Component {
 		});
 
 		$('#sortable').sortable({
-			update: function () {
+			update: function() {
 				// do stuff
 				//console.log('update')
 				var people = [];
 				var listItems = $('#sortable li');
-				listItems.each(function (index, li) {
+				listItems.each(function(index, li) {
 					//console.log(this)
 					$(this)
 						.children('#rcard')
@@ -266,13 +266,13 @@ class Recipients extends React.Component {
 			},
 		});
 
-		$('#s-btn').click(function () {
+		$('#s-btn').click(function() {
 			var listItems = $('#sortable li');
 			if (listItems.length == 0) {
 				alert('There are no recepeints, Please add recipients');
 			} else {
 				var people = [];
-				listItems.each(function (index, li) {
+				listItems.each(function(index, li) {
 					//console.log(this)
 					$(this)
 						.children('#rcard')
@@ -328,20 +328,20 @@ class Recipients extends React.Component {
 			}
 		});
 
-		$('#stepaddbtn').click(function () {
+		$('#stepaddbtn').click(function() {
 			window.location.hash = '#/admin/uploadsuccess';
 		});
 
-		$('#documentdiscardbtn').on('click', function () {
+		$('#documentdiscardbtn').on('click', function() {
 			$('#DocumentDiscardModal').css('display', 'block');
 		});
-		$('#doccumentdiscard-close, #documentcancel').on('click', function () {
+		$('#doccumentdiscard-close, #documentcancel').on('click', function() {
 			$('#DocumentDiscardModal').css('display', 'none');
 		});
-		$('#documentdiscard').on('click', function () {
+		$('#documentdiscard').on('click', function() {
 			window.location.hash = '#/admin/index';
 		});
-		$('#documentsaveandclose').on('click', function () {
+		$('#documentsaveandclose').on('click', function() {
 			var today = new Date().toLocaleString().replace(',', '');
 			console.log('dadfa', DataVar);
 			axios
@@ -358,7 +358,7 @@ class Recipients extends React.Component {
 					Data: [],
 					Reciever: DataVar.RecipientArray,
 				})
-				.then(function (response) {
+				.then(function(response) {
 					window.location.hash = '#/manage/index';
 				});
 		});
@@ -385,13 +385,21 @@ class Recipients extends React.Component {
 							<Card className="shadow border-0 mx-3 p-3">
 								<CardHeader className=" bg-transparent">
 									<div className="review-manager-title">
-										<span>Do you want to save the envelop?</span>
-										<i className="ni ni-fat-remove" id="doccumentdiscard-close" />
+										<span>
+											Do you want to save the envelop?
+										</span>
+										<i
+											className="ni ni-fat-remove"
+											id="doccumentdiscard-close"
+										/>
 									</div>
 								</CardHeader>
 								<CardBody>
 									<Row>
-										<Col lg="12">Your changes will be lost if you don't save them</Col>
+										<Col lg="12">
+											Your changes will be lost if you
+											don't save them
+										</Col>
 									</Row>
 								</CardBody>
 								<CardFooter>
@@ -402,19 +410,19 @@ class Recipients extends React.Component {
 												color="primary"
 												id="documentsaveandclose">
 												Save &amp; Close
-										</Button>
+											</Button>
 											<Button
 												className="mx-2 px-4"
 												color="neutral"
 												id="documentdiscard">
 												Discard
-										</Button>
+											</Button>
 											<Button
 												className="px-4 mx-2"
 												color="neutral"
 												id="documentcancel">
 												Cancel
-										</Button>
+											</Button>
 										</Col>
 									</Row>
 								</CardFooter>
@@ -423,12 +431,10 @@ class Recipients extends React.Component {
 					</div>
 				</div>
 				<Container className="mt--9 pb-8">
-					<Card className="shadow border-0 pb-2 mb-3 bg-dark">
+					<Card className="shadow border-0 mb-3 bg-dark">
 						<CardBody>
 							<Row>
-								<Col
-									lg="12"
-									className="form-check form-check-inline">
+								<Col lg="12" className="form-check">
 									<div className="stepwizard">
 										<div className="stepwizard-row">
 											<div className="stepwizard-step">
@@ -436,11 +442,11 @@ class Recipients extends React.Component {
 													id="documentdiscardbtn"
 													type="button"
 													className="btn btn-primary btn-circle-process">
-													<i class="ni ni-fat-remove flow-close"></i>
+													<i class="ni ni-fat-remove flow-close" />
 												</button>
 												<p className="steplabel">
 													Close
-														</p>
+												</p>
 											</div>
 											<div className="stepwizard-step">
 												<button
@@ -516,13 +522,13 @@ class Recipients extends React.Component {
 													</FormGroup>
 												</Col>
 											) : (
-													<Input
-														type="hidden"
-														className="form-control-alternative"
-														id="recipient-input-order"
-														placeholder="#"
-													/>
-												)}
+												<Input
+													type="hidden"
+													className="form-control-alternative"
+													id="recipient-input-order"
+													placeholder="#"
+												/>
+											)}
 											<Col
 												lg={
 													this.state.isSigningOrder

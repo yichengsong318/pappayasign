@@ -3,13 +3,22 @@ import HeaderDefault from 'components/Headers/HeaderDefault.js';
 import React from 'react';
 import $ from 'jquery';
 // reactstrap components
-import { Card, CardBody, CardHeader, Col, Row, CardFooter, Button } from 'reactstrap';
+import {
+	Card,
+	CardBody,
+	CardHeader,
+	Col,
+	Row,
+	CardFooter,
+	Button,
+	Container,
+} from 'reactstrap';
 import PDFAnnotate from '../../components/PDFAnnotate/pdfannotate';
 import DataVar from '../../variables/data';
 const axios = require('axios').default;
 
-
 class Icons extends React.Component {
+<<<<<<< HEAD
 	state = {
 		title: ''
 	}
@@ -22,6 +31,13 @@ class Icons extends React.Component {
 				return '';
 				break;
 		}
+=======
+	constructor(props) {
+		super(props);
+		this.state = {
+			showDiscardModal: false,
+		};
+>>>>>>> 9883fb7722afe7318ecda401f2ddc84715381e1a
 	}
 	componentDidMount() {
 
@@ -105,12 +121,20 @@ class Icons extends React.Component {
 			window.location.hash = '#/admin/recipients';
 		});
 
-		$('#documentdiscardbtn').on('click', function () {
-			$('#DocumentDiscardModal').css('display', 'block');
+		$('#documentdiscardbtn').on('click', () => {
+			this.setState({
+				showDiscardModal: true,
+			});
 		});
-		$('#doccumentdiscard-close, #documentcancel').on('click', function () {
-			$('#DocumentDiscardModal').css('display', 'none');
-		});
+		$(document).on(
+			'click',
+			'#doccumentdiscard-close, #documentcancel',
+			() => {
+				this.setState({
+					showDiscardModal: false,
+				});
+			},
+		);
 		$('#documentdiscard').on('click', function () {
 			window.location.hash = '#/admin/index';
 		});
@@ -150,11 +174,65 @@ class Icons extends React.Component {
 		$('#DocumentDiscardModal').css('display', 'none');
 	}
 	render() {
+		const { showDiscardModal } = this.state;
 		return (
 			<>
 				<HeaderDefault />
 				{/* Page content */}
-				<div className="modal" id="DocumentDiscardModal" style={{display:'none'}}>
+				{showDiscardModal && (
+					<div className="modal d-block" id="DocumentDiscardModal">
+						<div className="private-modal-content modal-dialog">
+							<div>
+								<Card className="shadow border-0 mx-3 p-3">
+									<CardHeader className=" bg-transparent">
+										<div className="review-manager-title">
+											<span>
+												Do you want to save the envelop?
+											</span>
+											<i
+												className="ni ni-fat-remove"
+												id="doccumentdiscard-close"
+											/>
+										</div>
+									</CardHeader>
+									<CardBody>
+										<Row>
+											<Col lg="12">
+												Your changes will be lost if you
+												don't save them
+											</Col>
+										</Row>
+									</CardBody>
+									<CardFooter>
+										<Row>
+											<Col lg="12">
+												<Button
+													className="mx-2 px-4"
+													color="primary"
+													id="documentsaveandclose">
+													Save &amp; Close
+												</Button>
+												<Button
+													className="mx-2 px-4"
+													color="neutral"
+													id="documentdiscard">
+													Discard
+												</Button>
+												<Button
+													className="px-4 mx-2"
+													color="neutral"
+													id="documentcancel">
+													Cancel
+												</Button>
+											</Col>
+										</Row>
+									</CardFooter>
+								</Card>
+							</div>
+						</div>
+					</div>
+				)}
+				<div className="modal" id="DocumentDiscardModal" style={{ display: 'none' }}>
 					<div className="private-modal-content modal-dialog">
 						<div>
 							<Card className="shadow border-0 mx-3 p-3">
@@ -166,7 +244,10 @@ class Icons extends React.Component {
 								</CardHeader>
 								<CardBody>
 									<Row>
-										<Col lg="12">Your changes will be lost if you don't save them</Col>
+										<Col lg="12">
+											Your changes will be lost if you
+											don't save them
+											</Col>
 									</Row>
 								</CardBody>
 								<CardFooter>
@@ -177,19 +258,19 @@ class Icons extends React.Component {
 												color="primary"
 												id="documentsaveandclose">
 												Save &amp; Close
-										</Button>
+												</Button>
 											<Button
 												className="mx-2 px-4"
 												color="neutral"
 												id="documentdiscard">
 												Discard
-										</Button>
+												</Button>
 											<Button
 												className="px-4 mx-2"
 												color="neutral"
 												id="documentcancel">
 												Cancel
-										</Button>
+												</Button>
 										</Col>
 									</Row>
 								</CardFooter>
@@ -197,87 +278,88 @@ class Icons extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className="mt--9 pb-3">
-					<Card
-						className="shadow border-0 pb-2 mx-5 mb-3 bg-dark"
-						id="headerstepwizard">
-						<CardBody>
-							<Row>
-								<Col
-									lg="12"
-									className="form-check form-check-inline">
-									<div className="stepwizard">
-										<div className="stepwizard-row">
-											<div className="stepwizard-step">
-												<button
-													id="documentdiscardbtn"
-													type="button"
-													className="btn btn-primary btn-circle-process">
-													<i class="ni ni-fat-remove flow-close"></i>
-												</button>
-												<p className="steplabel">
-													Close
+				<Container className="mt--9">
+					<Row>
+						<div className="col pb-2">
+							<Card
+								className="shadow border-0 mb-3 bg-dark"
+								id="headerstepwizard">
+								<CardBody>
+									<Row>
+										<Col lg="12" className="form-check">
+											<div className="stepwizard">
+												<div className="stepwizard-row">
+													<div className="stepwizard-step">
+														<button
+															id="documentdiscardbtn"
+															type="button"
+															className="btn btn-primary btn-circle-process">
+															<i class="ni ni-fat-remove flow-close" />
+														</button>
+														<p className="steplabel">
+															Close
 														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															id="stepaddbtn"
+															className="btn btn-primary btn-circle-process">
+															1
+														</button>
+														<p className="steplabel">
+															Add
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															id="stepselectbtn"
+															className="btn btn-primary btn-circle-process">
+															2
+														</button>
+														<p className="steplabel">
+															Select
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															className="btn btn-primary btn-circle-process">
+															3
+														</button>
+														<p className="steplabel">
+															Process
+														</p>
+													</div>
+													<div className="stepwizard-step">
+														<button
+															type="button"
+															className="btn btn-primary-outline btn-circle-process">
+															4
+														</button>
+														<p className="steplabel">
+															Review
+														</p>
+													</div>
+												</div>
 											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													id="stepaddbtn"
-													className="btn btn-primary btn-circle-process">
-													1
-												</button>
-												<p className="steplabel">Add</p>
-											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													id="stepselectbtn"
-													className="btn btn-primary btn-circle-process">
-													2
-												</button>
-												<p className="steplabel">
-													Select
-												</p>
-											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													className="btn btn-primary btn-circle-process">
-													3
-												</button>
-												<p className="steplabel">
-													Process
-												</p>
-											</div>
-											<div className="stepwizard-step">
-												<button
-													type="button"
-													className="btn btn-primary-outline btn-circle-process">
-													4
-												</button>
-												<p className="steplabel">
-													Review
-												</p>
-											</div>
-										</div>
-									</div>
-								</Col>
-							</Row>
-							<Row>
-								<Col lg='12' style={{ textAlign: 'center', color: '#FFFFFF', fontSize: '16px' }}>{this.getTitle()}</Col>
-							</Row>
-						</CardBody>
-					</Card>
+										</Col>
+									</Row>
+								</CardBody>
+							</Card>
+						</div>
+					</Row>
+				</Container>
 
-					<Card className=" shadow mx-3">
-						<CardHeader className=" bg-transparent">
-							<h3 id="signtitle">Prepare Document</h3>
-						</CardHeader>
-						<CardBody>
-							<PDFAnnotate />
-						</CardBody>
-					</Card>
-				</div>
+				<Card className="shadow mx-3">
+					<CardHeader className=" bg-transparent">
+						<h3 id="signtitle">Prepare Document</h3>
+					</CardHeader>
+					<CardBody>
+						<PDFAnnotate />
+					</CardBody>
+				</Card>
 			</>
 		);
 	}

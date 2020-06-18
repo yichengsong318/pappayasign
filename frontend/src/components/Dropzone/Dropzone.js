@@ -34,32 +34,39 @@ class Dropzone extends Component {
 
 			reader.onload = function (e) {
 				let img = new Image();
+
+				// Images will take time to load. 
+				// So hence the onload function to avoid NaN popping up in scaleFactor
+				img.onload = function (e) {
+					const targetImage = e.target;
+					const src = e.target.src;
+
+					// Added the scale factor to resize the image to fit the document
+					const a4Width = 209;
+					const scaleFactor = targetImage.width / a4Width;
+					const scaleHeight = Math.floor(targetImage.height / scaleFactor);
+
+					let doc = new jsPDF('p', 'mm', 'a4', true);
+					doc.addImage(
+						targetImage,
+						imagesFormat[file.type],
+						0,
+						0,
+						a4Width,
+						scaleHeight,
+						'img',
+						'NONE',
+					);
+					let modal = document.querySelectorAll('.modal');
+					modal[0].style.display = 'none';
+					resolve(
+						new File([doc.output('blob')], `${global.FileName}.pdf`, {
+							lastModified: file.lastModified,
+							type: 'application/pdf',
+						}),
+					);
+				};
 				img.src = e.target.result;
-
-				// Added the scale factor to resize the image to fit the document
-				const a4Width = 209;
-				const scaleFactor = img.width / a4Width;
-				const scaleHeight = Math.floor(img.height / scaleFactor);
-
-				let doc = new jsPDF('p', 'mm', 'a4', true);
-				doc.addImage(
-					img,
-					imagesFormat[file.type],
-					0,
-					0,
-					a4Width,
-					scaleHeight,
-					'img',
-					'NONE',
-				);
-				let modal = document.querySelectorAll('.modal');
-				modal[0].style.display = 'none';
-				resolve(
-					new File([doc.output('blob')], `${global.FileName}.pdf`, {
-						lastModified: file.lastModified,
-						type: 'application/pdf',
-					}),
-				);
 			};
 			reader.readAsDataURL(file);
 		});
