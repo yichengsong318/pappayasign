@@ -660,7 +660,7 @@ class UploadSuccess extends React.Component {
 															id="documentdiscardbtn"
 															type="button"
 															className="btn btn-primary btn-circle-process">
-															<i class="ni ni-fat-remove flow-close" />
+															<i className="ni ni-fat-remove flow-close"></i>
 														</button>
 														<p className="steplabel">
 															Close
