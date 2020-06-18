@@ -37,6 +37,9 @@ class UploadSuccess extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onFilesAdded = this.onFilesAdded.bind(this);
+		this.state = {
+			title: ''
+		}
 	}
 
 	pdfset = 'not set';
@@ -74,8 +77,29 @@ class UploadSuccess extends React.Component {
 		}
 	}
 
+	getTitle = () => {
+		switch (this.state.title) {
+			case 'correct':
+				return 'Correcting';
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
 	componentDidMount() {
 		var global = this;
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			}
+			return decodeURI(results[1]) || 0;
+		}
+		const action = $.urlParam('action');
+		this.setState({ title: action });
 
 		var PDFFabric = function (
 			container_id,
@@ -126,7 +150,7 @@ class UploadSuccess extends React.Component {
 							const canvas = document.createElement('canvas');
 							try {
 								container.appendChild(canvas);
-							} catch (error) {}
+							} catch (error) { }
 							canvas.className = 'review-pdf-canvas';
 							canvas.height = viewport.height;
 							canvas.width = viewport.width;
@@ -361,7 +385,7 @@ class UploadSuccess extends React.Component {
 		}
 
 		$('#docnameeditbtn').on('click', function () {
-			$('.actionsign').click(function () {});
+			$('.actionsign').click(function () { });
 			modal[0].style.display = 'block';
 		});
 
@@ -409,14 +433,14 @@ class UploadSuccess extends React.Component {
 		});
 
 		$('#docreplacebtn').on('click', function () {
-			$('.actionsign').click(function () {});
+			$('.actionsign').click(function () { });
 			document.getElementById('replaceinput').click();
 			global.pdfset = 'not set';
 		});
 
 		$('#docviewbtn').click(async function () {
 			modal[2].style.display = 'block';
-			$('.actionsign').click(function () {});
+			$('.actionsign').click(function () { });
 			try {
 				if (global.pdfset === 'not set') {
 					global.pdfset = 'set';
@@ -443,7 +467,7 @@ class UploadSuccess extends React.Component {
 
 		$(document).on('click', '.preview-close', function () {
 			modal[1].style.display = 'none';
-			$('.actionsign').click(function () {});
+			$('.actionsign').click(function () { });
 		});
 
 		var droptogglesign = 0;
@@ -703,6 +727,9 @@ class UploadSuccess extends React.Component {
 											</div>
 										</Col>
 									</Row>
+									<Row>
+										<Col lg='12' style={{ textAlign: 'center', color: '#FFFFFF', fontSize: '16px' }}>{this.getTitle()}</Col>
+									</Row>
 								</CardBody>
 							</Card>
 							<Card className="shadow border-0">
@@ -719,7 +746,8 @@ class UploadSuccess extends React.Component {
 													className="mb-0"
 													id="documentname"
 												/>
-												<div
+												
+												{this.state.title != 'correct' && <div
 													id="moreoptions"
 													className="btn-group">
 													<button
@@ -754,7 +782,7 @@ class UploadSuccess extends React.Component {
 															Rename Document
 														</button>
 													</div>
-												</div>
+												</div>}
 											</div>
 										</Col>
 									</Row>

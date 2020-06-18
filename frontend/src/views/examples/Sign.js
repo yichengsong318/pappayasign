@@ -10,7 +10,30 @@ const axios = require('axios').default;
 
 
 class Icons extends React.Component {
+	state = {
+		title: ''
+	}
+	getTitle = () => {
+		switch (this.state.title) {
+			case 'correct':
+				return 'Correcting';
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
 	componentDidMount() {
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			}
+			return decodeURI(results[1]) || 0;
+		}
+		this.setState({ title: $.urlParam('action') });
+
 		function getCookie(name) {
 			var nameEQ = name + '=';
 			var ca = document.cookie.split(';');
@@ -123,13 +146,15 @@ class Icons extends React.Component {
 			}
 			return null;
 		}
+
+		$('#DocumentDiscardModal').css('display', 'none');
 	}
 	render() {
 		return (
 			<>
 				<HeaderDefault />
 				{/* Page content */}
-				<div className="modal" id="DocumentDiscardModal">
+				<div className="modal" id="DocumentDiscardModal" style={{display:'none'}}>
 					<div className="private-modal-content modal-dialog">
 						<div>
 							<Card className="shadow border-0 mx-3 p-3">
@@ -237,6 +262,9 @@ class Icons extends React.Component {
 										</div>
 									</div>
 								</Col>
+							</Row>
+							<Row>
+								<Col lg='12' style={{ textAlign: 'center', color: '#FFFFFF', fontSize: '16px' }}>{this.getTitle()}</Col>
 							</Row>
 						</CardBody>
 					</Card>

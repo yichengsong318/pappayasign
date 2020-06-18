@@ -48,6 +48,7 @@ const axios = require('axios').default;
 class Review extends React.Component {
 	state = {
 		tabs: 1,
+		title: ''
 	};
 	toggleNavs = (e, state, index) => {
 		e.preventDefault();
@@ -58,9 +59,29 @@ class Review extends React.Component {
 
 	pdf = null;
 
+	getTitle = () => {
+		switch (this.state.title) {
+			case 'correct':
+				return 'Correcting';
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
 	componentDidMount() {
 		var pdf = '';
 		var global = this;
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results == null) {
+				return null;
+			}
+			return decodeURI(results[1]) || 0;
+		}
+		this.setState({ title: $.urlParam('action') });
 
 		var PDFFabric = function (
 			container_id,
@@ -1244,6 +1265,9 @@ class Review extends React.Component {
 										</div>
 									</div>
 								</Col>
+							</Row>
+							<Row>
+								<Col lg='12' style={{ textAlign: 'center', color: '#FFFFFF', fontSize: '16px' }}>{this.getTitle()}</Col>
 							</Row>
 						</CardBody>
 					</Card>
