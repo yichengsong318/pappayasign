@@ -18,10 +18,14 @@ import DataVar from '../../variables/data';
 const axios = require('axios').default;
 
 class Icons extends React.Component {
-<<<<<<< HEAD
-	state = {
-		title: ''
+	constructor(props) {
+		super(props);
+		this.state = {
+			showDiscardModal: false,
+			title:''
+		};
 	}
+
 	getTitle = () => {
 		switch (this.state.title) {
 			case 'correct':
@@ -31,13 +35,6 @@ class Icons extends React.Component {
 				return '';
 				break;
 		}
-=======
-	constructor(props) {
-		super(props);
-		this.state = {
-			showDiscardModal: false,
-		};
->>>>>>> 9883fb7722afe7318ecda401f2ddc84715381e1a
 	}
 	componentDidMount() {
 
