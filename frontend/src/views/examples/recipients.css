@@ -112,7 +112,7 @@ input[disabled] {
 	border-left: 10px solid #00bfa5;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 640px) {
 	#recipientsbar {
 		height: 190px;
 		margin-bottom: 10px;
