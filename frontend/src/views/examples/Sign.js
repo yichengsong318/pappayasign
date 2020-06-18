@@ -18,14 +18,6 @@ import DataVar from '../../variables/data';
 const axios = require('axios').default;
 
 class Icons extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			showDiscardModal: false,
-			title:''
-		};
-	}
-
 	getTitle = () => {
 		switch (this.state.title) {
 			case 'correct':
@@ -35,6 +27,13 @@ class Icons extends React.Component {
 				return '';
 				break;
 		}
+	}
+	constructor(props) {
+		super(props);
+		this.state = {
+			showDiscardModal: false,
+			title: ''
+		};
 	}
 	componentDidMount() {
 
@@ -229,7 +228,7 @@ class Icons extends React.Component {
 						</div>
 					</div>
 				)}
-				<div className="modal" id="DocumentDiscardModal" style={{ display: 'none' }}>
+				{/* <div className="modal" id="DocumentDiscardModal" style={{ display: 'none' }}>
 					<div className="private-modal-content modal-dialog">
 						<div>
 							<Card className="shadow border-0 mx-3 p-3">
@@ -274,7 +273,7 @@ class Icons extends React.Component {
 							</Card>
 						</div>
 					</div>
-				</div>
+				</div> */}
 				<Container className="mt--9">
 					<Row>
 						<div className="col pb-2">
