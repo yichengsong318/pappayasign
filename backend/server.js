@@ -1138,7 +1138,7 @@ app.post('/api/docupload', function(req, res) {
 	}
 
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 		Body: buffer,
 		ContentEncoding: 'base64',
@@ -1166,7 +1166,7 @@ app.post('/api/templateupload', function(req, res) {
 		var buffer = new Buffer.from(req.body.filedata, 'base64');
 	}
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 		Body: buffer,
 		ContentEncoding: 'base64',
@@ -1187,7 +1187,7 @@ app.post('/api/docdownload', function(req, res) {
 	var key = '' + req.body.UserID + '/Documents/' + req.body.filename + '.pdf';
 
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 	};
 	s3.getObject(params, (err, data) => {
@@ -1209,7 +1209,7 @@ app.post('/api/templatedownload', function(req, res) {
 	var key = '' + req.body.UserID + '/Templates/' + req.body.filename + '.pdf';
 
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 	};
 	s3.getObject(params, (err, data) => {
