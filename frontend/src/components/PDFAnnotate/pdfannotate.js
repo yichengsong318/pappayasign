@@ -53,20 +53,14 @@ class PDFAnnotate extends React.Component {
 	state = {
 		tabs: 1,
 		showSignModal: false,
-		showInitialModal: false,
+		signType: '', //signature || initial
 	};
 
-	toggleSignModal = () => {
+	toggleSignModal = (signType = 'signature') => {
 		const { showSignModal } = this.state;
 		this.setState({
 			showSignModal: !showSignModal,
-		});
-	};
-
-	toggleInitialModal = () => {
-		const { showInitialModal } = this.state;
-		this.setState({
-			showInitialModal: !showInitialModal,
+			signType,
 		});
 	};
 
@@ -81,15 +75,23 @@ class PDFAnnotate extends React.Component {
 	initialimage = '';
 
 	saveSign = (e) => {
+		const { signType } = this.state;
 		let image = null;
 		if (process.env.REACT_APP_ENABLE_SIGN_BOX === 'true') {
-			image = e.initialsBox;
+			image = signType === 'signature' ? e.signatureBox : e.initialsBox;
+
+			if (e.signature) this.signimage = e.signatureBox;
+
+			if (e.initials) this.initialimage = e.initialsBox;
 		} else {
-			image = e.initials;
+			image = signType === 'signature' ? e.signature : e.initials;
+
+			if (e.signature) this.signimage = e.signature;
+
+			if (e.initials) this.initialimage = e.initials;
 		}
 
 		if (image) {
-			this.signimage = image;
 			this.doubleclickobj.setSrc(image);
 
 			this.doubleclickobj.set('backgroundColor', 'transparent');
@@ -102,33 +104,7 @@ class PDFAnnotate extends React.Component {
 			this.pdf.Reload();
 			this.toggleSignModal();
 		} else {
-			alert('Please set your signature!');
-		}
-	};
-
-	saveInitial = (e) => {
-		let image = null;
-		if (process.env.REACT_APP_ENABLE_SIGN_BOX === 'true') {
-			image = e.initialsBox;
-		} else {
-			image = e.initials;
-		}
-
-		if (image) {
-			this.initialimage = image;
-			this.doubleclickobj.setSrc(image);
-
-			this.doubleclickobj.set('backgroundColor', 'transparent');
-			this.doubleclickobj.set({
-				width: 60,
-				height: 20,
-				scaleX: 0.6,
-				scaleY: 0.6,
-			});
-			this.pdf.Reload();
-			this.toggleInitialModal();
-		} else {
-			alert('Please set your initials!');
+			alert(`Please set your ${signType}!`);
 		}
 	};
 
@@ -597,13 +573,10 @@ class PDFAnnotate extends React.Component {
 
 					const callbackEventDoubleClick = function(e) {
 						if (fabricObj.findTarget(e)) {
-							const objType = fabricObj.findTarget(e).type;
 							const obj = fabricObj.findTarget(e);
-							const objcolor = fabricObj.findTarget(e)
-								.backgroundColor;
-							const objid = fabricObj.findTarget(e).id;
-							////console.log(objType);
-							console.log(objcolor);
+							const objType = obj.type;
+							const objcolor = obj.backgroundColor;
+							const objid = obj.id;
 							if (grabbedcolor != '') {
 								var rgbval =
 									hexToRgb(grabbedcolor).r +
@@ -634,7 +607,17 @@ class PDFAnnotate extends React.Component {
 											global.doubleclickobj = fabricObj.findTarget(
 												e,
 											);
-											if (obj.width === obj.height) {
+											const signType = fabricObj.get(
+												'signType',
+											);
+											if (
+												obj.width === obj.height ||
+												signType === 'initial'
+											) {
+												fabricObj.set(
+													'signType',
+													'initial',
+												);
 												if (
 													global.initialimage != '' &&
 													objcolor != 'transparent'
@@ -660,7 +643,9 @@ class PDFAnnotate extends React.Component {
 														'Next',
 													);
 												} else {
-													global.toggleInitialModal();
+													global.toggleSignModal(
+														'initial',
+													);
 													setTimeout(function() {
 														fabricObj.requestRenderAll();
 													}, 10);
@@ -670,6 +655,10 @@ class PDFAnnotate extends React.Component {
 													//global.doubleclickobj.set({ width: 60, height: 20, scaleX: 0.6, scaleY: 0.6, });
 												}
 											} else {
+												fabricObj.set(
+													'signType',
+													'signature',
+												);
 												if (
 													global.signimage != '' &&
 													objcolor != 'transparent'
@@ -709,7 +698,6 @@ class PDFAnnotate extends React.Component {
 											obj.set('id', email);
 										} else if (objType === 'i-text') {
 											$('#movecursorbtn').html('Next');
-											//console.log(obj.text);
 											if (username != '') {
 												if (obj.text === 'Name') {
 													obj.set('text', username);
@@ -870,7 +858,9 @@ class PDFAnnotate extends React.Component {
 														}, 10);
 														global.pdf.Reload();
 													} else {
-														global.toggleInitialModal();
+														global.toggleSignModal(
+															'initial',
+														);
 														setTimeout(function() {
 															fabricObj.requestRenderAll();
 														}, 10);
@@ -5260,7 +5250,7 @@ class PDFAnnotate extends React.Component {
 	}
 
 	render() {
-		const { showSignModal, showInitialModal } = this.state;
+		const { showSignModal, signType } = this.state;
 		return (
 			<div className="pdfAnNotateContainer">
 				<img
@@ -5647,14 +5637,12 @@ class PDFAnnotate extends React.Component {
 						</div>
 
 						<SignManager
+							title={`Set Your ${
+								signType === 'initial' ? 'Initial' : 'Signature'
+							}`}
 							visible={showSignModal}
 							onSave={this.saveSign}
 							onClose={this.toggleSignModal}
-						/>
-						<InitialManager
-							visible={showInitialModal}
-							onSave={this.saveInitial}
-							onClose={this.toggleInitialModal}
 						/>
 					</Col>
 					<Col lg="2" id="fieldsrightbar">
