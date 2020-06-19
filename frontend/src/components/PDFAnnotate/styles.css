@@ -22,11 +22,7 @@
 
 @media screen and (max-width: 640px) {
 	#pdf-container {
-		transform: scale(0.4);
 		padding: 8px;
-		transform-origin: 0% 0% 0px;
-	}
-	#container {
 	}
 	.toolbar .tool {
 		width: 30% !important;
@@ -52,6 +48,7 @@ canvas,
 	justify-content: center;
 	margin: 0px auto;
 	position: relative;
+	transform-origin: top left;
 }
 
 .pdf-canvas {
@@ -156,8 +153,6 @@ canvas,
 	position: relative;
 	justify-content: center;
 	align-items: center;
-	transform: scale(1);
-	transform-origin: 0% 0% 0px;
 }
 
 #container {
@@ -616,30 +611,27 @@ i.material-icons {
 
 .sign-screen #nav-footer,
 .sign-screen #signtitle-holder,
-.sign-screen #navbar-collapse-main
-{
+.sign-screen #navbar-collapse-main {
 	display: none;
 }
 
 .sign-screen .header {
-	padding-bottom: 5rem!important;
+	padding-bottom: 5rem !important;
 }
 
 @media screen and (max-width: 640px) {
-
 	.sign-screen #editortoolbar,
 	.sign-screen #fieldsrightbar,
-	.sign-screen footer
-	{
+	.sign-screen footer {
 		display: none;
 	}
 
 	.sign-screen #pdf-area {
-		margin: 0!important;
+		margin: 0 !important;
 	}
 
 	.sign-screen #pdfcol {
-		padding: 0!important;
+		padding: 0 !important;
 		overflow: hidden;
 	}
 
@@ -655,7 +647,6 @@ i.material-icons {
 	.sign-screen .canvas-container {
 		top: 0;
 	}
-
 }
 
 /* Hide Captcha */
