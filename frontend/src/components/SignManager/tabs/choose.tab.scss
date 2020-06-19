@@ -52,7 +52,6 @@
 		.sign-image-container {
 			width: 90%;
 			display: flex;
-			justify-content: space-between;
 			align-items: flex-start;
 
 			@media screen and (max-width: 640px) {
@@ -74,7 +73,6 @@
 				}
 
 				img {
-					height: 50px;
 					margin-top: 4px;
 					margin-left: -10px;
 				}
@@ -92,11 +90,11 @@
 				}
 
 				&.sign-image-box-signature {
-					width: 60%;
+					max-width: 60%;
 				}
 
 				&.sign-image-box-initials {
-					width: 40%;
+					max-width: 40%;
 				}
 
 				&:before {

@@ -50,7 +50,6 @@
 		.sign-image-container {
 			width: 90%;
 			display: flex;
-			justify-content: space-between;
 			align-items: flex-start;
 
 			.sign-image-box {
@@ -61,6 +60,7 @@
 				color: black;
 				padding-left: 25px;
 				margin: 0 10px;
+				min-width: 40%;
 
 				canvas {
 					margin-bottom: 0 !important;
@@ -85,11 +85,11 @@
 				}
 
 				&.sign-image-box-signature {
-					width: 60%;
+					max-width: 60%;
 				}
 
 				&.sign-image-box-initials {
-					width: 40%;
+					max-width: 40%;
 					height: 40%;
 				}
 
