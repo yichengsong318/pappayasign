@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import './choose.tab.scss';
 import PropTypes from 'prop-types';
-import SignManager from '../index';
+import { trimCanvas } from '../../../utils/canvas';
+import { getPngDimensions } from '../../../utils/image';
 
 class ChooseTab extends Component {
 	fonts = [
 		{
 			name: 'HighTide',
-			size: 25,
+			size: 40,
 		},
 		{
 			name: 'MissNeally',
-			size: 25,
+			size: 40,
 		},
 		{
 			name: 'RunWild',
-			size: 25,
+			size: 40,
 		},
 		{
 			name: 'WarmShowers',
-			size: 40,
+			size: 50,
 		},
 	];
 
@@ -69,28 +70,24 @@ class ChooseTab extends Component {
 	};
 
 	drawText(font, text) {
+		if (!text) return;
+
 		let canvas = document.createElement('canvas');
-		canvas.width = 280;
-		canvas.height = 50;
-		if (text.length > 20) {
-			canvas.width = text.length * 22 + 30;
-		}
 		let context = canvas.getContext('2d');
+
 		context.font = `${font.size}px ${font.name}`;
 		context.fillStyle = 'black';
+
 		context.fillText(text, 15, 30);
+		canvas = trimCanvas(canvas);
 		return canvas.toDataURL();
 	}
 
 	drawTextSignBox(font, text) {
 		let canvas = document.createElement('canvas');
-		canvas.width = 470;
-		canvas.height = 150;
 
-		if (text.length > 20) {
-			canvas.width = text.length * 22 + 30;
-		}
 		let context = canvas.getContext('2d');
+
 		context.font = `${50}px ${font.name}`;
 		context.fillStyle = 'black';
 		context.fillText(text, 30, 90);
@@ -116,17 +113,14 @@ class ChooseTab extends Component {
 		context.strokeStyle = '#d35400';
 		context.stroke();
 
+		canvas = trimCanvas(canvas);
 		return canvas.toDataURL();
 	}
 
 	drawTextInitialSignBox(font, text) {
 		let canvas = document.createElement('canvas');
-		canvas.width = 150;
-		canvas.height = 150;
-		if (text.length > 20) {
-			canvas.width = text.length * 22 + 30;
-		}
 		let context = canvas.getContext('2d');
+
 		context.font = `${50}px ${font.name}`;
 		context.fillStyle = 'black';
 
@@ -153,6 +147,7 @@ class ChooseTab extends Component {
 		context.strokeStyle = '#d35400';
 		context.stroke();
 
+		canvas = trimCanvas(canvas);
 		return canvas.toDataURL();
 	}
 
@@ -199,7 +194,14 @@ class ChooseTab extends Component {
 										<span className="signed-by">
 											Signed by:
 										</span>
-										<img src={option.signature} />
+										<img
+											src={option.signature}
+											style={{
+												width: getPngDimensions(
+													option.signature,
+												).width,
+											}}
+										/>
 										<span className="sign-id">{id}</span>
 									</div>
 								)}
@@ -208,7 +210,14 @@ class ChooseTab extends Component {
 										<span className="signed-by">
 											{initial}
 										</span>
-										<img src={option.initials} />
+										<img
+											src={option.initials}
+											style={{
+												width: getPngDimensions(
+													option.initials,
+												).width,
+											}}
+										/>
 									</div>
 								)}
 							</div>

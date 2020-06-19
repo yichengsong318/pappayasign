@@ -168,7 +168,6 @@ class SignManager extends Component {
 		const { title, visible } = this.props;
 		const TabComponent = this.tabs[activeTabIndex].component;
 
-		// console.log(result);
 		if (!visible) {
 			return true;
 		}

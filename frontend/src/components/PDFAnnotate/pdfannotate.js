@@ -257,8 +257,12 @@ class PDFAnnotate extends React.Component {
 									);
 								});
 								inst.pages_rendered++;
-								if (inst.pages_rendered == inst.number_of_pages)
+								if (
+									inst.pages_rendered == inst.number_of_pages
+								) {
 									inst.initFabric();
+									global.resizePDFContainer();
+								}
 							});
 
 							thumbcanvas.className = 'thumb-pdf-canvas';
@@ -1003,18 +1007,20 @@ class PDFAnnotate extends React.Component {
 					$('.icon-color').removeClass('icon-color');
 				} else if (inst.active_tool == 4) {
 					var myImg = inst.imageurl;
+
 					fabric.Image.fromURL(
 						myImg,
-						function(oImg) {
+						(oImg) => {
 							var l =
 								e.pointer.x -
 								fabricObj.upperCanvasEl.getBoundingClientRect()
-									.left;
+									.left -
+								(inst.image_type === 1 ? 80 : 70);
 							var t =
 								e.pointer.y -
 								fabricObj.upperCanvasEl.getBoundingClientRect()
-									.top +
-								250;
+									.top -
+								(inst.image_type === 1 ? 96 : 70);
 							oImg.scale(inst.scale);
 							oImg.set({ left: l });
 							oImg.set({ top: t });
@@ -1025,6 +1031,8 @@ class PDFAnnotate extends React.Component {
 							oImg.set({ hasControls: false });
 							oImg.set({ backgroundColor: inst.recipientcolor });
 							fabricObj.add(oImg);
+
+							inst.image_type = -1;
 						},
 						{ crossOrigin: 'Anonymous' },
 					);
@@ -1115,17 +1123,18 @@ class PDFAnnotate extends React.Component {
 					var myImg = inst.imageurl;
 					fabric.Image.fromURL(
 						myImg,
-						function(oImg) {
+						(oImg) => {
 							var l =
 								event.clientX -
 								fabricObj.upperCanvasEl.getBoundingClientRect()
 									.left -
-								80;
+								(inst.image_type === 1 ? 80 : 70);
 							var t =
 								event.clientY -
 								fabricObj.upperCanvasEl.getBoundingClientRect()
 									.top -
-								66;
+								(inst.image_type === 1 ? 96 : 70);
+							console.log(l, t);
 							oImg.scale(inst.scale);
 							oImg.set({ left: l });
 							oImg.set({ top: t });
@@ -1136,6 +1145,8 @@ class PDFAnnotate extends React.Component {
 							oImg.set({ hasControls: false });
 							oImg.set({ backgroundColor: inst.recipientcolor });
 							fabricObj.add(oImg);
+
+							inst.image_type = -1;
 						},
 						{ crossOrigin: 'Anonymous' },
 					);
@@ -1366,7 +1377,6 @@ class PDFAnnotate extends React.Component {
 										response.data.Status === 'doc data done'
 									) {
 										signorderval = response.data.SignOrder;
-										console.log(signorderval);
 										var DocumentData = response.data.Data;
 										var firstobjectkey = true;
 										$.each(
@@ -1519,10 +1529,12 @@ class PDFAnnotate extends React.Component {
 			recipientemail,
 			recipientcolor,
 			scale,
+			image_type = -1, // 1 for sign and 2 for initial
 		) {
 			var inst = this;
 			inst.recipientemail = recipientemail;
 			inst.recipientcolor = recipientcolor;
+			inst.image_type = image_type;
 			inst.scale = scale;
 			var fabricObj = inst.fabricObjects[inst.active_canvas];
 			inst.active_tool = 4;
@@ -1579,6 +1591,22 @@ class PDFAnnotate extends React.Component {
 			scaleX = scaleX + 0.1;
 			container.style.transform = 'scale(' + scaleX + ')';
 		};
+
+		this.resizePDFContainer = function() {
+			let container = document.getElementById('pdf-container');
+			const canvases = document.querySelectorAll(`.canvas-container`);
+
+			if (canvases.length > 0) {
+				let scaleX = container.offsetWidth / canvases[0].offsetWidth;
+				if (scaleX > 1) {
+					scaleX = 1;
+				}
+				container.style.transform = 'scale(' + scaleX + ')';
+				container.scrollTo(0, 0);
+			}
+		};
+
+		window.addEventListener('resize', this.resizePDFContainer);
 
 		PDFAnnotate.prototype.ZoomOut = function() {
 			var inst = this;
@@ -2994,6 +3022,7 @@ class PDFAnnotate extends React.Component {
 		};
 
 		var pdf;
+		var image_type = -1; // 1 for sign and 2 for initial
 
 		document
 			.getElementById('recipientselect')
@@ -3039,10 +3068,10 @@ class PDFAnnotate extends React.Component {
 		document.addEventListener('mousemove', function(e) {
 			$('#dragabbleImageSign').css({
 				left: e.clientX - 80,
-				top: e.clientY - 60,
+				top: e.clientY - 96,
 			});
 			$('#dragabbleImageInitial').css({
-				left: e.clientX - 100,
+				left: e.clientX - 70,
 				top: e.clientY - 70,
 			});
 			$('#dragabbleImageText').css({
@@ -3054,10 +3083,10 @@ class PDFAnnotate extends React.Component {
 		document.addEventListener('dragover', function(e) {
 			$('#dragabbleImageSign').css({
 				left: e.clientX - 80,
-				top: e.clientY - 60,
+				top: e.clientY - 96,
 			});
 			$('#dragabbleImageInitial').css({
-				left: e.clientX - 100,
+				left: e.clientX - 70,
 				top: e.clientY - 70,
 			});
 			$('#dragabbleImageText').css({
@@ -3605,6 +3634,7 @@ class PDFAnnotate extends React.Component {
 							recipientemail,
 							recipientcolor,
 							0.7,
+							1,
 						);
 					} else {
 						global.pdf.enableImage(
@@ -3612,6 +3642,7 @@ class PDFAnnotate extends React.Component {
 							recipientemail,
 							'transparent',
 							0.6,
+							1,
 						);
 					}
 				} else {
@@ -3620,6 +3651,7 @@ class PDFAnnotate extends React.Component {
 						recipientemail,
 						recipientcolor,
 						0.7,
+						1,
 					);
 				}
 			} catch (error) {
@@ -3644,8 +3676,6 @@ class PDFAnnotate extends React.Component {
 			recipientemail = select.options[select.selectedIndex].value;
 			recipientcolor =
 				select.options[select.selectedIndex].style.backgroundColor;
-			//pdf.enablePencil();
-			// // // // // // // ////console.log('signpress');
 			var dataUrl =
 				'data:image/png;base64,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';
 			try {
@@ -3661,6 +3691,7 @@ class PDFAnnotate extends React.Component {
 							recipientemail,
 							recipientcolor,
 							0.3,
+							2,
 						);
 					} else {
 						global.pdf.enableImage(
@@ -3668,6 +3699,7 @@ class PDFAnnotate extends React.Component {
 							recipientemail,
 							'transparent',
 							0.6,
+							2,
 						);
 					}
 				} else {
@@ -3676,6 +3708,7 @@ class PDFAnnotate extends React.Component {
 						recipientemail,
 						recipientcolor,
 						0.3,
+						2,
 					);
 				}
 			} catch (error) {
@@ -4659,11 +4692,14 @@ class PDFAnnotate extends React.Component {
 						console.log(error);
 					}
 				} else {
-
 					// Set class for sign page and alter page
-					document.body.classList.add("sign-screen");
-					document.getElementById('pdfcol').classList.remove("col-lg-8");
-					document.getElementById('pdfcol').classList.add("col-lg-10");
+					document.body.classList.add('sign-screen');
+					document
+						.getElementById('pdfcol')
+						.classList.remove('col-lg-8');
+					document
+						.getElementById('pdfcol')
+						.classList.add('col-lg-10');
 
 					if (userid != useridother) {
 						//console.log('userid not equal')
@@ -5176,14 +5212,16 @@ class PDFAnnotate extends React.Component {
 			}
 		});
 
-		$.urlParam = function (name) {
-			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+		$.urlParam = function(name) {
+			var results = new RegExp('[?&]' + name + '=([^&#]*)').exec(
+				window.location.href,
+			);
 			if (results == null) {
 				return null;
 			}
 			return decodeURI(results[1]) || 0;
-		}
-		if(action == 'correct'){
+		};
+		if (action == 'correct') {
 			$('#ppsActionBtns').hide();
 		}
 	}
@@ -5217,9 +5255,7 @@ class PDFAnnotate extends React.Component {
 				/>
 
 				<Row id="ppsActionBtns">
-					<Col
-						lg="12"
-						className="d-flex justify-content-between">
+					<Col lg="12" className="d-flex justify-content-between">
 						<div id="moreoptions" className="btn-group">
 							<button
 								type="button"
