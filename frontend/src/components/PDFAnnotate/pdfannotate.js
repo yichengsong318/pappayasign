@@ -78,11 +78,19 @@ class PDFAnnotate extends React.Component {
 	doubleclickobj = null;
 	pdf = null;
 	signimage = '';
+	initialimage = '';
 
 	saveSign = (e) => {
-		if (e.signatureBox) {
-			this.signimage = e.signatureBox;
-			this.doubleclickobj.setSrc(e.signatureBox);
+		let image = null;
+		if (process.env.REACT_APP_ENABLE_SIGN_BOX === 'true') {
+			image = e.initialsBox;
+		} else {
+			image = e.initials;
+		}
+
+		if (image) {
+			this.signimage = image;
+			this.doubleclickobj.setSrc(image);
 
 			this.doubleclickobj.set('backgroundColor', 'transparent');
 			this.doubleclickobj.set({
@@ -99,8 +107,16 @@ class PDFAnnotate extends React.Component {
 	};
 
 	saveInitial = (e) => {
-		if (e.initialsBox) {
-			this.doubleclickobj.setSrc(e.initialsBox);
+		let image = null;
+		if (process.env.REACT_APP_ENABLE_SIGN_BOX === 'true') {
+			image = e.initialsBox;
+		} else {
+			image = e.initials;
+		}
+
+		if (image) {
+			this.initialimage = image;
+			this.doubleclickobj.setSrc(image);
 
 			this.doubleclickobj.set('backgroundColor', 'transparent');
 			this.doubleclickobj.set({
@@ -166,7 +182,6 @@ class PDFAnnotate extends React.Component {
 		var signorderval = false;
 		var dbpeople = [];
 		var key = '';
-		var initialimage = '';
 		var username = '';
 		var usertitle = '';
 		var ownerasreciever = false;
@@ -621,11 +636,11 @@ class PDFAnnotate extends React.Component {
 											);
 											if (obj.width === obj.height) {
 												if (
-													initialimage != '' &&
+													global.initialimage != '' &&
 													objcolor != 'transparent'
 												) {
 													global.doubleclickobj.setSrc(
-														initialimage,
+														global.initialimage,
 													);
 													global.doubleclickobj.set(
 														'backgroundColor',
@@ -830,12 +845,13 @@ class PDFAnnotate extends React.Component {
 												);
 												if (obj.width === obj.height) {
 													if (
-														initialimage != '' &&
+														global.initialimage !=
+															'' &&
 														objcolor !=
 															'transparent'
 													) {
 														global.doubleclickobj.setSrc(
-															initialimage,
+															global.initialimage,
 														);
 														global.doubleclickobj.set(
 															'backgroundColor',
@@ -1592,6 +1608,16 @@ class PDFAnnotate extends React.Component {
 			container.style.transform = 'scale(' + scaleX + ')';
 		};
 
+		PDFAnnotate.prototype.ZoomOut = function() {
+			var inst = this;
+
+			var container = document.getElementById(inst.container_id);
+			var scaleX =
+				container.getBoundingClientRect().width / container.offsetWidth;
+			scaleX = scaleX - 0.1;
+			container.style.transform = 'scale(' + scaleX + ')';
+		};
+
 		this.resizePDFContainer = function() {
 			let container = document.getElementById('pdf-container');
 			const canvases = document.querySelectorAll(`.canvas-container`);
@@ -1601,22 +1627,16 @@ class PDFAnnotate extends React.Component {
 				if (scaleX > 1) {
 					scaleX = 1;
 				}
+
+				let scaleY = container.offsetHeight / canvases[0].offsetHeight;
+				console.log('scaleY', scaleY);
+
 				container.style.transform = 'scale(' + scaleX + ')';
 				container.scrollTo(0, 0);
 			}
 		};
 
 		window.addEventListener('resize', this.resizePDFContainer);
-
-		PDFAnnotate.prototype.ZoomOut = function() {
-			var inst = this;
-			var container = document.getElementById(inst.container_id);
-			var scaleX =
-				container.getBoundingClientRect().width / container.offsetWidth;
-
-			scaleX = scaleX - 0.1;
-			container.style.transform = 'scale(' + scaleX + ')';
-		};
 
 		PDFAnnotate.prototype.savePdf = function() {
 			var inst = this;
@@ -3685,7 +3705,10 @@ class PDFAnnotate extends React.Component {
 					'9999999999999999999999999999999999999999999',
 				);
 				if (recipientcolor == 'rgb(189, 189, 189)') {
-					if (initialimage == '' || initialimage == null) {
+					if (
+						global.initialimage == '' ||
+						global.initialimage == null
+					) {
 						global.pdf.enableImage(
 							dataUrl,
 							recipientemail,
@@ -3695,7 +3718,7 @@ class PDFAnnotate extends React.Component {
 						);
 					} else {
 						global.pdf.enableImage(
-							initialimage,
+							global.initialimage,
 							recipientemail,
 							'transparent',
 							0.6,
@@ -4004,18 +4027,28 @@ class PDFAnnotate extends React.Component {
 						.then(function(response) {
 							console.log(response);
 							if (response.data.Status === 'user found') {
-								if (response.data.user.SignID != '') {
-									if (response.data.user.SignImage) {
-										global.signimage =
-											response.data.user.SignImageBox;
-										initialimage =
-											response.data.user.InitialsBox;
+								const { user } = response.data;
+								if (user.SignID != '') {
+									if (user.SignImage) {
+										if (
+											process.env
+												.REACT_APP_ENABLE_SIGN_BOX ===
+											'true'
+										) {
+											global.signimage =
+												user.SignImageBox;
+											global.initialimage =
+												user.InitialsBox;
+										} else {
+											global.signimage = user.SignImage;
+											global.initialimage = user.Initials;
+										}
+
 										username =
-											response.data.user.UserFirstName +
+											user.UserFirstName +
 											' ' +
-											response.data.user.UserLastName;
-										usertitle =
-											response.data.user.UserTitle;
+											user.UserLastName;
+										usertitle = user.UserTitle;
 									}
 								}
 							}
