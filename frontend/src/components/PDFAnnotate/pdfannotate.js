@@ -19,6 +19,7 @@ import DataVar from '../../variables/data';
 import PreviewData from '../../variables/preview';
 import './pdfannotate.css';
 import './styles.css';
+import Hammer from 'hammerjs';
 import { getColorFromHex, randomString, getGeoInfo } from './utils';
 import SignManager from '../SignManager';
 import InitialManager from '../InitialManager';
@@ -323,6 +324,7 @@ class PDFAnnotate extends React.Component {
 							width: 1,
 							color: inst.color,
 						},
+						allowTouchScrolling: true
 					});
 
 					fabricObj.on('object:selected', function(e) {
@@ -1223,6 +1225,12 @@ class PDFAnnotate extends React.Component {
 			$('.canvas').css('z-index', '0');
 
 			$('#movecursorbtn').click(function() {
+			    // Get current zoom level of pdf
+			    var pdfscale = 1;
+			    try {
+		        	pdfscale = $('#pdf-container')[0].style.transform.split(/[()]+/)[1];
+			    } catch (error) {}
+
 				if (ObjectCursorIndex === ObjectArray.length) {
 					var count = 0;
 					ObjectCursorIndex = 0;
@@ -1286,7 +1294,7 @@ class PDFAnnotate extends React.Component {
 						});
 						$('#container').animate(
 							{
-								scrollTop: page * 1095 + nextobj.top,
+								scrollTop: (page * 1095 + nextobj.top) * pdfscale,
 							},
 							2000,
 						);
@@ -1321,7 +1329,7 @@ class PDFAnnotate extends React.Component {
 							});
 							$('#container').animate(
 								{
-									scrollTop: page * 1095 + nextobj.top,
+									scrollTop: (page * 1095 + nextobj.top) * pdfscale,
 								},
 								2000,
 							);
@@ -1339,7 +1347,7 @@ class PDFAnnotate extends React.Component {
 							$('#movecursorbtn').css({ top: pageheight });
 							$('#container').animate(
 								{
-									scrollTop: pageheight,
+									scrollTop: pageheight * pdfscale,
 								},
 								2000,
 							);
@@ -1633,6 +1641,28 @@ class PDFAnnotate extends React.Component {
 
 				container.style.transform = 'scale(' + scaleX + ')';
 				container.scrollTo(0, 0);
+
+				// var mc = new Hammer.Manager(container);
+				// var pinch = new Hammer.Pinch();
+				// mc.add([pinch]);
+				// // mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+
+				// mc.on('pinch', function(ev) {
+				// 	// alert('- ' + scaleX + ' ---- ' + ev.scale + ' -');
+				// 	var scaledim = ev.scale / 2;
+				// 	if (scaledim >= scaleX) {
+				// 		container.style.transform = 'scale(' + scaledim + ')';
+				// 	}
+				// });
+
+				// $(canvases).each(function (i, el) {
+				// 	$(el).off('touchstart');
+				// 	// console.log(el);
+				// })
+
+				// mc.on('panleft panright panup pandown', function(ev) {
+				// 	console.log(ev);
+				// });
 			}
 		};
 
