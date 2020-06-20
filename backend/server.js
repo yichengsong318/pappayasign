@@ -57,12 +57,12 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 var salt = 10;
 
 let transporter = nodemailer.createTransport({
-	host: 'mail.pappaya.com',
-	port: 465,
+	host: process.env.MAIL_HOST,
+	port: process.env.MAIL_PORT,
 	secure: true, // true for 465, false for other ports
 	auth: {
-		user: 'noreply@pappayasign.com',
-		pass: 'Pappaya@2020',
+		user: process.env.MAIL_USER,
+		pass: process.env.MAIL_PASS,
 	},
 });
 
@@ -71,7 +71,7 @@ const s3 = new AWS.S3({
 	secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
 
-const uri = 'mongodb://127.0.0.1:27017';
+const uri = `mongodb://${process.env.DB_CONNECTION}`;
 
 /////////////////////////////////////Common Functions//////////////////////////////////////////////
 
@@ -1138,7 +1138,7 @@ app.post('/api/docupload', function(req, res) {
 	}
 
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 		Body: buffer,
 		ContentEncoding: 'base64',
@@ -1166,7 +1166,7 @@ app.post('/api/templateupload', function(req, res) {
 		var buffer = new Buffer.from(req.body.filedata, 'base64');
 	}
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 		Body: buffer,
 		ContentEncoding: 'base64',
@@ -1187,7 +1187,7 @@ app.post('/api/docdownload', function(req, res) {
 	var key = '' + req.body.UserID + '/Documents/' + req.body.filename + '.pdf';
 
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 	};
 	s3.getObject(params, (err, data) => {
@@ -1209,7 +1209,7 @@ app.post('/api/templatedownload', function(req, res) {
 	var key = '' + req.body.UserID + '/Templates/' + req.body.filename + '.pdf';
 
 	const params = {
-		Bucket: 'pappayasign',
+		Bucket: process.env.S3_BUCKET_NAME,
 		Key: key,
 	};
 	s3.getObject(params, (err, data) => {
