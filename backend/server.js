@@ -71,7 +71,7 @@ const s3 = new AWS.S3({
 	secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
 
-const uri = `mongodb://${process.env.DB_CONNECTION}`;
+const uri = `${process.env.DB_CONNECTION}`;
 
 /////////////////////////////////////Common Functions//////////////////////////////////////////////
 

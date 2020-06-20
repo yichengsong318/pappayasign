@@ -31,10 +31,8 @@ const axios = require('axios').default;
 // axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 var PDFJS = require('pdfjs-dist');
-PDFJS.GlobalWorkerOptions.workerSrc =
-	'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
-PDFJS.workerSrc =
-	'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
+PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.worker.min.js';
 //var fabric = require("fabric-webpack");
 //var jsPDF = require("jspdf-react");
 //const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
